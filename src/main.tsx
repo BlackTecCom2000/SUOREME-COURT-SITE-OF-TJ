@@ -6,6 +6,6 @@ import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-  {window.location.pathname.startsWith('/admin') ? <AdminApp /> : <App />}
+  {window.location.pathname.includes('/admin') ? <AdminApp /> : <App />}
   </React.StrictMode>,
 );
