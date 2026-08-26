@@ -18,7 +18,7 @@ export const Section03DigitalHammer: React.FC<Section03DigitalHammerProps> = ({
     <section
       id="digital-justice"
       aria-label={t('nav.digitalJustice')}
-      className="relative py-20 sm:py-28 md:py-32 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
     >
       <DigitalDataRain density="medium" speed="medium" opacity={0.3} colorTheme="cyan" />
 
@@ -56,7 +56,7 @@ export const Section03DigitalHammer: React.FC<Section03DigitalHammerProps> = ({
             {/* 3 Pillars of Digital Legal Integrity */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
               <Reveal delay={300}>
-                <div className="p-4 rounded-xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card">
+                <div className="content-card">
                   <ShieldCheck size={18} className="text-theme-gold mb-2" />
                   <div className="font-mono text-xs font-semibold text-theme-text mb-1">
                     {t('digitalJustice.pillar1Title')}
@@ -68,7 +68,7 @@ export const Section03DigitalHammer: React.FC<Section03DigitalHammerProps> = ({
               </Reveal>
 
               <Reveal delay={350}>
-                <div className="p-4 rounded-xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card">
+                <div className="content-card">
                   <QrCode size={18} className="text-cyan-400 mb-2" />
                   <div className="font-mono text-xs font-semibold text-theme-text mb-1">
                     {t('digitalJustice.pillar2Title')}
@@ -80,7 +80,7 @@ export const Section03DigitalHammer: React.FC<Section03DigitalHammerProps> = ({
               </Reveal>
 
               <Reveal delay={400}>
-                <div className="p-4 rounded-xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card">
+                <div className="content-card">
                   <Database size={18} className="text-emerald-400 mb-2" />
                   <div className="font-mono text-xs font-semibold text-theme-text mb-1">
                     {t('digitalJustice.pillar3Title')}

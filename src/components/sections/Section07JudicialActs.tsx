@@ -4,6 +4,7 @@ import { JUDICIAL_ACTS } from '../../data/sudTjData';
 import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { FileText, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useDynamicData } from '../../hooks/useDynamicData';
 
 interface Section07JudicialActsProps {
   onOpenActs: () => void;
@@ -13,12 +14,13 @@ export const Section07JudicialActs: React.FC<Section07JudicialActsProps> = ({
   onOpenActs,
 }) => {
   const { language, t } = useLanguage();
+  const { data: acts } = useDynamicData<typeof JUDICIAL_ACTS>('judicial_acts', 'JUDICIAL_ACTS');
 
   return (
     <section
       id="acts"
       aria-label={t('nav.acts')}
-      className="relative py-20 sm:py-28 md:py-32 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none border-t border-theme-border/30"
     >
       <DigitalDataRain density="medium" speed="medium" opacity={0.25} colorTheme="gold" />
 
@@ -67,7 +69,7 @@ export const Section07JudicialActs: React.FC<Section07JudicialActsProps> = ({
 
       {/* Grid of Verified Acts */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        {JUDICIAL_ACTS.slice(0, 6).map((act, i) => (
+        {acts.slice(0, 6).map((act: any, i: number) => (
           <Reveal key={act.id} delay={200 + i * 50}>
             <div
               onClick={onOpenActs}

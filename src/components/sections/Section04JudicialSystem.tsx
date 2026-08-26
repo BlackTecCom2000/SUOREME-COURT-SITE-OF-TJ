@@ -30,7 +30,7 @@ interface Section04JudicialSystemProps {
 export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = ({
   onOpenService,
 }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCourt, setSelectedCourt] = useState<CourtNodeData | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
@@ -162,11 +162,11 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
     <section
       id="courts"
       aria-label={t('network.title1') + ' ' + t('network.title2')}
-      className="relative py-20 sm:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
+      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
     >
       <DigitalDataRain density="sparse" speed="slow" opacity={0.18} colorTheme="gold" />
 
-      <div className="max-w-[1880px] mx-auto w-full relative z-10 space-y-6">
+      <div className="site-container relative z-10 space-y-6">
         
         {/* 1. SECTION HEADER INDICATOR & FULLSCREEN TRIGGER */}
         <Reveal delay={50}>
@@ -208,48 +208,55 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
         {/* 2. SECTION TITLE & CONCISE INSTITUTIONAL DESCRIPTION */}
         <div className="max-w-4xl text-left">
           <Reveal delay={120}>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold tracking-tight uppercase mb-3">
-              {t('network.title1')}{' '}
-              <span className="italic font-normal text-theme-gold">
-                {t('network.title1Italic')}
-              </span>{' '}
-              {t('network.title2')}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-theme-gold/30 bg-theme-gold/10 text-theme-gold font-mono text-[11px] font-bold uppercase tracking-wider mb-2">
+              <Sparkles size={13} />
+              <span>{language === 'tj' ? 'СОХТОРИ СУДИИ ТОҶИКИСТОН' : language === 'en' ? 'JUDICIAL SYSTEM OF TAJIKISTAN' : 'СУДЕБНАЯ СИСТЕМА ТАДЖИКИСТАНА'}</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold tracking-tight uppercase mb-2 text-theme-text">
+              {language === 'tj' ? 'СУДҲОИ ' : language === 'en' ? 'COURTS OF ' : 'СУДЕБНЫЕ ОРГАНЫ '}
+              <span className="italic font-light text-theme-gold">
+                {language === 'tj' ? 'ТОҶИКИСТОН' : language === 'en' ? 'TAJIKISTAN' : 'ТАДЖИКИСТАНА'}
+              </span>
             </h2>
           </Reveal>
           <Reveal delay={180}>
             <p className="text-xs sm:text-sm md:text-base leading-relaxed text-theme-textSec font-normal max-w-3xl">
-              {t('network.description')}
+              {language === 'tj'
+                ? 'Харита ва сохтори ягонаи рақамии мақомоти судии Ҷумҳурии Тоҷикистон — дастрасӣ ба маълумот, санадҳо ва робита бо ҳар як суд.'
+                : language === 'en'
+                ? 'Interactive digital network & hierarchy of the courts of Tajikistan — direct public access to contacts, acts, and procedural routing.'
+                : 'Интерактивная карта и единая структура судебных органов Республики Таджикистан — быстрый поиск, контакты и связь с каждым судом.'}
             </p>
           </Reveal>
         </div>
 
-        {/* 3. DYNAMIC INTERACTIVE STATISTICS CONTROLLERS */}
+        {/* 3. DYNAMIC INTERACTIVE STATISTICS KPI CARDS */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
           {/* Stat 1: Total Courts */}
           <button
             type="button"
             onClick={() => handleToggleStatFilter('all')}
-            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer shadow-sm group ${
+            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer shadow-sm group hover:-translate-y-0.5 ${
               activeCourtTypeFilter === 'all'
-                ? 'border-amber-400 bg-amber-500/15 shadow-md shadow-amber-500/10'
-                : 'border-theme-border bg-theme-surface hover:border-amber-400/50'
+                ? 'border-theme-gold bg-theme-gold/15 shadow-md shadow-theme-gold/10 ring-1 ring-theme-gold/40'
+                : 'border-theme-border bg-theme-surface hover:border-theme-gold/50'
             }`}
           >
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-theme-gold">
+              <div className="p-2 rounded-xl bg-theme-gold/10 border border-theme-gold/20 text-theme-gold">
                 <Landmark size={18} />
               </div>
-              <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 group-hover:text-amber-300 transition-colors">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-theme-textMuted group-hover:text-theme-gold transition-colors font-bold">
                 {selectedRegion !== 'all' ? 'В РЕГИОНЕ' : 'СИСТЕМА'}
               </span>
             </div>
-            <div className="font-mono text-2xl sm:text-3xl font-bold text-white leading-tight">
+            <div className="font-mono text-2xl sm:text-3xl font-bold text-theme-text leading-tight">
               {statsMetrics.total}
             </div>
-            <div className="font-serif font-bold text-xs text-slate-200 mt-1">
+            <div className="font-serif font-bold text-xs text-theme-text mt-1">
               {t('network.totalCourts')}
             </div>
-            <div className="font-mono text-[10px] text-slate-400 mt-0.5 truncate">
+            <div className="font-mono text-[10px] text-theme-textMuted mt-0.5 truncate">
               {t('network.totalCourtsSub')}
             </div>
           </button>
@@ -258,9 +265,9 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
           <button
             type="button"
             onClick={() => handleToggleStatFilter('city')}
-            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer shadow-sm group ${
+            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer shadow-sm group hover:-translate-y-0.5 ${
               activeCourtTypeFilter === 'city'
-                ? 'border-cyan-400 bg-cyan-500/15 shadow-md shadow-cyan-500/10'
+                ? 'border-cyan-400 bg-cyan-500/15 shadow-md shadow-cyan-500/10 ring-1 ring-cyan-400/40'
                 : 'border-theme-border bg-theme-surface hover:border-cyan-400/50'
             }`}
           >
@@ -268,17 +275,17 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
               <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
                 <Building2 size={18} />
               </div>
-              <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 group-hover:text-cyan-300 transition-colors">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-theme-textMuted group-hover:text-cyan-400 transition-colors font-bold">
                 ШАҲР
               </span>
             </div>
-            <div className="font-mono text-2xl sm:text-3xl font-bold text-white leading-tight">
+            <div className="font-mono text-2xl sm:text-3xl font-bold text-theme-text leading-tight">
               {statsMetrics.cities}
             </div>
-            <div className="font-serif font-bold text-xs text-slate-200 mt-1">
+            <div className="font-serif font-bold text-xs text-theme-text mt-1">
               {t('network.cityCourts')}
             </div>
-            <div className="font-mono text-[10px] text-slate-400 mt-0.5 truncate">
+            <div className="font-mono text-[10px] text-theme-textMuted mt-0.5 truncate">
               {t('network.cityCourtsSub')}
             </div>
           </button>
@@ -287,9 +294,9 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
           <button
             type="button"
             onClick={() => handleToggleStatFilter('district')}
-            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer shadow-sm group ${
+            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer shadow-sm group hover:-translate-y-0.5 ${
               activeCourtTypeFilter === 'district'
-                ? 'border-emerald-400 bg-emerald-500/15 shadow-md shadow-emerald-500/10'
+                ? 'border-emerald-400 bg-emerald-500/15 shadow-md shadow-emerald-500/10 ring-1 ring-emerald-400/40'
                 : 'border-theme-border bg-theme-surface hover:border-emerald-400/50'
             }`}
           >
@@ -297,17 +304,17 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
               <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
                 <MapPin size={18} />
               </div>
-              <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 group-hover:text-emerald-300 transition-colors">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-theme-textMuted group-hover:text-emerald-400 transition-colors font-bold">
                 НОҲИЯ
               </span>
             </div>
-            <div className="font-mono text-2xl sm:text-3xl font-bold text-white leading-tight">
+            <div className="font-mono text-2xl sm:text-3xl font-bold text-theme-text leading-tight">
               {statsMetrics.districts}
             </div>
-            <div className="font-serif font-bold text-xs text-slate-200 mt-1">
+            <div className="font-serif font-bold text-xs text-theme-text mt-1">
               {t('network.districtCourts')}
             </div>
-            <div className="font-mono text-[10px] text-slate-400 mt-0.5 truncate">
+            <div className="font-mono text-[10px] text-theme-textMuted mt-0.5 truncate">
               {t('network.districtCourtsSub')}
             </div>
           </button>
@@ -316,37 +323,37 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
           <button
             type="button"
             onClick={() => handleToggleStatFilter('military')}
-            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer shadow-sm group ${
+            className={`p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer shadow-sm group hover:-translate-y-0.5 ${
               activeCourtTypeFilter === 'military'
-                ? 'border-violet-400 bg-violet-500/15 shadow-md shadow-violet-500/10'
-                : 'border-theme-border bg-theme-surface hover:border-violet-400/50'
+                ? 'border-purple-400 bg-purple-500/15 shadow-md shadow-purple-500/10 ring-1 ring-purple-400/40'
+                : 'border-theme-border bg-theme-surface hover:border-purple-400/50'
             }`}
           >
             <div className="flex items-center justify-between mb-2">
-              <div className="p-2 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400">
+              <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400">
                 <Shield size={18} />
               </div>
-              <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 group-hover:text-violet-300 transition-colors">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-theme-textMuted group-hover:text-purple-400 transition-colors font-bold">
                 ҲАРБӢ
               </span>
             </div>
-            <div className="font-mono text-2xl sm:text-3xl font-bold text-white leading-tight">
+            <div className="font-mono text-2xl sm:text-3xl font-bold text-theme-text leading-tight">
               {statsMetrics.military || 5}
             </div>
-            <div className="font-serif font-bold text-xs text-slate-200 mt-1">
+            <div className="font-serif font-bold text-xs text-theme-text mt-1">
               {t('network.militaryCourts')}
             </div>
-            <div className="font-mono text-[10px] text-slate-400 mt-0.5 truncate">
+            <div className="font-mono text-[10px] text-theme-textMuted mt-0.5 truncate">
               {t('network.militaryCourtsSub')}
             </div>
           </button>
         </div>
 
         {/* 4. SMART SEARCH & REAL REGION HIERARCHY CONTROLS */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 p-3.5 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-xl">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 p-3.5 content-card">
           {/* Smart Search Bar */}
           <div className="relative w-full lg:w-96">
-            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-textMuted" />
             <input
               type="text"
               value={searchQuery}
@@ -358,13 +365,13 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
                 }
               }}
               placeholder={t('network.searchPlaceholder')}
-              className="w-full h-10 pl-10 pr-8 bg-slate-950/80 border border-slate-700/80 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 font-sans transition-colors"
+              className="w-full h-10 pl-10 pr-8 bg-theme-bg/80 border border-theme-border rounded-xl text-xs text-theme-text placeholder:text-theme-textMuted focus:outline-none focus:border-theme-gold font-sans transition-colors"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs font-mono"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-theme-textMuted hover:text-theme-text text-xs font-mono"
               >
                 ✕
               </button>
@@ -378,8 +385,8 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
               onClick={() => handleSelectRegion('all')}
               className={`px-3 py-2 rounded-xl border whitespace-nowrap transition-all ${
                 selectedRegion === 'all'
-                  ? 'border-amber-400 bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/20'
-                  : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white hover:border-slate-700'
+                  ? 'border-theme-gold bg-theme-gold/15 text-theme-gold font-bold shadow-md shadow-theme-gold/10 ring-1 ring-theme-gold/40'
+                  : 'border-theme-border bg-theme-surface text-theme-textSec hover:text-theme-text hover:border-theme-gold/50'
               }`}
             >
               {t('network.allRegions')}
@@ -391,8 +398,8 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
               onClick={() => handleSelectRegion('gbao')}
               className={`px-3 py-2 rounded-xl border whitespace-nowrap transition-all ${
                 selectedRegion === 'gbao'
-                  ? 'border-cyan-400 bg-cyan-500/20 text-cyan-300 font-bold shadow-md'
-                  : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white'
+                  ? 'border-cyan-400 bg-cyan-500/15 text-cyan-400 font-bold shadow-md shadow-cyan-500/10 ring-1 ring-cyan-400/40'
+                  : 'border-theme-border bg-theme-surface text-theme-textSec hover:text-theme-text hover:border-cyan-400/50'
               }`}
             >
               1. ВМКБ
@@ -404,8 +411,8 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
               onClick={() => handleSelectRegion('khatlon')}
               className={`px-3 py-2 rounded-xl border whitespace-nowrap transition-all ${
                 selectedRegion === 'khatlon'
-                  ? 'border-emerald-400 bg-emerald-500/20 text-emerald-300 font-bold shadow-md'
-                  : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white'
+                  ? 'border-emerald-400 bg-emerald-500/15 text-emerald-400 font-bold shadow-md shadow-emerald-500/10 ring-1 ring-emerald-400/40'
+                  : 'border-theme-border bg-theme-surface text-theme-textSec hover:text-theme-text hover:border-emerald-400/50'
               }`}
             >
               2. Хатлон
@@ -417,8 +424,8 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
               onClick={() => handleSelectRegion('sugd')}
               className={`px-3 py-2 rounded-xl border whitespace-nowrap transition-all ${
                 selectedRegion === 'sugd'
-                  ? 'border-amber-400 bg-amber-500/20 text-amber-300 font-bold shadow-md'
-                  : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white'
+                  ? 'border-purple-400 bg-purple-500/15 text-purple-400 font-bold shadow-md shadow-purple-500/10 ring-1 ring-purple-400/40'
+                  : 'border-theme-border bg-theme-surface text-theme-textSec hover:text-theme-text hover:border-purple-400/50'
               }`}
             >
               3. Суғд
@@ -430,8 +437,8 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
               onClick={() => handleSelectRegion('dushanbe_rrp')}
               className={`px-3 py-2 rounded-xl border whitespace-nowrap transition-all ${
                 selectedRegion === 'dushanbe_rrp'
-                  ? 'border-purple-400 bg-purple-500/20 text-purple-300 font-bold shadow-md'
-                  : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white'
+                  ? 'border-theme-gold bg-theme-gold/15 text-theme-gold font-bold shadow-md shadow-theme-gold/10 ring-1 ring-theme-gold/40'
+                  : 'border-theme-border bg-theme-surface text-theme-textSec hover:text-theme-text hover:border-theme-gold/50'
               }`}
             >
               4. Душанбе + РРП
@@ -458,7 +465,14 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
           </div>
         )}
 
-        {/* 5. MAIN INTERACTIVE JUDICIAL TREE CANVAS (CENTRAL DOMINANT VISUAL) */}
+        <div className="flex items-center justify-between gap-4 flex-wrap pb-1">
+          <div className="font-mono text-xs text-theme-textMuted hidden sm:flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>{language === 'tj' ? '77 МАҚОМОТИ СУДӢ ДАР ШАБАКА' : language === 'en' ? '77 JUDICIAL BODIES CONNECTED' : '77 СУДЕБНЫХ ОРГАНОВ В ЕДИНОЙ СЕТИ'}</span>
+          </div>
+        </div>
+
+        {/* 5. MAIN INTERACTIVE CANVAS: TREE VIEW */}
         <div className="w-full rounded-2xl border border-theme-border bg-theme-surface/50 backdrop-blur-md overflow-hidden shadow-2xl">
           <JudicialTreeView
             searchQuery={searchQuery}

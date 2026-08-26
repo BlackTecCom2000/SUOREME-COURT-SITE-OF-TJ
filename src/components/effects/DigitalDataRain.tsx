@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import { useDeviceCapability } from '../../context/DeviceCapabilityContext';
 
 export interface DigitalDataRainProps {
   density?: 'sparse' | 'medium' | 'dense';
@@ -57,7 +58,20 @@ export const DigitalDataRain: React.FC<DigitalDataRainProps> = ({
   className = '',
 }) => {
   const { isDark } = useTheme();
-  const columnCount = density === 'sparse' ? 10 : density === 'dense' ? 24 : 16;
+  const { tier, isReducedMotion } = useDeviceCapability();
+
+  // If low-end or reduced motion, disable the particle animation entirely
+  if (tier === 'low-end' || isReducedMotion) {
+    return null;
+  }
+
+  // Adjust column count based on capability
+  let rawColumnCount = density === 'sparse' ? 10 : density === 'dense' ? 24 : 16;
+  if (tier === 'medium') {
+    rawColumnCount = Math.floor(rawColumnCount / 2); // Cut particles in half for medium devices
+  }
+  const columnCount = rawColumnCount;
+
   const speedMultiplier = speed === 'slow' ? 1.4 : speed === 'fast' ? 0.7 : 1.0;
 
   const columns: ParticleColumn[] = useMemo(() => {

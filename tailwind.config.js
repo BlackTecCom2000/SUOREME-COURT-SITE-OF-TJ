@@ -39,6 +39,15 @@ export default {
       boxShadow: {
         'theme-glow': 'var(--glow-gold)',
         'theme-card': 'var(--card-shadow)',
+      },
+      keyframes: {
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(2rem)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        }
+      },
+      animation: {
+        'fade-in-up': 'fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       }
     },
   },

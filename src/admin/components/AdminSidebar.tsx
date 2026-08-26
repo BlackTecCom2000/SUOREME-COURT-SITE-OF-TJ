@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Calculator,
+  Layers,
 } from 'lucide-react';
 import { NationalEmblem } from '../../components/judicial-ecosystem/NationalEmblem';
 
@@ -76,8 +77,13 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         },
         {
           icon: Landmark,
-          label: 'Судебная сеть',
+          label: 'Судебная сеть (Судҳо)',
           path: '/admin/courts',
+        },
+        {
+          icon: Layers,
+          label: 'Сохтори Суди Олӣ (Редактор)',
+          path: '/admin/structure-editor',
         },
         {
           icon: Calculator,

@@ -5,6 +5,7 @@ interface RevealProps {
   delay?: number;
   className?: string;
   as?: 'div' | 'span';
+  priority?: boolean;
 }
 
 export const Reveal: React.FC<RevealProps> = ({
@@ -12,11 +13,14 @@ export const Reveal: React.FC<RevealProps> = ({
   delay = 0,
   className = '',
   as = 'div',
+  priority = false,
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(priority);
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    if (priority) return;
+    
     const element = ref.current;
     if (!element) return;
 
@@ -32,9 +36,20 @@ export const Reveal: React.FC<RevealProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [priority]);
 
   const Component = as;
+
+  if (priority) {
+    return (
+      <Component
+        style={{ animationDelay: `${delay}ms`, opacity: 0 }}
+        className={`animate-fade-in-up ${className}`}
+      >
+        {children}
+      </Component>
+    );
+  }
 
   return (
     <Component

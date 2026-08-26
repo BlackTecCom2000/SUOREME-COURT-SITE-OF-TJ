@@ -4,6 +4,8 @@ export const ru = {
     title: '( ВЕРХОВНЫЙ СУД )',
     subtitle: '[ РЕСПУБЛИКА ТАДЖИКИСТАН ]',
     home: 'главная',
+    search: 'поиск дел',
+    myCases: 'мои дела',
     mission: 'судебная власть',
     digitalJustice: 'цифровое правосудие',
     justiceAge: 'фемида и весы',

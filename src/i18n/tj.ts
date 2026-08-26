@@ -4,6 +4,8 @@ export const tj = {
     title: '( СУДИ ОЛӢ )',
     subtitle: '[ ҶУМҲУРИИ ТОҶИКИСТОН ]',
     home: 'асосӣ',
+    search: 'ҷустуҷӯи парванда',
+    myCases: 'парвандаҳои ман',
     mission: 'ҳокимияти судӣ',
     digitalJustice: 'адолати рақамӣ',
     justiceAge: 'фемида ва тарозу',

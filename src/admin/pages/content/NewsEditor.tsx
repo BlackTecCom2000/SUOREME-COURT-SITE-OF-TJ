@@ -16,6 +16,7 @@ import { AdminInput } from '../../components/ui/AdminInput';
 import { AdminSelect } from '../../components/ui/AdminSelect';
 import { AdminBadge } from '../../components/ui/AdminBadge';
 import { AdminTabs } from '../../components/ui/AdminTabs';
+import { LivePreviewEngine } from '../../components/preview/LivePreviewEngine';
 
 export const NewsEditor: React.FC = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export const NewsEditor: React.FC = () => {
   const [activeLang, setActiveLang] = useState<'ru' | 'tj' | 'en'>('ru');
   const [isSaving, setIsSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [originalData, setOriginalData] = useState<any>(null);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -77,6 +79,7 @@ export const NewsEditor: React.FC = () => {
             status: data.status || 'draft',
             scheduled_at: data.scheduled_at || '',
           });
+          setOriginalData(data);
         })
         .catch((err) => {
           console.error(err);
@@ -183,10 +186,10 @@ export const NewsEditor: React.FC = () => {
         </div>
       )}
 
-      {/* Main 2-Column Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* LEFT 2 COLS: Multilingual Editor Fields */}
-        <div className="lg:col-span-2 space-y-6">
+      {/* Main Split-Screen Layout */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+        {/* LEFT COLUMN: Editor Form */}
+        <div className="space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto pr-2 custom-scrollbar">
           <AdminCard title="Основной контент">
             {/* Language Switcher Tabs */}
             <div className="mb-5">
@@ -307,86 +310,91 @@ export const NewsEditor: React.FC = () => {
             </div>
           </AdminCard>
 
-          {/* SEO & Meta Box */}
-          <AdminCard title="SEO & Метаданные" subtitle="Оптимизация для поисковых систем">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <AdminInput
-                label="SEO Заголовок"
-                value={formData.seo_title}
-                onChange={(e) => setFormData({ ...formData, seo_title: e.target.value })}
-                placeholder="Заголовок для поисковиков"
-              />
-              <AdminInput
-                label="URL Slug (Идентификатор)"
-                value={formData.slug}
-                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                placeholder="plenum-verhovnogo-suda-2026"
-              />
-            </div>
-          </AdminCard>
+          {/* Publishing Settings inline with editor to save space */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <AdminCard title="Параметры публикации">
+              <div className="space-y-4">
+                <AdminSelect
+                  label="Статус публикации"
+                  value={formData.status}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
+                  options={[
+                    { value: 'draft', label: 'Черновик (Draft)' },
+                    { value: 'pending', label: 'На проверке (Pending Review)' },
+                    { value: 'published', label: 'Опубликовано (Published)' },
+                    { value: 'scheduled', label: 'Запланировано (Scheduled)' },
+                    { value: 'archived', label: 'В архиве (Archived)' },
+                  ]}
+                />
+
+                <AdminSelect
+                  label="Категория"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  options={[
+                    { value: 'Судебная хроника', label: 'Судебная хроника' },
+                    { value: 'Пленумы и решения', label: 'Пленумы и решения' },
+                    { value: 'Пресс-релизы', label: 'Пресс-релизы' },
+                    { value: 'Международное сотрудничество', label: 'Международное сотрудничество' },
+                    { value: 'Официальные заявления', label: 'Официальные заявления' },
+                  ]}
+                />
+
+                <AdminInput
+                  label="URL Обложки (Изображение)"
+                  value={formData.cover_image}
+                  onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
+                  placeholder="/assets/news/cover-1.jpg"
+                  leftIcon={<Image size={15} />}
+                />
+
+                {formData.status === 'scheduled' && (
+                  <AdminInput
+                    label="Дата публикации"
+                    type="datetime-local"
+                    value={formData.scheduled_at}
+                    onChange={(e) => setFormData({ ...formData, scheduled_at: e.target.value })}
+                    leftIcon={<Calendar size={15} />}
+                  />
+                )}
+
+                <div className="pt-2">
+                  <label className="flex items-center gap-2.5 text-xs text-slate-300 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={formData.featured}
+                      onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                      className="rounded border-slate-700 bg-slate-900 text-amber-500 w-4 h-4 cursor-pointer"
+                    />
+                    <span>Закрепить на главной (Главная новость)</span>
+                  </label>
+                </div>
+              </div>
+            </AdminCard>
+
+            {/* SEO & Meta Box */}
+            <AdminCard title="SEO & Метаданные" subtitle="Оптимизация для поисковых систем">
+              <div className="space-y-4">
+                <AdminInput
+                  label="SEO Заголовок"
+                  value={formData.seo_title}
+                  onChange={(e) => setFormData({ ...formData, seo_title: e.target.value })}
+                  placeholder="Заголовок для поисковиков"
+                />
+                <AdminInput
+                  label="URL Slug (Идентификатор)"
+                  value={formData.slug}
+                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                  placeholder="plenum-verhovnogo-suda-2026"
+                />
+              </div>
+            </AdminCard>
+          </div>
         </div>
 
-        {/* RIGHT 1 COL: Publishing Settings & Actions */}
-        <div className="space-y-6">
-          <AdminCard title="Параметры публикации">
-            <div className="space-y-4">
-              <AdminSelect
-                label="Статус публикации"
-                value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
-                options={[
-                  { value: 'draft', label: 'Черновик (Draft)' },
-                  { value: 'pending', label: 'На проверке (Pending Review)' },
-                  { value: 'published', label: 'Опубликовано (Published)' },
-                  { value: 'scheduled', label: 'Запланировано (Scheduled)' },
-                  { value: 'archived', label: 'В архиве (Archived)' },
-                ]}
-              />
-
-              <AdminSelect
-                label="Категория"
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                options={[
-                  { value: 'Судебная хроника', label: 'Судебная хроника' },
-                  { value: 'Пленумы и решения', label: 'Пленумы и решения' },
-                  { value: 'Пресс-релизы', label: 'Пресс-релизы' },
-                  { value: 'Международное сотрудничество', label: 'Международное сотрудничество' },
-                  { value: 'Официальные заявления', label: 'Официальные заявления' },
-                ]}
-              />
-
-              <AdminInput
-                label="URL Обложки (Изображение)"
-                value={formData.cover_image}
-                onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
-                placeholder="/assets/news/cover-1.jpg"
-                leftIcon={<Image size={15} />}
-              />
-
-              {formData.status === 'scheduled' && (
-                <AdminInput
-                  label="Дата публикации"
-                  type="datetime-local"
-                  value={formData.scheduled_at}
-                  onChange={(e) => setFormData({ ...formData, scheduled_at: e.target.value })}
-                  leftIcon={<Calendar size={15} />}
-                />
-              )}
-
-              <div className="pt-2">
-                <label className="flex items-center gap-2.5 text-xs text-slate-300 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={formData.featured}
-                    onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                    className="rounded border-slate-700 bg-slate-900 text-amber-500 w-4 h-4 cursor-pointer"
-                  />
-                  <span>Закрепить на главной (Главная новость)</span>
-                </label>
-              </div>
-            </div>
-          </AdminCard>
+        {/* RIGHT COLUMN: Live Preview Engine */}
+        <div className="h-[calc(100vh-200px)] sticky top-20">
+          <LivePreviewEngine type="news" data={formData} originalData={originalData} />
         </div>
       </div>
 

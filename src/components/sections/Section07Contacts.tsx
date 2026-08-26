@@ -17,11 +17,11 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
     <section
       id="contacts"
       aria-label={t('nav.contacts')}
-      className="relative py-20 sm:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
+      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
     >
       <DigitalDataRain density="sparse" speed="slow" opacity={0.2} colorTheme="gold" />
 
-      <div className="max-w-7xl mx-auto w-full relative z-10">
+      <div className="site-container relative z-10 space-y-8">
         {/* Section Header Indicator */}
         <Reveal delay={50}>
           <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
@@ -60,7 +60,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
           {/* Left: Official Headquarters Dossier */}
           <div className="lg:col-span-7">
             <Reveal delay={200}>
-              <div className="p-6 sm:p-8 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card flex flex-col justify-between h-full">
+              <div className="p-6 sm:content-card flex flex-col justify-between h-full">
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <span className="font-mono text-xs text-theme-gold uppercase tracking-wider font-semibold flex items-center gap-2">
@@ -128,7 +128,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
           {/* Right: Citizens Personal Reception Schedule */}
           <div className="lg:col-span-5">
             <Reveal delay={250}>
-              <div className="p-6 sm:p-8 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card flex flex-col justify-between h-full">
+              <div className="p-6 sm:content-card flex flex-col justify-between h-full">
                 <div>
                   <div className="flex items-center gap-2 font-mono text-xs text-theme-gold uppercase tracking-wider font-semibold mb-4">
                     <Calendar size={16} />

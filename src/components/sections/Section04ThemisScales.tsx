@@ -12,7 +12,7 @@ export const Section04ThemisScales: React.FC = () => {
     <section
       id="justice-age"
       aria-label={t('nav.justiceAge')}
-      className="relative py-20 sm:py-28 md:py-32 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
     >
       <DigitalDataRain density="medium" speed="slow" opacity={0.3} colorTheme="gold" />
 
@@ -50,7 +50,7 @@ export const Section04ThemisScales: React.FC = () => {
         {/* 2 Major Symbolic Centerpieces: Digital Themis & Digital Scales */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Left Column: Digital Themis */}
-          <div className="lg:col-span-5 flex items-center justify-center p-6 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card relative overflow-hidden">
+          <div className="lg:col-span-5 flex items-center justify-center content-card relative overflow-hidden">
             <Reveal delay={200}>
               <DigitalThemis />
             </Reveal>
@@ -58,7 +58,7 @@ export const Section04ThemisScales: React.FC = () => {
 
           {/* Right Column: Digital Justice Scales & Constitutional Pillar */}
           <div className="lg:col-span-7 flex flex-col gap-6">
-            <div className="p-6 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card relative overflow-hidden flex items-center justify-center">
+            <div className="content-card relative overflow-hidden flex items-center justify-center">
               <Reveal delay={300}>
                 <DigitalJusticeScales />
               </Reveal>

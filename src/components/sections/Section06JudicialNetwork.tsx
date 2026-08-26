@@ -35,7 +35,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
     <section
       id="courts"
       aria-label={t('nav.courts')}
-      className="relative py-20 sm:py-28 md:py-32 overflow-hidden text-theme-text select-none border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 overflow-hidden text-theme-text select-none border-t border-theme-border/30"
     >
       <DigitalDataRain density="sparse" speed="slow" opacity={0.2} colorTheme="cyan" />
 
@@ -122,7 +122,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
       {/* 3. Main Dynamic Canvas Area */}
       <div className="px-5 sm:px-8 md:px-12 flex-1 flex flex-col justify-center my-4">
         <Reveal delay={380}>
-          <div className="relative w-full aspect-[16/10] min-h-[560px] max-h-[780px] rounded-3xl border border-theme-border bg-theme-surface backdrop-blur-xl overflow-hidden shadow-theme-card">
+          <div className="relative w-full aspect-[4/5] sm:aspect-[16/10] min-h-[400px] md:min-h-[560px] max-h-[780px] rounded-3xl border border-theme-border bg-theme-surface backdrop-blur-xl overflow-hidden shadow-theme-card">
             
               <JudicialTreeView
                 searchQuery={searchQuery}

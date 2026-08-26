@@ -5,7 +5,6 @@ export const ScrollVideo: React.FC = () => {
   const { isDark } = useTheme();
   const [scrollY, setScrollY] = useState(0);
   const [pageScrollProgress, setPageScrollProgress] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,53 +27,59 @@ export const ScrollVideo: React.FC = () => {
   const scale = 1.0 + Math.min(pageScrollProgress * 0.08, 0.08);
   const translateY = Math.min(scrollY * 0.04, 60);
 
-  // Atmospheric overlay deepening as user scrolls down the page
+  // Atmospheric overlay deepening as user scrolls down the page so Themis is a soft atmospheric accent
   const darkAtmospheric = Math.min(
-    0.85,
-    0.35 + Math.max(0, (pageScrollProgress - 0.15) * 0.65)
+    0.92,
+    0.50 + Math.max(0, (pageScrollProgress - 0.15) * 0.55)
   );
 
   const lightAtmospheric = Math.min(
-    0.92,
-    0.65 + Math.max(0, (pageScrollProgress - 0.15) * 0.35)
+    0.96,
+    0.75 + Math.max(0, (pageScrollProgress - 0.15) * 0.25)
   );
-
-  const currentBgImage = isDark
-    ? '/themis-background.jpg'
-    : '/themis-light-background.jpg';
 
   return (
     <div
       aria-hidden="true"
       className="fixed inset-0 -z-10 bg-[var(--bg-primary)] pointer-events-none select-none overflow-hidden transition-colors duration-700"
     >
-      {/* 1. High-Resolution Majestic Themis Artwork with Scroll-Scrubbed Parallax & Scale */}
+      {/* 1. Ultra-High Resolution Supreme Court Building Architecture (Continuous Cross-fade) */}
       <div
         className="absolute inset-0 w-full h-full transform-gpu will-change-transform transition-transform duration-300 ease-out"
         style={{
           transform: `scale(${scale}) translateY(-${translateY}px)`,
         }}
       >
+        {/* Day background */}
         <img
-          src={currentBgImage}
-          alt="Фемида — Богиня правосудия"
-          onLoad={() => setImageLoaded(true)}
-          className={`w-full h-full object-cover object-center transition-opacity duration-1000 ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
+          src="/supreme-court-day.jpg"
+          alt="Бинои Суди Олии Ҷумҳурии Тоҷикистон (Рӯз)"
+          loading="eager"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${
+            !isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'
+          }`}
+        />
+        {/* Night background */}
+        <img
+          src="/supreme-court-night.jpg"
+          alt="Бинои Суди Олии Ҷумҳурии Тоҷикистон (Шаб)"
+          loading="eager"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${
+            isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
         />
       </div>
 
-      {/* 2. Ambient Volumetric Lighting Glow */}
+      {/* 2. Ambient Volumetric Lighting Glow on Supreme Court Facade */}
       <div
         className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ${
           isDark
-            ? 'bg-radial-gradient from-[#dfbe7e]/10 via-transparent to-black/80 opacity-90'
-            : 'bg-radial-gradient from-[#b88a24]/5 via-transparent to-white/60 opacity-80'
+            ? 'bg-radial-gradient from-[#dfbe7e]/12 via-transparent to-black/85 opacity-90'
+            : 'bg-radial-gradient from-[#b88a24]/8 via-transparent to-white/70 opacity-80'
         }`}
       />
 
-      {/* 3. Deepening Atmospheric Overlay for Editorial Legibility */}
+      {/* 3. Deepening Atmospheric Overlay for Absolute Editorial & Card Legibility */}
       <div
         className="absolute inset-0 transition-colors duration-500"
         style={{
@@ -84,12 +89,12 @@ export const ScrollVideo: React.FC = () => {
         }}
       />
 
-      {/* 4. Vignette / Contrast Framing */}
+      {/* 4. Peripheral Vignette & Contrast Framing */}
       <div
         className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ${
           isDark
-            ? 'bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(0,0,0,0.85)_100%)] opacity-100'
-            : 'bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(15,23,42,0.14)_100%)] opacity-70'
+            ? 'bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.92)_100%)] opacity-100'
+            : 'bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(15,23,42,0.18)_100%)] opacity-70'
         }`}
       />
     </div>

@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Share2, Check, FileDown, Newspaper } from 'lucide-react';
 import { Reveal } from './Reveal';
-import { Language, PRESS_NEWS } from '../data/sudTjData';
+import { Language } from '../data/sudTjData';
 
 interface SectionFourProps {
   lang: Language;
   onOpenNews?: () => void;
   onOpenDocs?: () => void;
+}
+
+interface NewsItem {
+  id: number;
+  slug: string;
+  title_ru: string;
+  title_tj: string;
+  title_en: string;
+  excerpt_ru?: string;
+  excerpt_tj?: string;
+  published_at: string;
 }
 
 export const SectionFour: React.FC<SectionFourProps> = ({
@@ -15,6 +26,21 @@ export const SectionFour: React.FC<SectionFourProps> = ({
   onOpenDocs,
 }) => {
   const [copied, setCopied] = useState(false);
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/news')
+      .then(res => res.json())
+      .then(data => {
+        setNews(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to load news', err);
+        setLoading(false);
+      });
+  }, []);
 
   const handleShare = async () => {
     try {
@@ -33,8 +59,6 @@ export const SectionFour: React.FC<SectionFourProps> = ({
       // ignore
     }
   };
-
-  const topNews = PRESS_NEWS.slice(0, 2);
 
   return (
     <section
@@ -79,27 +103,33 @@ export const SectionFour: React.FC<SectionFourProps> = ({
       <div className="px-5 sm:px-8 md:px-12">
         <Reveal delay={380}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl py-2">
-            {topNews.map((news) => (
-              <div
-                key={news.id}
-                onClick={onOpenNews}
-                className="p-4 rounded-xl bg-black/40 border border-white/10 hover:border-white/30 transition-all cursor-pointer group"
-              >
-                <div className="flex items-center justify-between font-mono text-[10px] text-white/50 mb-2">
-                  <span className="flex items-center gap-1.5 text-white/80">
-                    <Newspaper size={12} />
-                    <span>{news.source}</span>
-                  </span>
-                  <span>{news.date}</span>
+            {loading ? (
+              <div className="text-white/60 font-mono text-xs">Loading...</div>
+            ) : news.length === 0 ? (
+              <div className="text-white/60 font-mono text-xs">No news found</div>
+            ) : (
+              news.slice(0, 2).map((item) => (
+                <div
+                  key={item.id}
+                  onClick={onOpenNews}
+                  className="p-4 rounded-xl bg-black/40 border border-white/10 hover:border-white/30 transition-all cursor-pointer group"
+                >
+                  <div className="flex items-center justify-between font-mono text-[10px] text-white/50 mb-2">
+                    <span className="flex items-center gap-1.5 text-white/80">
+                      <Newspaper size={12} />
+                      <span>МАТБУОТ</span>
+                    </span>
+                    <span>{new Date(item.published_at).toLocaleDateString()}</span>
+                  </div>
+                  <h4 className="text-xs sm:text-sm font-medium text-white group-hover:text-white line-clamp-2 mb-1.5 leading-snug">
+                    {lang === 'ru' ? item.title_ru : item.title_tj}
+                  </h4>
+                  <p className="text-[11px] text-white/60 line-clamp-2 leading-relaxed">
+                    {lang === 'ru' ? item.excerpt_ru : item.excerpt_tj}
+                  </p>
                 </div>
-                <h4 className="text-xs sm:text-sm font-medium text-white group-hover:text-white line-clamp-2 mb-1.5 leading-snug">
-                  {lang === 'ru' ? news.titleRu : news.titleTj}
-                </h4>
-                <p className="text-[11px] text-white/60 line-clamp-2 leading-relaxed">
-                  {lang === 'ru' ? news.summaryRu : news.summaryTj}
-                </p>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </Reveal>
       </div>

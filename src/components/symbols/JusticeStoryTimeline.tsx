@@ -55,10 +55,10 @@ export const JusticeStoryTimeline: React.FC<JusticeStoryTimelineProps> = ({
   ];
 
   return (
-    <div className="w-full pt-6 border-t border-white/10 select-none">
-      <div className="flex items-center justify-between font-mono text-[10px] text-[#dfbe7e] uppercase tracking-widest mb-4">
+    <div className="w-full pt-6 border-t border-theme-border/60 select-none">
+      <div className="flex items-center justify-between font-mono text-[10px] text-theme-gold uppercase tracking-widest mb-4">
         <span>[ {language === 'tj' ? 'МАСИРИ АДОЛАТИ СУДӢ' : language === 'en' ? 'THE PATH OF JUSTICE' : 'ПУТЬ ПРАВОСУДИЯ'} ]</span>
-        <span className="text-white/40">01 ➔ 05</span>
+        <span className="text-theme-textMuted">01 ➔ 05</span>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 relative">
@@ -82,22 +82,22 @@ export const JusticeStoryTimeline: React.FC<JusticeStoryTimelineProps> = ({
                 relative p-3 rounded-xl border text-left transition-all duration-300 group
                 ${
                   isActive
-                    ? 'border-[#dfbe7e] bg-[#dfbe7e]/15 shadow-[0_0_15px_rgba(223,190,126,0.3)] scale-102'
-                    : 'border-white/10 bg-[#060b18]/60 hover:border-[#dfbe7e]/50 hover:bg-[#060b18]'
+                    ? 'border-theme-gold bg-theme-gold/15 shadow-[0_0_15px_rgba(223,190,126,0.3)] scale-102'
+                    : 'border-theme-border bg-theme-surface/80 hover:border-theme-gold/60 hover:bg-theme-surface'
                 }
               `}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-[9px] text-[#dfbe7e] font-bold">
+                <span className="font-mono text-[9px] text-theme-gold font-bold">
                   {s.num}
                 </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#dfbe7e] opacity-60 group-hover:opacity-100" />
+                <span className="w-1.5 h-1.5 rounded-full bg-theme-gold opacity-60 group-hover:opacity-100" />
               </div>
 
-              <h5 className="font-serif font-bold text-xs text-white leading-tight mb-0.5 truncate">
+              <h5 className="font-serif font-bold text-xs text-theme-text leading-tight mb-0.5 truncate">
                 {s.label}
               </h5>
-              <span className="text-[10px] text-white/50 font-mono block truncate">
+              <span className="text-[10px] text-theme-textMuted font-mono block truncate">
                 {s.desc}
               </span>
             </button>

@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useTransition } from 'react';
 import { Language, getTranslation } from '../i18n';
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  isMorphing: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -12,6 +13,8 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 const LANGUAGE_STORAGE_KEY = 'supreme-court-language';
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [, startReactTransition] = useTransition();
+  const [isMorphing, setIsMorphing] = useState(false);
   const [language, setLanguageState] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
       // 1. Check URL param ?lang=ru|tj|en
@@ -43,7 +46,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   });
 
   const setLanguage = (newLang: Language) => {
-    setLanguageState(newLang);
+    if (newLang === language) return;
+
     try {
       localStorage.setItem(LANGUAGE_STORAGE_KEY, newLang);
       // Update URL search query cleanly without full page refresh
@@ -52,6 +56,52 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       window.history.replaceState({}, '', url.toString());
     } catch {
       // ignore
+    }
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // View Transitions API check
+    if (
+      !prefersReducedMotion &&
+      typeof document !== 'undefined' &&
+      'startViewTransition' in document &&
+      typeof (document as any).startViewTransition === 'function'
+    ) {
+      document.documentElement.classList.add('is-morphing-lang');
+      setIsMorphing(true);
+
+      const transition = (document as any).startViewTransition(() => {
+        startReactTransition(() => {
+          setLanguageState(newLang);
+        });
+      });
+
+      transition.finished
+        .catch(() => {})
+        .finally(() => {
+          document.documentElement.classList.remove('is-morphing-lang');
+          setIsMorphing(false);
+        });
+    } else {
+      // Graceful CSS Morph Fallback for unsupported browsers
+      if (!prefersReducedMotion && typeof document !== 'undefined') {
+        document.documentElement.classList.add('is-morphing-lang-fallback');
+        setIsMorphing(true);
+
+        setTimeout(() => {
+          startReactTransition(() => {
+            setLanguageState(newLang);
+          });
+          setTimeout(() => {
+            document.documentElement.classList.remove('is-morphing-lang-fallback');
+            setIsMorphing(false);
+          }, 260);
+        }, 180);
+      } else {
+        setLanguageState(newLang);
+      }
     }
   };
 
@@ -69,6 +119,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         language,
         setLanguage,
         t,
+        isMorphing,
       }}
     >
       {children}
@@ -83,3 +134,4 @@ export const useLanguage = (): LanguageContextType => {
   }
   return context;
 };
+

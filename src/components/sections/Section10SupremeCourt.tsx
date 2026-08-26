@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Reveal } from '../Reveal';
-import { PRESS_NEWS } from '../../data/sudTjData';
 import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { MapPin, Phone, Mail, ArrowUpRight, BookOpen } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
@@ -10,17 +9,41 @@ interface Section10SupremeCourtProps {
   onOpenContacts: () => void;
 }
 
+interface NewsItem {
+  id: number;
+  slug: string;
+  title_ru: string;
+  title_tj: string;
+  title_en: string;
+  published_at: string;
+}
+
 export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
   onOpenNews,
   onOpenContacts,
 }) => {
   const { language, t } = useLanguage();
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/news')
+      .then(res => res.json())
+      .then(data => {
+        setNews(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to load news', err);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <section
       id="contacts"
       aria-label={t('nav.contacts')}
-      className="relative py-20 sm:py-28 md:py-32 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none border-t border-theme-border/30"
     >
       <DigitalDataRain density="medium" speed="slow" opacity={0.25} colorTheme="gold" />
 
@@ -73,7 +96,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
         {/* Left Column: Official Headquarters Dossier */}
         <div className="lg:col-span-6">
           <Reveal delay={200}>
-            <div className="p-7 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card flex flex-col justify-between h-full">
+            <div className="content-card flex flex-col justify-between h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <span className="font-mono text-xs text-theme-gold uppercase tracking-wider">
@@ -142,7 +165,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
         {/* Right Column: Press Center & Publications */}
         <div className="lg:col-span-6">
           <Reveal delay={300}>
-            <div className="p-7 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card flex flex-col justify-between h-full">
+            <div className="content-card flex flex-col justify-between h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <span className="font-mono text-xs text-theme-gold uppercase tracking-wider">
@@ -159,21 +182,27 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                 </div>
 
                 <div className="space-y-3">
-                  {PRESS_NEWS.slice(0, 3).map((item) => (
-                    <div
-                      key={item.id}
-                      onClick={onOpenNews}
-                      className="group p-4 rounded-xl bg-theme-bg/60 border border-theme-border hover:border-theme-gold transition-all cursor-pointer shadow-xs"
-                    >
-                      <div className="flex items-center justify-between text-[10px] font-mono text-theme-textMuted mb-1">
-                        <span>{item.date}</span>
-                        <span className="text-theme-gold">{item.source}</span>
+                  {loading ? (
+                    <div className="text-center py-4 text-theme-textSec font-mono text-xs">Loading...</div>
+                  ) : news.length === 0 ? (
+                    <div className="text-center py-4 text-theme-textSec font-mono text-xs">No news found</div>
+                  ) : (
+                    news.slice(0, 3).map((item) => (
+                      <div
+                        key={item.id}
+                        onClick={onOpenNews}
+                        className="group p-4 rounded-xl bg-theme-bg/60 border border-theme-border hover:border-theme-gold transition-all cursor-pointer shadow-xs"
+                      >
+                        <div className="flex items-center justify-between text-[10px] font-mono text-theme-textMuted mb-1">
+                          <span>{new Date(item.published_at).toLocaleDateString()}</span>
+                          <span className="text-theme-gold">МАТБУОТ</span>
+                        </div>
+                        <h4 className="text-xs font-medium text-theme-text group-hover:text-theme-gold transition-colors leading-snug line-clamp-2">
+                          {language === 'en' ? (item.title_en || item.title_ru) : language === 'tj' ? item.title_tj : item.title_ru}
+                        </h4>
                       </div>
-                      <h4 className="text-xs font-medium text-theme-text group-hover:text-theme-gold transition-colors leading-snug line-clamp-2">
-                        {language === 'en' ? (item.titleEn || item.titleRu) : language === 'tj' ? item.titleTj : item.titleRu}
-                      </h4>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </div>
 

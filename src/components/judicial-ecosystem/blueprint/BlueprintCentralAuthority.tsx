@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Landmark, Network, Scale } from 'lucide-react';
+import { Network, Scale } from 'lucide-react';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useTheme } from '../../../context/ThemeContext';
 
@@ -63,8 +63,8 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
             flex flex-col items-center justify-center text-center group
             ${
               isDark
-                ? 'border-[#dfbe7e]/70 bg-[#060b18]/95 shadow-[0_0_18px_rgba(223,190,126,0.18)] hover:border-[#dfbe7e] hover:shadow-[0_0_25px_rgba(223,190,126,0.35)]'
-                : 'border-[#ca8a04]/70 bg-white/95 shadow-[0_4px_15px_rgba(202,138,4,0.15)] hover:border-[#ca8a04] hover:shadow-[0_6px_20px_rgba(202,138,4,0.25)]'
+                ? 'border-[#dfbe7e]/70 bg-[#060b18]/80 shadow-[0_0_18px_rgba(223,190,126,0.18)] hover:border-[#dfbe7e] hover:shadow-[0_0_25px_rgba(223,190,126,0.35)]'
+                : 'border-[#ca8a04]/70 bg-white/75 shadow-[0_4px_15px_rgba(202,138,4,0.15)] hover:border-[#ca8a04] hover:shadow-[0_6px_20px_rgba(202,138,4,0.25)]'
             }
           `}
         >
@@ -76,22 +76,22 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
           <div
             className={`p-1.5 rounded-full border mb-1 transition-transform group-hover:scale-110 ${
               isDark
-                ? 'bg-[#dfbe7e]/10 border-[#dfbe7e]/30 text-[#e8c679]'
-                : 'bg-[#ca8a04]/10 border-[#ca8a04]/30 text-[#854d0e]'
+                ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'
+                : 'bg-cyan-600/10 border-cyan-600/30 text-cyan-700'
             }`}
           >
             <Network size={16} />
           </div>
           <h4
-            className={`font-serif font-bold text-[12px] tracking-wider uppercase leading-tight ${
-              isDark ? 'text-[#e8c679]' : 'text-[#854d0e]'
+            className={`font-mono font-bold text-[12px] tracking-wider uppercase leading-tight ${
+              isDark ? 'text-cyan-300' : 'text-cyan-800'
             }`}
           >
             {language === 'tj' ? 'ШӮРОИ СУДҲО' : language === 'en' ? 'COUNCIL OF JUDGES' : 'СОВЕТ СУДЕЙ'}
           </h4>
           <span
-            className={`font-mono text-[8px] uppercase tracking-widest leading-tight mt-0.5 ${
-              isDark ? 'text-[#dfbe7e]/80' : 'text-[#a16207]'
+            className={`font-mono text-[8px] uppercase tracking-widest leading-tight mt-0.5 opacity-70 ${
+              isDark ? 'text-cyan-200' : 'text-cyan-900'
             }`}
           >
             {language === 'tj'
@@ -120,11 +120,11 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
             ${
               isDark
                 ? isSelected
-                  ? 'border-[#ffea88] bg-[#0c1326] shadow-[0_0_50px_rgba(255,234,136,0.6)] scale-105'
-                  : 'border-[#dfbe7e] bg-[#070e20]/95 hover:border-[#ffea88] shadow-[0_0_35px_rgba(223,190,126,0.35)] hover:shadow-[0_0_50px_rgba(223,190,126,0.55)] hover:scale-102'
+                  ? 'border-[#ffea88] bg-[#0c1326]/75 shadow-[0_0_50px_rgba(255,234,136,0.6)] scale-105'
+                  : 'border-[#dfbe7e] bg-[#070e20]/75 hover:border-[#ffea88] shadow-[0_0_35px_rgba(223,190,126,0.35)] hover:shadow-[0_0_50px_rgba(223,190,126,0.55)] hover:scale-102'
                 : isSelected
-                ? 'border-[#ca8a04] bg-[#f8fafc] shadow-[0_10px_35px_rgba(202,138,4,0.4)] scale-105'
-                : 'border-[#ca8a04]/80 bg-white/95 hover:border-[#ca8a04] shadow-[0_4px_25px_rgba(202,138,4,0.2)] hover:shadow-[0_8px_35px_rgba(202,138,4,0.35)] hover:scale-102'
+                ? 'border-[#ca8a04] bg-[#f8fafc]/75 shadow-[0_10px_35px_rgba(202,138,4,0.4)] scale-105'
+                : 'border-[#ca8a04]/80 bg-white/75 hover:border-[#ca8a04] shadow-[0_4px_25px_rgba(202,138,4,0.2)] hover:shadow-[0_8px_35px_rgba(202,138,4,0.35)] hover:scale-102'
             }
           `}
           style={{
@@ -145,31 +145,35 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
             }`}
           />
 
-          {/* Golden Courthouse Icon */}
+          {/* Supreme Court Logo */}
           <div
-            className={`shrink-0 flex items-center justify-center p-3 rounded-xl border transition-all duration-300 ${
+            className={`shrink-0 flex items-center justify-center p-2 rounded-lg border transition-all duration-300 ${
               isDark
-                ? 'bg-[#dfbe7e]/15 border-[#dfbe7e]/50 text-[#ffe082] shadow-[0_0_15px_rgba(223,190,126,0.3)]'
-                : 'bg-[#ca8a04]/15 border-[#ca8a04]/40 text-[#854d0e] shadow-[0_2px_10px_rgba(202,138,4,0.2)]'
+                ? 'bg-amber-500/10 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.3)]'
+                : 'bg-amber-600/10 border-amber-600/40 shadow-[0_2px_10px_rgba(217,119,6,0.2)]'
             }`}
           >
-            <Landmark size={38} />
+            <img 
+              src={`/emblems/emblem-${language}.png`}
+              alt="Логотип Верховного Суда"
+              className="w-11 h-11 object-contain drop-shadow-md"
+            />
           </div>
 
           {/* Supreme Court Title Typography */}
           <div className="flex flex-col text-left">
             <h3
-              className={`font-serif font-bold text-[21px] tracking-wide leading-tight ${
-                isDark ? 'text-[#ffffff] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]' : 'text-[#0f172a]'
+              className={`font-mono font-bold text-[20px] tracking-wider leading-tight ${
+                isDark ? 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]' : 'text-slate-900'
               }`}
             >
               {language === 'tj' ? 'СУДИ ОЛИИ' : language === 'en' ? 'SUPREME COURT OF' : 'ВЕРХОВНЫЙ СУД'}
             </h3>
             <h4
-              className={`font-serif font-bold text-[14px] tracking-wider uppercase leading-tight mt-0.5 ${
+              className={`font-mono font-semibold text-[13px] tracking-[0.2em] uppercase leading-tight mt-0.5 ${
                 isDark
-                  ? 'text-[#e8c679] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'
-                  : 'text-[#854d0e]'
+                  ? 'text-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]'
+                  : 'text-amber-700'
               }`}
             >
               {language === 'tj'
@@ -198,8 +202,8 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
             flex flex-col items-center justify-center text-center group
             ${
               isDark
-                ? 'border-[#dfbe7e]/70 bg-[#060b18]/95 shadow-[0_0_18px_rgba(223,190,126,0.18)] hover:border-[#dfbe7e] hover:shadow-[0_0_25px_rgba(223,190,126,0.35)]'
-                : 'border-[#ca8a04]/70 bg-white/95 shadow-[0_4px_15px_rgba(202,138,4,0.15)] hover:border-[#ca8a04] hover:shadow-[0_6px_20px_rgba(202,138,4,0.25)]'
+                ? 'border-[#dfbe7e]/70 bg-[#060b18]/80 shadow-[0_0_18px_rgba(223,190,126,0.18)] hover:border-[#dfbe7e] hover:shadow-[0_0_25px_rgba(223,190,126,0.35)]'
+                : 'border-[#ca8a04]/70 bg-white/75 shadow-[0_4px_15px_rgba(202,138,4,0.15)] hover:border-[#ca8a04] hover:shadow-[0_6px_20px_rgba(202,138,4,0.25)]'
             }
           `}
         >
@@ -211,15 +215,15 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
           <div
             className={`p-1.5 rounded-full border mb-1 transition-transform group-hover:scale-110 ${
               isDark
-                ? 'bg-[#dfbe7e]/10 border-[#dfbe7e]/30 text-[#e8c679]'
-                : 'bg-[#ca8a04]/10 border-[#ca8a04]/30 text-[#854d0e]'
+                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+                : 'bg-emerald-600/10 border-emerald-600/30 text-emerald-700'
             }`}
           >
             <Scale size={16} />
           </div>
           <h4
-            className={`font-serif font-bold text-[12px] tracking-wider uppercase leading-tight ${
-              isDark ? 'text-[#e8c679]' : 'text-[#854d0e]'
+            className={`font-mono font-bold text-[12px] tracking-wider uppercase leading-tight ${
+              isDark ? 'text-emerald-300' : 'text-emerald-800'
             }`}
           >
             {language === 'tj'
@@ -229,8 +233,8 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
               : 'АДМИНИСТРАЦИЯ'}
           </h4>
           <span
-            className={`font-mono text-[8px] uppercase tracking-widest leading-tight mt-0.5 ${
-              isDark ? 'text-[#dfbe7e]/80' : 'text-[#a16207]'
+            className={`font-mono text-[8px] uppercase tracking-widest leading-tight mt-0.5 opacity-70 ${
+              isDark ? 'text-emerald-200' : 'text-emerald-900'
             }`}
           >
             {language === 'tj'

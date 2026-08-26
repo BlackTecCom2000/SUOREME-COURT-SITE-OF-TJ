@@ -3,6 +3,7 @@ import { useAdminAuth } from '../context/AdminAuthContext';
 import { LogOut, ShieldCheck, ChevronDown, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useTheme } from '../../context/ThemeContext';
+import { motion } from 'motion/react';
 
 export const AdminProfileMenu: React.FC = () => {
   const { user, logout } = useAdminAuth();
@@ -69,16 +70,23 @@ export const AdminProfileMenu: React.FC = () => {
             {/* Language Switcher */}
             <div className="flex items-center justify-between px-2 text-xs text-slate-300">
               <span className="font-mono text-[11px] text-slate-400">Язык</span>
-              <div className="flex items-center gap-1 font-mono text-[11px]">
+              <div className="relative flex items-center gap-1 font-mono text-[11px] bg-slate-900/60 p-0.5 rounded-lg border border-slate-800">
                 {(['ru', 'tj', 'en'] as const).map((lang) => (
                   <button
                     key={lang}
                     onClick={() => setLanguage(lang)}
-                    className={`px-1.5 py-0.5 rounded uppercase ${
-                      language === lang ? 'bg-amber-400 text-slate-950 font-bold' : 'text-slate-400 hover:text-white'
+                    className={`relative px-2 py-0.5 rounded uppercase transition-colors z-10 ${
+                      language === lang ? 'text-slate-950 font-bold' : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    {lang}
+                    {language === lang && (
+                      <motion.div
+                        layoutId="activeAdminProfileLangPill"
+                        className="absolute inset-0 bg-amber-400 rounded shadow-xs -z-10"
+                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                      />
+                    )}
+                    <span>{lang}</span>
                   </button>
                 ))}
               </div>

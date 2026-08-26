@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowUpRight, Scale, Eye, Sparkles, Gavel } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  ArrowUpRight, 
+  BookOpen, 
+  ShieldCheck, 
+  X
+} from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
 import { DigitalDataRain } from '../effects/DigitalDataRain';
@@ -17,52 +23,19 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
 }) => {
   const { language, t } = useLanguage();
   const [activeStage, setActiveStage] = useState<JusticeStage>('themis');
-  
-  // 3D Scene states
-  const [isInsightMode, setIsInsightMode] = useState(false);
-  const [balanceState, setBalanceState] = useState<'neutral' | 'law' | 'justice' | 'restored'>('neutral');
-  const [triggerStrike, setTriggerStrike] = useState(false);
-  
-  const [decisionRecorded, setDecisionRecorded] = useState(false);
-
-  // Auto reset states on stage change
-  useEffect(() => {
-    setIsInsightMode(false);
-    setBalanceState('neutral');
-    setTriggerStrike(false);
-    if (activeStage !== 'hammer') setDecisionRecorded(false);
-  }, [activeStage]);
-
-  const handleDecisionTriggered = () => {
-    setTriggerStrike(true);
-    setTimeout(() => {
-      setDecisionRecorded(true);
-      setTriggerStrike(false);
-    }, 800);
-  };
-
-  const handleTilt = (side: 'law' | 'justice') => {
-    setBalanceState(side);
-  };
-
-  const handleResetEquilibrium = () => {
-    setBalanceState('restored');
-    setTimeout(() => setBalanceState('neutral'), 2500);
-    if (activeStage === 'scales') {
-       // optional side effect for timeline
-       setDecisionRecorded(true); 
-    }
-  };
+  const [storyModalOpen, setStoryModalOpen] = useState(false);
 
   return (
     <section
       id="digital-justice"
       aria-label={t('nav.digitalJustice')}
-      className="relative py-20 sm:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 bg-[#030712] transition-colors duration-700"
+      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 transition-colors duration-700 select-none"
     >
-      <DigitalDataRain density="sparse" speed="slow" opacity={0.15} colorTheme="cyan" />
+      <DigitalDataRain density="sparse" speed="slow" opacity={0.12} colorTheme="cyan" />
 
-      <div className="max-w-7xl mx-auto w-full relative z-10">
+      <div className="site-container relative z-10 space-y-6">
+        
+        {/* Section Top Header Indicator */}
         <Reveal delay={50}>
           <div className="flex items-center justify-between font-mono text-xs text-theme-textSec mb-4">
             <div className="flex items-center gap-3">
@@ -70,154 +43,173 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
               <span className="text-theme-textMuted">[ 003 / 007 ]</span>
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-1" />
               <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
-                {language === 'tj' ? 'АДОЛАТИ РАҚАМӢ' : language === 'en' ? 'DIGITAL JUSTICE' : 'ЦИФРОВОЕ ПРАВОСУДИЕ'}
+                {language === 'tj' ? 'АДОЛАТИ РАҚАМӢ ВА САНАДҲОИ СУДӢ' : language === 'en' ? 'DIGITAL JUSTICE EXPERIENCE' : 'ЦИФРОВОЕ ПРАВОСУДИЕ'}
               </span>
+            </div>
+            <div className="font-mono text-xs text-theme-gold hidden sm:flex items-center gap-1.5">
+              <ShieldCheck size={14} />
+              <span>SUD.TJ // 3D JUSTICE MATRIX</span>
             </div>
           </div>
         </Reveal>
 
+        {/* Section Title */}
         <div className="max-w-3xl mb-10">
-          <Reveal delay={150}>
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif font-medium tracking-tight uppercase mb-3 text-white">
+          <Reveal delay={120}>
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-sans font-semibold tracking-tight uppercase mb-3 text-theme-text">
               {language === 'tj' ? 'АДОЛАТ АЗ ' : language === 'en' ? 'JUSTICE BEGINS WITH ' : 'ПРАВОСУДИЕ НАЧИНАЕТСЯ С '}
-              <span className="italic font-light text-[#dfbe7e]">
+              <span className="italic font-light text-theme-gold">
                 {language === 'tj' ? 'ҚОНУН' : language === 'en' ? 'THE LAW' : 'ЗАКОНА'}
               </span>
             </h2>
           </Reveal>
-          <Reveal delay={250}>
-            <p className="text-sm sm:text-base leading-relaxed text-white/70 font-serif max-w-2xl">
+          <Reveal delay={200}>
+            <p className="text-sm sm:text-base leading-relaxed text-theme-textSec max-w-2xl">
               {language === 'tj'
-                ? 'Се рамзи калидии адолати судӣ — беғаразӣ, мувозинат ва қабули қатъии қарор — дар низоми рақамии судии Ҷумҳурии Тоҷикистон таҷассум ёфтаанд.'
+                ? 'Се рамзи бунёдии адолати судӣ — беғаразӣ (Фемида), тавозуни манфиатҳо (Тарозу) ва қувваи қатъии санад (Гурзи судӣ) — дар низоми рақамии Тоҷикистон таҷассум ёфтаанд.'
                 : language === 'en'
-                ? 'Three foundational pillars of judicial authority — impartiality, balance, and finality of judgment — form the living architecture of the Republic of Tajikistan’s legal system.'
-                : 'Три фундаментальных символа правосудия — беспристрастность, баланс и окончательность судебного решения — воплощены в цифровой экосистеме судебной власти.'}
+                ? 'Three foundational pillars of justice — impartiality (Themis), balance (Scales), and finality of judgment (Gavel) — form the living interactive architecture of Tajikistan’s legal system.'
+                : 'Три фундаментальных символа правосудия — беспристрастность (Фемида), баланс интересов (Весы) и законная сила решения (Молот) — воплощены в цифровой экосистеме судебной власти.'}
             </p>
           </Reveal>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-12">
-          {/* LEFT: Controls */}
-          <div className="lg:col-span-3 flex flex-col gap-6">
-            <Reveal delay={300}>
-              <div className="p-4 rounded-xl border border-white/10 bg-[#060b18]/80 backdrop-blur-md">
-                <span className="font-mono text-[10px] text-[#dfbe7e] uppercase tracking-widest block font-bold mb-1">
-                  [ 01 / 03 STAGES ]
+        {/* Main 3-Column Unified Composition: LEFT CONTROLS ➔ CENTER 3D VIEWPORT ➔ RIGHT HISTORICAL CONTEXT */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch mb-12">
+          
+          {/* LEFT: Stage Navigator */}
+          <div className="lg:col-span-3 flex flex-col justify-between gap-5">
+            <Reveal delay={250}>
+              <div className="p-4 rounded-2xl border border-theme-border bg-theme-surface/70 backdrop-blur-md">
+                <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest block font-bold mb-1">
+                  [ 01 / 03 SYMBOLS ]
                 </span>
-                <p className="text-xs text-white/60 font-serif leading-relaxed">
+                <p className="text-xs text-theme-textSec leading-relaxed">
                   {language === 'tj'
-                    ? 'Барои омӯхтани ҳар як рамзи мустақили судӣ марҳилаи заруриро интихоб кунед.'
+                    ? 'Барои омӯхтани ҳар як рамзи мустақили судӣ объекти заруриро интихоб кунед.'
                     : language === 'en'
                     ? 'Select an artifact to examine its role in the judicial decision-making process.'
                     : 'Выберите артефакт для изучения этапов отправления правосудия.'}
                 </p>
               </div>
             </Reveal>
-            <Reveal delay={350}>
+
+            <Reveal delay={300}>
               <JusticeStoryNavigator
                 activeStage={activeStage}
                 onSelectStage={setActiveStage}
               />
             </Reveal>
+
+            <div className="hidden lg:block p-3 rounded-2xl border border-theme-border/50 bg-theme-surface/40 text-[11px] font-mono text-theme-textMuted text-center">
+              <span className="text-theme-gold font-semibold">↻ ПОВЕРНИТЕ ОБЪЕКТ</span>
+            </div>
           </div>
 
-          {/* CENTER: Shared 3D Environment */}
-          <div className="lg:col-span-6 flex flex-col items-center justify-center min-h-[500px] relative">
-            <Reveal delay={200} className="w-full h-full absolute inset-0">
-              <div className="w-full h-full relative rounded-2xl overflow-hidden border border-[#dfbe7e]/20 bg-[#02050e] shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
-                <JusticeScene3D 
-                  activeStage={activeStage}
-                  isInsightMode={isInsightMode}
-                  balanceState={balanceState === 'neutral' || balanceState === 'restored' ? null : balanceState}
-                  triggerStrike={triggerStrike}
-                />
-                
-                {/* Overlay UI Controls */}
-                <div className="absolute bottom-6 left-0 right-0 flex justify-center z-10 pointer-events-none">
-                  {/* Themis Controls */}
-                  {activeStage === 'themis' && (
-                    <button
-                      type="button"
-                      onClick={() => setIsInsightMode(prev => !prev)}
-                      className={`pointer-events-auto px-4 py-2 rounded-full border transition-all duration-300 flex items-center gap-2 backdrop-blur-md ${
-                        isInsightMode
-                          ? 'border-[#dfbe7e] bg-[#dfbe7e]/20 text-[#ffe082] shadow-[0_0_15px_rgba(223,190,126,0.4)]'
-                          : 'border-white/15 bg-[#060b18]/80 text-white/75 hover:border-[#dfbe7e]/60 hover:text-white'
-                      }`}
-                    >
-                      {isInsightMode ? <Sparkles size={14} className="text-[#dfbe7e] animate-spin" /> : <Eye size={14} />}
-                      <span className="font-mono text-[10px] tracking-widest uppercase font-semibold">
-                        {isInsightMode
-                          ? language === 'tj' ? 'РЕҶАИ БЕҒАРАЗӢ ФАЪОЛ' : language === 'en' ? 'INSIGHT MODE ACTIVE' : 'РЕЖИМ БЕСПРИСТРАСТНОСТИ'
-                          : language === 'tj' ? 'БАРОИ ИНСАЙТ ЗЕР КУНЕД' : language === 'en' ? 'EXPLORE IMPARTIALITY' : 'ИССЛЕДОВАТЬ БЕСПРИСТРАСТНОСТЬ'}
-                      </span>
-                    </button>
-                  )}
-                  
-                  {/* Scales Controls */}
-                  {activeStage === 'scales' && (
-                    <div className="pointer-events-auto flex items-center gap-3">
-                      <button type="button" onClick={() => handleTilt('law')} className={`px-4 py-2 rounded-lg border text-xs font-serif font-bold transition-all ${balanceState === 'law' ? 'border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.3)]' : 'border-white/10 bg-[#060b18]/80 text-white/70 hover:border-[#dfbe7e]'}`}>
-                        {language === 'tj' ? 'ҚОНУН' : language === 'en' ? 'LAW' : 'ЗАКОН'}
-                      </button>
-                      <button type="button" onClick={handleResetEquilibrium} className={`px-5 py-2 rounded-full border text-xs font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 ${balanceState === 'restored' ? 'border-emerald-400 bg-emerald-400/20 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.4)]' : 'border-[#dfbe7e] bg-[#dfbe7e]/15 text-[#ffe082] hover:bg-[#dfbe7e]/30'}`}>
-                        <Scale size={14} />
-                        <span>{balanceState === 'restored' ? 'BALANCE RESTORED' : 'RESTORE BALANCE'}</span>
-                      </button>
-                      <button type="button" onClick={() => handleTilt('justice')} className={`px-4 py-2 rounded-lg border text-xs font-serif font-bold transition-all ${balanceState === 'justice' ? 'border-emerald-400 bg-emerald-400/20 text-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.3)]' : 'border-white/10 bg-[#060b18]/80 text-white/70 hover:border-[#dfbe7e]'}`}>
-                        {language === 'tj' ? 'АДОЛАТ' : language === 'en' ? 'JUSTICE' : 'ПРАВО'}
-                      </button>
-                    </div>
-                  )}
+          {/* CENTER: Dedicated 3D Viewport (60-75% visual prominence) */}
+          <div className="lg:col-span-6 flex flex-col items-center justify-center min-h-[380px] sm:min-h-[500px] lg:min-h-[560px] relative content-card overflow-hidden group">
+            
+            {/* Ambient Background Glow Spot */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
+              <div className="w-[85%] h-[85%] rounded-full bg-theme-gold/10 blur-3xl" />
+            </div>
 
-                  {/* Hammer Controls */}
-                  {activeStage === 'hammer' && (
-                    <button
-                      type="button"
-                      onClick={handleDecisionTriggered}
-                      className="pointer-events-auto px-6 py-2.5 rounded-full border border-red-500/50 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all flex items-center gap-2 font-mono text-xs uppercase tracking-widest font-bold"
-                    >
-                      <Gavel size={16} />
-                      <span>{language === 'tj' ? 'ҚАРОР БАРОРЕД' : language === 'en' ? 'DELIVER DECISION' : 'ВЫНЕСТИ РЕШЕНИЕ'}</span>
-                    </button>
-                  )}
+            {/* Visual Canvas: Majestic Pure 3D Display (Purely Visual, No Buttons) */}
+            <JusticeScene3D 
+              activeSymbol={activeStage}
+              isInsightMode={false}
+              balanceState="neutral"
+              triggerStrike={false}
+            />
+          </div>
+
+          {/* RIGHT: Historical & Constitutional Context Panel */}
+          <div className="lg:col-span-3 flex flex-col justify-between gap-5">
+            <Reveal delay={250}>
+              <div className="p-5 sm:content-card flex flex-col justify-between h-full">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest font-bold">
+                      {activeStage === 'themis'
+                        ? language === 'tj' ? 'ПРИНСИПИ БЕҒАРАЗӢ' : language === 'en' ? 'IMPARTIALITY' : 'БЕСПРИСТРАСТНОСТЬ'
+                        : activeStage === 'scales'
+                        ? language === 'tj' ? 'МУВОЗИНАТИ ҚОНУН' : language === 'en' ? 'EQUILIBRIUM' : 'РАВНОВЕСИЕ'
+                        : language === 'tj' ? 'ҚУВВАИ ҚОНУНИИ САНАД' : language === 'en' ? 'LEGAL FORCE' : 'СИЛА РЕШЕНИЯ'}
+                    </span>
+                    <BookOpen size={14} className="text-theme-gold" />
+                  </div>
+
+                  <h3 className="font-sans font-semibold text-base sm:text-lg text-theme-text leading-snug mb-3">
+                    {activeStage === 'themis'
+                      ? language === 'tj' ? 'Баробарии ҳама дар назди қонун ва суд' : language === 'en' ? 'Equality of all before the law and court' : 'Равенство всех перед законом и судом'
+                      : activeStage === 'scales'
+                      ? language === 'tj' ? 'Мувозинати дақиқи далелҳо ва манфиатҳо' : language === 'en' ? 'Exact balance of evidence and statutory law' : 'Взвешенная оценка доказательств сторон'
+                      : language === 'tj' ? 'Қабули қарори қатъӣ ва сабти он дар реестр' : language === 'en' ? 'Final verdict enforced & ledger recorded' : 'Окончательность судебного акта'}
+                  </h3>
+
+                  {/* Curated Historical Information */}
+                  <div className="space-y-2.5 text-xs text-theme-textSec leading-relaxed mb-4">
+                    {activeStage === 'themis' && (
+                      <>
+                        <p>
+                          {language === 'tj'
+                            ? 'Фемида дар фарҳанги ҳуқуқӣ рамзи адолат ва тафтиши беғаразона мебошад. Чашмбанди ӯ таҷассумгари баробарии комили шаҳрвандон, новобаста аз мавқеи иҷтимоӣ мебошад.'
+                            : language === 'en'
+                            ? 'The blindfold of Lady Justice embodies strict judicial impartiality, ensuring decisions rest solely on evidence without bias or prejudice.'
+                            : 'Повязка на глазах Фемиды символизирует беспристрастность: перед лицом правосудия все равны, независимо от социального статуса и положения.'}
+                        </p>
+                        <p className="font-mono text-[11px] text-theme-gold">
+                          Конститутсияи ҶТ // Моддаи 84
+                        </p>
+                      </>
+                    )}
+
+                    {activeStage === 'scales' && (
+                      <>
+                        <p>
+                          {language === 'tj'
+                            ? 'Тарозу рамзи баробарвазнии даъвоҳо ва муқоисаи ҳуҷҷатҳост. Ҳар як далели мурофиавӣ дар тарозуи адолат дақиқ ва қонунӣ баҳогузорӣ мешавад.'
+                            : language === 'en'
+                            ? 'The dual pans measure the statutory weight of claims versus defenses, illustrating equitable judicial scrutiny.'
+                            : 'Чаши весов олицетворяют состязательность сторон и взвешенную правовую оценку каждого процессуального аргумента.'}
+                        </p>
+                        <p className="font-mono text-[11px] text-theme-gold">
+                          Кодекси мурофиавии граждании ҶТ
+                        </p>
+                      </>
+                    )}
+
+                    {activeStage === 'hammer' && (
+                      <>
+                        <p>
+                          {language === 'tj'
+                            ? 'Гурзи судӣ рамзи эътибори қонунӣ пайдо кардани санад ва қатъияти қарори баровардашудаи суд мебошад, ки иҷрои он барои ҳама ҳатмист.'
+                            : language === 'en'
+                            ? 'The judicial gavel signals the authoritative finality of judgment, which is cryptographically sealed in the public acts registry.'
+                            : 'Судейский молот символизирует законную силу вступившего в действие постановления, обязательного к исполнению на всей территории страны.'}
+                        </p>
+                        <p className="font-mono text-[11px] text-theme-gold">
+                          Электронный реестр sud.tj/acts
+                        </p>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Button to Open Detailed Storytelling Panel */}
+                  <button
+                    type="button"
+                    onClick={() => setStoryModalOpen(true)}
+                    className="w-full py-2 px-3 rounded-xl border border-theme-gold/40 bg-theme-gold/10 hover:bg-theme-gold/20 text-theme-gold font-mono text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors mb-2.5"
+                  >
+                    <BookOpen size={13} />
+                    <span>{language === 'tj' ? 'ТАЪРИХИ СИМВОЛ' : language === 'en' ? 'EXPLORE HISTORY' : 'УЗНАТЬ ИСТОРИЮ'}</span>
+                  </button>
                 </div>
-              </div>
-            </Reveal>
-          </div>
-
-          {/* RIGHT: Context Panel */}
-          <div className="lg:col-span-3 flex flex-col gap-5">
-            <Reveal delay={300}>
-              <div className="p-5 rounded-2xl border border-white/10 bg-[#060b18]/90 backdrop-blur-xl shadow-xl">
-                <span className="font-mono text-[10px] text-[#dfbe7e] uppercase tracking-widest block font-bold mb-2">
-                  {activeStage === 'themis'
-                    ? language === 'tj' ? 'ПРИНСИПИ БЕҒАРАЗӢ' : language === 'en' ? 'PRINCIPLE OF IMPARTIALITY' : 'ПРИНЦИП БЕСПРИСТРАСТНОСТИ'
-                    : activeStage === 'scales'
-                    ? language === 'tj' ? 'МУВОЗИНАТИ ҚОНУН ВА ҲУҚУҚ' : language === 'en' ? 'BALANCE OF LAW & RIGHTS' : 'БАЛАНС ЗАКОНА И ПРАВ'
-                    : language === 'tj' ? 'ҚОНУНИЯТ ВА САНАДИ СУДӢ' : language === 'en' ? 'AUTHORITY OF JUDGMENT' : 'ЗАКОННАЯ СИЛА РЕШЕНИЯ'}
-                </span>
-
-                <h3 className="font-serif font-bold text-lg text-white leading-tight mb-2">
-                  {activeStage === 'themis'
-                    ? language === 'tj' ? 'Баробарии ҳама дар назди қонун ва суд' : language === 'en' ? 'Equality of all before the law and court' : 'Равенство всех перед законом и судом'
-                    : activeStage === 'scales'
-                    ? language === 'tj' ? 'Мувозинати дақиқи манфиатҳо ва адолат' : language === 'en' ? 'Exact balance of interests and justice' : 'Точное равновесие интересов и справедливости'
-                    : language === 'tj' ? 'Қабули қарор дар асоси далелҳои қонунӣ' : language === 'en' ? 'Decision rendered on statutory evidence' : 'Решение на основе закона и доказательств'}
-                </h3>
-
-                <p className="text-xs text-white/70 font-serif leading-relaxed mb-4">
-                  {activeStage === 'themis'
-                    ? language === 'tj' ? 'Судя дар фаъолияти худ мустақил буда, танҳо ба Конститутсия ва қонун итоат мекунад.' : language === 'en' ? 'Judges are independent in their decisions and subject only to the Constitution and statutory law.' : 'Решение суда должно основываться исключительно на законе, а не на субъективных суждениях или стороннем влиянии.'
-                    : activeStage === 'scales'
-                    ? language === 'tj' ? 'Тарозу рамзи таҳлили мутавозини далелҳои ҳар ду ҷониби мурофиаи судӣ мебошад.' : language === 'en' ? 'The scales represent balanced weight and impartial scrutiny of both parties in legal proceedings.' : 'Весы символизируют взвешенную оценку доказательств сторон для достижения подлинной справедливости.'
-                    : language === 'tj' ? 'Ҳар як қарори судӣ бо гурз сабт гардида, пас аз эътибор пайдо кардан дар махзани ягона нашр мешавад.' : language === 'en' ? 'Each judicial decision finalized by gavel impact is recorded into the unified public acts database.' : 'Каждое решение суда, закрепленное молотом правосудия, вносится в общедоступный банк судебных актов.'}
-                </p>
 
                 <button
                   type="button"
                   onClick={onOpenActs}
-                  className="w-full py-2 px-3 rounded-lg border border-[#dfbe7e]/50 bg-[#dfbe7e]/10 hover:bg-[#dfbe7e]/20 text-[#ffe082] text-xs font-mono font-bold uppercase tracking-wider flex items-center justify-between transition-all"
+                  className="btn-outline w-full justify-between text-xs hover:border-theme-gold hover:text-theme-gold"
                 >
                   <span>{t('digitalJustice.ctaActs')}</span>
                   <ArrowUpRight size={13} />
@@ -225,25 +217,126 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
               </div>
             </Reveal>
 
-            {decisionRecorded && (
-              <Reveal delay={100}>
-                <JudicialActPreview onOpenActs={onOpenActs} />
-              </Reveal>
-            )}
+            <Reveal delay={100}>
+              <JudicialActPreview onOpenActs={onOpenActs} />
+            </Reveal>
           </div>
+
         </div>
 
-        <Reveal delay={400}>
+        {/* Bottom Interactive Story Path Timeline */}
+        <Reveal delay={350}>
           <JusticeStoryTimeline
             activeStage={activeStage}
-            onSelectStage={(st) => {
-              setActiveStage(st);
-              if (st !== 'hammer') setDecisionRecorded(false);
-            }}
+            onSelectStage={(st) => setActiveStage(st)}
             onOpenActs={onOpenActs}
           />
         </Reveal>
+
       </div>
+
+      {/* Detailed Storytelling Modal for Artifact History */}
+      <AnimatePresence>
+        {storyModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-2xl rounded-3xl border border-theme-border bg-theme-bg p-6 sm:p-8 shadow-2xl text-theme-text flex flex-col max-h-[85vh] overflow-hidden"
+            >
+              <div className="flex items-center justify-between pb-4 border-b border-theme-border">
+                <div className="flex items-center gap-2.5">
+                  <BookOpen size={20} className="text-theme-gold" />
+                  <h3 className="text-base sm:text-lg font-bold text-theme-text">
+                    {activeStage === 'themis'
+                      ? language === 'tj' ? 'Таърих ва фалсафаи Фемида' : language === 'en' ? 'History of Lady Justice (Themis)' : 'История и символика Фемиды'
+                      : activeStage === 'scales'
+                      ? language === 'tj' ? 'Таърихи Тарозуи Адолат' : language === 'en' ? 'History of the Scales of Justice' : 'История Весов правосудия'
+                      : language === 'tj' ? 'Таърихи Гурзи судӣ' : language === 'en' ? 'History of the Judicial Gavel' : 'История судейского молота'}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setStoryModalOpen(false)}
+                  className="p-1.5 rounded-xl bg-theme-surface border border-theme-border text-theme-textMuted hover:text-theme-text"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto py-5 space-y-4 text-xs sm:text-sm text-theme-textSec leading-relaxed">
+                {activeStage === 'themis' && (
+                  <>
+                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                      <h5 className="font-bold text-theme-text text-sm">1. Происхождение и развитие образа</h5>
+                      <p>
+                        Фемида (Темис) — древнегреческая богиня права и законного порядка. В античной традиции она олицетворяет не карательную силу, а божественный порядок, мудрость и беспристрастный суд.
+                      </p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                      <h5 className="font-bold text-theme-text text-sm">2. Значение повязки, весов и меча</h5>
+                      <p>
+                        <strong>Повязка на глазах</strong> появилась в XVI веке как символ беспристрастия — судья не должен взирать на богатство, статус или влияние сторон. <strong>Весы</strong> в правой руке символизируют точное взвешивание доказательств. <strong>Меч</strong> олицетворяет силу закона и неотвратимость защиты прав человека.
+                      </p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                      <h5 className="font-bold text-theme-text text-sm">3. Цифровая трансформация</h5>
+                      <p>
+                        В современной судебной системе Республики Таджикистан принципы Фемиды реализуются через объективное автоматическое распределение дел между судьями без человеческого фактора.
+                      </p>
+                    </div>
+                  </>
+                )}
+
+                {activeStage === 'scales' && (
+                  <>
+                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                      <h5 className="font-bold text-theme-text text-sm">1. Древнейший символ равновесия</h5>
+                      <p>
+                        Весы как символ правосудия восходят к Древнему Египту (суд Осириса) и символизируют баланс между добром и злом, виной и невиновностью, правами и обязанностями.
+                      </p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                      <h5 className="font-bold text-theme-text text-sm">2. Состязательность и равенство сторон</h5>
+                      <p>
+                        В судопроизводстве две чаши весов символизируют сторону истца и сторону ответчика (обвинения и защиты). Суд взвешивает юридическую силу доводов с абсолютной математической точностью.
+                      </p>
+                    </div>
+                  </>
+                )}
+
+                {activeStage === 'hammer' && (
+                  <>
+                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                      <h5 className="font-bold text-theme-text text-sm">1. Традиция и власть судебного вердикта</h5>
+                      <p>
+                        Судейский молот (гавел) происходит из старинных традиций средневековых судов и собраний. Удар молота символизирует тишину в зале суда, переход от прений сторон к вынесению решения и вступление акта в законную силу.
+                      </p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                      <h5 className="font-bold text-theme-text text-sm">2. Цифровая фиксация решения</h5>
+                      <p>
+                        В платформе «Электронный суд» момент вынесения решения заверяется судейской усиленной квалифицированной ЭЦП с криптографической временной меткой (TSA).
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="pt-4 border-t border-theme-border flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setStoryModalOpen(false)}
+                  className="btn-primary text-xs"
+                >
+                  {language === 'tj' ? 'Фаҳмо' : language === 'en' ? 'Understood' : 'Закрыть'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

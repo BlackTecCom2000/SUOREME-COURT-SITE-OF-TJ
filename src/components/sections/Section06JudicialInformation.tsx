@@ -4,6 +4,7 @@ import { JUDICIAL_ACTS } from '../../data/sudTjData';
 import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { FileText, ArrowUpRight, CheckCircle2, Newspaper, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { JudicialNewsHub } from '../news/JudicialNewsHub';
 
 interface Section06JudicialInformationProps {
   onOpenActs: () => void;
@@ -28,11 +29,11 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
     <section
       id="information"
       aria-label={t('nav.acts')}
-      className="relative py-20 sm:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
+      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
     >
       <DigitalDataRain density="sparse" speed="medium" opacity={0.2} colorTheme="gold" />
 
-      <div className="max-w-7xl mx-auto w-full relative z-10">
+      <div className="site-container relative z-10 space-y-16">
         {/* Section Header Indicator */}
         <Reveal delay={50}>
           <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
@@ -46,7 +47,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
         </Reveal>
 
         {/* Section Title */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
           <div className="max-w-3xl">
             <Reveal delay={150}>
               <h2 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase mb-4">
@@ -65,7 +66,12 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
           </div>
         </div>
 
-        {/* 2-Column Split: Judicial Acts Database & Press Publications */}
+        {/* 🌟 FULL JUDICIAL PRESS & MEDIA PORTAL (3D NEWS SLIDER, REGIONAL NEWS & OFFICIAL ANNOUNCEMENTS) */}
+        <Reveal delay={200}>
+          <JudicialNewsHub onOpenNewsModal={() => onOpenNews()} />
+        </Reveal>
+
+        {/* 2-Column Split: Judicial Acts Database & Legal Bank */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
           {/* Left: Verified Judicial Acts & Plenum Decisions */}
@@ -110,14 +116,24 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={onOpenActs}
-              className="btn-secondary w-full"
-            >
-              <FileText size={14} />
-              <span>{t('acts.ctaOpenBank')}</span>
-            </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={onOpenActs}
+                className="btn-secondary w-full justify-center"
+              >
+                <FileText size={14} />
+                <span>{t('acts.ctaOpenBank')}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onOpenActs()}
+                className="btn-outline w-full justify-center"
+              >
+                <span>{language === 'tj' ? 'Санадҳои Қонунгузорӣ (24)' : language === 'en' ? 'Legislation & Codes (24)' : 'Законодательные акты (24)'}</span>
+                <ArrowUpRight size={14} />
+              </button>
+            </div>
           </div>
 
           {/* Right: Press Center, News & "Мизони Қонун" */}

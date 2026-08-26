@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Reveal } from '../Reveal';
-import { SAMPLE_DOCUMENTS } from '../../data/sudTjData';
 import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { Send, FileDown, ShieldAlert, ArrowUpRight, Clock } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
@@ -10,17 +9,43 @@ interface Section09CitizenAppealsProps {
   onOpenDocs: () => void;
 }
 
+interface JudicialAct {
+  id: number;
+  title_ru: string;
+  title_tj: string;
+  title_en: string;
+  doc_number: string;
+  doc_type: string;
+  category: string;
+  published_at: string;
+}
+
 export const Section09CitizenAppeals: React.FC<Section09CitizenAppealsProps> = ({
   onOpenAppeals,
   onOpenDocs,
 }) => {
   const { language, t } = useLanguage();
+  const [docs, setDocs] = useState<JudicialAct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/judicial_acts')
+      .then(res => res.json())
+      .then(data => {
+        setDocs(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to load judicial acts', err);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <section
       id="appeals"
       aria-label={t('nav.appeals')}
-      className="relative py-20 sm:py-28 md:py-32 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none border-t border-theme-border/30"
     >
       <DigitalDataRain density="medium" speed="slow" opacity={0.25} colorTheme="gold" />
 
@@ -73,7 +98,7 @@ export const Section09CitizenAppeals: React.FC<Section09CitizenAppealsProps> = (
         {/* Left Column: Official E-Reception Box */}
         <div className="lg:col-span-6">
           <Reveal delay={200}>
-            <div className="p-7 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card flex flex-col justify-between h-full">
+            <div className="content-card flex flex-col justify-between h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-2.5 rounded-xl bg-theme-bg/60 border border-theme-border">
@@ -121,7 +146,7 @@ export const Section09CitizenAppeals: React.FC<Section09CitizenAppealsProps> = (
         {/* Right Column: Downloadable Procedural Documents */}
         <div className="lg:col-span-6">
           <Reveal delay={300}>
-            <div className="p-7 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card flex flex-col justify-between h-full">
+            <div className="content-card flex flex-col justify-between h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-2.5 rounded-xl bg-theme-bg/60 border border-theme-border">
@@ -137,26 +162,32 @@ export const Section09CitizenAppeals: React.FC<Section09CitizenAppealsProps> = (
                 </h3>
 
                 <div className="space-y-2.5">
-                  {SAMPLE_DOCUMENTS.slice(0, 4).map((doc) => (
-                    <div
-                      key={doc.id}
-                      onClick={onOpenDocs}
-                      className="group p-3.5 rounded-xl bg-theme-bg/60 border border-theme-border hover:border-theme-gold transition-all cursor-pointer flex items-center justify-between shadow-xs"
-                    >
-                      <div>
-                        <div className="font-mono text-[10px] text-theme-gold uppercase mb-0.5">
-                          {language === 'en' ? (doc.categoryEn || doc.categoryRu) : language === 'tj' ? doc.categoryTj : doc.categoryRu}
+                  {loading ? (
+                    <div className="text-center py-4 text-theme-textSec font-mono text-xs">Loading...</div>
+                  ) : docs.length === 0 ? (
+                    <div className="text-center py-4 text-theme-textSec font-mono text-xs">No documents found</div>
+                  ) : (
+                    docs.slice(0, 4).map((doc) => (
+                      <div
+                        key={doc.id}
+                        onClick={onOpenDocs}
+                        className="group p-3.5 rounded-xl bg-theme-bg/60 border border-theme-border hover:border-theme-gold transition-all cursor-pointer flex items-center justify-between shadow-xs"
+                      >
+                        <div>
+                          <div className="font-mono text-[10px] text-theme-gold uppercase mb-0.5">
+                            {doc.category}
+                          </div>
+                          <div className="text-xs font-medium text-theme-text group-hover:text-theme-gold transition-colors">
+                            {language === 'en' ? (doc.title_en || doc.title_ru) : language === 'tj' ? doc.title_tj : doc.title_ru}
+                          </div>
                         </div>
-                        <div className="text-xs font-medium text-theme-text group-hover:text-theme-gold transition-colors">
-                          {language === 'en' ? (doc.titleEn || doc.titleRu) : language === 'tj' ? doc.titleTj : doc.titleRu}
+                        <div className="flex items-center gap-2 font-mono text-[10px] text-theme-textMuted shrink-0">
+                          <span>DOCX</span>
+                          <ArrowUpRight size={13} className="text-theme-textMuted group-hover:text-theme-gold" />
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 font-mono text-[10px] text-theme-textMuted shrink-0">
-                        <span>{doc.format}</span>
-                        <ArrowUpRight size={13} className="text-theme-textMuted group-hover:text-theme-gold" />
-                      </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </div>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { AdminAuthProvider, useAdminAuth } from './admin/context/AdminAuthContext';
 import { AdminShell } from './admin/components/AdminShell';
 import { AdminLogin } from './admin/pages/AdminLogin';
@@ -14,6 +14,7 @@ import { UsersManager } from './admin/pages/users/UsersManager';
 import { AuditLogViewer } from './admin/pages/audit/AuditLogViewer';
 import { SettingsManager } from './admin/pages/settings/SettingsManager';
 import { DutyAdminManager } from './admin/pages/duty/DutyAdminManager';
+import { JudicialSystemVisualEditor } from './admin/pages/content/JudicialSystemVisualEditor';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 
@@ -25,7 +26,7 @@ const AdminRoutes: React.FC = () => {
   }
 
   return (
-    <BrowserRouter>
+    <>
       <Routes>
         <Route path="/admin" element={<AdminShell />}>
           <Route index element={<Dashboard />} />
@@ -34,6 +35,7 @@ const AdminRoutes: React.FC = () => {
           <Route path="news/:id" element={<NewsEditor />} />
           <Route path="acts" element={<JudicialActsManager />} />
           <Route path="courts" element={<CourtsManager />} />
+          <Route path="structure-editor" element={<JudicialSystemVisualEditor />} />
           <Route path="appeals" element={<AppealsManager />} />
           <Route path="media" element={<MediaLibrary />} />
           <Route path="users" element={<UsersManager />} />
@@ -43,7 +45,7 @@ const AdminRoutes: React.FC = () => {
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 

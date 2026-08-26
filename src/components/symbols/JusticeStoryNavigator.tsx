@@ -61,14 +61,14 @@ export const JusticeStoryNavigator: React.FC<JusticeStoryNavigatorProps> = ({
               flex items-center justify-between group
               ${
                 isActive
-                  ? 'border-[#dfbe7e] bg-[#dfbe7e]/15 text-white shadow-[0_0_20px_rgba(223,190,126,0.3)] scale-102'
-                  : 'border-white/10 bg-[#060b18]/70 text-white/70 hover:border-[#dfbe7e]/50 hover:bg-[#060b18] hover:text-white'
+                  ? 'border-theme-gold bg-theme-gold/15 text-theme-text shadow-[0_0_20px_rgba(223,190,126,0.3)] scale-102'
+                  : 'border-theme-border bg-theme-surface/80 text-theme-textSec hover:border-theme-gold/60 hover:bg-theme-surface hover:text-theme-text'
               }
             `}
           >
             {/* Active Left Indicator Bar */}
             {isActive && (
-              <span className="absolute left-0 top-2 bottom-2 w-1 rounded-r bg-[#dfbe7e] shadow-[0_0_8px_#dfbe7e]" />
+              <span className="absolute left-0 top-2 bottom-2 w-1 rounded-r bg-theme-gold shadow-[0_0_8px_var(--accent-gold)]" />
             )}
 
             <div className="flex items-center gap-3.5 pl-1.5">
@@ -77,8 +77,8 @@ export const JusticeStoryNavigator: React.FC<JusticeStoryNavigatorProps> = ({
                   p-2 rounded-lg border transition-colors
                   ${
                     isActive
-                      ? 'border-[#dfbe7e]/80 bg-[#dfbe7e]/20 text-[#ffe082]'
-                      : 'border-white/10 bg-white/5 text-white/50 group-hover:text-white'
+                      ? 'border-theme-gold/80 bg-theme-gold/20 text-theme-gold'
+                      : 'border-theme-border bg-theme-bg/60 text-theme-textMuted group-hover:text-theme-text'
                   }
                 `}
               >
@@ -86,16 +86,16 @@ export const JusticeStoryNavigator: React.FC<JusticeStoryNavigatorProps> = ({
               </div>
 
               <div>
-                <div className="font-mono text-[9px] text-[#dfbe7e] uppercase tracking-widest leading-none mb-1 font-bold">
+                <div className="font-mono text-[9px] text-theme-gold uppercase tracking-widest leading-none mb-1 font-bold">
                   {st.number} {st.subtitle}
                 </div>
-                <h4 className="font-serif font-bold text-sm text-white leading-none tracking-wide">
+                <h4 className="font-serif font-bold text-sm text-theme-text leading-none tracking-wide">
                   {st.title}
                 </h4>
               </div>
             </div>
 
-            <div className="font-mono text-[10px] text-white/40 group-hover:text-[#dfbe7e] transition-colors">
+            <div className="font-mono text-[10px] text-theme-textMuted group-hover:text-theme-gold transition-colors">
               ➔
             </div>
           </button>

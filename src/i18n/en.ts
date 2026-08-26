@@ -4,6 +4,8 @@ export const en = {
     title: '( SUPREME COURT )',
     subtitle: '[ REPUBLIC OF TAJIKISTAN ]',
     home: 'home',
+    search: 'case search',
+    myCases: 'my cases',
     mission: 'judiciary',
     digitalJustice: 'digital justice',
     justiceAge: 'themis & scales',

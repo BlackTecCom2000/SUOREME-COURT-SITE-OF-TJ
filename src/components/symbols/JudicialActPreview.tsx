@@ -16,39 +16,38 @@ export const JudicialActPreview: React.FC<JudicialActPreviewProps> = ({
   return (
     <div
       className={`
-        relative rounded-xl p-5 border border-[#dfbe7e]/60 bg-[#060c1c]/95
-        backdrop-blur-xl shadow-[0_0_25px_rgba(223,190,126,0.25)] select-none
+        relative rounded-xl p-5 border border-theme-gold/40 content-card border border-theme-border select-none
         transition-all duration-500 animate-in fade-in zoom-in-95
         ${className}
       `}
     >
       {/* Inner Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#dfbe7e] to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-theme-gold to-transparent" />
 
       {/* Header Badge */}
-      <div className="flex items-center justify-between gap-3 mb-3 border-b border-white/10 pb-2.5">
+      <div className="flex items-center justify-between gap-3 mb-3 border-b border-theme-border/60 pb-2.5">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded bg-[#dfbe7e]/20 text-[#ffe082]">
+          <div className="p-1.5 rounded bg-theme-gold/20 text-theme-gold">
             <FileText size={15} />
           </div>
           <div>
-            <span className="font-mono text-[9px] text-[#dfbe7e] uppercase tracking-widest block font-bold">
+            <span className="font-mono text-[9px] text-theme-gold uppercase tracking-widest block font-bold">
               {language === 'tj' ? 'САНАДИ СУДӢ / НАМУНА' : language === 'en' ? 'JUDICIAL ACT / SAMPLE' : 'СУДЕБНЫЙ АКТ / ОБРАЗЕЦ'}
             </span>
-            <span className="font-mono text-[11px] text-white font-semibold block">
+            <span className="font-mono text-[11px] text-theme-text font-semibold block">
               № ПР-2026/89-DEMO
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+        <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
           <CheckCircle2 size={11} />
           <span>{language === 'tj' ? 'ЭЪТИБОР ПАЙДО КАРД' : language === 'en' ? 'IN FORCE' : 'ВСТУПИЛО В СИЛУ'}</span>
         </div>
       </div>
 
       {/* Act Title in Serif */}
-      <h4 className="font-serif font-bold text-sm text-white leading-snug mb-2">
+      <h4 className="font-serif font-bold text-sm text-theme-text leading-snug mb-2">
         {language === 'tj'
           ? 'Таъиноти Суди Олии Ҷумҳурии Тоҷикистон оид ба парвандаи маданӣ ва волоияти қонун'
           : language === 'en'
@@ -56,7 +55,7 @@ export const JudicialActPreview: React.FC<JudicialActPreviewProps> = ({
           : 'Определение Верховного суда Республики Таджикистан по гражданскому делу и защите прав'}
       </h4>
 
-      <p className="text-xs text-white/70 font-serif leading-relaxed mb-4">
+      <p className="text-xs text-theme-textSec font-serif leading-relaxed mb-4">
         {language === 'tj'
           ? 'Қарори мазкур пас аз баррасии ҳамаҷонибаи далелҳо қабул гардида, дар пойгоҳи ягонаи санадҳои судӣ сабт шуд.'
           : language === 'en'
@@ -68,11 +67,7 @@ export const JudicialActPreview: React.FC<JudicialActPreviewProps> = ({
       <button
         type="button"
         onClick={onOpenActs}
-        className="
-          w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2
-          bg-[#dfbe7e] text-[#060b18] font-mono text-xs font-bold uppercase tracking-wider
-          hover:bg-[#ffe082] hover:shadow-[0_0_15px_rgba(223,190,126,0.5)] transition-all
-        "
+        className="btn-primary w-full shadow-md text-xs"
       >
         <span>{t('digitalJustice.ctaActs')}</span>
         <ArrowUpRight size={14} />

@@ -55,7 +55,7 @@ export const Section05DigitalRegistry: React.FC<Section05DigitalRegistryProps> =
     <section
       id="registry"
       aria-label={t('nav.registry')}
-      className="relative py-20 sm:py-28 md:py-32 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
     >
       <DigitalDataRain density="medium" speed="medium" opacity={0.25} colorTheme="mixed" />
 
@@ -99,7 +99,7 @@ export const Section05DigitalRegistry: React.FC<Section05DigitalRegistryProps> =
             const Icon = item.icon;
             return (
               <Reveal key={item.id} delay={300 + idx * 50}>
-                <div className="p-6 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card hover:border-theme-borderHover transition-all flex flex-col justify-between min-h-[160px]">
+                <div className="content-card hover:border-theme-borderHover transition-all flex flex-col justify-between min-h-[160px]">
                   <div className="flex items-center justify-between">
                     <Icon size={20} className={item.color} />
                     <span className="font-mono text-2xl sm:text-3xl font-bold text-theme-text tracking-tight">

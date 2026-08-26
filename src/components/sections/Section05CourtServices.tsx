@@ -77,11 +77,11 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
     <section
       id="services"
       aria-label={t('nav.eservices')}
-      className="relative py-20 sm:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
+      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
     >
       <DigitalDataRain density="sparse" speed="medium" opacity={0.2} colorTheme="cyan" />
 
-      <div className="max-w-7xl mx-auto w-full relative z-10">
+      <div className="site-container relative z-10 space-y-8">
         {/* Section Header Indicator */}
         <Reveal delay={50}>
           <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
@@ -165,7 +165,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
           {/* Left: State Duty Live Calculator */}
           <div className="lg:col-span-5">
             <Reveal delay={300}>
-              <div className="p-6 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card flex flex-col justify-between h-full">
+              <div className="content-card flex flex-col justify-between h-full">
                 <div>
                   <div className="flex items-center gap-2 font-mono text-xs text-theme-gold uppercase tracking-wider mb-4">
                     <Calculator size={16} />
@@ -209,7 +209,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
           {/* Right: Internet Reception Appeal Submission Box */}
           <div className="lg:col-span-7">
             <Reveal delay={350}>
-              <div className="p-6 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md shadow-theme-card flex flex-col justify-between h-full">
+              <div className="content-card flex flex-col justify-between h-full">
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2 font-mono text-xs text-theme-gold uppercase tracking-wider">

@@ -57,12 +57,12 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
     <section
       id="mission"
       aria-label={t('nav.mission')}
-      className="relative py-20 sm:py-28 md:py-32 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
     >
       {/* Background data rain */}
       <DigitalDataRain density="medium" speed="slow" opacity={0.25} colorTheme="mixed" />
 
-      <div className="max-w-7xl mx-auto w-full relative z-10">
+      <div className="site-container relative z-10">
         {/* Section Header */}
         <Reveal delay={50}>
           <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">

@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { Layout } from './components/Layout';
@@ -12,15 +12,13 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <BrowserRouter basename={import.meta.env.BASE_URL}>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<HomePage />} />
-              <Route path="about" element={<AboutCourtPage />} />
-              <Route path="leadership" element={<LeadershipPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path="about" element={<AboutCourtPage />} />
+            <Route path="leadership" element={<LeadershipPage />} />
+          </Route>
+        </Routes>
       </LanguageProvider>
     </ThemeProvider>
   );

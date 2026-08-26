@@ -6,6 +6,7 @@ import { AdminTable, AdminTableColumn } from '../../components/ui/AdminTable';
 import { AdminModal } from '../../components/ui/AdminModal';
 import { AdminInput } from '../../components/ui/AdminInput';
 import { AdminSelect } from '../../components/ui/AdminSelect';
+import { LivePreviewEngine } from '../../components/preview/LivePreviewEngine';
 
 interface JudicialAct {
   id: number;
@@ -281,6 +282,7 @@ export const JudicialActsManager: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         title={editingAct ? 'Редактирование судебного акта' : 'Регистрация судебного акта'}
         subtitle="Официальная публикация в открытом банке решений"
+        maxWidth="max-w-[95vw]"
         footer={
           <>
             <AdminButton variant="outline" size="sm" onClick={() => setIsModalOpen(false)}>
@@ -292,69 +294,77 @@ export const JudicialActsManager: React.FC = () => {
           </>
         }
       >
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 h-[70vh]">
+          {/* Form */}
+          <div className="space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <AdminInput
+                label="Номер акта (напр. № ПР-2026/89)"
+                required
+                value={formData.doc_number}
+                onChange={(e) => setFormData({ ...formData, doc_number: e.target.value })}
+              />
+              <AdminSelect
+                label="Тип документа"
+                value={formData.doc_type}
+                onChange={(e) => setFormData({ ...formData, doc_type: e.target.value })}
+                options={[
+                  { value: 'resolution', label: 'Постановление Пленума' },
+                  { value: 'decision', label: 'Определение судебной коллегии' },
+                  { value: 'verdict', label: 'Судебное решение' },
+                  { value: 'ruling', label: 'Постановление Президиума' },
+                ]}
+              />
+            </div>
+
             <AdminInput
-              label="Номер акта (напр. № ПР-2026/89)"
+              label="Наименование / Суть судебного акта (RU)"
               required
-              value={formData.doc_number}
-              onChange={(e) => setFormData({ ...formData, doc_number: e.target.value })}
+              value={formData.title_ru}
+              onChange={(e) => setFormData({ ...formData, title_ru: e.target.value })}
+              placeholder="О применении норм законодательства по спорам..."
             />
-            <AdminSelect
-              label="Тип документа"
-              value={formData.doc_type}
-              onChange={(e) => setFormData({ ...formData, doc_type: e.target.value })}
-              options={[
-                { value: 'resolution', label: 'Постановление Пленума' },
-                { value: 'decision', label: 'Определение судебной коллегии' },
-                { value: 'verdict', label: 'Судебное решение' },
-                { value: 'ruling', label: 'Постановление Президиума' },
-              ]}
-            />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <AdminSelect
+                label="Судебная коллегия"
+                value={formData.collegium}
+                onChange={(e) => setFormData({ ...formData, collegium: e.target.value })}
+                options={[
+                  { value: 'Гражданская коллегия', label: 'Гражданская коллегия' },
+                  { value: 'Уголовная коллегия', label: 'Уголовная коллегия' },
+                  { value: 'Экономическая коллегия', label: 'Экономическая коллегия' },
+                  { value: 'Военная коллегия', label: 'Военная коллегия' },
+                  { value: 'Административная коллегия', label: 'Административная коллегия' },
+                ]}
+              />
+              <AdminInput
+                label="Номер судебного дела"
+                value={formData.case_number}
+                onChange={(e) => setFormData({ ...formData, case_number: e.target.value })}
+                placeholder="№ 2-104/2026"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <AdminInput
+                label="Дата принятия акта"
+                type="date"
+                value={formData.act_date}
+                onChange={(e) => setFormData({ ...formData, act_date: e.target.value })}
+              />
+              <AdminInput
+                label="URL PDF Документа (Файл)"
+                value={formData.file_path}
+                onChange={(e) => setFormData({ ...formData, file_path: e.target.value })}
+                placeholder="/uploads/acts/act-2026-89.pdf"
+              />
+            </div>
           </div>
-
-          <AdminInput
-            label="Наименование / Суть судебного акта (RU)"
-            required
-            value={formData.title_ru}
-            onChange={(e) => setFormData({ ...formData, title_ru: e.target.value })}
-            placeholder="О применении норм законодательства по спорам..."
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <AdminSelect
-              label="Судебная коллегия"
-              value={formData.collegium}
-              onChange={(e) => setFormData({ ...formData, collegium: e.target.value })}
-              options={[
-                { value: 'Гражданская коллегия', label: 'Гражданская коллегия' },
-                { value: 'Уголовная коллегия', label: 'Уголовная коллегия' },
-                { value: 'Экономическая коллегия', label: 'Экономическая коллегия' },
-                { value: 'Военная коллегия', label: 'Военная коллегия' },
-                { value: 'Административная коллегия', label: 'Административная коллегия' },
-              ]}
-            />
-            <AdminInput
-              label="Номер судебного дела"
-              value={formData.case_number}
-              onChange={(e) => setFormData({ ...formData, case_number: e.target.value })}
-              placeholder="№ 2-104/2026"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <AdminInput
-              label="Дата принятия акта"
-              type="date"
-              value={formData.act_date}
-              onChange={(e) => setFormData({ ...formData, act_date: e.target.value })}
-            />
-            <AdminInput
-              label="URL PDF Документа (Файл)"
-              value={formData.file_path}
-              onChange={(e) => setFormData({ ...formData, file_path: e.target.value })}
-              placeholder="/uploads/acts/act-2026-89.pdf"
-            />
+          
+          {/* Live Preview Engine */}
+          <div className="h-full">
+            <LivePreviewEngine type="judicial_act" data={formData} originalData={editingAct} />
           </div>
         </div>
       </AdminModal>

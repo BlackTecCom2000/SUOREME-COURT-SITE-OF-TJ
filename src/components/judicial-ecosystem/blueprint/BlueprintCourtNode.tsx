@@ -73,56 +73,46 @@ export const BlueprintCourtNode: React.FC<BlueprintCourtNodeProps> = ({
         }
       }}
       className={`
-        relative rounded-lg p-1.5 flex flex-col items-center justify-center text-center cursor-pointer select-none
-        border transition-all duration-300 group
-        ${isDimmed ? 'opacity-30 grayscale-[40%]' : 'opacity-100'}
+        relative rounded-md p-2 flex flex-col items-center justify-center text-center cursor-pointer select-none
+        border border-l-[3px] transition-all duration-300 group
+        ${isDimmed ? 'opacity-30 grayscale' : 'opacity-100'}
         ${
           isDark
             ? isSelected
-              ? 'bg-[#0b1428] shadow-[0_0_22px_rgba(223,190,126,0.9)] scale-105 z-30 border-white ring-2 ring-amber-400'
+              ? 'bg-[#0f172a]/90 shadow-[0_0_20px_rgba(223,190,126,0.3)] scale-[1.03] z-30'
               : isHighlighted
-              ? 'bg-[#0e172e] shadow-[0_0_18px_rgba(223,190,126,0.7)] scale-105 z-30 border-amber-400'
-              : 'bg-[#060c1c]/90 hover:bg-[#09132a] hover:scale-102 z-10'
+              ? 'bg-[#0f172a]/80 shadow-[0_0_15px_rgba(223,190,126,0.2)] scale-[1.03] z-30'
+              : 'bg-[#020617]/75 hover:bg-[#0f172a]/80 hover:scale-[1.02] z-10'
             : isSelected
-            ? 'bg-white shadow-[0_4px_18px_rgba(184,138,36,0.5)] scale-105 z-30 border-slate-950 ring-2 ring-amber-500'
+            ? 'bg-slate-100/80 shadow-[0_4px_16px_rgba(0,0,0,0.1)] scale-[1.03] z-30'
             : isHighlighted
-            ? 'bg-[#fefce8] shadow-[0_4px_14px_rgba(202,138,4,0.4)] scale-105 z-30 border-amber-600'
-            : 'bg-white/95 hover:bg-white hover:scale-102 z-10'
+            ? 'bg-amber-50/80 shadow-[0_4px_12px_rgba(202,138,4,0.1)] scale-[1.03] z-30'
+            : 'bg-white/75 hover:bg-slate-50/80 hover:scale-[1.02] z-10'
         }
       `}
       style={{
         width,
         height,
-        borderColor: isSelected
-          ? isDark ? '#ffffff' : '#0f172a'
-          : isHighlighted
-          ? isDark ? '#dfbe7e' : '#ca8a04'
-          : `${colorHex}${isDark ? '90' : '70'}`,
-        boxShadow: isDark
-          ? isSelected
-            ? `0 0 20px ${colorHex}, 0 0 10px #dfbe7e`
-            : isHighlighted
-            ? '0 0 16px rgba(223, 190, 126, 0.6)'
-            : `0 2px 8px rgba(0, 0, 0, 0.5), inset 0 0 8px ${colorHex}15`
-          : isSelected
-          ? `0 4px 14px ${colorHex}60`
-          : isHighlighted
-          ? '0 4px 12px rgba(202, 138, 4, 0.35)'
-          : `0 2px 6px rgba(0, 0, 0, 0.06), inset 0 0 4px ${colorHex}10`,
+        borderColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(15,23,42,0.1)',
+        borderLeftColor: isSelected || isHighlighted ? (isDark ? '#dfbe7e' : '#ca8a04') : colorHex,
       }}
     >
+      {/* Node Status LED */}
+      <div className="absolute top-1.5 left-1.5 flex items-center justify-center">
+        <div className={`w-1.5 h-1.5 rounded-full ${isDimmed ? 'bg-slate-500/50' : 'bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.8)]'}`} />
+      </div>
       {/* Type Prefix */}
       <span
         className={`
-          font-serif leading-none tracking-tight block truncate max-w-full px-1
+          font-mono leading-none tracking-wider block truncate max-w-full px-1 uppercase
           ${
             isDark
               ? isRegionalHeaderNode
-                ? 'text-[11px] mb-1 text-white/90 font-medium'
-                : 'text-[8.5px] sm:text-[9px] mb-0.5 text-white/70'
+                ? 'text-[9px] mb-1 text-slate-400'
+                : 'text-[8.5px] mb-0.5 text-slate-500'
               : isRegionalHeaderNode
-              ? 'text-[11px] mb-1 text-slate-700 font-medium'
-              : 'text-[8.5px] sm:text-[9px] mb-0.5 text-slate-500'
+              ? 'text-[9px] mb-1 text-slate-500'
+              : 'text-[8.5px] mb-0.5 text-slate-400'
           }
         `}
       >
@@ -132,20 +122,21 @@ export const BlueprintCourtNode: React.FC<BlueprintCourtNodeProps> = ({
       {/* Main Short Name in Bold Serif */}
       <h5
         className={`
-          font-serif font-bold leading-tight tracking-wide block truncate max-w-full px-0.5
+          font-mono font-semibold leading-tight tracking-wide block truncate max-w-full px-0.5
           ${
             isDark
               ? isRegionalHeaderNode
-                ? 'text-[14px] sm:text-[15px] text-[#ffe082]'
+                ? 'text-[14px] text-white'
                 : isSelected || isHighlighted
-                ? 'text-[#ffe082]'
-                : 'text-white'
+                ? 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]'
+                : 'text-slate-300'
               : isRegionalHeaderNode
-              ? 'text-[14px] sm:text-[15px] text-[#854d0e]'
+              ? 'text-[14px] text-slate-900'
               : isSelected || isHighlighted
-              ? 'text-[#854d0e]'
-              : 'text-slate-900'
+              ? 'text-slate-900 font-bold'
+              : 'text-slate-700'
           }
+          ${isRegionalHeaderNode ? 'text-[14px]' : 'text-[11px] sm:text-[12px]'}
         `}
       >
         {isRegionalHeaderNode

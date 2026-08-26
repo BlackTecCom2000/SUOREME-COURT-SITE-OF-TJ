@@ -130,7 +130,7 @@ export const InteractiveThemis: React.FC<InteractiveThemisProps> = ({
         )}
 
         {/* Pedestal Inscription Plaque */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded border border-[#dfbe7e]/50 bg-[#02050e]/90 backdrop-blur-md">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded border border-[#dfbe7e]/50 content-card">
           <span className="font-serif text-[11px] text-[#dfbe7e] font-bold tracking-[0.25em] uppercase">
             JUSTITIA
           </span>

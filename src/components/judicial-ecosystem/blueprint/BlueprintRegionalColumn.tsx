@@ -3,7 +3,7 @@ import { CourtNodeData, RegionCluster } from '../../../data/sudTjData';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useTheme } from '../../../context/ThemeContext';
 import { BlueprintCourtNode } from './BlueprintCourtNode';
-import { CourtQrCode } from '../CourtQrCode';
+
 import { Shield } from 'lucide-react';
 
 interface BlueprintRegionalColumnProps {
@@ -89,58 +89,43 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
     (c) => c.type !== 'regional' && c.type !== 'military'
   );
 
-  // Regional capsule header title
   const headerPillTitle =
     columnNumber === 1
       ? language === 'tj'
-        ? '1. ВИЛОЯТИ МУХТОРИ КӮҲИСТОНИ БАДАХШОН (ВМКБ)'
+        ? 'NODE 1: ВМКБ (GBAO)'
         : language === 'en'
-        ? '1. GORNO-BADAKHSHAN AUTONOMOUS REGION (GBAO)'
-        : '1. ГОРНО-БАДАХШАНСКАЯ АВТОНОМНАЯ ОБЛАСТЬ (ГБАО)'
+        ? 'NODE 1: GBAO CLUSTER'
+        : 'NODE 1: ВМКБ (ГБАО)'
       : columnNumber === 2
       ? language === 'tj'
-        ? '2. ВИЛОЯТИ ХАТЛОН'
+        ? 'NODE 2: ХАТЛОН'
         : language === 'en'
-        ? '2. KHATLON REGION'
-        : '2. ХАТЛОНСКАЯ ОБЛАСТЬ'
+        ? 'NODE 2: KHATLON CLUSTER'
+        : 'NODE 2: ХАТЛОН'
       : columnNumber === 3
       ? language === 'tj'
-        ? '3. ВИЛОЯТИ СУҒД'
+        ? 'NODE 3: СУҒД'
         : language === 'en'
-        ? '3. SUGHD REGION'
-        : '3. СОГДИЙСКАЯ ОБЛАСТЬ'
+        ? 'NODE 3: SUGHD CLUSTER'
+        : 'NODE 3: СОГД'
       : language === 'tj'
-      ? '4. ШАҲРИ ДУШАНБЕ ВА НОҲИЯҲОИ ТОБЕЪ (РРП)'
+      ? 'NODE 4: ДУШАНБЕ (РРП)'
       : language === 'en'
-      ? '4. DUSHANBE CITY & DISTRICTS (RRP)'
-      : '4. ГОРОД ДУШАНБЕ И РАЙОНЫ (РРП)';
+      ? 'NODE 4: DUSHANBE CLUSTER'
+      : 'NODE 4: ДУШАНБЕ (РРП)';
 
-  // Column specific court grid slicing
+  // Dynamic 2-column or 3-column grid for clean full-name readability without truncation
   let gridRows: CourtNodeData[][] = [];
   if (cluster.id === 'gbao') {
-    gridRows = [ordinaryCourts.slice(0, 4), ordinaryCourts.slice(4, 8)];
-  } else if (cluster.id === 'khatlon') {
-    gridRows = [
-      ordinaryCourts.slice(0, 4),
-      ordinaryCourts.slice(4, 9),
-      ordinaryCourts.slice(9, 14),
-      ordinaryCourts.slice(14, 19),
-      ordinaryCourts.slice(19, 24),
-    ];
-  } else if (cluster.id === 'sugd') {
-    gridRows = [
-      ordinaryCourts.slice(0, 4),
-      ordinaryCourts.slice(4, 8),
-      ordinaryCourts.slice(8, 12),
-      ordinaryCourts.slice(12, 18),
-    ];
+    // 7 courts: 4 rows (2 cols)
+    for (let i = 0; i < ordinaryCourts.length; i += 2) {
+      gridRows.push(ordinaryCourts.slice(i, i + 2));
+    }
   } else {
-    gridRows = [
-      ordinaryCourts.slice(0, 4),
-      ordinaryCourts.slice(4, 8),
-      ordinaryCourts.slice(8, 12),
-      ordinaryCourts.slice(12, 17),
-    ];
+    // Khatlon, Sughd, Dushanbe: 3 cols grid
+    for (let i = 0; i < ordinaryCourts.length; i += 3) {
+      gridRows.push(ordinaryCourts.slice(i, i + 3));
+    }
   }
 
   return (
@@ -148,8 +133,8 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
       onMouseEnter={() => onHoverColumn?.(cluster.id)}
       onMouseLeave={() => onHoverColumn?.(null)}
       className={`
-        relative w-[440px] flex flex-col items-center select-none transition-all duration-300
-        ${isFocused || isRegionSelected ? 'scale-102 z-30 opacity-100' : isRegionMuted ? 'opacity-40 hover:opacity-75 z-10' : 'opacity-100 z-20'}
+        relative flex-1 min-w-[340px] max-w-[460px] flex flex-col items-center select-none transition-all duration-300
+        ${isFocused || isRegionSelected ? 'scale-101 z-30 opacity-100' : isRegionMuted ? 'opacity-35 hover:opacity-75 z-10' : 'opacity-100 z-20'}
       `}
     >
       {/* 1. TOP CAPSULE REGIONAL HEADER (CLICKABLE TO OPEN REGION SUMMARY) */}
@@ -164,65 +149,72 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
           }
         }}
         className={`
-          relative w-full h-[36px] rounded-full px-4 flex items-center justify-center cursor-pointer
-          border shadow-md backdrop-blur-xl transition-all duration-300 group
+          relative w-full py-2 px-4 rounded-xl cursor-pointer
+          border transition-all duration-300 backdrop-blur-md group
           ${
             isDark
               ? isRegionSelected
-                ? 'border-amber-400 bg-amber-500/20 text-amber-300 shadow-[0_0_20px_rgba(223,190,126,0.4)]'
-                : 'border-[#dfbe7e]/70 bg-[#060b18]/90 text-white hover:border-amber-400'
+                ? 'border-amber-400 bg-amber-500/20 text-amber-300 shadow-[0_0_15px_rgba(223,190,126,0.3)]'
+                : 'border-[#dfbe7e]/50 bg-[#060b18]/60 text-white hover:border-amber-400 hover:bg-[#0a142e]/70'
               : isRegionSelected
-              ? 'border-amber-600 bg-amber-50 text-amber-950 shadow-md ring-1 ring-amber-400'
-              : 'border-[#ca8a04]/70 bg-white/95 text-slate-900 hover:border-amber-600'
+              ? 'border-amber-600 bg-amber-50/80 text-amber-950 shadow-md ring-1 ring-amber-400'
+              : 'border-[#ca8a04]/50 bg-white/75 text-slate-900 hover:border-amber-600 hover:bg-white/80'
           }
         `}
         style={{
-          borderColor: isRegionSelected ? '#dfbe7e' : isDark ? cluster.colorHex : `${cluster.colorHex}cc`,
+          borderColor: isRegionSelected ? '#dfbe7e' : isDark ? `${cluster.colorHex}99` : `${cluster.colorHex}bb`,
           boxShadow: isDark
-            ? `0 0 16px ${cluster.colorHex}30`
-            : `0 2px 10px ${cluster.colorHex}20`,
+            ? `0 0 10px ${cluster.colorHex}20`
+            : `0 2px 6px ${cluster.colorHex}15`,
         }}
       >
-        <span className="font-serif font-bold text-[12px] uppercase tracking-wider text-center block truncate drop-shadow-sm group-hover:scale-101 transition-transform">
-          {headerPillTitle}
-        </span>
+        <div className="flex items-center justify-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse opacity-80" />
+          <span className="font-mono font-bold text-[12px] uppercase tracking-widest text-center block truncate drop-shadow-sm group-hover:scale-101 transition-transform">
+            {headerPillTitle}
+          </span>
+        </div>
       </div>
 
-      {/* 2. REGIONAL MAIN BOX CONTAINER */}
+      {/* 2. REGIONAL MAIN BOX CONTAINER - SEMI-TRANSPARENT DEEP GLASS */}
       <div
         className={`
-          relative w-full rounded-2xl p-4 mt-2.5 flex flex-col items-center
-          border-2 backdrop-blur-2xl transition-all duration-300
+          relative w-full rounded-2xl p-3.5 mt-2.5 flex flex-col items-center
+          border backdrop-blur-xl transition-all duration-300
           ${
             isDark
-              ? 'bg-[#030712]/95 shadow-[0_10px_35px_rgba(0,0,0,0.8)]'
-              : 'bg-slate-50/95 shadow-[0_6px_25px_rgba(0,0,0,0.08)]'
+              ? 'bg-[#030712]/60 shadow-[0_8px_30px_rgba(0,0,0,0.6)]'
+              : 'bg-white/70 shadow-[0_6px_20px_rgba(0,0,0,0.06)]'
           }
-          ${isRegionSelected ? 'ring-2 ring-amber-400/60' : ''}
+          ${isRegionSelected ? 'ring-1 ring-amber-400/50' : ''}
         `}
         style={{
-          borderColor: cluster.colorHex,
+          borderColor: isDark ? `${cluster.colorHex}70` : `${cluster.colorHex}90`,
           boxShadow: isDark
-            ? `0 0 25px ${cluster.colorHex}25, inset 0 0 15px ${cluster.colorHex}10`
-            : `0 4px 20px ${cluster.colorHex}20, inset 0 0 10px ${cluster.colorHex}08`,
+            ? `0 0 16px ${cluster.colorHex}15, inset 0 0 10px ${cluster.colorHex}08`
+            : `0 4px 14px ${cluster.colorHex}12, inset 0 0 8px ${cluster.colorHex}06`,
         }}
       >
-        {/* TOP ROW: QR Code Box (Left) & Regional Court Main Card (Right) */}
-        <div className="w-full flex items-center gap-3.5 mb-3">
-          {/* Functional Court QR Code */}
+        {/* TOP ROW: Server Metrics (Left) & Regional Court Main Node (Right) */}
+        <div className="w-full flex items-center gap-3 mb-2.5">
+          {/* Server Metrics / Uptime Placeholder */}
           <div
             className={`
-              shrink-0 w-[84px] h-[84px] rounded-xl p-1.5 flex flex-col items-center justify-center
+              shrink-0 w-[80px] h-[72px] rounded-xl p-2 flex flex-col items-center justify-between
               border transition-all
-              ${isDark ? 'border-white/20 bg-[#080d1e]' : 'border-slate-300 bg-white'}
+              ${isDark ? 'border-white/10 bg-[#060c19]' : 'border-slate-300 bg-slate-50'}
             `}
-            style={{ borderColor: `${cluster.colorHex}80` }}
+            style={{ borderColor: `${cluster.colorHex}50` }}
           >
-            <CourtQrCode
-              domain={regionalCourt?.domain || `${cluster.id}.sud.tj`}
-              url={regionalCourt?.url || `https://${cluster.id}.sud.tj`}
-              size={66}
-            />
+             <div className="w-full flex justify-between items-center px-1">
+                <span className="text-[9px] font-mono opacity-50 uppercase text-current">UPTIME</span>
+                <span className="text-[10px] font-mono font-bold text-emerald-400">99.9%</span>
+             </div>
+             <div className="w-full h-[1px] bg-white/10" />
+             <div className="w-full flex justify-between items-center px-1">
+                <span className="text-[9px] font-mono opacity-50 uppercase text-current">LOAD</span>
+                <span className="text-[10px] font-mono font-bold text-cyan-400">24%</span>
+             </div>
           </div>
 
           {/* Regional Court Primary Node */}
@@ -231,7 +223,7 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
               court={regionalCourt}
               colorHex={cluster.colorHex}
               isRegionalHeaderNode={true}
-              height="84px"
+              height="72px"
               isSelected={selectedCourtId === regionalCourt.id}
               isHighlighted={isMatched(regionalCourt)}
               isDimmed={isDimmed(regionalCourt)}
@@ -240,16 +232,16 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
           </div>
         </div>
 
-        {/* INTERNAL HIERARCHY CONNECTOR LINE */}
-        <div className="w-full flex items-center justify-center my-1">
-          <div
-            className="w-12 h-[2px] rounded-full"
-            style={{ backgroundColor: cluster.colorHex, opacity: isDark ? 0.8 : 0.6 }}
-          />
+        {/* INTERNAL HIERARCHY CONNECTOR LINE (Cyber Style) */}
+        <div className="w-full flex items-center justify-center my-1.5 opacity-60">
+          <svg width="40" height="20" viewBox="0 0 40 20" className="opacity-80">
+            <path d="M20 0 L20 20" stroke={cluster.colorHex} strokeWidth="1.5" strokeDasharray="3 3" fill="none" />
+            <circle cx="20" cy="10" r="3" fill={cluster.colorHex} />
+          </svg>
         </div>
 
-        {/* 3. CITY & DISTRICT COURTS GRID ROWS */}
-        <div className="w-full flex flex-col gap-2 mt-1">
+        {/* 3. CITY & DISTRICT COURTS GRID ROWS - SPACIOUS & READABLE */}
+        <div className="w-full flex flex-col gap-1.5 mt-1">
           {gridRows.map((row, rowIdx) => (
             <div
               key={`row-${cluster.id}-${rowIdx}`}
@@ -263,7 +255,7 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
                   key={`court-${court.id}`}
                   court={court}
                   colorHex={cluster.colorHex}
-                  height="48px"
+                  height="52px"
                   isSelected={selectedCourtId === court.id}
                   isHighlighted={isMatched(court)}
                   isDimmed={isDimmed(court)}
@@ -296,12 +288,12 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
                     ? 'border-white bg-white/20 shadow-[0_0_15px_rgba(255,255,255,0.4)] scale-102'
                     : isMatched(militaryCourt)
                     ? 'border-amber-400 bg-amber-500/20 shadow-[0_0_12px_rgba(223,190,126,0.6)] scale-102'
-                    : 'border-white/20 bg-[#060c1c]/90 hover:border-white/60 hover:bg-[#0a142e]'
+                    : 'border-white/20 bg-[#060c1c]/75 hover:border-white/60 hover:bg-[#0a142e]/80'
                   : selectedCourtId === militaryCourt.id
-                  ? 'border-slate-900 bg-slate-900 text-white shadow-md scale-102'
+                  ? 'border-slate-900 bg-slate-900/90 text-white shadow-md scale-102'
                   : isMatched(militaryCourt)
-                  ? 'border-amber-600 bg-amber-50 text-amber-950 shadow-md scale-102'
-                  : 'border-slate-300 bg-white hover:border-slate-600 hover:bg-slate-100'
+                  ? 'border-amber-600 bg-amber-50/80 text-amber-950 shadow-md scale-102'
+                  : 'border-slate-300 bg-white/75 hover:border-slate-600 hover:bg-slate-100/80'
               }
             `}
             style={{
@@ -315,12 +307,12 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
           >
             <Shield
               size={13}
-              className="shrink-0"
+              className="shrink-0 opacity-70"
               style={{ color: cluster.colorHex }}
             />
             <span
-              className={`font-serif font-semibold text-[11px] truncate ${
-                isDark ? 'text-white/90' : 'text-slate-900'
+              className={`font-mono font-semibold tracking-wider text-[10px] uppercase truncate ${
+                isDark ? 'text-white/80' : 'text-slate-800'
               }`}
             >
               {language === 'tj' ? militaryCourt.nameTj : militaryCourt.nameRu}
