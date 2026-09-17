@@ -1,0 +1,1 @@
+﻿export { sinoConfig } from './config';

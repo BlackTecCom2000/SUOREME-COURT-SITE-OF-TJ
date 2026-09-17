@@ -1,0 +1,62 @@
+﻿.judmap {
+  --jm-bg: #050B14;
+  --jm-surface: #091321;
+  --jm-surface-2: #0C1726;
+  --jm-border: rgba(130,160,190,0.20);
+  --jm-text: #F4F7FA;
+  --jm-text-2: #8FA2B8;
+  --jm-muted: #5E7085;
+  --jm-gold: #E8C76A;
+  --jm-cyan: #16BFFF;
+  --jm-green: #20E6B5;
+  --jm-purple: #A855F7;
+}
+[data-theme="light"] .judmap {
+  --jm-bg: #EDF2F7;
+  --jm-surface: #FFFFFF;
+  --jm-surface-2: #F4F7FA;
+  --jm-border: rgba(11,27,46,0.14);
+  --jm-text: #0B1B2E;
+  --jm-text-2: #3D546C;
+  --jm-muted: #6B7F95;
+  --jm-gold: #9A6B12;
+  --jm-cyan: #0284C7;
+  --jm-green: #047857;
+  --jm-purple: #7E22CE;
+}
+.judmap-panel {
+  background: rgba(8,18,32,0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--jm-border);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.20);
+}
+[data-theme="light"] .judmap-panel {
+  background: rgba(255,255,255,0.82);
+}
+@keyframes jm-dash-flow {
+  0% { stroke-dashoffset: 120; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes jm-node-pulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.35; }
+}
+@keyframes jm-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.jm-flow {
+  animation: jm-dash-flow 9s linear infinite;
+}
+.jm-pulse-node {
+  animation: jm-node-pulse 3.2s ease-in-out infinite;
+}
+.jm-enter {
+  animation: jm-fade-up 0.55s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .judmap .jm-flow, .judmap .jm-pulse-node, .judmap .jm-enter {
+    animation: none !important;
+  }
+}

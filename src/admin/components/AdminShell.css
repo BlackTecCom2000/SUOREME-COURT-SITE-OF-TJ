@@ -1,0 +1,126 @@
+/* Admin Control Center — layout shell (sizes, flex/grid, overflow, drawer).
+   Colors/spacing stay in Tailwind utilities; this file owns geometry.
+   All selectors are `admin-*` prefixed to avoid collisions. */
+
+.admin-shell {
+  --admin-sidebar-w: 256px;
+  --admin-sidebar-collapsed-w: 80px;
+  --admin-topbar-h: 64px;
+  --admin-drawer-w: 288px;
+
+  display: flex;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* 1. Desktop sidebar slot: hidden on mobile, flex column from md (768px) up */
+.admin-sidebar-slot {
+  display: none;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .admin-sidebar-slot {
+    display: flex;
+  }
+}
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: var(--admin-sidebar-w);
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+}
+
+.admin-sidebar.is-collapsed {
+  width: var(--admin-sidebar-collapsed-w);
+}
+
+/* Scrollable nav: own scroll chain, thin styled scrollbar */
+.admin-sidebar-nav {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+}
+
+.admin-sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 9999px;
+}
+
+/* 2. Mobile drawer (overlay pattern): backdrop + sliding panel */
+.admin-drawer-panel {
+  width: var(--admin-drawer-w);
+  max-width: 85vw;
+  height: 100%;
+  animation: admin-drawer-in 0.25s ease-out;
+}
+
+@keyframes admin-drawer-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* 3. Main workspace: flex column, content scrolls inside */
+.admin-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.admin-topbar {
+  height: var(--admin-topbar-h);
+  flex-shrink: 0;
+}
+
+.admin-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Topbar title block must shrink for `truncate` to work */
+.admin-topbar-titles {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Breadcrumb row hidden on very narrow screens to preserve h-16 */
+@media (max-width: 419px) {
+  .admin-topbar-crumbs {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-sidebar,
+  .admin-drawer-panel {
+    transition: none;
+    animation: none;
+  }
+}

@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+
+# Environment & secrets (NEVER commit real .env)
+.env
+.env.local
+.env.*.local
+
+# Runtime data (SQLite, uploads, user files)
+data/*.sqlite
+data/*.sqlite-*
+data/*.db
+data/uploads/
+data/library/
+uploads/
+
+# Logs & OS
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Editor & local tools
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.local
+
+# Temp / scratch
+tmp/
+temp/
+
+# Vendored third-party harnesses & local scratch (not part of the site)
+agent/
+test-results/
+Project_Snapshot.md
+audit-lcp.js
+audit-mobile.js
+fetch-test.js
+fetch-test2.js

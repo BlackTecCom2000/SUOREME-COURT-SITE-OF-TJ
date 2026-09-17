@@ -1,0 +1,33 @@
+{
+  "project": "Supreme Court of the Republic of Tajikistan (sud.tj)",
+  "section": "Digital Justice 3D Experience (03)",
+  "date": "2026-08-23T00:20:38.283Z",
+  "license": "CC0 1.0 Universal (Public Domain Dedication) & Supreme Court Public Production License",
+  "source_texture_repository": "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/ (CC0 / MIT)",
+  "assets": [
+    {
+      "file": "themis.glb",
+      "title": "Classical Statue of Lady Justice (Themis)",
+      "description": "Full bronze and gold sculpture with draped toga, blindfold of impartiality, scales, and judicial sword.",
+      "format": "GLB (glTF 2.0 Binary)",
+      "license": "CC0 1.0 Universal",
+      "attribution": "Judicial 3D Heritage Collection / Supreme Court RT / Three.js Open Assets"
+    },
+    {
+      "file": "scales.glb",
+      "title": "Articulated Judicial Balance Scales",
+      "description": "Precision balance scales with central column, fulcrum finial, suspension chains, and twin balance pans.",
+      "format": "GLB (glTF 2.0 Binary)",
+      "license": "CC0 1.0 Universal",
+      "attribution": "Judicial 3D Heritage Collection / Supreme Court RT / Three.js Open Assets"
+    },
+    {
+      "file": "gavel.glb",
+      "title": "Ceremonial Judicial Gavel & Sounding Block",
+      "description": "Turned polished mahogany gavel with brass trim rings and stepped octagonal sounding base.",
+      "format": "GLB (glTF 2.0 Binary)",
+      "license": "CC0 1.0 Universal",
+      "attribution": "Judicial 3D Heritage Collection / Supreme Court RT / Three.js Open Assets"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+﻿import { CourtSiteConfig } from '../types';
+
+export const sinoConfig: CourtSiteConfig = {
+  id: 'sino',
+  region: 'sino',
+  courtNameRu: 'Суди ноҳияи Сино',
+  name: {
+    tj: 'Суди ноҳияи Синои шаҳри Душанбе',
+    ru: 'Суд района Сино города Душанбе',
+    en: 'Sino District Court of Dushanbe',
+  },
+  shortName: {
+    tj: 'Суди н. Сино',
+    ru: 'Суд р. Сино',
+    en: 'Sino Court',
+  },
+  cityLine: {
+    tj: 'ш. Душанбе',
+    ru: 'г. Душанбе',
+    en: 'Dushanbe',
+  },
+  about: {
+    tj: 'Суди ноҳияи Синои шаҳри Душанбе парвандаҳои маданӣ, оилавӣ, ҷиноятӣ, ҳуқуқвайронкунии маъмурӣ ва меҳнатиро дар ҳудуди ноҳия баррасӣ менамояд.',
+    ru: 'Суд района Сино города Душанбе рассматривает гражданские, семейные, уголовные дела, дела об административных правонарушениях и трудовые споры на территории района.',
+    en: 'The Sino District Court of Dushanbe hears civil, family, criminal, administrative-offence and labour cases within the district.',
+  },
+  contacts: {
+    address: {
+      tj: 'ш. Душанбе, кӯчаи Маяковский, 32А',
+      ru: 'г. Душанбе, ул. Маяковского, 32А',
+      en: 'Dushanbe, 32A Mayakovsky Street',
+    },
+    email: 'sino@sud.tj',
+    phones: ['+992 (37) 235-25-50'],
+  },
+  externalUrl: 'http://sino.sud.tj/',
+  receptionSchedule: [
+    {
+      name: { tj: 'Саидзода Гулбону Исуф', ru: 'Саидзода Гулбону Исуф', en: 'Saidzoda Gulbonu Isuf' },
+      title: { tj: 'Раиси суд', ru: 'Председатель суда', en: 'Chairperson' },
+      days: { tj: 'Душанбе, Ҷумъа, Шанбе', ru: 'Пн, Пт, Сб', en: 'Mon, Fri, Sat' },
+      time: { tj: 'Аз 08:00 то 12:00', ru: 'с 08:00 до 12:00', en: '08:00–12:00' },
+    },
+    {
+      name: { tj: 'Амирзода Тахмина Раҳмоналӣ', ru: 'Амирзода Тахмина Рахмонали', en: 'Amirzoda Takhmina Rahmonali' },
+      title: { tj: 'Муовини якуми раис', ru: 'Первый заместитель председателя', en: 'First Deputy Chairperson' },
+      days: { tj: 'Сешанбе, Панҷшанбе, Ҷумъа', ru: 'Вт, Чт, Пт', en: 'Tue, Thu, Fri' },
+      time: { tj: 'Аз 08:00 то 12:00', ru: 'с 08:00 до 12:00', en: '08:00–12:00' },
+    },
+    {
+      name: { tj: 'Исозода Хуршед Искандар', ru: 'Исозода Хуршед Искандар', en: 'Isozoda Khurshed Iskandar' },
+      title: { tj: 'Муовини раис', ru: 'Заместитель председателя', en: 'Deputy Chairperson' },
+      days: { tj: 'Чоршанбе, Ҷумъа, Шанбе', ru: 'Ср, Пт, Сб', en: 'Wed, Fri, Sat' },
+      time: { tj: 'Аз 08:00 то 12:00', ru: 'с 08:00 до 12:00', en: '08:00–12:00' },
+    },
+  ],
+  leadership: [
+    { name: { tj: 'Саидзода Гулбону Исуф', ru: 'Саидзода Гулбону Исуф', en: 'Saidzoda Gulbonu Isuf' }, title: { tj: 'Раиси суд', ru: 'Председатель суда', en: 'Chairperson' } },
+    { name: { tj: 'Амирзода Тахмина Раҳмоналӣ', ru: 'Амирзода Тахмина Рахмонали', en: 'Amirzoda Takhmina Rahmonali' }, title: { tj: 'Муовини якуми раис', ru: 'Первый заместитель председателя', en: 'First Deputy Chairperson' } },
+    { name: { tj: 'Исозода Хуршед Искандар', ru: 'Исозода Хуршед Искандар', en: 'Isozoda Khurshed Iskandar' }, title: { tj: 'Муовини раис', ru: 'Заместитель председателя', en: 'Deputy Chairperson' } },
+    { name: { tj: 'Ниёззода Сурайё Ҷума', ru: 'Ниёззода Сурайё Джума', en: 'Niyozzoda Surayyo Juma' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Файзуллозода Сабоҳат Муҳиддин', ru: 'Файзуллозода Сабохат Мухиддин', en: 'Faizullozoda Sabohat Muhiddin' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Қосимзода Мавҷуда', ru: 'Косимзода Мавджуда', en: 'Kosimzoda Mavjuda' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Амирзода Тоҷиддин Муҳиддин', ru: 'Амирзода Тоджиддин Мухиддин', en: 'Amirzoda Tojiddin Muhiddin' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Аҳмадзода Фароғат Маҳмуд', ru: 'Ахмадзода Фароғат Махмуд', en: 'Ahmadzoda Farogat Mahmud' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Баротзода Суҳроб Тавакал', ru: 'Баротзода Сухроб Тавакал', en: 'Barotzoda Suhrob Tavakal' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Қурбонализода Суҳроб Қурбоналӣ', ru: 'Курбонализода Сухроб Курбонали', en: 'Kurbonalizoda Suhrob Kurbonali' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Гулмаҳмадзода Мавзуна Давлатшоҳ', ru: 'Гулмахмадзода Мавзуна Давлатшох', en: 'Gulmahmadzoda Mavzuna Davlatshoh' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Зарифзода Бегиҷон Зариф', ru: 'Зарифзода Бегиджон Зариф', en: 'Zarifzoda Begijon Zarif' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Зуҳурзода Давлатмурод Боймурод', ru: 'Зухурзода Давлатмурод Боймурод', en: 'Zuhurzoda Davlatmurod Boymurod' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Раҳмон Далер Сафарбек', ru: 'Рахмон Далер Сафарбек', en: 'Rahmon Daler Safarbek' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Рузизода Гулноз Ёқуб', ru: 'Рузизода Гулноз Ёкуб', en: 'Ruzizoda Gulnoz Yoqub' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Сайфуллозода Нодира', ru: 'Сайфуллозода Нодира', en: 'Saifullozoda Nodira' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Сафарзода Азизамоҳ Зайнудин', ru: 'Сафарзода Азизамох Зайнудин', en: 'Safarzoda Azizamo Zaynudin' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Саидназарзода Содиқ Саидназар', ru: 'Саидназарзода Содик Саидназар', en: 'Saidnazarzoda Sodiq Saidnazar' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Умарзода Масрур Мансурҷон', ru: 'Умарзода Масрур Мансурджон', en: 'Umarzoda Masrur Mansurjon' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Шаҳнозаи Абдухалил', ru: 'Шахнозаи Абдухалил', en: 'Shahnozai Abdukhalil' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Юсуфзода Зубайдулло Раҳматулло', ru: 'Юсуфзода Зубайдулло Рахматулло', en: 'Yusufzoda Zubaydullo Rahmatullo' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Ҳусайнзода Ҷомӣ Давлатали', ru: 'Хусайнзода Джоми Давлатали', en: 'Husainzoda Jomi Davlatali' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+    { name: { tj: 'Файзуллозода Саидаъзам Ҳамид', ru: 'Файзуллозода Саидаъзам Хамид', en: 'Faizullozoda Saidaazam Hamid' }, title: { tj: 'Судя', ru: 'Судья', en: 'Judge' } },
+  ],
+  receptionNote: {
+    tj: 'Қабули шаҳрвандон мувофиқи ҷадвали тасдиқгардида гузаронида мешавад. Барои муроҷиат аз интернет-қабулгоҳ истифода баред.',
+    ru: 'Приём граждан ведётся по утверждённому графику. Для обращения используйте интернет-приёмную.',
+    en: 'Citizens are received according to the approved schedule. Use the online reception desk to file an appeal.',
+  },
+};

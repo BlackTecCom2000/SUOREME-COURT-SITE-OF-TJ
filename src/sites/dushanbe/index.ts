@@ -1,0 +1,1 @@
+﻿export { dushanbeConfig } from './config';
