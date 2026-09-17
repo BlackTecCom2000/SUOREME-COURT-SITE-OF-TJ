@@ -34,12 +34,3 @@ Thumbs.db
 # Temp / scratch
 tmp/
 temp/
-
-# Vendored third-party harnesses & local scratch (not part of the site)
-agent/
-test-results/
-Project_Snapshot.md
-audit-lcp.js
-audit-mobile.js
-fetch-test.js
-fetch-test2.js
