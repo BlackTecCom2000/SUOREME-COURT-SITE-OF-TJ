@@ -20,11 +20,17 @@ const NewFilingModal = React.lazy(() => import('../components/digital-court/NewF
 
 import { ModalTab } from '../components/JudicialModal';
 import { CourtNodeData } from '../data/sudTjData';
+import { usePageMeta } from '../hooks/usePageMeta';
+import { useLanguage } from '../context/LanguageContext';
 
 export const HomePage: React.FC = () => {
-  const { 
+  const { language } = useLanguage();
+  usePageMeta(
+    language === 'tj' ? 'Суди Олии Ҷумҳурии Тоҷикистон' : language === 'en' ? 'Supreme Court of Tajikistan' : 'Верховный суд Республики Таджикистан'
+  );
+  const {
     handleOpenSectionModal
-  } = useOutletContext<{ 
+  } = useOutletContext<{
     handleOpenSectionModal: (tab: ModalTab, court?: CourtNodeData) => void;
     handleOpenAiAssistant?: () => void;
   }>();

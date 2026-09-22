@@ -2,10 +2,11 @@ import { Router } from 'express';
 import { ragPipeline } from '../services/ragPipeline';
 import { ChatMessage } from '../services/aiGateway';
 import { db } from '../index';
+import { aiChatLimiter, indexLimiter } from '../middleware/rateLimit';
 
 const router = Router();
 
-router.post('/chat', async (req, res) => {
+router.post('/chat', aiChatLimiter(), async (req, res) => {
   try {
     const { message, history = [], conversationId } = req.body;
     
@@ -69,7 +70,7 @@ router.post('/chat', async (req, res) => {
 });
 
 // Admin endpoint to index knowledge
-router.post('/index-knowledge', async (req, res) => {
+router.post('/index-knowledge', indexLimiter(), async (req, res) => {
   const { title, content, type = 'info', url = '' } = req.body;
   if (!title || !content) return res.status(400).json({ error: 'Missing fields' });
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 interface AdminModalProps {
@@ -29,13 +30,14 @@ export const AdminModal: React.FC<AdminModalProps> = ({
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
+  if (typeof document === 'undefined') return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn select-none">
+  const overlay = (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-md animate-fadeIn select-none overflow-y-auto">
       <div
         className={`
-          relative w-full ${maxWidth} rounded-2xl border border-amber-400/30 bg-[#070d1a]
-          shadow-2xl shadow-black/90 flex flex-col max-h-[90vh] overflow-hidden text-left
+          relative w-full ${maxWidth} my-auto rounded-2xl border border-amber-400/30 bg-[#070d1a]
+          shadow-2xl shadow-black/90 flex flex-col max-h-[90vh] max-h-[90dvh] overflow-hidden text-left min-w-0
         `}
       >
         {/* Header */}
@@ -59,17 +61,19 @@ export const AdminModal: React.FC<AdminModalProps> = ({
         </div>
 
         {/* Body */}
-        <div className="p-5 sm:p-6 overflow-y-auto flex-1 text-slate-200">
+        <div className="p-5 sm:p-6 overflow-y-auto flex-1 text-slate-200 min-w-0">
           {children}
         </div>
 
         {/* Footer */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 p-4 sm:p-5 border-t border-slate-800 bg-[#0a1120]/80">
+          <div className="flex items-center justify-end gap-3 p-4 sm:p-5 border-t border-slate-800 bg-[#0a1120]/80 shrink-0">
             {footer}
           </div>
         )}
       </div>
     </div>
   );
+
+  return createPortal(overlay, document.body);
 };

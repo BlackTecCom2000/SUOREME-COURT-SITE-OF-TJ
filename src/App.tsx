@@ -12,6 +12,8 @@ import { ContentDetailPage } from './pages/ContentDetailPage';
 import { CourtSitePage } from './sites/CourtSitePage';
 import { CourtSiteAdmin } from './sites/CourtSiteAdmin';
 import { LibraryPage } from './pages/LibraryPage';
+import { SitemapPage } from './pages/SitemapPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App: React.FC = () => {
   return (
@@ -30,6 +32,8 @@ export const App: React.FC = () => {
             <Route path="courts/:courtId" element={<CourtSitePage />} />
             <Route path="courts/:courtId/admin" element={<CourtSiteAdmin />} />
             <Route path="library" element={<LibraryPage />} />
+            <Route path="sitemap" element={<SitemapPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
         </A11yProvider>

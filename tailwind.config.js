@@ -12,6 +12,15 @@ export default {
         mono: ['"Flexo Soft Medium"', 'system-ui', 'sans-serif'],
       },
       colors: {
+        app: {
+          bg: '#080B11',
+          panel: '#0F131C',
+          border: '#1E293B',
+          text: '#CBD5E1',
+          gold: '#D4AF37',
+          goldHover: '#FDE08B',
+          cover: '#2b1d14',
+        },
         theme: {
           bg: 'var(--bg-primary)',
           bgSec: 'var(--bg-secondary)',

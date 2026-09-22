@@ -15,8 +15,10 @@ import {
   Calculator,
   Layers,
   LibraryBig,
+  Brain,
 } from 'lucide-react';
 import { NationalEmblem } from '../../components/judicial-ecosystem/NationalEmblem';
+import { useAdminAuth } from '../context/AdminAuthContext';
 
 interface AdminSidebarProps {
   isCollapsed: boolean;
@@ -29,6 +31,8 @@ interface NavItem {
   label: string;
   path: string;
   exact?: boolean;
+  // SEC-01: any-of permission required to SEE this item (backend still enforces).
+  anyOf?: string[];
 }
 
 interface NavGroup {
@@ -41,6 +45,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onToggleCollapse,
   onCloseMobile,
 }) => {
+  const { hasPerm } = useAdminAuth();
+  const visible = (item: NavItem) =>
+    !item.anyOf || item.anyOf.length === 0 || item.anyOf.some((p) => hasPerm(p));
   const navigationGroups: NavGroup[] = [
     {
       title: 'Управление',
@@ -60,11 +67,13 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           icon: Newspaper,
           label: 'Публикации',
           path: '/admin/news',
+          anyOf: ['content.create', 'content.edit', 'content.review', 'content.approve', 'content.publish'],
         },
         {
           icon: Image,
           label: 'Медиатека',
           path: '/admin/media',
+          anyOf: ['media.manage'],
         },
       ],
     },
@@ -75,26 +84,31 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           icon: Gavel,
           label: 'Судебные акты',
           path: '/admin/acts',
+          anyOf: ['acts.manage'],
         },
         {
           icon: LibraryBig,
           label: 'Книги и библиотека',
           path: '/admin/books',
+          anyOf: ['library.manage'],
         },
         {
           icon: Landmark,
           label: 'Судебная сеть (Судҳо)',
           path: '/admin/courts',
+          anyOf: ['courts.manage'],
         },
         {
           icon: Layers,
           label: 'Сохтори Суди Олӣ (Редактор)',
           path: '/admin/structure-editor',
+          anyOf: ['content.edit'],
         },
         {
           icon: Calculator,
           label: 'Госпошлина (Тарифы)',
           path: '/admin/duty',
+          anyOf: ['settings.manage'],
         },
       ],
     },
@@ -105,6 +119,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           icon: Send,
           label: 'Обращения граждан',
           path: '/admin/appeals',
+          anyOf: ['appeals.manage'],
         },
       ],
     },
@@ -115,6 +130,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           icon: Users,
           label: 'Пользователи и роли',
           path: '/admin/users',
+          anyOf: ['users.manage'],
         },
         {
           icon: ShieldCheck,
@@ -125,6 +141,13 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           icon: Settings,
           label: 'Системные настройки',
           path: '/admin/settings',
+          anyOf: ['settings.manage'],
+        },
+        {
+          icon: Brain,
+          label: 'AI · База знаний',
+          path: '/admin/ai',
+          anyOf: ['ai.manage'],
         },
       ],
     },
@@ -166,7 +189,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
       {/* 2. Navigation Groups */}
       <div className="admin-sidebar-nav p-3 space-y-5">
-        {navigationGroups.map((group, gIdx) => (
+        {navigationGroups
+          .map((group) => ({ ...group, items: group.items.filter(visible) }))
+          .filter((group) => group.items.length > 0)
+          .map((group, gIdx) => (
           <div key={gIdx} className="space-y-1">
             {!isCollapsed && (
               <div className="px-3 py-1 font-mono text-[9px] uppercase tracking-widest text-slate-500 font-bold text-left">

@@ -18,6 +18,9 @@ export interface ShelfBookMeta {
 export interface ShelfBook {
   key: string;
   url: string | null;
+  urlRu?: string | null;
+  urlTj?: string | null;
+  urlEn?: string | null;
   title: TriText;
   badge?: string;
   meta?: ShelfBookMeta[];
@@ -28,6 +31,7 @@ export interface ShelfBook {
   coverEmblem?: string | null;
   coverBg?: string | null;
   coverImage?: string | null;
+  docLang?: string | null;
 }
 
 export type DocKind = 'constitution' | 'code' | 'law' | 'document' | 'quote' | 'other';
@@ -128,7 +132,10 @@ export const staticToShelfBook = (doc: LegislationLink, idx = 0): ShelfBook => (
 
 export const dbToShelfBook = (row: any): ShelfBook => ({
   key: 'db:' + row.id,
-  url: row.url || null,
+  url: row.url || row.url_ru || row.url_tj || row.url_en || null,
+  urlRu: row.url_ru || null,
+  urlTj: row.url_tj || null,
+  urlEn: row.url_en || null,
   title: {
     ru: row.title_ru || '',
     tj: row.title_tj || row.title_ru || '',
@@ -141,10 +148,11 @@ export const dbToShelfBook = (row: any): ShelfBook => ({
   coverEmblem: row.cover_emblem || null,
   coverBg: row.cover_bg || null,
   coverImage: row.cover_image || null,
+  docLang: row.doc_lang || null,
   meta: [
     { label: T('Формат', 'Формат', 'Format'), value: 'PDF' },
     { label: T('Манбаъ', 'Источник', 'Source'), value: 'sud.tj' },
-    { label: T('Забонҳо', 'Языки', 'Languages'), value: 'TJ · RU · EN' },
+    { label: T('Забонҳо', 'Языки', 'Languages'), value: row.doc_lang ? String(row.doc_lang).toUpperCase() : 'TJ · RU · EN' },
   ],
 });
 

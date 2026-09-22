@@ -564,15 +564,16 @@ html.is-morphing-theme ::view-transition-new(root) {
     @apply opacity-50 cursor-not-allowed pointer-events-none;
   }
 
-  /* Primary — sky blue */
+  /* Primary — judicial gold (unified with .btn-gold; single primary system) */
   .btn-primary {
     @apply btn-base text-white;
-    background: var(--accent-digital);
-    border: 1px solid var(--accent-digital);
+    background: var(--accent-gold);
+    border: 1px solid var(--accent-gold);
   }
   .btn-primary:hover {
-    filter: brightness(1.15);
-    box-shadow: 0 4px 20px rgba(2, 132, 199, 0.4);
+    background: var(--accent-gold-dark);
+    border-color: var(--accent-gold-dark);
+    box-shadow: 0 4px 20px rgba(184, 138, 36, 0.45);
     transform: translateY(-1px);
   }
   .btn-primary:active {

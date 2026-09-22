@@ -19,11 +19,28 @@ import { AdminSelect } from '../../components/ui/AdminSelect';
 import { AdminBadge } from '../../components/ui/AdminBadge';
 import { AdminTabs } from '../../components/ui/AdminTabs';
 import { LivePreviewEngine } from '../../components/preview/LivePreviewEngine';
+import { useAdminAuth } from '../../context/AdminAuthContext';
+
+type WorkflowStatus =
+  | 'draft'
+  | 'pending_review'
+  | 'approved'
+  | 'rejected'
+  | 'published'
+  | 'scheduled'
+  | 'archived';
 
 export const NewsEditor: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const isEditing = Boolean(id && id !== 'new');
+  // CMS-01/SEC-01: workflow actions gated by server-issued permissions.
+  const { hasPerm } = useAdminAuth();
+  const canEdit = hasPerm('content.edit');
+  const canSubmit = hasPerm('content.edit') || hasPerm('content.review');
+  const canApprove = hasPerm('content.approve');
+  const canPublish = hasPerm('content.publish');
+  const canReview = hasPerm('content.review');
 
   const [activeLang, setActiveLang] = useState<'ru' | 'tj' | 'en'>('ru');
   const [isSaving, setIsSaving] = useState(false);
@@ -232,9 +249,10 @@ export const NewsEditor: React.FC = () => {
     cover_image: '',
     category: 'Судебная хроника',
     featured: false,
-    status: 'draft' as 'draft' | 'pending' | 'published' | 'scheduled' | 'archived',
+    status: 'draft' as WorkflowStatus,
     scheduled_at: '',
     published_at: '',
+    review_notes: '',
   });
 
   // Server stores UTC ISO; datetime-local needs local 'YYYY-MM-DDTHH:mm'
@@ -276,6 +294,7 @@ export const NewsEditor: React.FC = () => {
             status: data.status || 'draft',
             scheduled_at: data.scheduled_at || '',
             published_at: toLocalInput(data.published_at),
+            review_notes: data.review_notes || '',
           });
           try {
             const m = JSON.parse(data.ai_meta || '{}');
@@ -329,10 +348,22 @@ export const NewsEditor: React.FC = () => {
         throw new Error(errorData.error || 'Ошибка при сохранении');
       }
 
-      setStatusMessage({
-        type: 'success',
-        text: targetStatus === 'published' ? 'Публикация успешно размещена!' : 'Черновик сохранен',
-      });
+      const okText =
+        targetStatus === 'published'
+          ? 'Публикация успешно размещена!'
+          : targetStatus === 'pending_review'
+            ? 'Отправлено на проверку'
+            : targetStatus === 'approved'
+              ? 'Одобрено рецензентом'
+              : targetStatus === 'rejected'
+                ? 'Возвращено на доработку'
+                : targetStatus === 'scheduled'
+                  ? 'Публикация запланирована'
+                  : targetStatus === 'archived'
+                    ? 'Перемещено в архив'
+                    : 'Черновик сохранен';
+      setStatusMessage({ type: 'success', text: okText });
+      if (targetStatus) setFormData((prev) => ({ ...prev, status: targetStatus as WorkflowStatus }));
 
       if (!isEditing) {
         setTimeout(() => navigate('/admin/news'), 1200);
@@ -372,7 +403,7 @@ export const NewsEditor: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <AdminBadge variant={formData.status} label={formData.status.toUpperCase()} size="md" />
+          <AdminBadge variant={formData.status as any} label={formData.status.toUpperCase()} size="md" />
         </div>
       </div>
 
@@ -643,12 +674,29 @@ export const NewsEditor: React.FC = () => {
                   onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
                   options={[
                     { value: 'draft', label: 'Черновик (Draft)' },
-                    { value: 'pending', label: 'На проверке (Pending Review)' },
+                    { value: 'pending_review', label: 'На проверке (Review)' },
+                    { value: 'approved', label: 'Одобрено (Approved)' },
+                    { value: 'rejected', label: 'Возвращено (Rejected)' },
                     { value: 'published', label: 'Опубликовано (Published)' },
                     { value: 'scheduled', label: 'Запланировано (Scheduled)' },
                     { value: 'archived', label: 'В архиве (Archived)' },
                   ]}
                 />
+                {(formData.status === 'rejected' || (canReview && isEditing)) && (
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                      Причина возврата / review notes
+                    </span>
+                    <textarea
+                      value={formData.review_notes}
+                      onChange={(e) => setFormData({ ...formData, review_notes: e.target.value })}
+                      rows={3}
+                      disabled={!canReview}
+                      placeholder="Обязательно при отклонении: что исправить…"
+                      className="w-full rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 p-3 leading-relaxed disabled:opacity-50"
+                    />
+                  </div>
+                )}
 
                 <AdminSelect
                   label="Категория"
@@ -739,25 +787,72 @@ export const NewsEditor: React.FC = () => {
           <span>Все изменения фиксируются в журнале ревизий</span>
         </div>
 
-        <div className="flex items-center gap-3">
-          <AdminButton
-            variant="outline"
-            size="sm"
-            onClick={() => handleSave('draft')}
-            isLoading={isSaving}
-          >
-            Сохранить черновик
-          </AdminButton>
-
-          <AdminButton
-            variant="primary"
-            size="sm"
-            leftIcon={<Save size={14} />}
-            onClick={() => handleSave('published')}
-            isLoading={isSaving}
-          >
-            Опубликовать сейчас
-          </AdminButton>
+        <div className="flex items-center gap-2 flex-wrap justify-end">
+          {canEdit && (
+            <AdminButton
+              variant="outline"
+              size="sm"
+              onClick={() => handleSave('draft')}
+              isLoading={isSaving}
+            >
+              Сохранить черновик
+            </AdminButton>
+          )}
+          {canSubmit && (
+            <AdminButton
+              variant="outline"
+              size="sm"
+              onClick={() => handleSave('pending_review')}
+              isLoading={isSaving}
+              title="DRAFT → REVIEW"
+            >
+              На проверку
+            </AdminButton>
+          )}
+          {canApprove && (
+            <AdminButton
+              variant="outline"
+              size="sm"
+              onClick={() => handleSave('approved')}
+              isLoading={isSaving}
+              title="REVIEW → APPROVED"
+            >
+              Одобрить
+            </AdminButton>
+          )}
+          {canReview && (
+            <AdminButton
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                if (!formData.review_notes.trim() && formData.status !== 'rejected') {
+                  setStatusMessage({ type: 'error', text: 'Укажите причину возврата' });
+                  return;
+                }
+                handleSave('rejected');
+              }}
+              isLoading={isSaving}
+              title="REVIEW → REJECTED (нужна причина)"
+            >
+              Отклонить
+            </AdminButton>
+          )}
+          {canPublish ? (
+            <AdminButton
+              variant="primary"
+              size="sm"
+              leftIcon={<Save size={14} />}
+              onClick={() => handleSave('published')}
+              isLoading={isSaving}
+              title="APPROVED → PUBLISHED"
+            >
+              Опубликовать сейчас
+            </AdminButton>
+          ) : (
+            <span className="font-mono text-[11px] text-slate-500" title="Нужна привилегия content.publish">
+              Нет права публикации
+            </span>
+          )}
         </div>
       </div>
     </div>

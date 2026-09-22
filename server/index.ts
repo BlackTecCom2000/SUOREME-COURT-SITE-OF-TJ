@@ -10,10 +10,15 @@ import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { aiRouter } from './routes/ai';
 import { translateText, magicGenerate, magicImprove, magicTransform, detectLang } from './editorTools';
+import { loginLimiter, appealsLimiter, questionnaireLimiter, editorLimiter } from './middleware/rateLimit';
+import { requirePerm, hasPerm, permissionsFor, permForContentStatus } from './middleware/rbac';
+import { searchRouter } from './routes/search';
+import { systemRouter } from './routes/system';
+import { cache } from './utils/cache';
 
 const root = process.cwd(); const dataDir = path.join(root, 'data'); fs.mkdirSync(dataDir, { recursive: true });
-// Strip mmk.tj document HTML down to readable plain text for the e-library.
-function cleanMmkText(html: string): string {
+// Strip imported legislation HTML down to readable plain text for the e-library.
+function cleanImportedText(html: string): string {
   let t = html
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
@@ -79,6 +84,11 @@ try {
   if (!ucols.some((c) => c.name === 'site_id')) db.exec("ALTER TABLE users ADD COLUMN site_id TEXT");
   const ccols = db.prepare("PRAGMA table_info(content)").all() as any[];
   if (!ccols.some((c) => c.name === 'ai_meta')) db.exec("ALTER TABLE content ADD COLUMN ai_meta TEXT");
+  // CMS-01 editorial workflow columns (additive, idempotent)
+  for (const col of ['review_notes TEXT', 'reviewed_by INTEGER', 'reviewed_at TEXT', 'published_by INTEGER']) {
+    const name = col.split(' ')[0];
+    if (!db.prepare("PRAGMA table_info(content)").all().some((c: any) => c.name === name)) db.exec(`ALTER TABLE content ADD COLUMN ${col}`);
+  }
 } catch { /* already migrated */ }
 
 // Court-site scopes: which region/court names belong to each court site id.
@@ -98,10 +108,21 @@ try {
   }
   db.exec(`CREATE TABLE IF NOT EXISTS shelf_books(id INTEGER PRIMARY KEY, title_ru TEXT NOT NULL, title_tj TEXT, title_en TEXT, url TEXT, badge TEXT DEFAULT 'PDF', cover_theme INTEGER DEFAULT 0, sort_order INTEGER DEFAULT 0, is_visible INTEGER DEFAULT 1, created_at TEXT DEFAULT CURRENT_TIMESTAMP, updated_at TEXT)`);
   const scols = db.prepare("PRAGMA table_info(shelf_books)").all() as any[];
-  for (const col of ['title_tj TEXT', 'title_en TEXT', 'url TEXT', 'badge TEXT', 'cover_theme INTEGER DEFAULT 0', 'sort_order INTEGER DEFAULT 0', 'is_visible INTEGER DEFAULT 1', 'updated_at TEXT', 'kind TEXT', 'content TEXT', 'source_url TEXT', 'cover_text TEXT', 'cover_emblem TEXT', 'cover_bg TEXT', 'cover_image TEXT']) {
+  for (const col of ['title_tj TEXT', 'title_en TEXT', 'url TEXT', 'url_ru TEXT', 'url_tj TEXT', 'url_en TEXT', 'badge TEXT', 'cover_theme INTEGER DEFAULT 0', 'sort_order INTEGER DEFAULT 0', 'is_visible INTEGER DEFAULT 1', 'updated_at TEXT', 'kind TEXT', 'content TEXT', 'content_ru TEXT', 'content_tj TEXT', 'content_en TEXT', 'doc_lang TEXT', 'source_url TEXT', 'cover_text TEXT', 'cover_emblem TEXT', 'cover_bg TEXT', 'cover_image TEXT']) {
     const name = col.split(' ')[0];
     if (!scols.some((c) => c.name === name)) db.exec(`ALTER TABLE shelf_books ADD COLUMN ${col}`);
   }
+  // Backfill: copy legacy content/url -> ru variants if new cols empty (first run after migration)
+  try {
+    const anyNew = db.prepare("SELECT count(*) as c FROM shelf_books WHERE (content_ru IS NOT NULL OR content_tj IS NOT NULL OR content_en IS NOT NULL)").get() as any;
+    if (anyNew.c === 0) {
+      db.exec("UPDATE shelf_books SET content_ru = content WHERE content IS NOT NULL AND content_ru IS NULL");
+    }
+    const anyUrl = db.prepare("SELECT count(*) as c FROM shelf_books WHERE (url_ru IS NOT NULL OR url_tj IS NOT NULL OR url_en IS NOT NULL)").get() as any;
+    if (anyUrl.c === 0) {
+      db.exec("UPDATE shelf_books SET url_ru = url WHERE url IS NOT NULL AND url_ru IS NULL");
+    }
+  } catch {}
 } catch { /* already migrated */ }
 
 const seedDutyData = () => {
@@ -227,8 +248,35 @@ if (process.env.CMS_SEED_ADMIN_EMAIL && process.env.CMS_SEED_ADMIN_PASSWORD && !
   db.prepare('INSERT INTO users(email,password_hash,name,role) VALUES(?,?,?,?)').run(process.env.CMS_SEED_ADMIN_EMAIL, bcrypt.hashSync(process.env.CMS_SEED_ADMIN_PASSWORD, 12), 'System Administrator', 'super_admin');
 }
 const app = express(); app.use(cors({ origin: process.env.CMS_ORIGIN || 'http://127.0.0.1:5173' })); app.use(express.json({ limit: '8mb' }));
+// Baseline secure headers (no external deps; CSP kept report-tolerant for CDNs/fonts).
+// SEC-03: Content-Security-Policy in Report-Only mode. Documented in Project_Snapshot.
+// Allows: self, Google Fonts, inline styles (Tailwind/inline-style heavy app — justified),
+// data:/blob: images (PDF page renders), same-origin API + Vite HMR ws, pdf.js workers.
+// No object-src; framing limited to self (mirrors X-Frame-Options).
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader(
+    'Content-Security-Policy-Report-Only',
+    "default-src 'self'; " +
+      "script-src 'self'; " +
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+      "img-src 'self' data: blob: https:; " +
+      "font-src 'self' https://fonts.gstatic.com data:; " +
+      "connect-src 'self' ws: wss: https:; " +
+      "media-src 'self' blob: data:; " +
+      "worker-src 'self' blob:; " +
+      "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+  );
+  next();
+});
 app.use('/uploads', express.static(uploadDir, { setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff') }));
 app.use('/api/ai', aiRouter);
+// ARCH-01: extracted routers (system: health/sync/stats/sitemap; search: global search)
+app.use(systemRouter);
+app.use('/api/search', searchRouter);
 
 type Auth = express.Request & { user?: { id:number; role:string } };
 const auth = (req:Auth,res:express.Response,next:express.NextFunction) => { const token = req.headers.authorization?.replace('Bearer ',''); try { req.user = jwt.verify(token || '', secret) as {id:number;role:string}; const row = db.prepare('SELECT id, role, site_id FROM users WHERE id=? AND disabled=0').get((req.user as any).id) as any; if (!row) return res.status(401).json({ error:'Unauthorized' }); (req as any).scoped = { id: row.id, role: row.role, site_id: row.site_id || null }; next(); } catch { res.status(401).json({ error:'Unauthorized' }); } };
@@ -252,33 +300,12 @@ const requireSuper = (req:Auth,res:express.Response,next:express.NextFunction) =
   next();
 };
 const audit = (userId:number|undefined, action:string, type:string, id?:number) => db.prepare('INSERT INTO audit_log(user_id,action,object_type,object_id) VALUES(?,?,?,?)').run(userId || null, action, type, id || null);
-app.get('/api/health', (_req,res) => res.json({ api:'ok', database:'ok', storage:'ok' }));
-// Login brute-force guard (in-memory, per IP, dependency-free)
-const loginAttempts = new Map<string, { count: number; resetAt: number }>();
-const loginRateLimit = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  const ip = req.ip || req.socket.remoteAddress || 'unknown';
-  const now = Date.now();
-  const rec = loginAttempts.get(ip);
-  if (rec && now > rec.resetAt) loginAttempts.delete(ip);
-  else if (loginAttempts.size > 2000) {
-    for (const [k, v] of loginAttempts) if (now > v.resetAt) loginAttempts.delete(k);
-  }
-  const cur = loginAttempts.get(ip);
-  if (cur && cur.count >= 10) return res.status(429).json({ error: 'Too many attempts' });
-  res.on('finish', () => {
-    if (res.statusCode === 401) {
-      const r = loginAttempts.get(ip) || { count: 0, resetAt: now + 15 * 60 * 1000 };
-      r.count++;
-      loginAttempts.set(ip, r);
-    } else if (res.statusCode === 200) loginAttempts.delete(ip);
-  });
-  next();
-};
-app.post('/api/admin/auth/login', loginRateLimit, (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) return res.status(401).json({error:'Invalid credentials'}); const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h'}); audit(user.id,'login','user',user.id); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
-app.get('/api/admin/auth/me', auth, (req:Auth,res) => { const s=(req as any).scoped; const row=db.prepare('SELECT id,email,name,role,site_id FROM users WHERE id=?').get(s.id); res.json(row); });
+// Login brute-force guard (SEC-02): shared sliding-window limiter, 10 req / 15 min / IP.
+app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) return res.status(401).json({error:'Invalid credentials'}); const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h'}); audit(user.id,'login','user',user.id); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
+app.get('/api/admin/auth/me', auth, (req:Auth,res) => { const s=(req as any).scoped; const row=db.prepare('SELECT id,email,name,role,site_id FROM users WHERE id=?').get(s.id) as any; if(!row) return res.status(401).json({error:'Unauthorized'}); res.json({ ...row, permissions: permissionsFor(row.role) }); });
 // User management (super_admin only) — includes per-site access (site_id)
-app.get('/api/admin/users', auth, requireSuper, (_req,res) => res.json(db.prepare('SELECT id,email,name,role,site_id,disabled,created_at FROM users ORDER BY created_at DESC').all()));
-app.post('/api/admin/users', auth, requireSuper, (req:Auth,res) => {
+app.get('/api/admin/users', auth, requirePerm('users.manage'), (_req,res) => res.json(db.prepare('SELECT id,email,name,role,site_id,disabled,created_at FROM users ORDER BY created_at DESC').all()));
+app.post('/api/admin/users', auth, requirePerm('users.manage'), (req:Auth,res) => {
   const p=z.object({email:z.string().email(),password:z.string().min(8),name:z.string().min(2).max(160),role:z.enum(['super_admin','admin','editor','reviewer']).default('editor'),site_id:z.string().max(64).nullable().optional(),disabled:z.union([z.literal(0),z.literal(1)]).optional()}).safeParse(req.body);
   if(!p.success)return res.status(400).json({error:'Invalid user', details:p.error});
   const x=p.data;
@@ -288,7 +315,7 @@ app.post('/api/admin/users', auth, requireSuper, (req:Auth,res) => {
     res.status(201).json({id:result.lastInsertRowid});
   } catch { res.status(409).json({error:'Email already exists'}); }
 });
-app.patch('/api/admin/users/:id', auth, requireSuper, (req:Auth,res) => {
+app.patch('/api/admin/users/:id', auth, requirePerm('users.manage'), (req:Auth,res) => {
   const p=z.object({name:z.string().min(2).max(160).optional(),role:z.enum(['super_admin','admin','editor','reviewer']).optional(),site_id:z.string().max(64).nullable().optional(),disabled:z.union([z.literal(0),z.literal(1)]).optional(),password:z.string().min(8).optional()}).safeParse(req.body);
   if(!p.success)return res.status(400).json({error:'Invalid user', details:p.error});
   const x=p.data;
@@ -308,7 +335,7 @@ app.patch('/api/admin/users/:id', auth, requireSuper, (req:Auth,res) => {
 // Media endpoints (multer 2.x: file arrives as a stream + sniffed mime)
 const ALLOWED_UPLOAD_MIME = /^(image\/(png|jpeg|webp|gif)|application\/pdf|video\/(mp4|webm)|audio\/(mpeg|mp4))$/;
 const ALLOWED_UPLOAD_EXT = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.pdf', '.mp4', '.webm', '.mp3'];
-app.post('/api/admin/media', auth, upload.single('file'), (req:Auth, res) => {
+app.post('/api/admin/media', auth, requirePerm('media.manage'), upload.single('file'), (req:Auth, res) => {
   if (denyScoped(req,res)) return;
   const f = (req as any).file;
   if (!f || !f.stream) return res.status(400).json({ error: 'No file uploaded' });
@@ -337,22 +364,14 @@ app.get('/api/admin/media', auth, (req:Auth, res) => { if (denyScoped(req,res)) 
 // (main portal + court sites) can pull fresh data within seconds.
 let SYNC_EPOCH = Date.now();
 const bumpSync = () => { SYNC_EPOCH = Date.now(); };
+export const getSyncEpoch = () => SYNC_EPOCH;
 app.use('/api/admin', (req, _res, next) => {
   if (req.path.includes('/auth/')) return next();
   if (req.method === 'GET' || req.method === 'HEAD' || req.method === 'OPTIONS') return next();
   bumpSync();
   next();
 });
-app.get('/api/sync', (_req, res) => {
-  res.setHeader('Cache-Control', 'no-store');
-  res.json({ epoch: SYNC_EPOCH });
-});
 
-// Cache middleware for public APIs
-const cache = (seconds: number) => (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  res.setHeader('Cache-Control', `public, max-age=${seconds}`);
-  next();
-};
 
 // Content
 app.get('/api/news', cache(60), (req,res) => {
@@ -375,20 +394,9 @@ app.get('/api/content/:type/:slug', cache(120), (req,res) => {
   if (!row) return res.status(404).json({ error:'Not found' });
   res.json(row);
 });
-app.get('/api/stats', cache(300), (_req,res) => {
-  const q = (sql: string, ...a: any[]) => (db.prepare(sql).get(...a) as any)?.c || 0;
-  res.json({
-    courts: q('SELECT count(*) c FROM courts WHERE active=1'),
-    hearings: q('SELECT count(*) c FROM hearings'),
-    acts: q("SELECT count(*) c FROM judicial_acts WHERE status='published'"),
-    news: q("SELECT count(*) c FROM content WHERE type='news' AND status='published' AND deleted_at IS NULL"),
-    announcements: q("SELECT count(*) c FROM content WHERE type='announcement' AND status='published' AND deleted_at IS NULL"),
-    vacancies: q("SELECT count(*) c FROM content WHERE type='vacancy' AND status='published' AND deleted_at IS NULL"),
-    appeals: q("SELECT count(*) c FROM appeals"),
-  });
-});
-app.post('/api/questionnaire', (req,res) => { const p=z.object({name:z.string().min(2).max(120),phone:z.string().max(40).optional(),topic:z.string().max(120).optional(),rating:z.number().int().min(1).max(5).optional(),message:z.string().max(2000).optional()}).safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid questionnaire'}); const row=db.prepare('INSERT INTO questionnaire_responses(name,phone,topic,rating,message) VALUES(?,?,?,?,?)').run(p.data.name,p.data.phone||null,p.data.topic||null,p.data.rating??null,p.data.message||null); res.status(201).json({id:row.lastInsertRowid,status:'received'}); });
-app.post('/api/appeals', (req,res) => { const p=z.object({fullName:z.string().min(2).max(160),phone:z.string().min(5).max(40),email:z.string().email().optional().or(z.literal('')),subject:z.string().max(200).optional(),message:z.string().min(10).max(5000)}).safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid appeal'}); const row=db.prepare('INSERT INTO appeals(full_name,phone,email,subject,message) VALUES(?,?,?,?,?)').run(p.data.fullName,p.data.phone,p.data.email || null,p.data.subject || null,p.data.message); res.status(201).json({id:row.lastInsertRowid,status:'new'}); });
+
+app.post('/api/questionnaire', questionnaireLimiter(), (req,res) => { const p=z.object({name:z.string().min(2).max(120),phone:z.string().max(40).optional(),topic:z.string().max(120).optional(),rating:z.number().int().min(1).max(5).optional(),message:z.string().max(2000).optional()}).safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid questionnaire'}); const row=db.prepare('INSERT INTO questionnaire_responses(name,phone,topic,rating,message) VALUES(?,?,?,?,?)').run(p.data.name,p.data.phone||null,p.data.topic||null,p.data.rating??null,p.data.message||null); res.status(201).json({id:row.lastInsertRowid,status:'received'}); });
+app.post('/api/appeals', appealsLimiter(), (req,res) => { const p=z.object({fullName:z.string().min(2).max(160),phone:z.string().min(5).max(40),email:z.string().email().optional().or(z.literal('')),subject:z.string().max(200).optional(),message:z.string().min(10).max(5000)}).safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid appeal'}); const row=db.prepare('INSERT INTO appeals(full_name,phone,email,subject,message) VALUES(?,?,?,?,?)').run(p.data.fullName,p.data.phone,p.data.email || null,p.data.subject || null,p.data.message); res.status(201).json({id:row.lastInsertRowid,status:'new'}); });
 // Editor helpers: auto-translation + magic judicial press composer (admin only)
 const getSetting = (key: string, fallback = '1'): string => {
   try {
@@ -403,7 +411,7 @@ app.get('/api/admin/settings', auth, (req:Auth,res) => {
   rows.forEach((r) => { out[r.key] = r.value; });
   res.json(out);
 });
-app.post('/api/admin/settings', auth, (req:Auth,res) => {
+app.post('/api/admin/settings', auth, requirePerm('settings.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
   const p = z.object({ key: z.string().min(1).max(64).regex(/^[a-z0-9_]+$/), value: z.string().max(5000) }).safeParse(req.body || {});
   if (!p.success) return res.status(400).json({ error: 'Invalid setting' });
@@ -411,14 +419,14 @@ app.post('/api/admin/settings', auth, (req:Auth,res) => {
   audit((req as any).scoped.id, 'update', 'setting', undefined);
   res.json({ ok: true });
 });
-app.post('/api/editor/translate', auth, async (req:Auth,res) => {
+app.post('/api/editor/translate', auth, editorLimiter(), async (req:Auth,res) => {
   if (getSetting('ai_translate_enabled') === '0') return res.status(403).json({error:'Auto translation disabled'});
   const p=z.object({text:z.string().min(1).max(15000),from:z.string().max(8),to:z.string().max(8)}).safeParse(req.body || {});
   if(!p.success)return res.status(400).json({error:'Invalid request'});
   try { res.json({ text: await translateText(p.data.text, p.data.from, p.data.to) }); }
   catch (e:any) { res.status(502).json({ error:'Translation unavailable', details: String(e?.message || e) }); }
 });
-app.post('/api/editor/magic', auth, async (req:Auth,res) => {
+app.post('/api/editor/magic', auth, editorLimiter(), async (req:Auth,res) => {
   const p=z.object({mode:z.enum(['generate','improve','formal','shorten','expand','rewrite','official']),text:z.string().min(1).max(8000),lang:z.enum(['tj','ru','en']).optional(),pubType:z.string().max(64).optional(),length:z.enum(['short','medium','full']).optional(),context:z.string().max(2000).optional(),variant:z.number().int().min(0).max(9).optional()}).safeParse(req.body || {});
   if(!p.success)return res.status(400).json({error:'Invalid request'});
   if (denyScoped(req,res)) return;
@@ -434,7 +442,7 @@ app.post('/api/editor/magic', auth, async (req:Auth,res) => {
   res.json({ ...out, lang });
 });
 app.get('/api/admin/appeals', auth, (req:Auth,res) => { if (denyScoped(req,res)) return; const q = req.query as any; const where:string[]=[]; const vals:any[]=[]; if (q.status) { where.push('status=?'); vals.push(String(q.status)); } const sql = `SELECT * FROM appeals${where.length ? ' WHERE ' + where.join(' AND ') : ''} ORDER BY created_at DESC LIMIT 200`; const items = db.prepare(sql).all(...vals); return res.json({ items, total: items.length }); });
-app.patch('/api/admin/appeals/:id', auth, (req:Auth,res) => { if (denyScoped(req,res)) return; const p=z.object({status:z.enum(['new','in_review','assigned','answered','closed']).optional(),internal_note:z.string().max(5000).nullable().optional(),assigned_to:z.number().int().nullable().optional()}).safeParse(req.body || {}); if(!p.success)return res.status(400).json({error:'Invalid appeal', details: p.error}); const x=p.data; const sets:string[]=[]; const vals:any[]=[]; if(x.status!==undefined){sets.push('status=?');vals.push(x.status);} if(x.internal_note!==undefined){sets.push('internal_note=?');vals.push(x.internal_note);} if(x.assigned_to!==undefined){sets.push('assigned_to=?');vals.push(x.assigned_to);} if(sets.length===0)return res.status(400).json({error:'Nothing to update'}); vals.push(req.params.id); db.prepare(`UPDATE appeals SET ${sets.join(',')} WHERE id=?`).run(...vals); audit(req.user!.id,'update','appeal',Number(req.params.id)); res.sendStatus(204); });
+app.patch('/api/admin/appeals/:id', auth, requirePerm('appeals.manage'), (req:Auth,res) => { if (denyScoped(req,res)) return; const p=z.object({status:z.enum(['new','in_review','assigned','answered','closed']).optional(),internal_note:z.string().max(5000).nullable().optional(),assigned_to:z.number().int().nullable().optional()}).safeParse(req.body || {}); if(!p.success)return res.status(400).json({error:'Invalid appeal', details: p.error}); const x=p.data; const sets:string[]=[]; const vals:any[]=[]; if(x.status!==undefined){sets.push('status=?');vals.push(x.status);} if(x.internal_note!==undefined){sets.push('internal_note=?');vals.push(x.internal_note);} if(x.assigned_to!==undefined){sets.push('assigned_to=?');vals.push(x.assigned_to);} if(sets.length===0)return res.status(400).json({error:'Nothing to update'}); vals.push(req.params.id); db.prepare(`UPDATE appeals SET ${sets.join(',')} WHERE id=?`).run(...vals); audit(req.user!.id,'update','appeal',Number(req.params.id)); res.sendStatus(204); });
   app.get('/api/admin/dashboard', auth, (req:Auth,res) => { if (denyScoped(req,res)) return; return res.json({ news:db.prepare("SELECT count(*) count FROM content WHERE type='news' AND deleted_at IS NULL").get(), pending:db.prepare("SELECT count(*) count FROM content WHERE status='pending_review'").get(), appeals:db.prepare("SELECT count(*) count FROM appeals WHERE status='new'").get(), activity:db.prepare('SELECT * FROM audit_log ORDER BY created_at DESC LIMIT 8').all() }); });
   app.get('/api/admin/audit', auth, (req:Auth,res) => {
     if (denyScoped(req,res)) return;
@@ -466,7 +474,7 @@ app.get('/api/admin/content/:id', auth, (req:Auth,res) => {
   if (sc && row.region !== sc.region) return res.status(403).json({error:'Forbidden'});
   return res.json(row);
 });
-const contentStatus = z.enum(['draft','pending','pending_review','published','archived','scheduled']);
+const contentStatus = z.enum(['draft','pending','pending_review','approved','rejected','published','archived','scheduled']);
 const normStatus = (s: string) => (s === 'pending' ? 'pending_review' : s);
 // Normalize any parseable datetime to UTC ISO so lexicographic comparisons in SQLite stay correct
 const normDateTime = (v: any) => {
@@ -474,18 +482,28 @@ const normDateTime = (v: any) => {
   const d = new Date(String(v));
   return isNaN(d.getTime()) ? String(v) : d.toISOString();
 };
-app.post('/api/admin/content', auth, (req:Auth,res) => { const b = req.body || {}; const p=z.object({type:z.enum(['news','page','act','announcement','vacancy','journal']),slug:z.string().regex(/^[a-z0-9-]+$/),titleRu:z.string().min(2).optional(),title_ru:z.string().min(2).optional(),titleTj:z.string().optional(),title_tj:z.string().optional(),titleEn:z.string().optional(),title_en:z.string().optional(),bodyRu:z.string().optional(),body_ru:z.string().optional(),bodyTj:z.string().optional(),body_tj:z.string().optional(),bodyEn:z.string().optional(),body_en:z.string().optional(),excerptRu:z.string().optional(),excerpt_ru:z.string().optional(),excerptTj:z.string().optional(),excerpt_tj:z.string().optional(),excerptEn:z.string().optional(),excerpt_en:z.string().optional(),region:z.string().max(64).optional(),ai_meta:z.record(z.string(),z.any()).optional(),status:contentStatus.default('draft'), published_at:z.string().optional(), scheduled_at:z.string().optional()}).safeParse(b); if(!p.success)return res.status(400).json({error:'Invalid content', details: p.error}); const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); const x=p.data as any; const pick = (...ks:string[]) => { for (const k of ks) { if (x[k] != null && x[k] !== '') return x[k]; } return null; };
+app.post('/api/admin/content', auth, requirePerm('content.create'), (req:Auth,res) => { const b = req.body || {}; const p=z.object({type:z.enum(['news','page','act','announcement','vacancy','journal']),slug:z.string().regex(/^[a-z0-9-]+$/),titleRu:z.string().min(2).optional(),title_ru:z.string().min(2).optional(),titleTj:z.string().optional(),title_tj:z.string().optional(),titleEn:z.string().optional(),title_en:z.string().optional(),bodyRu:z.string().optional(),body_ru:z.string().optional(),bodyTj:z.string().optional(),body_tj:z.string().optional(),bodyEn:z.string().optional(),body_en:z.string().optional(),excerptRu:z.string().optional(),excerpt_ru:z.string().optional(),excerptTj:z.string().optional(),excerpt_tj:z.string().optional(),excerptEn:z.string().optional(),excerpt_en:z.string().optional(),region:z.string().max(64).optional(),ai_meta:z.record(z.string(),z.any()).optional(),status:contentStatus.default('draft'), published_at:z.string().optional(), scheduled_at:z.string().optional()}).safeParse(b); if(!p.success)return res.status(400).json({error:'Invalid content', details: p.error}); const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); const x=p.data as any; const pick = (...ks:string[]) => { for (const k of ks) { if (x[k] != null && x[k] !== '') return x[k]; } return null; };
   const titleRu = pick('titleRu','title_ru'); if(!titleRu || titleRu.length < 2)return res.status(400).json({error:'Invalid content'});
   const status = normStatus(x.status || 'draft');
+  // CMS-01: direct publication/approval on create requires the matching permission.
+  const role = (req as any).scoped?.role;
+  if ((status==='published' || status==='scheduled') && !hasPerm(role,'content.publish')) return res.status(403).json({error:'Forbidden: publication requires publish permission'});
+  if ((status==='approved' || status==='archived') && !hasPerm(role,'content.approve')) return res.status(403).json({error:'Forbidden: approval requires approve permission'});
   const region = sc ? sc.region : (x.region || null);
   const pubAt = status==='published' ? (normDateTime(x.published_at) || new Date().toISOString()) : (status==='scheduled' ? (normDateTime(x.scheduled_at) || normDateTime(x.published_at)) : null);
-  const result=db.prepare('INSERT INTO content(type,slug,title_ru,title_tj,title_en,body_ru,body_tj,body_en,excerpt_ru,excerpt_tj,excerpt_en,region,ai_meta,status,published_at,author_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.type,x.slug,titleRu,pick('titleTj','title_tj'),pick('titleEn','title_en'),pick('bodyRu','body_ru'),pick('bodyTj','body_tj'),pick('bodyEn','body_en'),pick('excerptRu','excerpt_ru'),pick('excerptTj','excerpt_tj'),pick('excerptEn','excerpt_en'),region,x.ai_meta ? JSON.stringify(x.ai_meta) : null,status,pubAt,req.user!.id); audit(req.user!.id,'create',x.type,Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
-app.delete('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); if(sc){ const row = db.prepare('SELECT region FROM content WHERE id=?').get(req.params.id) as any; if(!row || row.region !== sc.region)return res.status(403).json({error:'Forbidden'}); } db.prepare('UPDATE content SET deleted_at=CURRENT_TIMESTAMP WHERE id=?').run(req.params.id); audit(req.user!.id,'delete','content',Number(req.params.id)); res.sendStatus(204); });
-app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); const row = db.prepare('SELECT region FROM content WHERE id=? AND deleted_at IS NULL').get(req.params.id) as any; if(!row)return res.status(404).json({error:'Not found'}); if(sc && row.region !== sc.region)return res.status(403).json({error:'Forbidden'});
+  const result=db.prepare('INSERT INTO content(type,slug,title_ru,title_tj,title_en,body_ru,body_tj,body_en,excerpt_ru,excerpt_tj,excerpt_en,region,ai_meta,status,published_at,author_id,published_by) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.type,x.slug,titleRu,pick('titleTj','title_tj'),pick('titleEn','title_en'),pick('bodyRu','body_ru'),pick('bodyTj','body_tj'),pick('bodyEn','body_en'),pick('excerptRu','excerpt_ru'),pick('excerptTj','excerpt_tj'),pick('excerptEn','excerpt_en'),region,x.ai_meta ? JSON.stringify(x.ai_meta) : null,status,pubAt,req.user!.id,status==='published' ? req.user!.id : null); audit(req.user!.id,'create',x.type,Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
+app.delete('/api/admin/content/:id', auth, requirePerm('content.delete'), (req:Auth,res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); if(sc){ const row = db.prepare('SELECT region FROM content WHERE id=?').get(req.params.id) as any; if(!row || row.region !== sc.region)return res.status(403).json({error:'Forbidden'}); } db.prepare('UPDATE content SET deleted_at=CURRENT_TIMESTAMP WHERE id=?').run(req.params.id); audit(req.user!.id,'delete','content',Number(req.params.id)); res.sendStatus(204); });
+app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); const row = db.prepare('SELECT * FROM content WHERE id=? AND deleted_at IS NULL').get(req.params.id) as any; if(!row)return res.status(404).json({error:'Not found'}); if(sc && row.region !== sc.region)return res.status(403).json({error:'Forbidden'});
   const b = req.body || {};
-  const p=z.object({status:contentStatus.optional(),slug:z.string().regex(/^[a-z0-9-]+$/).optional(),titleRu:z.string().min(2).optional(),title_ru:z.string().min(2).optional(),titleTj:z.string().optional(),title_tj:z.string().optional(),titleEn:z.string().optional(),title_en:z.string().optional(),bodyRu:z.string().optional(),body_ru:z.string().optional(),bodyTj:z.string().optional(),body_tj:z.string().optional(),bodyEn:z.string().optional(),body_en:z.string().optional(),excerptRu:z.string().optional(),excerpt_ru:z.string().optional(),excerptTj:z.string().optional(),excerpt_tj:z.string().optional(),excerptEn:z.string().optional(),excerpt_en:z.string().optional(),ai_meta:z.record(z.string(),z.any()).optional(),published_at:z.string().optional(),scheduled_at:z.string().optional()}).safeParse(b); if(!p.success)return res.status(400).json({error:'Invalid content', details: p.error});
+  const p=z.object({status:contentStatus.optional(),slug:z.string().regex(/^[a-z0-9-]+$/).optional(),titleRu:z.string().min(2).optional(),title_ru:z.string().min(2).optional(),titleTj:z.string().optional(),title_tj:z.string().optional(),titleEn:z.string().optional(),title_en:z.string().optional(),bodyRu:z.string().optional(),body_ru:z.string().optional(),bodyTj:z.string().optional(),body_tj:z.string().optional(),bodyEn:z.string().optional(),body_en:z.string().optional(),excerptRu:z.string().optional(),excerpt_ru:z.string().optional(),excerptTj:z.string().optional(),excerpt_tj:z.string().optional(),excerptEn:z.string().optional(),excerpt_en:z.string().optional(),ai_meta:z.record(z.string(),z.any()).optional(),published_at:z.string().optional(),scheduled_at:z.string().optional(),review_notes:z.string().max(2000).optional()}).safeParse(b); if(!p.success)return res.status(400).json({error:'Invalid content', details: p.error});
   const x=p.data as any; const sets:string[]=[]; const vals:any[]=[];
+  const role = (req as any).scoped?.role;
+  const hasEdit = hasPerm(role,'content.edit');
+  const hasReview = hasPerm(role,'content.review');
   const setCol = (col:string, ...ks:string[]) => { for (const k of ks) { if (x[k] !== undefined) { sets.push(col + '=?'); vals.push(x[k] === '' ? null : x[k]); break; } } };
+  // CMS-01: body edits require content.edit (reviewers act on status only).
+  const fieldTouched = ['slug','titleRu','title_ru','titleTj','title_tj','titleEn','title_en','bodyRu','body_ru','bodyTj','body_tj','bodyEn','body_en','excerptRu','excerpt_ru','excerptTj','excerpt_tj','excerptEn','excerpt_en','ai_meta','published_at','scheduled_at'].some((k) => x[k] !== undefined);
+  if (fieldTouched && !hasEdit) return res.status(403).json({error:'Forbidden: editing requires edit permission'});
   setCol('slug','slug'); setCol('title_ru','titleRu','title_ru'); setCol('title_tj','titleTj','title_tj'); setCol('title_en','titleEn','title_en');
   setCol('body_ru','bodyRu','body_ru'); setCol('body_tj','bodyTj','body_tj'); setCol('body_en','bodyEn','body_en');
   setCol('excerpt_ru','excerptRu','excerpt_ru'); setCol('excerpt_tj','excerptTj','excerpt_tj'); setCol('excerpt_en','excerptEn','excerpt_en');
@@ -497,7 +515,38 @@ app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf
     sets.push('ai_meta=?'); vals.push(JSON.stringify(merged));
   }
   let newStatus: string | null = null;
-  if (x.status !== undefined) { newStatus = normStatus(x.status); sets.push('status=?'); vals.push(newStatus); }
+  if (x.status !== undefined) {
+    newStatus = normStatus(x.status);
+    const gate = permForContentStatus(newStatus, hasEdit, hasReview);
+    if ('error' in gate) return res.status(400).json({error:'Invalid status'});
+    if (!hasPerm(role, gate.perm)) return res.status(403).json({error:`Forbidden: ${gate.action} requires ${gate.perm} permission`});
+    // CMS-01 lifecycle side-effects
+    if (gate.action === 'reject') {
+      const reason = String(x.review_notes ?? '').trim();
+      if (!reason && !row.review_notes) return res.status(400).json({error:'Rejection reason required'});
+      if (reason) { sets.push('review_notes=?'); vals.push(reason); }
+      sets.push('reviewed_by=?'); vals.push(req.user!.id);
+      sets.push('reviewed_at=CURRENT_TIMESTAMP');
+    }
+    if (gate.action === 'approve') {
+      sets.push('reviewed_by=?'); vals.push(req.user!.id);
+      sets.push('reviewed_at=CURRENT_TIMESTAMP');
+      if (x.review_notes !== undefined) { sets.push('review_notes=?'); vals.push(x.review_notes || null); }
+    }
+    if (gate.action === 'publish') {
+      // Snapshot current row so the previous published version stays recoverable.
+      try {
+        const last = db.prepare('SELECT MAX(version_number) as v FROM content_versions WHERE content_id=?').get(req.params.id) as any;
+        db.prepare('INSERT INTO content_versions(content_id,version_number,snapshot_data,created_by,commit_message) VALUES(?,?,?,?,?)')
+          .run(req.params.id, (last?.v || 0) + 1, JSON.stringify(row), req.user!.id, `Auto pre-publish snapshot (${newStatus})`);
+      } catch {}
+      sets.push('published_by=?'); vals.push(req.user!.id);
+    }
+    sets.push('status=?'); vals.push(newStatus);
+  } else if (x.review_notes !== undefined) {
+    if (!hasReview) return res.status(403).json({error:'Forbidden'});
+    sets.push('review_notes=?'); vals.push(x.review_notes || null);
+  }
   const pubAt = x.scheduled_at || x.published_at;
   if (pubAt !== undefined) { sets.push('published_at=?'); vals.push(normDateTime(pubAt)); }
   else if (newStatus === 'published') { sets.push("published_at=CASE WHEN published_at IS NULL THEN CURRENT_TIMESTAMP ELSE published_at END"); }
@@ -509,7 +558,7 @@ app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf
 
 // Courts
 app.get('/api/courts', cache(3600), (_req, res) => res.json(db.prepare('SELECT * FROM courts WHERE active=1').all()));
-app.post('/api/admin/courts', auth, (req:Auth, res) => { if (denyScoped(req,res)) return; const p=z.object({nameRu:z.string().min(2),nameTj:z.string().optional(),nameEn:z.string().optional(),region:z.string(),type:z.string(),address:z.string().optional(),phone:z.string().optional(),lat:z.number().optional(),lng:z.number().optional()}).safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid court', details: p.error}); const x=p.data; const result=db.prepare('INSERT INTO courts(name_ru,name_tj,name_en,region,type,address,phone,lat,lng) VALUES(?,?,?,?,?,?,?,?,?)').run(x.nameRu,x.nameTj||null,x.nameEn||null,x.region,x.type,x.address||null,x.phone||null,x.lat||null,x.lng||null); audit(req.user!.id,'create','court',Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
+app.post('/api/admin/courts', auth, requirePerm('courts.manage'), (req:Auth, res) => { if (denyScoped(req,res)) return; const p=z.object({nameRu:z.string().min(2),nameTj:z.string().optional(),nameEn:z.string().optional(),region:z.string(),type:z.string(),address:z.string().optional(),phone:z.string().optional(),lat:z.number().optional(),lng:z.number().optional()}).safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid court', details: p.error}); const x=p.data; const result=db.prepare('INSERT INTO courts(name_ru,name_tj,name_en,region,type,address,phone,lat,lng) VALUES(?,?,?,?,?,?,?,?,?)').run(x.nameRu,x.nameTj||null,x.nameEn||null,x.region,x.type,x.address||null,x.phone||null,x.lat||null,x.lng||null); audit(req.user!.id,'create','court',Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
 
 // Judicial Acts
 app.get('/api/judicial_acts', cache(300), (_req, res) => res.json(db.prepare("SELECT * FROM judicial_acts WHERE status='published' ORDER BY published_at DESC").all()));
@@ -519,7 +568,7 @@ app.get('/api/admin/judicial-acts', auth, (req:Auth,res) => {
   const items = db.prepare('SELECT * FROM judicial_acts ORDER BY created_at DESC').all();
   return res.json({ items, total: items.length });
 });
-app.post('/api/admin/judicial-acts', auth, (req:Auth,res) => {
+app.post('/api/admin/judicial-acts', auth, requirePerm('acts.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
   const p=z.object({doc_number:z.string().max(64).optional(),doc_type:z.string().max(64).optional(),title_ru:z.string().min(2),title_tj:z.string().optional(),title_en:z.string().optional(),collegium:z.string().max(160).optional(),case_number:z.string().max(64).optional(),act_date:z.string().max(32).optional(),category:z.string().max(120).optional(),file_path:z.string().max(500).optional(),status:z.enum(['draft','published','archived']).default('draft'),published_at:z.string().optional()}).safeParse(req.body || {});
   if(!p.success)return res.status(400).json({error:'Invalid act', details: p.error});
@@ -529,7 +578,7 @@ app.post('/api/admin/judicial-acts', auth, (req:Auth,res) => {
   audit(req.user!.id,'create','judicial_act',Number(result.lastInsertRowid));
   res.status(201).json({id:result.lastInsertRowid});
 });
-app.patch('/api/admin/judicial-acts/:id', auth, (req:Auth,res) => {
+app.patch('/api/admin/judicial-acts/:id', auth, requirePerm('acts.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
   const p=z.object({doc_number:z.string().max(64).optional(),doc_type:z.string().max(64).optional(),title_ru:z.string().min(2).optional(),title_tj:z.string().optional(),title_en:z.string().optional(),collegium:z.string().max(160).optional(),case_number:z.string().max(64).optional(),act_date:z.string().max(32).optional(),category:z.string().max(120).optional(),file_path:z.string().max(500).nullable().optional(),status:z.enum(['draft','published','archived']).optional(),published_at:z.string().optional()}).safeParse(req.body || {});
   if(!p.success)return res.status(400).json({error:'Invalid act', details: p.error});
@@ -549,7 +598,7 @@ app.patch('/api/admin/judicial-acts/:id', auth, (req:Auth,res) => {
   audit(req.user!.id,'update','judicial_act',Number(req.params.id));
   res.sendStatus(204);
 });
-app.delete('/api/admin/judicial-acts/:id', auth, (req:Auth,res) => {
+app.delete('/api/admin/judicial-acts/:id', auth, requirePerm('acts.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
   db.prepare('DELETE FROM judicial_acts WHERE id=?').run(req.params.id);
   audit(req.user!.id,'delete','judicial_act',Number(req.params.id));
@@ -557,16 +606,8 @@ app.delete('/api/admin/judicial-acts/:id', auth, (req:Auth,res) => {
 });
 
 // Shelf Books (legislation bookshelf, portal-level)
-// Library write access: content managers only (viewers / court managers read).
-const canManageLibrary = (req:Auth, res:express.Response) => {
-  const role = String((req.user as any)?.role || '');
-  if (!['super_admin', 'admin', 'administrator', 'editor', 'publisher'].includes(role)) {
-    res.status(403).json({ error: 'Forbidden' });
-    return false;
-  }
-  return true;
-};
-const SHELF_PUBLIC_COLS = 'id,title_ru,title_tj,title_en,url,badge,kind,cover_theme,cover_text,cover_emblem,cover_bg,cover_image,sort_order,is_visible,source_url,updated_at';
+// Library writes require library.manage (SEC-01); viewers/court managers read.
+const SHELF_PUBLIC_COLS = 'id,title_ru,title_tj,title_en,url,url_ru,url_tj,url_en,badge,kind,cover_theme,cover_text,cover_emblem,cover_bg,cover_image,sort_order,is_visible,source_url,doc_lang,updated_at';
 app.get('/api/shelf-books', cache(300), (_req, res) => res.json(db.prepare(`SELECT ${SHELF_PUBLIC_COLS} FROM shelf_books WHERE is_visible=1 ORDER BY sort_order, id`).all()));
 app.get('/api/shelf-books/:id', cache(300), (req, res) => {
   const row = db.prepare('SELECT * FROM shelf_books WHERE id=? AND is_visible=1').get(req.params.id);
@@ -578,19 +619,38 @@ app.get('/api/admin/shelf-books', auth, (req:Auth,res) => {
   const items = db.prepare(`SELECT ${SHELF_PUBLIC_COLS},created_at FROM shelf_books ORDER BY sort_order, id`).all();
   return res.json({ items, total: items.length });
 });
-app.post('/api/admin/shelf-books', auth, (req:Auth,res) => {
+app.post('/api/admin/shelf-books', auth, requirePerm('library.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
-  if (!canManageLibrary(req,res)) return;
-  const p=z.object({title_ru:z.string().min(2),title_tj:z.string().optional(),title_en:z.string().optional(),url:z.string().max(1000).optional(),badge:z.string().max(32).optional(),kind:z.enum(['constitution','code','law','document','quote','other']).optional(),content:z.string().max(5000000).optional(),source_url:z.string().max(1000).optional(),cover_text:z.string().max(300).optional(),cover_emblem:z.string().max(32).optional(),cover_bg:z.string().max(120).optional(),cover_image:z.string().max(1000).optional(),cover_theme:z.number().int().min(0).max(9).default(0),sort_order:z.number().int().default(0),is_visible:z.number().int().min(0).max(1).default(1)}).safeParse(req.body || {});
+
+  const p=z.object({title_ru:z.string().min(2),title_tj:z.string().optional(),title_en:z.string().optional(),url:z.string().max(1000).optional(),url_ru:z.string().max(1000).optional(),url_tj:z.string().max(1000).optional(),url_en:z.string().max(1000).optional(),badge:z.string().max(32).optional(),kind:z.enum(['constitution','code','law','document','quote','other']).optional(),content:z.string().max(5000000).optional(),content_ru:z.string().max(5000000).optional(),content_tj:z.string().max(5000000).optional(),content_en:z.string().max(5000000).optional(),doc_lang:z.enum(['tj','ru','en','multi','auto']).optional(),source_url:z.string().max(1000).optional(),cover_text:z.string().max(300).optional(),cover_emblem:z.string().max(32).optional(),cover_bg:z.string().max(120).optional(),cover_image:z.string().max(1000).optional(),cover_theme:z.number().int().min(0).max(9).default(0),sort_order:z.number().int().default(0),is_visible:z.number().int().min(0).max(1).default(1)}).safeParse(req.body || {});
   if(!p.success)return res.status(400).json({error:'Invalid book', details: p.error});
-  const x=p.data;
-  const result=db.prepare('INSERT INTO shelf_books(title_ru,title_tj,title_en,url,badge,kind,content,source_url,cover_text,cover_emblem,cover_bg,cover_image,cover_theme,sort_order,is_visible) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.title_ru,x.title_tj||null,x.title_en||null,x.url||null,x.badge||'PDF',x.kind||null,x.content||null,x.source_url||null,x.cover_text||null,x.cover_emblem||null,x.cover_bg||null,x.cover_image||null,x.cover_theme,x.sort_order,x.is_visible);
+  const x=p.data as any;
+  // Back-compat: if legacy content/url provided without lang-specific, distribute by doc_lang
+  let cr = x.content_ru ?? null, ct = x.content_tj ?? null, ce = x.content_en ?? null;
+  const legacy = x.content ?? null;
+  if (legacy && !cr && !ct && !ce) {
+    if (x.doc_lang === 'tj') ct = legacy;
+    else if (x.doc_lang === 'en') ce = legacy;
+    else if (x.doc_lang === 'ru') cr = legacy;
+    else cr = legacy; // default ru
+  }
+  const fallbackContent = cr || ct || ce || legacy || null;
+  let urlRu = x.url_ru ?? null, urlTj = x.url_tj ?? null, urlEn = x.url_en ?? null;
+  const legacyUrl = x.url ?? null;
+  if (legacyUrl && !urlRu && !urlTj && !urlEn) {
+    if (x.doc_lang === 'tj') urlTj = legacyUrl;
+    else if (x.doc_lang === 'en') urlEn = legacyUrl;
+    else if (x.doc_lang === 'ru') urlRu = legacyUrl;
+    else urlRu = legacyUrl;
+  }
+  const fallbackUrl = urlRu || urlTj || urlEn || legacyUrl || null;
+  const result=db.prepare('INSERT INTO shelf_books(title_ru,title_tj,title_en,url,url_ru,url_tj,url_en,badge,kind,content,content_ru,content_tj,content_en,doc_lang,source_url,cover_text,cover_emblem,cover_bg,cover_image,cover_theme,sort_order,is_visible) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.title_ru,x.title_tj||null,x.title_en||null,fallbackUrl,urlRu,urlTj,urlEn,x.badge||'PDF',x.kind||null,fallbackContent,cr,ct,ce,x.doc_lang||null,x.source_url||null,x.cover_text||null,x.cover_emblem||null,x.cover_bg||null,x.cover_image||null,x.cover_theme,x.sort_order,x.is_visible);
   audit(req.user!.id,'create','shelf_book',Number(result.lastInsertRowid));
   res.status(201).json({id:result.lastInsertRowid});
 });
-app.post('/api/admin/shelf-books/seed', auth, (req:Auth,res) => {
+app.post('/api/admin/shelf-books/seed', auth, requirePerm('library.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
-  if (!canManageLibrary(req,res)) return;
+
   const p=z.object({items:z.array(z.object({title_ru:z.string().min(1),title_tj:z.string().optional(),title_en:z.string().optional(),url:z.string().max(1000).optional(),badge:z.string().max(32).optional()})).max(200)}).safeParse(req.body || {});
   if(!p.success)return res.status(400).json({error:'Invalid seed', details: p.error});
   const existing = new Set((db.prepare('SELECT url FROM shelf_books WHERE url IS NOT NULL').all() as any[]).map((r) => r.url));
@@ -604,13 +664,13 @@ app.post('/api/admin/shelf-books/seed', auth, (req:Auth,res) => {
   audit(req.user!.id,'seed','shelf_book',inserted);
   res.status(201).json({ inserted });
 });
-app.patch('/api/admin/shelf-books/:id', auth, (req:Auth,res) => {
+app.patch('/api/admin/shelf-books/:id', auth, requirePerm('library.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
-  if (!canManageLibrary(req,res)) return;
-  const p=z.object({title_ru:z.string().min(2).optional(),title_tj:z.string().nullable().optional(),title_en:z.string().nullable().optional(),url:z.string().max(1000).nullable().optional(),badge:z.string().max(32).nullable().optional(),kind:z.enum(['constitution','code','law','document','quote','other']).nullable().optional(),content:z.string().max(5000000).nullable().optional(),source_url:z.string().max(1000).nullable().optional(),cover_text:z.string().max(300).nullable().optional(),cover_emblem:z.string().max(32).nullable().optional(),cover_bg:z.string().max(120).nullable().optional(),cover_image:z.string().max(1000).nullable().optional(),cover_theme:z.number().int().min(0).max(9).optional(),sort_order:z.number().int().optional(),is_visible:z.number().int().min(0).max(1).optional()}).safeParse(req.body || {});
+
+  const p=z.object({title_ru:z.string().min(2).optional(),title_tj:z.string().nullable().optional(),title_en:z.string().nullable().optional(),url:z.string().max(1000).nullable().optional(),url_ru:z.string().max(1000).nullable().optional(),url_tj:z.string().max(1000).nullable().optional(),url_en:z.string().max(1000).nullable().optional(),badge:z.string().max(32).nullable().optional(),kind:z.enum(['constitution','code','law','document','quote','other']).nullable().optional(),content:z.string().max(5000000).nullable().optional(),content_ru:z.string().max(5000000).nullable().optional(),content_tj:z.string().max(5000000).nullable().optional(),content_en:z.string().max(5000000).nullable().optional(),doc_lang:z.enum(['tj','ru','en','multi','auto']).nullable().optional(),source_url:z.string().max(1000).nullable().optional(),cover_text:z.string().max(300).nullable().optional(),cover_emblem:z.string().max(32).nullable().optional(),cover_bg:z.string().max(120).nullable().optional(),cover_image:z.string().max(1000).nullable().optional(),cover_theme:z.number().int().min(0).max(9).optional(),sort_order:z.number().int().optional(),is_visible:z.number().int().min(0).max(1).optional()}).safeParse(req.body || {});
   if(!p.success)return res.status(400).json({error:'Invalid book', details: p.error});
   const x=p.data as any; const sets:string[]=[]; const vals:any[]=[];
-  for (const col of ['title_ru','title_tj','title_en','url','badge','kind','content','source_url','cover_text','cover_emblem','cover_bg','cover_image','cover_theme','sort_order','is_visible']) {
+  for (const col of ['title_ru','title_tj','title_en','url','url_ru','url_tj','url_en','badge','kind','content','content_ru','content_tj','content_en','doc_lang','source_url','cover_text','cover_emblem','cover_bg','cover_image','cover_theme','sort_order','is_visible']) {
     if (x[col] !== undefined) { sets.push(col + '=?'); vals.push(x[col] === '' ? null : x[col]); }
   }
   if (sets.length === 0) return res.status(400).json({error:'Nothing to update'});
@@ -620,9 +680,9 @@ app.patch('/api/admin/shelf-books/:id', auth, (req:Auth,res) => {
   audit(req.user!.id,'update','shelf_book',Number(req.params.id));
   res.sendStatus(204);
 });
-app.delete('/api/admin/shelf-books/:id', auth, (req:Auth,res) => {
+app.delete('/api/admin/shelf-books/:id', auth, requirePerm('library.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
-  if (!canManageLibrary(req,res)) return;
+
   db.prepare('DELETE FROM shelf_books WHERE id=?').run(req.params.id);
   audit(req.user!.id,'delete','shelf_book',Number(req.params.id));
   res.sendStatus(204);
@@ -633,19 +693,51 @@ app.get('/api/admin/shelf-books/:id', auth, (req:Auth,res) => {
   if (!row) return res.status(404).json({ error: 'Not found' });
   res.json(row);
 });
-// Import full text from mmk.tj legislation database by DocumentId.
-// Uses curl -4 (the sandbox needs forced IPv4 for mmk.tj).
-app.post('/api/admin/library/import', auth, (req:Auth,res) => {
-  if (denyScoped(req,res)) return;
-  if (!canManageLibrary(req,res)) return;
-  const p=z.object({bookId:z.number().int(),docId:z.string().regex(/^\d{1,10}$/)}).safeParse(req.body || {});
-  if(!p.success)return res.status(400).json({error:'Invalid import', details: p.error});
+// Proxy remote PDFs through the server (browser CORS blocks direct
+// fetching from official portals). Host allowlist only - not an open proxy.
+const LIB_PDF_HOSTS = ['sud.tj', 'www.sud.tj', 'president.tj', 'www.president.tj', 'adliya.tj', 'www.adliya.tj', 'qonunguzori.tj', 'www.qonunguzori.tj'];
+app.get('/api/library/pdf', (req, res) => {
+  const u = String(req.query.url || '');
+  let parsed: URL;
   try {
-    const url = `https://mmk.tj/DOCUMENTS/DocumentView?DocumentId=${p.data.docId}`;
-    const html = execFileSync('curl.exe', ['-s', '--max-time', '90', '-4', url], { maxBuffer: 32 * 1024 * 1024 });
-    const text = cleanMmkText(html.toString('utf8'));
+    parsed = new URL(u);
+  } catch {
+    return res.status(400).json({ error: 'Bad url' });
+  }
+  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') return res.status(400).json({ error: 'Bad url' });
+  if (!LIB_PDF_HOSTS.includes(parsed.hostname.toLowerCase())) return res.status(403).json({ error: 'Host not allowed' });
+  try {
+    const data = execFileSync('curl.exe', ['-s', '--max-time', '90', '-4', '-L', '--max-filesize', String(50 * 1024 * 1024), u], { maxBuffer: 60 * 1024 * 1024 });
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.send(data);
+  } catch (e: any) {
+    res.status(502).json({ error: 'Fetch failed', details: String(e?.message || e).slice(0, 200) });
+  }
+});
+// Import full text of a legislation document by URL (official portals
+// allowlist only, e.g. adliya.tj). Uses curl -4 (forced IPv4 for TJ hosts).
+app.post('/api/admin/library/import', auth, requirePerm('library.manage'), (req:Auth,res) => {
+  if (denyScoped(req,res)) return;
+
+  const p=z.object({bookId:z.number().int(),sourceUrl:z.string().max(1000)}).safeParse(req.body || {});
+  if(!p.success)return res.status(400).json({error:'Invalid import', details: p.error});
+  let parsed: URL;
+  try {
+    parsed = new URL(p.data.sourceUrl);
+  } catch {
+    return res.status(400).json({ error: 'Bad url' });
+  }
+  if ((parsed.protocol !== 'https:' && parsed.protocol !== 'http:') || !LIB_PDF_HOSTS.includes(parsed.hostname.toLowerCase())) {
+    return res.status(403).json({ error: 'Host not allowed' });
+  }
+  try {
+    const url = parsed.toString();
+    const html = execFileSync('curl.exe', ['-s', '--max-time', '90', '-4', '-L', url], { maxBuffer: 32 * 1024 * 1024 });
+    const text = cleanImportedText(html.toString('utf8'));
     if (text.length < 500) return res.status(422).json({ error: 'Document text too short or unreachable', gotBytes: html.length, gotChars: text.length });
-    db.prepare('UPDATE shelf_books SET content=?, source_url=?, updated_at=CURRENT_TIMESTAMP WHERE id=?').run(text, url, p.data.bookId);
+    // Fill legacy content + all lang variants so language switch works even if doc was imported before multilingual support
+    db.prepare('UPDATE shelf_books SET content=?, content_ru=COALESCE(content_ru, ?), content_tj=COALESCE(content_tj, ?), content_en=COALESCE(content_en, ?), source_url=?, updated_at=CURRENT_TIMESTAMP WHERE id=?').run(text, text, text, text, url, p.data.bookId);
     audit(req.user!.id,'import','shelf_book',Number(p.data.bookId));
     bumpSync();
     res.json({ chars: text.length });
@@ -659,9 +751,9 @@ fs.mkdirSync(libraryDir, { recursive: true });
 app.use('/library-files', express.static(libraryDir, { setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff') }));
 const LIBRARY_UPLOAD_MIME = /^(application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document|text\/plain|text\/markdown|image\/(png|jpeg|webp|gif))$/;
 const LIBRARY_UPLOAD_EXT = ['.pdf', '.doc', '.docx', '.txt', '.md', '.png', '.jpg', '.jpeg', '.webp', '.gif'];
-app.post('/api/admin/library/upload', auth, libraryUpload.single('file'), (req:Auth, res) => {
+app.post('/api/admin/library/upload', auth, requirePerm('library.manage'), libraryUpload.single('file'), (req:Auth, res) => {
   if (denyScoped(req,res)) return;
-  if (!canManageLibrary(req,res)) return;
+
   const f = (req as any).file;
   if (!f || !f.stream) return res.status(400).json({ error: 'No file uploaded' });
   const chunks: Buffer[] = [];
@@ -690,6 +782,134 @@ app.post('/api/admin/library/upload', auth, libraryUpload.single('file'), (req:A
 app.use('/api/admin/library/upload', multerErrors);
 app.use('/api/admin/media', multerErrors);
 
+// SEC-04: backup & restore. Persistent data = data/sudtj.sqlite (WAL) +
+// data/library + uploads dir. Backups live in data/backups/<name>/ with a
+// manifest; retention keeps the newest 5. Redundancy note: copy backups
+// off-host (see Project_Snapshot recovery procedure).
+const backupDir = path.join(dataDir, 'backups');
+fs.mkdirSync(backupDir, { recursive: true });
+const BACKUP_KEEP = 5;
+const sqlQuote = (p: string) => `'${p.replace(/'/g, "''")}'`;
+const sqlIdent = (n: string) => `"${n.replace(/"/g, '""')}"`;
+const dirSize = (d: string): number => {
+  let total = 0;
+  try {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) total += dirSize(p);
+      else { try { total += fs.statSync(p).size; } catch {} }
+    }
+  } catch {}
+  return total;
+};
+app.get('/api/admin/backups', auth, requirePerm('users.manage'), (_req: Auth, res) => {
+  if (denyScoped(_req as Auth, res)) return;
+  const out: any[] = [];
+  try {
+    for (const e of fs.readdirSync(backupDir, { withFileTypes: true })) {
+      if (!e.isDirectory()) continue;
+      let manifest: any = null;
+      try { manifest = JSON.parse(fs.readFileSync(path.join(backupDir, e.name, 'manifest.json'), 'utf8')); } catch {}
+      out.push({ name: e.name, manifest });
+    }
+  } catch {}
+  out.sort((a, b) => (a.name < b.name ? 1 : -1));
+  res.json({ items: out, total: out.length });
+});
+app.post('/api/admin/backup', auth, requirePerm('users.manage'), (req: Auth, res) => {
+  if (denyScoped(req, res)) return;
+  try {
+    const ts = new Date().toISOString().replace(/[:.]/g, '-');
+    const name = `backup-${ts}`;
+    const dir = path.join(backupDir, name);
+    fs.mkdirSync(dir, { recursive: true });
+    db.exec(`VACUUM INTO ${sqlQuote(path.join(dir, 'sudtj.sqlite'))}`);
+    try { fs.cpSync(uploadDir, path.join(dir, 'uploads'), { recursive: true }); } catch {}
+    try { fs.cpSync(libraryDir, path.join(dir, 'library'), { recursive: true }); } catch {}
+    const tables: Record<string, number> = {};
+    try {
+      const names = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all() as any[];
+      for (const t of names) {
+        try { tables[t.name] = (db.prepare(`SELECT count(*) c FROM ${sqlIdent(t.name)}`).get() as any)?.c ?? 0; } catch {}
+      }
+    } catch {}
+    const manifest = {
+      name, createdAt: new Date().toISOString(), createdBy: req.user!.id,
+      tables, uploadsBytes: dirSize(uploadDir), libraryBytes: dirSize(libraryDir),
+    };
+    fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify(manifest, null, 2));
+    // Retention: keep newest BACKUP_KEEP backups + 2 newest pre-restore safety copies
+    try {
+      const dirs = fs.readdirSync(backupDir, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).filter((n) => n.startsWith('backup-')).sort();
+      while (dirs.length > BACKUP_KEEP) {
+        const old = dirs.shift()!;
+        fs.rmSync(path.join(backupDir, old), { recursive: true, force: true });
+      }
+      const safeties = fs.readdirSync(backupDir).filter((n) => n.startsWith('pre-restore-') && n.endsWith('.sqlite')).sort();
+      while (safeties.length > 2) {
+        const old = safeties.shift()!;
+        try { fs.rmSync(path.join(backupDir, old), { force: true }); } catch {}
+      }
+    } catch {}
+    audit(req.user!.id, 'backup', 'system', undefined);
+    res.status(201).json(manifest);
+  } catch (e: any) {
+    res.status(500).json({ error: 'Backup failed', details: String(e?.message || e).slice(0, 200) });
+  }
+});
+app.post('/api/admin/restore', auth, requirePerm('users.manage'), (req: Auth, res) => {
+  if (denyScoped(req, res)) return;
+  const p = z.object({ name: z.string().regex(/^[a-zA-Z0-9_-]+$/) }).safeParse(req.body || {});
+  if (!p.success) return res.status(400).json({ error: 'Invalid backup name' });
+  const dir = path.join(backupDir, p.data.name);
+  const dbFile = path.join(dir, 'sudtj.sqlite');
+  if (!dir.startsWith(backupDir) || !fs.existsSync(dbFile)) return res.status(404).json({ error: 'Backup not found' });
+  try {
+    // 0) Safety copy of the live DB first.
+    const safety = path.join(backupDir, `pre-restore-${new Date().toISOString().replace(/[:.]/g, '-')}.sqlite`);
+    db.exec(`VACUUM INTO ${sqlQuote(safety)}`);
+    // 1) Integrity check on a separate read-only handle (never touches live data).
+    const chk = new Database(dbFile, { readonly: true });
+    const ok = (chk.prepare('PRAGMA integrity_check').get() as any)?.integrity_check === 'ok';
+    // Exclude FTS5 virtual table + its shadow tables (rebuilt via triggers/rebuild below).
+    const srcTables = chk.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'knowledge_chunks_fts%' AND name NOT LIKE '%_fts_data' AND name NOT LIKE '%_fts_idx' AND name NOT LIKE '%_fts_content' AND name NOT LIKE '%_fts_docsize' AND name NOT LIKE '%_fts_config'").all() as any[];
+    chk.close();
+    if (!ok) return res.status(422).json({ error: 'Backup integrity check failed' });
+    // 2) Atomic table copy inside one transaction (FTS rebuilds via triggers).
+    db.exec(`ATTACH DATABASE ${sqlQuote(dbFile)} AS src`);
+    try {
+      const stmts: string[] = ['BEGIN;'];
+      for (const t of srcTables) {
+        stmts.push(`DELETE FROM ${sqlIdent(t.name)};`);
+        stmts.push(`INSERT INTO ${sqlIdent(t.name)} SELECT * FROM ${sqlIdent('src')}.${sqlIdent(t.name)};`);
+      }
+      stmts.push('COMMIT;');
+      db.exec(stmts.join(''));
+      // Best-effort extras (absent when no AUTOINCREMENT / no FTS content).
+      try {
+        db.exec(
+          `INSERT OR REPLACE INTO sqlite_sequence SELECT * FROM ${sqlIdent('src')}.sqlite_sequence`
+        );
+      } catch {}
+      try { db.exec(`INSERT INTO ${sqlIdent('knowledge_chunks_fts')}(${sqlIdent('knowledge_chunks_fts')}) VALUES('rebuild')`); } catch {}
+    } catch (e) {
+      try { db.exec('ROLLBACK;'); } catch {}
+      throw e;
+    } finally {
+      try { db.exec('DETACH DATABASE src'); } catch {}
+    }
+    // 3) Files (merge/overwrite; restart recommended after restore).
+    try { fs.cpSync(path.join(dir, 'uploads'), uploadDir, { recursive: true }); } catch {}
+    try { fs.cpSync(path.join(dir, 'library'), libraryDir, { recursive: true }); } catch {}
+    bumpSync();
+    audit(req.user!.id, 'restore', 'system', undefined);
+    res.json({ restored: p.data.name, safetyCopy: path.basename(safety) });
+  } catch (e: any) {
+    console.error('[restore] failed:', e);
+    res.status(500).json({ error: 'Restore failed', details: String(e?.message || e).slice(0, 500) });
+  }
+});
+
 // Leadership
 app.get('/api/leadership', cache(3600), (req, res) => {
   const court = String(req.query.court || 'all');
@@ -704,7 +924,7 @@ app.get('/api/admin/leadership', auth, (req:Auth, res) => {
   if (court === 'all') return res.json(db.prepare('SELECT * FROM leadership ORDER BY sort_order ASC').all());
   return res.json(db.prepare('SELECT * FROM leadership WHERE court_id=? ORDER BY sort_order ASC').all(court));
 });
-app.post('/api/admin/leadership', auth, (req:Auth, res) => {
+app.post('/api/admin/leadership', auth, requirePerm('leadership.manage'), (req:Auth, res) => {
   const p = z.object({ nameRu: z.string().min(2), nameTj: z.string().optional(), nameEn: z.string().optional(), titleRu: z.string().optional(), titleTj: z.string().optional(), titleEn: z.string().optional(), courtId: z.string().max(64).optional(), sortOrder: z.number().int().optional() }).safeParse(req.body);
   if (!p.success) return res.status(400).json({ error: 'Invalid leader', details: p.error });
   const x = p.data;
@@ -716,8 +936,8 @@ app.post('/api/admin/leadership', auth, (req:Auth, res) => {
   audit(req.user!.id, 'create', 'leadership', Number(result.lastInsertRowid));
   res.status(201).json({ id: result.lastInsertRowid });
 });
-app.delete('/api/admin/leadership/:id', auth, (req:Auth, res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); if(sc){ const row = db.prepare('SELECT court_id FROM leadership WHERE id=?').get(req.params.id) as any; if(!row || row.court_id !== sc.site)return res.status(403).json({error:'Forbidden'}); } db.prepare('DELETE FROM leadership WHERE id=?').run(req.params.id); audit(req.user!.id, 'delete', 'leadership', Number(req.params.id)); res.sendStatus(204); });
-app.post('/api/admin/hearings', auth, (req:Auth, res) => {
+app.delete('/api/admin/leadership/:id', auth, requirePerm('leadership.manage'), (req:Auth, res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); if(sc){ const row = db.prepare('SELECT court_id FROM leadership WHERE id=?').get(req.params.id) as any; if(!row || row.court_id !== sc.site)return res.status(403).json({error:'Forbidden'}); } db.prepare('DELETE FROM leadership WHERE id=?').run(req.params.id); audit(req.user!.id, 'delete', 'leadership', Number(req.params.id)); res.sendStatus(204); });
+app.post('/api/admin/hearings', auth, requirePerm('hearings.manage'), (req:Auth, res) => {
   const p = z.object({ courtRu: z.string().min(2), courtTj: z.string().optional(), hearingDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), hearingTime: z.string().max(16).optional(), categoryRu: z.string().max(160).optional(), categoryTj: z.string().max(160).optional(), partiesRu: z.string().max(500).optional(), partiesTj: z.string().max(500).optional(), room: z.string().max(64).optional() }).safeParse(req.body);
   if (!p.success) return res.status(400).json({ error: 'Invalid hearing', details: p.error });
   const x = p.data;
@@ -729,7 +949,7 @@ app.post('/api/admin/hearings', auth, (req:Auth, res) => {
   audit(req.user!.id, 'create', 'hearing', Number(result.lastInsertRowid));
   res.status(201).json({ id: result.lastInsertRowid });
 });
-app.delete('/api/admin/hearings/:id', auth, (req:Auth, res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); if(sc){ const row = db.prepare('SELECT court_ru FROM hearings WHERE id=?').get(req.params.id) as any; if(!row || row.court_ru !== sc.courtName)return res.status(403).json({error:'Forbidden'}); } db.prepare('DELETE FROM hearings WHERE id=?').run(req.params.id); audit(req.user!.id, 'delete', 'hearing', Number(req.params.id)); res.sendStatus(204); });
+app.delete('/api/admin/hearings/:id', auth, requirePerm('hearings.manage'), (req:Auth, res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); if(sc){ const row = db.prepare('SELECT court_ru FROM hearings WHERE id=?').get(req.params.id) as any; if(!row || row.court_ru !== sc.courtName)return res.status(403).json({error:'Forbidden'}); } db.prepare('DELETE FROM hearings WHERE id=?').run(req.params.id); audit(req.user!.id, 'delete', 'hearing', Number(req.params.id)); res.sendStatus(204); });
 
 // Region Clusters & Courts Topology
 app.get('/api/region_clusters', cache(3600), (_req, res) => res.json(db.prepare('SELECT * FROM region_clusters').all()));
@@ -750,7 +970,7 @@ app.get('/api/admin/content/:id/versions', auth, (req:Auth, res) => {
   if (denyScoped(req,res)) return;
   res.json(db.prepare('SELECT id, version_number, created_by, created_at, commit_message FROM content_versions WHERE content_id = ? ORDER BY version_number DESC').all(req.params.id));
 });
-app.post('/api/admin/content/:id/versions', auth, (req:Auth, res) => {
+app.post('/api/admin/content/:id/versions', auth, requirePerm('content.edit'), (req:Auth, res) => {
   if (denyScoped(req,res)) return;
   const content = db.prepare('SELECT * FROM content WHERE id=?').get(req.params.id);
   if (!content) return res.status(404).json({error: 'Content not found'});
@@ -765,6 +985,11 @@ app.post('/api/admin/content/:id/rollback', auth, (req:Auth, res) => {
   const version = db.prepare('SELECT snapshot_data FROM content_versions WHERE content_id=? AND version_number=?').get(req.params.id, req.body.version_number) as {snapshot_data:string};
   if (!version) return res.status(404).json({error: 'Version not found'});
   const snap = JSON.parse(version.snapshot_data);
+  // CMS-01: rolling back to a published snapshot republishes → needs publish perm.
+  const role = (req as any).scoped?.role;
+  const needPublish = snap.status === 'published' || snap.status === 'scheduled';
+  if (needPublish && !hasPerm(role, 'content.publish')) return res.status(403).json({error:'Forbidden: rollback to published version requires publish permission'});
+  if (!needPublish && !hasPerm(role, 'content.edit')) return res.status(403).json({error:'Forbidden'});
   db.prepare('UPDATE content SET title_ru=?, title_tj=?, title_en=?, body_ru=?, body_tj=?, body_en=?, excerpt_ru=?, excerpt_tj=?, excerpt_en=?, cover_image_id=?, status=?, updated_at=CURRENT_TIMESTAMP WHERE id=?')
     .run(snap.title_ru, snap.title_tj, snap.title_en, snap.body_ru, snap.body_tj, snap.body_en, snap.excerpt_ru, snap.excerpt_tj, snap.excerpt_en, snap.cover_image_id, snap.status, req.params.id);
   audit(req.user!.id, 'rollback', 'content', Number(req.params.id));

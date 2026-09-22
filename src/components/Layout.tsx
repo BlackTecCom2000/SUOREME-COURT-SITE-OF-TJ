@@ -9,6 +9,7 @@ import { PRESIDENT_MESSAGE, USEFUL_LINKS } from '../data/portalLinks';
 const NotificationCenterModal = React.lazy(() => import('./digital-court/NotificationCenterModal').then(m => ({ default: m.NotificationCenterModal })));
 const AILegalAssistantModal = React.lazy(() => import('./digital-court/AILegalAssistantModal').then(m => ({ default: m.AILegalAssistantModal })));
 const NewFilingModal = React.lazy(() => import('./digital-court/NewFilingModal').then(m => ({ default: m.NewFilingModal })));
+const GlobalSearchModal = React.lazy(() => import('./GlobalSearchModal').then(m => ({ default: m.GlobalSearchModal })));
 import { CourtNodeData } from '../data/sudTjData';
 
 export const Layout: React.FC = () => {
@@ -31,6 +32,7 @@ export const Layout: React.FC = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [aiAssistantOpen, setAiAssistantOpen] = useState(false);
   const [globalFilingOpen, setGlobalFilingOpen] = useState(false);
+  const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
 
 
 
@@ -53,13 +55,9 @@ export const Layout: React.FC = () => {
     }
   };
 
+  // Universal search: global portal search modal (content + acts + library).
   const handleSearchTrigger = () => {
-    const el = document.getElementById('case-search');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      handleOpenSection('case-search');
-    }
+    setGlobalSearchOpen(true);
   };
 
   return (
@@ -136,7 +134,13 @@ export const Layout: React.FC = () => {
               <span>•</span>
               <span>{t('contacts.officialPortalNotice')}</span>
             </div>
-            <div>
+            <div className="flex items-center gap-4">
+              <a
+                href="/sitemap"
+                className="hover:text-theme-gold transition-colors"
+              >
+                {language === 'en' ? 'Sitemap' : language === 'tj' ? 'Харитаи сомона' : 'Карта сайта'}
+              </a>
               <span>{t('contacts.copyright')}</span>
             </div>
           </div>
@@ -186,6 +190,14 @@ export const Layout: React.FC = () => {
           <NewFilingModal
             isOpen={globalFilingOpen}
             onClose={() => setGlobalFilingOpen(false)}
+          />
+        )}
+
+        {/* Universal Search */}
+        {globalSearchOpen && (
+          <GlobalSearchModal
+            isOpen={globalSearchOpen}
+            onClose={() => setGlobalSearchOpen(false)}
           />
         )}
       </React.Suspense>

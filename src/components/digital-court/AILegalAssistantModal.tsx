@@ -8,10 +8,17 @@ import {
   RotateCcw,
   FileText,
   BookOpen,
-  AlertCircle
+  AlertCircle,
+  Volume2,
+  VolumeX,
+  Pause,
+  Play,
+  Copy,
+  Check
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { aiClient, ChatMessage, Citation } from '../../services/aiClient';
+import { getBestVoice, splitIntoChunks } from '../../utils/speech';
 import './AiChatBox.css';
 
 interface AILegalAssistantModalProps {
@@ -40,6 +47,61 @@ export const AILegalAssistantModal: React.FC<AILegalAssistantModalProps> = ({
   const chatEndRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const busy = isTyping || messages.some((m) => m.isGenerating);
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const chunksRef = useRef<string[]>([]);
+  const chunkIdxRef = useRef(0);
+  const speakingIdRef = useRef<string | null>(null);
+
+  const stopSpeech = () => {
+    try { window.speechSynthesis?.cancel(); } catch {}
+    setSpeakingId(null); speakingIdRef.current = null;
+    setIsPaused(false); chunkIdxRef.current = 0;
+  };
+  useEffect(() => () => { try { window.speechSynthesis?.cancel(); } catch {} }, []);
+  useEffect(() => { if (!isOpen) stopSpeech(); }, [isOpen]);
+
+  const speakChunk = (idx: number) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+    const chunks = chunksRef.current;
+    if (idx >= chunks.length) { stopSpeech(); return; }
+    chunkIdxRef.current = idx;
+    const utter = new SpeechSynthesisUtterance(chunks[idx]);
+    const best = getBestVoice(language);
+    if (best) utter.voice = best;
+    utter.lang = language === 'tj' ? 'ru-RU' : language === 'en' ? 'en-US' : 'ru-RU';
+    utter.rate = 0.95; utter.pitch = 1.02; utter.volume = 1;
+    utter.onend = () => setTimeout(() => speakChunk(idx + 1), 120);
+    utter.onerror = () => stopSpeech();
+    try { window.speechSynthesis.speak(utter); } catch { stopSpeech(); }
+  };
+  const handleSpeak = (id: string, text: string) => {
+    if (speakingId === id && !isPaused) {
+      try { window.speechSynthesis.pause(); setIsPaused(true); } catch {}
+      return;
+    }
+    if (speakingId === id && isPaused) {
+      try { window.speechSynthesis.resume(); setIsPaused(false); } catch {}
+      return;
+    }
+    try { window.speechSynthesis.cancel(); } catch {}
+    const chunks = splitIntoChunks(text.replace(/\s+/g, ' '), 240);
+    if (!chunks.length) return;
+    chunksRef.current = chunks;
+    speakingIdRef.current = id;
+    setSpeakingId(id); setIsPaused(false); chunkIdxRef.current = 0;
+    // Ensure voices loaded
+    if (window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => speakChunk(0);
+      setTimeout(() => speakChunk(0), 250);
+    } else speakChunk(0);
+  };
+  const handleCopy = async (id: string, text: string) => {
+    try { await navigator.clipboard.writeText(text); setCopiedId(id); setTimeout(() => setCopiedId(null), 1500); } catch {}
+  };
+  // Auto-stop on language change to re-pick natural voice
+  useEffect(() => { if (speakingId) stopSpeech(); }, [language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Initial greeting
   useEffect(() => {
@@ -207,8 +269,7 @@ export const AILegalAssistantModal: React.FC<AILegalAssistantModalProps> = ({
                     : 'bg-theme-surface border border-theme-border text-theme-text shadow-sm'
                 } ${m.isGenerating ? 'border-theme-gold' : ''}`}
               >
-                {/* Very basic markdown support could go here. For now just standard text. */}
-                <div className="whitespace-pre-wrap">{m.text}</div>
+                <div className="whitespace-pre-wrap select-text" style={{ userSelect: 'text' } as any}>{m.text}</div>
 
                 {m.citations && m.citations.length > 0 && (
                   <div className="mt-3 pt-2 border-t border-theme-border/40 font-mono text-[10px] text-theme-textMuted">
@@ -227,6 +288,32 @@ export const AILegalAssistantModal: React.FC<AILegalAssistantModalProps> = ({
                 )}
                 {m.isGenerating && m.text && (
                    <span className="inline-block w-1.5 h-3 ml-1 bg-theme-gold animate-pulse align-middle" />
+                )}
+                {m.role === 'assistant' && !m.isGenerating && m.text && (
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => handleSpeak(m.id, m.text)}
+                      aria-label={speakingId === m.id && !isPaused ? 'Пауза' : speakingId === m.id && isPaused ? 'Продолжить' : 'Слушать'}
+                      title={speakingId === m.id && !isPaused ? 'Пауза' : speakingId === m.id && isPaused ? 'Продолжить' : 'Слушать'}
+                      className={`p-1.5 rounded-lg border text-[11px] flex items-center gap-1 ${speakingId===m.id ? 'bg-amber-400/20 border-amber-400 text-amber-400' : 'border-theme-border text-theme-textMuted hover:text-theme-gold hover:border-theme-gold'}`}
+                    >
+                      {speakingId===m.id && !isPaused ? <Pause size={12}/> : speakingId===m.id && isPaused ? <Play size={12}/> : <Volume2 size={12}/>}
+                      <span className="hidden sm:inline font-mono">{speakingId===m.id && !isPaused ? 'Пауза' : speakingId===m.id && isPaused ? 'Продолжить' : 'Слушать'}</span>
+                    </button>
+                    {speakingId===m.id && (
+                      <button type="button" onClick={stopSpeech} className="p-1.5 rounded-lg border border-theme-border text-theme-textMuted hover:text-red-400" aria-label="Стоп" title="Стоп"><VolumeX size={12}/></button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(m.id, m.text)}
+                      aria-label="Копировать"
+                      title="Копировать"
+                      className="p-1.5 rounded-lg border border-theme-border text-theme-textMuted hover:text-theme-gold hover:border-theme-gold"
+                    >
+                      {copiedId===m.id ? <Check size={12} className="text-emerald-400"/> : <Copy size={12}/>}
+                    </button>
+                  </div>
                 )}
               </div>
             </div>

@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Calendar, Newspaper } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { Reveal } from '../components/Reveal';
+import { usePageMeta } from '../hooks/usePageMeta';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 const ALLOWED: Record<string, { tj: string; ru: string; en: string }> = {
   news: { tj: 'Хабарҳо', ru: 'Новости', en: 'News' },
@@ -31,9 +33,21 @@ export const ContentDetailPage: React.FC = () => {
   const body = item
     ? language === 'en' ? (item.body_en || item.body_ru) : language === 'tj' ? (item.body_tj || item.body_ru) : item.body_ru
     : '';
+  const excerpt = item
+    ? language === 'en' ? (item.excerpt_en || item.excerpt_ru) : language === 'tj' ? (item.excerpt_tj || item.excerpt_ru) : item.excerpt_ru
+    : '';
+  usePageMeta(title || 'SUD.TJ', excerpt || undefined);
 
   return (
     <div className="site-container px-4 sm:px-8 md:px-12 py-10 lg:py-16 text-theme-text">
+      <Breadcrumbs
+        items={[
+          {
+            label: language === 'en' ? ALLOWED[type]?.en || type : language === 'tj' ? ALLOWED[type]?.tj || type : ALLOWED[type]?.ru || type,
+          },
+          ...(title ? [{ label: title }] : []),
+        ]}
+      />
       <Reveal>
         <Link to="/" className="inline-flex items-center gap-2 font-mono text-xs text-theme-textSec hover:text-theme-gold transition-colors mb-6">
           <ArrowLeft size={14} />

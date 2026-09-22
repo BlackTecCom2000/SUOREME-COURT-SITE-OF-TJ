@@ -226,15 +226,15 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
             <div className="space-y-4">
               <div className="p-6 rounded-2xl border-2 border-dashed border-theme-border bg-theme-surface/40 text-center">
                 <UploadCloud size={32} className="text-theme-gold mx-auto mb-2" />
-                <h4 className="text-xs font-semibold text-theme-text">Исковое_заявление_подписанное.pdf</h4>
+                <h4 className="text-xs font-semibold text-theme-text">{language === 'tj' ? 'Аризаи_имзошуда.pdf' : language === 'en' ? 'Signed_claim.pdf' : 'Исковое_заявление_подписанное.pdf'}</h4>
                 <span className="font-mono text-[10px] text-emerald-400">PDF/A • Ready for Submission</span>
               </div>
 
               <div className="p-4 rounded-2xl border border-theme-gold/30 bg-theme-gold/5 flex items-center gap-3">
                 <ShieldCheck size={24} className="text-theme-gold shrink-0" />
                 <div>
-                  <div className="text-xs font-semibold text-theme-text">Электронная цифровая подпись (ЭЦП)</div>
-                  <div className="text-[11px] text-theme-textSec">Сертификат заявителя проверен в Национальном удостоверяющем центре.</div>
+                  <div className="text-xs font-semibold text-theme-text">{language === 'tj' ? 'Имзои электронии рақамӣ (ЭЦП)' : language === 'en' ? 'Electronic digital signature' : 'Электронная цифровая подпись (ЭЦП)'}</div>
+                  <div className="text-[11px] text-theme-textSec">{language === 'tj' ? 'Шаҳодатномаи аризадиҳанда дар Маркази миллии сертификатсия тафтиш шудааст.' : language === 'en' ? 'Applicant certificate verified by the National Certification Center.' : 'Сертификат заявителя проверен в Национальном удостоверяющем центре.'}</div>
                 </div>
               </div>
             </div>

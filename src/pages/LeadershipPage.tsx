@@ -1,6 +1,8 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { motion } from 'motion/react';
+import { usePageMeta } from '../hooks/usePageMeta';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 
 export const DEFAULT_LEADERS = [
@@ -64,6 +66,7 @@ export const DEFAULT_LEADERS = [
 
 export const LeadershipPage: React.FC = () => {
   const { language } = useLanguage();
+  usePageMeta(language === 'en' ? 'Court Leadership' : language === 'tj' ? 'Роҳбарияти суд' : 'Руководство суда');
   const [leaders, setLeaders] = React.useState<any[]>(DEFAULT_LEADERS);
 
   React.useEffect(() => {
@@ -85,6 +88,9 @@ export const LeadershipPage: React.FC = () => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-96 bg-theme-gold/10 blur-[120px] rounded-full opacity-50 pointer-events-none" />
       
       <div className="max-w-6xl mx-auto space-y-16 relative z-10">
+        <Breadcrumbs
+          items={[{ label: language === 'en' ? 'Leadership' : language === 'tj' ? 'Роҳбарият' : 'Руководство' }]}
+        />
         <header className="border-b border-theme-border/30 pb-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}

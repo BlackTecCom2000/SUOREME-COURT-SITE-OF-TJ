@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Brain, Search, Database as DbIcon, Save, Activity } from 'lucide-react';
-import { motion } from 'motion/react';
-import { toast } from 'react-hot-toast';
+import { Brain, Database as DbIcon, Save, Activity } from 'lucide-react';
 
 export const AiDashboard: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -9,31 +7,36 @@ export const AiDashboard: React.FC = () => {
   const [type, setType] = useState('info');
   const [url, setUrl] = useState('');
   const [isIndexing, setIsIndexing] = useState(false);
+  const [notice, setNotice] = useState<{ ok: boolean; text: string } | null>(null);
 
   const handleIndex = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !content) return toast.error('Название и контент обязательны');
-    
+    if (!title || !content) {
+      setNotice({ ok: false, text: 'Название и контент обязательны' });
+      return;
+    }
+
     setIsIndexing(true);
+    setNotice(null);
     try {
       const res = await fetch('/api/ai/index-knowledge', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+          'Authorization': `Bearer ${sessionStorage.getItem('cms-token')}`
         },
         body: JSON.stringify({ title, content, type, url })
       });
-      
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to index');
-      
-      toast.success(`Успешно проиндексировано! Чанков: ${data.chunks}`);
+
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error((data && data.error) || 'Failed to index');
+
+      setNotice({ ok: true, text: `Успешно проиндексировано! Чанков: ${data?.chunks ?? '?'}` });
       setTitle('');
       setContent('');
       setUrl('');
     } catch (err: any) {
-      toast.error(err.message);
+      setNotice({ ok: false, text: err?.message || 'Ошибка индексации' });
     } finally {
       setIsIndexing(false);
     }
@@ -107,6 +110,19 @@ export const AiDashboard: React.FC = () => {
                   className="w-full h-48 p-4 rounded-xl bg-theme-bg border border-theme-border text-theme-text focus:border-theme-gold outline-none resize-none"
                 />
               </div>
+
+              {notice && (
+                <div
+                  role="status"
+                  className={`px-4 py-2.5 rounded-xl font-mono text-xs border ${
+                    notice.ok
+                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                      : 'bg-red-500/10 text-red-400 border-red-500/30'
+                  }`}
+                >
+                  {notice.text}
+                </div>
+              )}
 
               <button
                 type="submit"

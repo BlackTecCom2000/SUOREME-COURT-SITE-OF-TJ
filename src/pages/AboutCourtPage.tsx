@@ -1,12 +1,18 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { usePageMeta } from '../hooks/usePageMeta';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 export const AboutCourtPage: React.FC = () => {
   const { t, language } = useLanguage();
+  usePageMeta(language === 'en' ? 'About the Supreme Court' : language === 'tj' ? 'Дар бораи Суди Олӣ' : 'О Верховном суде');
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-6 sm:px-12 lg:px-24">
       <div className="max-w-5xl mx-auto space-y-12">
+        <Breadcrumbs
+          items={[{ label: language === 'en' ? 'About' : language === 'tj' ? 'Маълумот' : 'О суде' }]}
+        />
         <header className="border-b border-theme-border pb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2.5 h-2.5 rounded-full bg-theme-gold" />

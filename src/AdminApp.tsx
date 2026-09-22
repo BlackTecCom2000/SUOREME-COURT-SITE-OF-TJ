@@ -16,6 +16,7 @@ import { AuditLogViewer } from './admin/pages/audit/AuditLogViewer';
 import { SettingsManager } from './admin/pages/settings/SettingsManager';
 import { DutyAdminManager } from './admin/pages/duty/DutyAdminManager';
 import { JudicialSystemVisualEditor } from './admin/pages/content/JudicialSystemVisualEditor';
+import { AiDashboard } from './admin/pages/AiDashboard';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 
@@ -38,6 +39,18 @@ const ScopedDenied: React.FC<{ siteId: string }> = ({ siteId }) => (
 
 const AdminRoutes: React.FC = () => {
   const { isAuthenticated, user } = useAdminAuth();
+
+  // SEO-01: admin pages must never be indexed.
+  React.useEffect(() => {
+    if (typeof document === 'undefined') return;
+    let meta = document.head.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'robots');
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', 'noindex, nofollow');
+  }, []);
 
   if (!isAuthenticated) {
     return <AdminLogin />;
@@ -64,6 +77,7 @@ const AdminRoutes: React.FC = () => {
           <Route path="users" element={<UsersManager />} />
           <Route path="audit" element={<AuditLogViewer />} />
           <Route path="settings" element={<SettingsManager />} />
+          <Route path="ai" element={<AiDashboard />} />
           <Route path="duty" element={<DutyAdminManager />} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>

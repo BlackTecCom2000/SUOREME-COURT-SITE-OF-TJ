@@ -18,8 +18,17 @@ interface ShelfBookRow {
   title_tj?: string | null;
   title_en?: string | null;
   url?: string | null;
+  url_ru?: string | null;
+  url_tj?: string | null;
+  url_en?: string | null;
   badge?: string | null;
   kind?: string | null;
+  doc_lang?: string | null;
+  content?: string | null;
+  content_ru?: string | null;
+  content_tj?: string | null;
+  content_en?: string | null;
+  source_url?: string | null;
   cover_text?: string | null;
   cover_emblem?: string | null;
   cover_bg?: string | null;
@@ -41,16 +50,31 @@ const KIND_OPTIONS: { value: string; label: string }[] = [
 
 const LIBRARY_EDIT_ROLES = ['super_admin', 'admin', 'administrator', 'editor', 'publisher'];
 
+const DOC_LANG_OPTIONS: { value: string; label: string }[] = [
+  { value: 'auto', label: 'Авто / все языки' },
+  { value: 'tj', label: 'Таджикский (TJ) — основной язык документа' },
+  { value: 'ru', label: 'Русский (RU) — основной язык документа' },
+  { value: 'en', label: 'Английский (EN) — основной язык документа' },
+  { value: 'multi', label: 'Многоязычный (отдельный текст TJ/RU/EN)' },
+];
+
 const EMPTY_FORM = {
   title_ru: '',
   title_tj: '',
   title_en: '',
   url: '',
+  url_ru: '',
+  url_tj: '',
+  url_en: '',
   badge: 'PDF',
   kind: '',
+  doc_lang: 'auto',
   content: '',
+  content_ru: '',
+  content_tj: '',
+  content_en: '',
   source_url: '',
-  importDocId: '',
+  importUrl: '',
   importStatus: '',
   cover_text: '',
   cover_emblem: '',
@@ -71,8 +95,10 @@ const COVER_EMBLEM_OPTIONS: { value: string; label: string }[] = [
 ];
 
 export const ShelfBooksManager: React.FC = () => {
-  const { user } = useAdminAuth();
-  const canEdit = LIBRARY_EDIT_ROLES.includes(user?.role || '');
+  const { user, hasPerm } = useAdminAuth();
+  // SEC-01: server permission is the source of truth; legacy role list kept as fallback.
+  const canEdit =
+    hasPerm('library.manage') || LIBRARY_EDIT_ROLES.includes(user?.role || '');
   const [books, setBooks] = useState<ShelfBookRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -80,6 +106,8 @@ export const ShelfBooksManager: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editing, setEditing] = useState<ShelfBookRow | null>(null);
   const [formData, setFormData] = useState(EMPTY_FORM);
+  const [contentTab, setContentTab] = useState<'ru' | 'tj' | 'en'>('ru');
+  const [pendingFileLang, setPendingFileLang] = useState<'ru' | 'tj' | 'en'>('ru');
   const [uploadStatus, setUploadStatus] = useState('');
   const [coverUploadStatus, setCoverUploadStatus] = useState('');
   const libFileRef = React.useRef<HTMLInputElement>(null);
@@ -150,30 +178,47 @@ export const ShelfBooksManager: React.FC = () => {
     fetchBooks();
   }, []);
 
+  const triggerFilePicker = (lang: 'ru' | 'tj' | 'en') => {
+    setPendingFileLang(lang);
+    setTimeout(() => libFileRef.current?.click(), 0);
+  };
+
   const handleOpenNew = () => {
     if (!canEdit) return;
     setEditing(null);
     setFormData({ ...EMPTY_FORM, sort_order: books.length });
+    setContentTab('ru');
+    setPendingFileLang('ru');
     setIsModalOpen(true);
   };
 
   const handleOpenEdit = (row: ShelfBookRow) => {
     if (!canEdit) return;
     setEditing(row);
+    const lang = (row.doc_lang as any) || 'auto';
+    setContentTab(lang === 'tj' ? 'tj' : lang === 'en' ? 'en' : 'ru');
+    setPendingFileLang(lang === 'tj' ? 'tj' : lang === 'en' ? 'en' : 'ru');
     setFormData({
       title_ru: row.title_ru || '',
       title_tj: row.title_tj || '',
       title_en: row.title_en || '',
       url: row.url || '',
+      url_ru: (row as any).url_ru || row.url || '',
+      url_tj: (row as any).url_tj || '',
+      url_en: (row as any).url_en || '',
       badge: row.badge || 'PDF',
       kind: row.kind || '',
+      doc_lang: row.doc_lang || 'auto',
       cover_text: row.cover_text || '',
       cover_emblem: row.cover_emblem || '',
       cover_bg: row.cover_bg || '',
       cover_image: row.cover_image || '',
       content: '',
+      content_ru: '',
+      content_tj: '',
+      content_en: '',
       source_url: '',
-      importDocId: '',
+      importUrl: '',
       importStatus: '',
       cover_theme: row.cover_theme ?? 0,
       sort_order: row.sort_order ?? 0,
@@ -189,22 +234,33 @@ export const ShelfBooksManager: React.FC = () => {
         if (d) {
           setFormData((prev) => ({
             ...prev,
+            url: typeof d.url === 'string' ? d.url : prev.url,
+            url_ru: typeof (d as any).url_ru === 'string' ? (d as any).url_ru : (typeof d.url === 'string' ? d.url : prev.url_ru),
+            url_tj: typeof (d as any).url_tj === 'string' ? (d as any).url_tj : prev.url_tj,
+            url_en: typeof (d as any).url_en === 'string' ? (d as any).url_en : prev.url_en,
             content: typeof d.content === 'string' ? d.content : '',
+            content_ru: typeof d.content_ru === 'string' ? d.content_ru : (typeof d.content === 'string' ? d.content : ''),
+            content_tj: typeof d.content_tj === 'string' ? d.content_tj : '',
+            content_en: typeof d.content_en === 'string' ? d.content_en : '',
+            doc_lang: d.doc_lang || prev.doc_lang,
             source_url: d.source_url || '',
           }));
+          if (d.doc_lang === 'tj') { setContentTab('tj'); setPendingFileLang('tj'); }
+          else if (d.doc_lang === 'en') { setContentTab('en'); setPendingFileLang('en'); }
+          else if (d.doc_lang === 'ru') { setContentTab('ru'); setPendingFileLang('ru'); }
         }
       })
       .catch(() => undefined);
   };
 
   const handleImportDoc = async () => {
-    if (!canEdit || !editing || !formData.importDocId.trim()) return;
-    setFormData((prev) => ({ ...prev, importStatus: 'Загрузка с mmk.tj...' }));
+    if (!canEdit || !editing || !formData.importUrl.trim()) return;
+    setFormData((prev) => ({ ...prev, importStatus: 'Загрузка текста...' }));
     try {
       const res = await fetch('/api/admin/library/import', {
         method: 'POST',
         headers: authHeaders(),
-        body: JSON.stringify({ bookId: editing.id, docId: formData.importDocId.trim() }),
+        body: JSON.stringify({ bookId: editing.id, sourceUrl: formData.importUrl.trim() }),
       });
       const data = await res.json().catch(() => null);
       if (res.ok && data) {
@@ -232,7 +288,7 @@ export const ShelfBooksManager: React.FC = () => {
     if (!canEdit || !formData.title_ru.trim()) return;
     try {
       const url = editing ? `/api/admin/shelf-books/${editing.id}` : '/api/admin/shelf-books';
-      const { importDocId: _drop1, importStatus: _drop2, ...rest } = formData;
+      const { importUrl: _drop1, importStatus: _drop2, ...rest } = formData;
       const payload = { ...rest, kind: formData.kind || null };
       const res = await fetch(url, {
         method: editing ? 'PATCH' : 'POST',
@@ -311,14 +367,33 @@ export const ShelfBooksManager: React.FC = () => {
       const lname = f.name.toLowerCase();
       if (lname.endsWith('.txt') || lname.endsWith('.md')) {
         const text = await f.text();
-        setFormData((prev) => ({ ...prev, content: text }));
+        setFormData((prev) => {
+          const patch: any = { content: text };
+          if (contentTab === 'tj') patch.content_tj = text;
+          else if (contentTab === 'en') patch.content_en = text;
+          else patch.content_ru = text;
+          // auto-set doc_lang if still auto
+          if (!prev.doc_lang || prev.doc_lang === 'auto') patch.doc_lang = contentTab;
+          return { ...prev, ...patch };
+        });
       }
-      setUploadStatus('Загрузка... 0%');
+      setUploadStatus(`Загрузка [${pendingFileLang.toUpperCase()}]... 0%`);
       const data = await uploadLibraryFile(f, formData.kind || 'document', (p) =>
-        setUploadStatus(`Загрузка... ${p}%`)
+        setUploadStatus(`Загрузка [${pendingFileLang.toUpperCase()}]... ${p}%`)
       );
-      setFormData((prev) => ({ ...prev, url: data.url }));
-      setUploadStatus(`Загружено в library: ${Math.round((data.size || 0) / 1024)} КБ`);
+      setFormData((prev) => {
+        const patch: any = {};
+        if (pendingFileLang === 'tj') patch.url_tj = data.url;
+        else if (pendingFileLang === 'en') patch.url_en = data.url;
+        else patch.url_ru = data.url;
+        if (!prev.url) patch.url = data.url;
+        else if (prev.doc_lang === pendingFileLang) patch.url = data.url;
+        else if (!prev.doc_lang || prev.doc_lang === 'auto') patch.url = data.url;
+        if (!prev.doc_lang || prev.doc_lang === 'auto') patch.doc_lang = pendingFileLang;
+        else if (prev.doc_lang !== pendingFileLang && prev.doc_lang !== 'multi') patch.doc_lang = 'multi';
+        return { ...prev, ...patch };
+      });
+      setUploadStatus(`Загружено [${pendingFileLang.toUpperCase()}] в library: ${Math.round((data.size || 0) / 1024)} КБ`);
       fetchBooks();
     } catch (err: any) {
       setUploadStatus(friendlyUploadError(err?.message || 'error'));
@@ -426,6 +501,15 @@ export const ShelfBooksManager: React.FC = () => {
       accessor: (row) => (
         <span className="font-mono text-[11px] text-amber-300/90 uppercase">
           {kindLabel(row.kind || detectKind(row.title_ru || ''))}
+        </span>
+      ),
+    },
+    {
+      header: 'Язык',
+      width: '90px',
+      accessor: (row) => (
+        <span className="font-mono text-[11px] text-amber-200 border border-amber-400/30 bg-amber-400/10 rounded px-1.5 py-0.5 uppercase">
+          {(row.doc_lang || 'auto').toUpperCase()}
         </span>
       ),
     },
@@ -558,7 +642,7 @@ export const ShelfBooksManager: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         title={editing ? 'Редактирование книги' : 'Новая книга на полке'}
         subtitle="Название, ссылка на PDF, цвет обложки и порядок"
-        maxWidth="max-w-[95vw]"
+        maxWidth="max-w-5xl w-[min(calc(100vw-2rem),72rem)]"
         footer={
           <>
             <AdminButton variant="outline" size="sm" onClick={() => setIsModalOpen(false)}>
@@ -570,8 +654,8 @@ export const ShelfBooksManager: React.FC = () => {
           </>
         }
       >
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_220px] gap-6">
-          <div className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_220px] gap-6 min-w-0">
+          <div className="space-y-4 min-w-0">
             <AdminInput
               label="Название (RU)"
               required
@@ -591,65 +675,95 @@ export const ShelfBooksManager: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
               placeholder="Civil Code of RT, Part 1"
             />
-            <AdminInput
-              label="Ссылка на документ (URL)"
-              value={formData.url}
-              onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-              placeholder="http://sud.tj/upload/iblock/...pdf"
+            <div className="space-y-3">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-300">Файлы документа — раздельно по языкам</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {(['ru','tj','en'] as const).map(lang => {
+                  const urlVal = (formData as any)[`url_${lang}`] as string | undefined;
+                  const label = lang==='ru' ? 'Русский' : lang==='tj' ? 'Таджикский' : 'English';
+                  const color = lang==='ru' ? 'border-amber-400/30 text-amber-300 bg-amber-400/10' : lang==='tj' ? 'border-emerald-400/30 text-emerald-300 bg-emerald-400/10' : 'border-sky-400/30 text-sky-300 bg-sky-400/10';
+                  return (
+                    <div key={lang} className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex flex-col gap-2.5">
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-bold border w-fit ${color}`}>{lang.toUpperCase()} · {label}</span>
+                      {urlVal ? (
+                        <>
+                          <a href={urlVal} target="_blank" rel="noreferrer" className="text-xs font-mono text-slate-300 truncate hover:text-amber-400" title={urlVal}>{urlVal.split('/').pop()}</a>
+                          <div className="flex gap-1.5">
+                            <AdminButton variant="outline" size="sm" onClick={() => triggerFilePicker(lang)}>Заменить</AdminButton>
+                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, [`url_${lang}`]: '' } as any))} className="px-2.5 py-1.5 rounded-lg border border-slate-700 text-slate-400 hover:text-red-400 hover:border-red-400/40 text-xs">Удалить</button>
+                          </div>
+                        </>
+                      ) : (
+                        <AdminButton variant="outline" size="sm" onClick={() => triggerFilePicker(lang)}>+ Загрузить {lang.toUpperCase()}</AdminButton>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <input ref={libFileRef} type="file" accept=".pdf,.doc,.docx,.txt,.md,.png,.jpg,.jpeg,.webp,.gif" className="hidden" aria-hidden="true" tabIndex={-1} onChange={handleLibFile} />
+              {uploadStatus && <span className="font-mono text-[11px] text-amber-300/90">{uploadStatus}</span>}
+              <span className="text-[11px] text-slate-500">Каждый язык — отдельный файл. В библиотеке показывается только файл текущего языка.</span>
+            </div>
+            <AdminSelect
+              label="Язык документа (важно для смены языка в читалке)"
+              value={formData.doc_lang}
+              onChange={(e) => { const v = e.target.value; setFormData({ ...formData, doc_lang: v }); if (v === 'tj') setContentTab('tj'); else if (v === 'en') setContentTab('en'); else if (v === 'ru') setContentTab('ru'); }}
+              options={DOC_LANG_OPTIONS}
             />
             <div className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
-                Файл в библиотеку (PDF, DOCX, TXT, MD, изображения)
-              </span>
-              <div className="flex items-center gap-2 flex-wrap">
-                <input
-                  ref={libFileRef}
-                  type="file"
-                  accept=".pdf,.doc,.docx,.txt,.md,.png,.jpg,.jpeg,.webp,.gif"
-                  className="hidden"
-                  aria-hidden="true"
-                  tabIndex={-1}
-                  onChange={handleLibFile}
-                />
-                <AdminButton variant="outline" size="sm" onClick={() => libFileRef.current?.click()} disabled={!canEdit}>
-                  Выбрать файл
-                </AdminButton>
-                {uploadStatus && (
-                  <span className="font-mono text-[11px] text-amber-300/90">{uploadStatus}</span>
-                )}
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                  Полный текст книги — язык: {contentTab.toUpperCase()} {(() => { const cur = contentTab==='tj'? formData.content_tj : contentTab==='en'? formData.content_en : formData.content_ru; return cur ? `(${String(cur).length} символов)` : '(пусто)'; })()}
+                </span>
+                <span className="text-[10px] font-mono text-slate-500">При смене языка в библиотеке читалка покажет текст для этого языка (fallback → RU → legacy)</span>
               </div>
-              <span className="text-[11px] text-slate-500">
-                Файл сохранится в data/library/&lt;категория&gt;/, ссылка подставится сама. TXT/MD сразу попадут в текст книги.
-              </span>
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
-                Полный текст книги {formData.content ? `(${formData.content.length} символов)` : '(пусто)'}
-              </span>
+              <div className="flex items-center gap-1.5">
+                {(['ru','tj','en'] as const).map(l => (
+                  <button key={l} type="button" onClick={() => setContentTab(l)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono border ${contentTab===l ? 'bg-amber-400 text-slate-900 border-amber-400 font-bold' : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'}`}>
+                    {l.toUpperCase()} {(() => { const v = l==='tj'? formData.content_tj : l==='en'? formData.content_en : formData.content_ru; return v ? `· ${String(v).length}` : ''; })()}
+                  </button>
+                ))}
+                <span className="text-[11px] text-slate-500 ml-2">Выбранный язык заполняется, остальные — опционально (многоязычный документ)</span>
+              </div>
               <textarea
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                value={contentTab==='tj' ? formData.content_tj : contentTab==='en' ? formData.content_en : formData.content_ru}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  setFormData(prev => {
+                    const patch: any = {};
+                    if (contentTab==='tj') patch.content_tj = v;
+                    else if (contentTab==='en') patch.content_en = v;
+                    else patch.content_ru = v;
+                    // keep legacy content in sync for old readers (first non-empty)
+                    patch.content = v || prev.content_ru || prev.content_tj || prev.content_en || prev.content;
+                    // auto-set doc_lang if auto
+                    if (!prev.doc_lang || prev.doc_lang==='auto') patch.doc_lang = contentTab;
+                    return { ...prev, ...patch };
+                  });
+                }}
                 rows={7}
-                placeholder="Вставьте текст кодекса/закона или импортируйте с mmk.tj по DocumentId ниже..."
+                placeholder={contentTab==='tj' ? 'Матни китоб ба тоҷикӣ (HTML дастгирӣ мешавад: <a>, <table> ...)' : contentTab==='en' ? 'Book text in English (HTML supported: <a>, <table> ...)' : 'Вставьте текст кодекса/закона на русском или HTML ( <a>, <b>, <ul>, <table> — покажется как есть)'}
                 className="w-full rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 p-3 leading-relaxed"
               />
+              <span className="text-[11px] text-slate-500">HTML «как есть» — ссылки/таблицы кликабельны. Текст текущего языка сохраняется отдельно; при смене языка в читалке автоматически подставится нужный.</span>
               <div className="flex items-center gap-2">
                 <input
-                  value={formData.importDocId}
-                  onChange={(e) => setFormData({ ...formData, importDocId: e.target.value.replace(/\D/g, '') })}
-                  placeholder="DocumentId с mmk.tj (напр. 23359)"
+                  value={formData.importUrl}
+                  onChange={(e) => setFormData({ ...formData, importUrl: e.target.value })}
+                  placeholder="URL страницы документа (adliya.tj, sud.tj...)"
                   disabled={!editing}
-                  className="w-56 h-9 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 disabled:opacity-40"
+                  className="flex-1 h-9 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 disabled:opacity-40"
                 />
-                <AdminButton variant="outline" size="sm" onClick={handleImportDoc} disabled={!editing || !formData.importDocId.trim()}>
-                  Импорт с mmk.tj
+                <AdminButton variant="outline" size="sm" onClick={handleImportDoc} disabled={!editing || !formData.importUrl.trim()}>
+                  Импорт текста
                 </AdminButton>
                 {formData.importStatus && (
                   <span className="font-mono text-[11px] text-amber-300/90">{formData.importStatus}</span>
                 )}
               </div>
               {!editing && (
-                <span className="text-[11px] text-slate-500">Импорт по DocumentId доступен после создания книги.</span>
+                <span className="text-[11px] text-slate-500">Импорт по URL доступен после создания книги.</span>
               )}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

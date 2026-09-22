@@ -17,7 +17,11 @@ data/*.sqlite-*
 data/*.db
 data/uploads/
 data/library/
+data/backups/
 uploads/
+# Full-project versioned backups (may contain DB hashes — NEVER commit)
+backups/
+*.backup/
 
 # Logs & OS
 *.log

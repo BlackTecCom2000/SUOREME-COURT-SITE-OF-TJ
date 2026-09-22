@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type AdminBadgeVariant = 'draft' | 'pending' | 'published' | 'scheduled' | 'archived' | 'new' | 'active' | 'inactive' | 'error' | 'role';
+export type AdminBadgeVariant = 'draft' | 'pending' | 'pending_review' | 'approved' | 'rejected' | 'published' | 'scheduled' | 'archived' | 'new' | 'active' | 'inactive' | 'error' | 'role';
 
 interface AdminBadgeProps {
   variant?: AdminBadgeVariant;
@@ -20,6 +20,9 @@ export const AdminBadge: React.FC<AdminBadgeProps> = ({
   const variantStyles = {
     draft: 'bg-slate-800 text-slate-300 border-slate-700',
     pending: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+    pending_review: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+    approved: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+    rejected: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
     published: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
     scheduled: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
     archived: 'bg-slate-800/80 text-slate-400 border-slate-700',
