@@ -2,6 +2,9 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.1.8 — Fix dead menu anchors
+- Пункты «Саҳифаҳо» вели в никуда на внутренних страницах (/about, /leadership, /news/*, /sitemap): якоря есть только на главной. Теперь — переход на главную + плавный скролл к разделу (без перезагрузки, работает и в мобильном меню).
+
 ## v2.1.7 — Swap sections 001 and 006
 - Главная: секции 001 (Hero) и 006 (Judicial Information) поменяны местами; сквозная нумерация сохранена; кнопка «далее» hero теперь ведёт к контактам.
 

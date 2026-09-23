@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   ArrowUpRight, 
   Eye, 
@@ -204,16 +205,25 @@ export const Navbar: React.FC<NavbarProps> = ({
     },
   ];
 
+  const navigate = useNavigate();
+
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, item: NavItem) => {
     setMobileMenuOpen(false);
     setMenuPopoverOpen(false);
     if (item.href.startsWith('#')) {
+      e.preventDefault();
       const targetEl = document.querySelector(item.href);
       if (targetEl) {
-        e.preventDefault();
         targetEl.scrollIntoView({ behavior: 'smooth' });
         return;
       }
+      // Anchor lives on the homepage: go home first, then scroll (fixes dead
+      // menu buttons on /about, /leadership, /news/*, /sitemap, …).
+      navigate('/');
+      window.setTimeout(() => {
+        document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+      }, 450);
+      return;
     }
 
     if (item.actionId && onOpenSection) {
