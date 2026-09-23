@@ -2,6 +2,9 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.1.4 — CSP dev report-only fix
+- Enforced CSP (`script-src 'self'`) blocked Vite dev inline preamble on the `:8787` SSR path → unstyled, non-hydrated page. Fix: `CMS_CSP_MODE` (`enforce` = prod default, `report-only` = dev default, `off`); dev serves Report-Only, production enforces. `.env.example` documents the variable.
+
 ## v2.1.3 — Cleanup + continuity docs
 - Deleted verified-dead legacy readers: `TurnFlipBook.tsx`, `ElectronicLibraryView.tsx`, `ConstitutionReader.tsx(.css)`, `public/lib/{jquery,turn}.min.js` (pdf.js kept for FoliantReader; zero external imports verified).
 - Documented `server/db/schema.ts` drift vs live SQLite schema (kept, not auto-deleted).
