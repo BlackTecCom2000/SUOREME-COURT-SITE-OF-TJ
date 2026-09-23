@@ -2,6 +2,10 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.3.0 — Legal search and repository
+- Поиск: фильтры дат/категории/суда, полнотекст (body+content), релевантность (заголовок первым), таб заседаний; фильтры списков актов и книг.
+- Репозиторий: метаданные книг (номер/дата/опубликовано/external_id/sync), версионность с откатом, связанные документы, sync-now с источником (ADLIA-архитектура).
+
 ## v2.2.2 — Global shell (navbar + footer IA)
 - Scroll-spy active states для якорей (десктоп + мобильное меню, только на главной).
 - Мобильный паритет: аккордеон e-услуг (те же 6 табов) + кнопки поиска/AI.

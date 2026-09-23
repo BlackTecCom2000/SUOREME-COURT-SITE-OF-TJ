@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, FileText, Scale, Search, X } from 'lucide-react';
+import { BookOpen, FileText, Gavel, Scale, Search, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { pickTri } from '../sites/types';
 
 interface SearchItem {
-  kind: 'content' | 'act' | 'book';
+  kind: 'content' | 'act' | 'book' | 'hearing';
   id: number;
   type?: string;
   slug?: string;
@@ -19,7 +19,7 @@ interface SearchItem {
   date?: string | null;
 }
 
-const TABS = ['all', 'news', 'announcement', 'vacancy', 'journal', 'act', 'book'] as const;
+const TABS = ['all', 'news', 'announcement', 'vacancy', 'journal', 'act', 'book', 'hearing'] as const;
 
 export const GlobalSearchModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   isOpen,
@@ -31,6 +31,11 @@ export const GlobalSearchModal: React.FC<{ isOpen: boolean; onClose: () => void 
   const [items, setItems] = useState<SearchItem[]>([]);
   const [total, setTotal] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+  const [category, setCategory] = useState('');
+  const [court, setCourt] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const timer = useRef<number | null>(null);
 
@@ -43,6 +48,11 @@ export const GlobalSearchModal: React.FC<{ isOpen: boolean; onClose: () => void 
       setItems([]);
       setTotal(0);
       setTab('all');
+      setDateFrom('');
+      setDateTo('');
+      setCategory('');
+      setCourt('');
+      setShowFilters(false);
       setTimeout(() => inputRef.current?.focus(), 60);
     }
   }, [isOpen]);
@@ -69,10 +79,12 @@ export const GlobalSearchModal: React.FC<{ isOpen: boolean; onClose: () => void 
     setBusy(true);
     timer.current = window.setTimeout(async () => {
       try {
-        const r = await fetch(
-          `/api/search?q=${encodeURIComponent(query)}&type=${encodeURIComponent(tab === 'all' ? 'all' : tab)}`,
-          { cache: 'no-store' }
-        );
+        const params = new URLSearchParams({ q: query, type: tab === 'all' ? 'all' : tab });
+        if (dateFrom) params.set('date_from', dateFrom);
+        if (dateTo) params.set('date_to', dateTo);
+        if (category.trim()) params.set('category', category.trim());
+        if (court.trim()) params.set('court', court.trim());
+        const r = await fetch(`/api/search?${params.toString()}`, { cache: 'no-store' });
         const d = r.ok ? await r.json() : null;
         setItems(Array.isArray(d?.items) ? d.items : []);
         setTotal(Number(d?.total) || 0);
@@ -86,18 +98,26 @@ export const GlobalSearchModal: React.FC<{ isOpen: boolean; onClose: () => void 
     return () => {
       if (timer.current) window.clearTimeout(timer.current);
     };
-  }, [q, tab, isOpen]);
+  }, [q, tab, dateFrom, dateTo, category, court, isOpen]);
 
   if (!isOpen) return null;
 
   const hrefOf = (it: SearchItem): string => {
     if (it.kind === 'content' && it.type && it.slug) return `/${it.type}/${it.slug}`;
     if (it.kind === 'book') return `/library?doc=db:${it.id}`;
-    return '/library';
+    return '/';
   };
 
   const iconOf = (it: SearchItem) =>
-    it.kind === 'book' ? <BookOpen size={14} /> : it.kind === 'act' ? <Scale size={14} /> : <FileText size={14} />;
+    it.kind === 'book' ? (
+      <BookOpen size={14} />
+    ) : it.kind === 'act' ? (
+      <Scale size={14} />
+    ) : it.kind === 'hearing' ? (
+      <Gavel size={14} />
+    ) : (
+      <FileText size={14} />
+    );
 
   return (
     <div
@@ -150,9 +170,42 @@ export const GlobalSearchModal: React.FC<{ isOpen: boolean; onClose: () => void 
                   ? L('Актҳо', 'Акты', 'Acts')
                   : t === 'book'
                     ? L('Китобҳо', 'Книги', 'Books')
-                    : t}
+                    : t === 'hearing'
+                      ? L('Маҷлисҳо', 'Заседания', 'Hearings')
+                      : t}
             </button>
           ))}
+        </div>
+        <div className="px-4 pb-1">
+          <button
+            type="button"
+            onClick={() => setShowFilters((v) => !v)}
+            aria-expanded={showFilters}
+            className="font-mono text-[11px] text-theme-textMuted hover:text-theme-gold transition-colors"
+          >
+            {showFilters ? '− ' : '+ '}
+            {L('Филтрҳо: сана, категория, суд', 'Фильтры: дата, категория, суд', 'Filters: date, category, court')}
+          </button>
+          {showFilters && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 py-2">
+              <label className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+                {L('Аз сана', 'С даты', 'From')}
+                <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="h-9 px-2 rounded-lg bg-theme-bg border border-theme-border text-theme-text text-xs font-sans focus:outline-none focus:border-theme-gold" />
+              </label>
+              <label className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+                {L('То сана', 'По дату', 'To')}
+                <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="h-9 px-2 rounded-lg bg-theme-bg border border-theme-border text-theme-text text-xs font-sans focus:outline-none focus:border-theme-gold" />
+              </label>
+              <label className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+                {L('Категория', 'Категория', 'Category')}
+                <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="…" className="h-9 px-2 rounded-lg bg-theme-bg border border-theme-border text-theme-text text-xs font-sans placeholder:text-theme-textMuted focus:outline-none focus:border-theme-gold" />
+              </label>
+              <label className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+                {L('Суд', 'Суд', 'Court')}
+                <input value={court} onChange={(e) => setCourt(e.target.value)} placeholder="…" className="h-9 px-2 rounded-lg bg-theme-bg border border-theme-border text-theme-text text-xs font-sans placeholder:text-theme-textMuted focus:outline-none focus:border-theme-gold" />
+              </label>
+            </div>
+          )}
         </div>
         <div className="max-h-[50vh] overflow-y-auto p-2">
           {q.trim().length < 2 ? (

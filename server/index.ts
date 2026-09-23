@@ -110,10 +110,12 @@ try {
   }
   db.exec(`CREATE TABLE IF NOT EXISTS shelf_books(id INTEGER PRIMARY KEY, title_ru TEXT NOT NULL, title_tj TEXT, title_en TEXT, url TEXT, badge TEXT DEFAULT 'PDF', cover_theme INTEGER DEFAULT 0, sort_order INTEGER DEFAULT 0, is_visible INTEGER DEFAULT 1, created_at TEXT DEFAULT CURRENT_TIMESTAMP, updated_at TEXT)`);
   const scols = db.prepare("PRAGMA table_info(shelf_books)").all() as any[];
-  for (const col of ['title_tj TEXT', 'title_en TEXT', 'url TEXT', 'url_ru TEXT', 'url_tj TEXT', 'url_en TEXT', 'badge TEXT', 'cover_theme INTEGER DEFAULT 0', 'sort_order INTEGER DEFAULT 0', 'is_visible INTEGER DEFAULT 1', 'updated_at TEXT', 'kind TEXT', 'content TEXT', 'content_ru TEXT', 'content_tj TEXT', 'content_en TEXT', 'doc_lang TEXT', 'source_url TEXT', 'cover_text TEXT', 'cover_emblem TEXT', 'cover_bg TEXT', 'cover_image TEXT']) {
+  for (const col of ['title_tj TEXT', 'title_en TEXT', 'url TEXT', 'url_ru TEXT', 'url_tj TEXT', 'url_en TEXT', 'badge TEXT', 'cover_theme INTEGER DEFAULT 0', 'sort_order INTEGER DEFAULT 0', 'is_visible INTEGER DEFAULT 1', 'updated_at TEXT', 'kind TEXT', 'content TEXT', 'content_ru TEXT', 'content_tj TEXT', 'content_en TEXT', 'doc_lang TEXT', 'source_url TEXT', 'cover_text TEXT', 'cover_emblem TEXT', 'cover_bg TEXT', 'cover_image TEXT', 'doc_number TEXT', 'act_date TEXT', 'published_at TEXT', 'external_id TEXT', 'synced_at TEXT', 'sync_status TEXT']) {
     const name = col.split(' ')[0];
     if (!scols.some((c) => c.name === name)) db.exec(`ALTER TABLE shelf_books ADD COLUMN ${col}`);
   }
+  // v2.3.0: document version history for the legal repository.
+  db.exec(`CREATE TABLE IF NOT EXISTS shelf_book_versions(id INTEGER PRIMARY KEY, book_id INTEGER NOT NULL, version_number INTEGER NOT NULL, snapshot_data TEXT NOT NULL, created_by INTEGER, created_at TEXT DEFAULT CURRENT_TIMESTAMP, commit_message TEXT)`);
   // Backfill: copy legacy content/url -> ru variants if new cols empty (first run after migration)
   try {
     const anyNew = db.prepare("SELECT count(*) as c FROM shelf_books WHERE (content_ru IS NOT NULL OR content_tj IS NOT NULL OR content_en IS NOT NULL)").get() as any;
@@ -622,7 +624,28 @@ app.get('/api/courts', cache(3600), (_req, res) => res.json(db.prepare('SELECT *
 app.post('/api/admin/courts', auth, requirePerm('courts.manage'), (req:Auth, res) => { if (denyScoped(req,res)) return; const p=z.object({nameRu:z.string().min(2),nameTj:z.string().optional(),nameEn:z.string().optional(),region:z.string(),type:z.string(),address:z.string().optional(),phone:z.string().optional(),lat:z.number().optional(),lng:z.number().optional()}).safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid court', details: p.error}); const x=p.data; const result=db.prepare('INSERT INTO courts(name_ru,name_tj,name_en,region,type,address,phone,lat,lng) VALUES(?,?,?,?,?,?,?,?,?)').run(x.nameRu,x.nameTj||null,x.nameEn||null,x.region,x.type,x.address||null,x.phone||null,x.lat||null,x.lng||null); audit(req.user!.id,'create','court',Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
 
 // Judicial Acts
-app.get('/api/judicial_acts', cache(300), (_req, res) => res.json(db.prepare("SELECT * FROM judicial_acts WHERE status='published' ORDER BY published_at DESC").all()));
+// v2.3.0: filters q (title/number/case), category, doc_type, from/to (act_date ISO).
+app.get('/api/judicial_acts', cache(300), (req, res) => {
+  const q = String(req.query.q || '').trim().slice(0, 120);
+  const category = String(req.query.category || '');
+  const docType = String(req.query.doc_type || '');
+  const from = String(req.query.from || '');
+  const to = String(req.query.to || '');
+  const where: string[] = ["status='published'"];
+  const vals: any[] = [];
+  if (q) {
+    const like = `%${q}%`;
+    where.push('(title_ru LIKE ? OR title_tj LIKE ? OR title_en LIKE ? OR doc_number LIKE ? OR case_number LIKE ?)');
+    vals.push(like, like, like, like, like);
+  }
+  if (category) { where.push('category=?'); vals.push(category); }
+  if (docType) { where.push('doc_type=?'); vals.push(docType); }
+  if (from) { where.push('act_date>=?'); vals.push(from); }
+  if (to) { where.push('act_date<=?'); vals.push(to); }
+  res.json(
+    db.prepare(`SELECT * FROM judicial_acts WHERE ${where.join(' AND ')} ORDER BY published_at DESC LIMIT 200`).all(...vals)
+  );
+});
 // Judicial acts admin CRUD (portal-level)
 app.get('/api/admin/judicial-acts', auth, (req:Auth,res) => {
   if (denyScoped(req,res)) return;
@@ -668,12 +691,42 @@ app.delete('/api/admin/judicial-acts/:id', auth, requirePerm('acts.manage'), (re
 
 // Shelf Books (legislation bookshelf, portal-level)
 // Library writes require library.manage (SEC-01); viewers/court managers read.
-const SHELF_PUBLIC_COLS = 'id,title_ru,title_tj,title_en,url,url_ru,url_tj,url_en,badge,kind,cover_theme,cover_text,cover_emblem,cover_bg,cover_image,sort_order,is_visible,source_url,doc_lang,updated_at';
-app.get('/api/shelf-books', cache(300), (_req, res) => res.json(db.prepare(`SELECT ${SHELF_PUBLIC_COLS} FROM shelf_books WHERE is_visible=1 ORDER BY sort_order, id`).all()));
+const SHELF_PUBLIC_COLS = 'id,title_ru,title_tj,title_en,url,url_ru,url_tj,url_en,badge,kind,cover_theme,cover_text,cover_emblem,cover_bg,cover_image,sort_order,is_visible,source_url,doc_lang,doc_number,act_date,published_at,external_id,synced_at,sync_status,updated_at';
+// v2.3.0: list filters q (titles + doc_number), kind, doc_lang.
+app.get('/api/shelf-books', cache(300), (req, res) => {
+  const q = String(req.query.q || '').trim().slice(0, 120);
+  const kind = String(req.query.kind || '');
+  const docLang = String(req.query.doc_lang || '');
+  const where: string[] = ['is_visible=1'];
+  const vals: any[] = [];
+  if (q) {
+    const like = `%${q}%`;
+    where.push('(title_ru LIKE ? OR title_tj LIKE ? OR title_en LIKE ? OR doc_number LIKE ?)');
+    vals.push(like, like, like, like);
+  }
+  if (['constitution', 'code', 'law', 'document', 'quote', 'other'].includes(kind)) {
+    where.push('kind=?');
+    vals.push(kind);
+  }
+  if (['tj', 'ru', 'en', 'multi'].includes(docLang)) {
+    where.push('(doc_lang=? OR doc_lang IS NULL OR doc_lang=?)');
+    vals.push(docLang, 'auto');
+  }
+  res.json(
+    db.prepare(`SELECT ${SHELF_PUBLIC_COLS} FROM shelf_books WHERE ${where.join(' AND ')} ORDER BY sort_order, id LIMIT 200`).all(...vals)
+  );
+});
 app.get('/api/shelf-books/:id', cache(300), (req, res) => {
-  const row = db.prepare('SELECT * FROM shelf_books WHERE id=? AND is_visible=1').get(req.params.id);
+  const row = db.prepare('SELECT * FROM shelf_books WHERE id=? AND is_visible=1').get(req.params.id) as any;
   if (!row) return res.status(404).json({ error: 'Not found' });
-  res.json(row);
+  // Related documents: same kind, visible, excluding self.
+  let related: any[] = [];
+  try {
+    related = db.prepare(
+      `SELECT ${SHELF_PUBLIC_COLS} FROM shelf_books WHERE is_visible=1 AND id!=? AND (kind=? OR ? IS NULL) ORDER BY sort_order, id LIMIT 5`
+    ).all(req.params.id, row.kind || null, row.kind || null) as any[];
+  } catch { related = []; }
+  res.json({ ...row, related });
 });
 app.get('/api/admin/shelf-books', auth, (req:Auth,res) => {
   if (denyScoped(req,res)) return;
@@ -683,7 +736,7 @@ app.get('/api/admin/shelf-books', auth, (req:Auth,res) => {
 app.post('/api/admin/shelf-books', auth, requirePerm('library.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
 
-  const p=z.object({title_ru:z.string().min(2),title_tj:z.string().optional(),title_en:z.string().optional(),url:z.string().max(1000).optional(),url_ru:z.string().max(1000).optional(),url_tj:z.string().max(1000).optional(),url_en:z.string().max(1000).optional(),badge:z.string().max(32).optional(),kind:z.enum(['constitution','code','law','document','quote','other']).optional(),content:z.string().max(5000000).optional(),content_ru:z.string().max(5000000).optional(),content_tj:z.string().max(5000000).optional(),content_en:z.string().max(5000000).optional(),doc_lang:z.enum(['tj','ru','en','multi','auto']).optional(),source_url:z.string().max(1000).optional(),cover_text:z.string().max(300).optional(),cover_emblem:z.string().max(32).optional(),cover_bg:z.string().max(120).optional(),cover_image:z.string().max(1000).optional(),cover_theme:z.number().int().min(0).max(9).default(0),sort_order:z.number().int().default(0),is_visible:z.number().int().min(0).max(1).default(1)}).safeParse(req.body || {});
+  const p=z.object({title_ru:z.string().min(2),title_tj:z.string().optional(),title_en:z.string().optional(),url:z.string().max(1000).optional(),url_ru:z.string().max(1000).optional(),url_tj:z.string().max(1000).optional(),url_en:z.string().max(1000).optional(),badge:z.string().max(32).optional(),kind:z.enum(['constitution','code','law','document','quote','other']).optional(),content:z.string().max(5000000).optional(),content_ru:z.string().max(5000000).optional(),content_tj:z.string().max(5000000).optional(),content_en:z.string().max(5000000).optional(),doc_lang:z.enum(['tj','ru','en','multi','auto']).optional(),doc_number:z.string().max(64).optional(),act_date:z.string().max(32).optional(),published_at:z.string().optional(),external_id:z.string().max(200).optional(),source_url:z.string().max(1000).optional(),cover_text:z.string().max(300).optional(),cover_emblem:z.string().max(32).optional(),cover_bg:z.string().max(120).optional(),cover_image:z.string().max(1000).optional(),cover_theme:z.number().int().min(0).max(9).default(0),sort_order:z.number().int().default(0),is_visible:z.number().int().min(0).max(1).default(1)}).safeParse(req.body || {});
   if(!p.success)return res.status(400).json({error:'Invalid book', details: p.error});
   const x=p.data as any;
   // Back-compat: if legacy content/url provided without lang-specific, distribute by doc_lang
@@ -705,7 +758,7 @@ app.post('/api/admin/shelf-books', auth, requirePerm('library.manage'), (req:Aut
     else urlRu = legacyUrl;
   }
   const fallbackUrl = urlRu || urlTj || urlEn || legacyUrl || null;
-  const result=db.prepare('INSERT INTO shelf_books(title_ru,title_tj,title_en,url,url_ru,url_tj,url_en,badge,kind,content,content_ru,content_tj,content_en,doc_lang,source_url,cover_text,cover_emblem,cover_bg,cover_image,cover_theme,sort_order,is_visible) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.title_ru,x.title_tj||null,x.title_en||null,fallbackUrl,urlRu,urlTj,urlEn,x.badge||'PDF',x.kind||null,fallbackContent,cr,ct,ce,x.doc_lang||null,x.source_url||null,x.cover_text||null,x.cover_emblem||null,x.cover_bg||null,x.cover_image||null,x.cover_theme,x.sort_order,x.is_visible);
+  const result=db.prepare('INSERT INTO shelf_books(title_ru,title_tj,title_en,url,url_ru,url_tj,url_en,badge,kind,content,content_ru,content_tj,content_en,doc_lang,doc_number,act_date,published_at,external_id,source_url,cover_text,cover_emblem,cover_bg,cover_image,cover_theme,sort_order,is_visible) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.title_ru,x.title_tj||null,x.title_en||null,fallbackUrl,urlRu,urlTj,urlEn,x.badge||'PDF',x.kind||null,fallbackContent,cr,ct,ce,x.doc_lang||null,x.doc_number||null,x.act_date||null,normDateTime(x.published_at),x.external_id||null,x.source_url||null,x.cover_text||null,x.cover_emblem||null,x.cover_bg||null,x.cover_image||null,x.cover_theme,x.sort_order,x.is_visible);
   audit(req.user!.id,'create','shelf_book',Number(result.lastInsertRowid));
   res.status(201).json({id:result.lastInsertRowid});
 });
@@ -728,18 +781,76 @@ app.post('/api/admin/shelf-books/seed', auth, requirePerm('library.manage'), (re
 app.patch('/api/admin/shelf-books/:id', auth, requirePerm('library.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
 
-  const p=z.object({title_ru:z.string().min(2).optional(),title_tj:z.string().nullable().optional(),title_en:z.string().nullable().optional(),url:z.string().max(1000).nullable().optional(),url_ru:z.string().max(1000).nullable().optional(),url_tj:z.string().max(1000).nullable().optional(),url_en:z.string().max(1000).nullable().optional(),badge:z.string().max(32).nullable().optional(),kind:z.enum(['constitution','code','law','document','quote','other']).nullable().optional(),content:z.string().max(5000000).nullable().optional(),content_ru:z.string().max(5000000).nullable().optional(),content_tj:z.string().max(5000000).nullable().optional(),content_en:z.string().max(5000000).nullable().optional(),doc_lang:z.enum(['tj','ru','en','multi','auto']).nullable().optional(),source_url:z.string().max(1000).nullable().optional(),cover_text:z.string().max(300).nullable().optional(),cover_emblem:z.string().max(32).nullable().optional(),cover_bg:z.string().max(120).nullable().optional(),cover_image:z.string().max(1000).nullable().optional(),cover_theme:z.number().int().min(0).max(9).optional(),sort_order:z.number().int().optional(),is_visible:z.number().int().min(0).max(1).optional()}).safeParse(req.body || {});
+  const p=z.object({title_ru:z.string().min(2).optional(),title_tj:z.string().nullable().optional(),title_en:z.string().nullable().optional(),url:z.string().max(1000).nullable().optional(),url_ru:z.string().max(1000).nullable().optional(),url_tj:z.string().max(1000).nullable().optional(),url_en:z.string().max(1000).nullable().optional(),badge:z.string().max(32).nullable().optional(),kind:z.enum(['constitution','code','law','document','quote','other']).nullable().optional(),content:z.string().max(5000000).nullable().optional(),content_ru:z.string().max(5000000).nullable().optional(),content_tj:z.string().max(5000000).nullable().optional(),content_en:z.string().max(5000000).nullable().optional(),doc_lang:z.enum(['tj','ru','en','multi','auto']).nullable().optional(),doc_number:z.string().max(64).nullable().optional(),act_date:z.string().max(32).nullable().optional(),published_at:z.string().nullable().optional(),external_id:z.string().max(200).nullable().optional(),source_url:z.string().max(1000).nullable().optional(),cover_text:z.string().max(300).nullable().optional(),cover_emblem:z.string().max(32).nullable().optional(),cover_bg:z.string().max(120).nullable().optional(),cover_image:z.string().max(1000).nullable().optional(),cover_theme:z.number().int().min(0).max(9).optional(),sort_order:z.number().int().optional(),is_visible:z.number().int().min(0).max(1).optional()}).safeParse(req.body || {});
   if(!p.success)return res.status(400).json({error:'Invalid book', details: p.error});
   const x=p.data as any; const sets:string[]=[]; const vals:any[]=[];
-  for (const col of ['title_ru','title_tj','title_en','url','url_ru','url_tj','url_en','badge','kind','content','content_ru','content_tj','content_en','doc_lang','source_url','cover_text','cover_emblem','cover_bg','cover_image','cover_theme','sort_order','is_visible']) {
+  const touchedContent = ['content','content_ru','content_tj','content_en','url','url_ru','url_tj','url_en'].some((c) => x[c] !== undefined);
+  // v2.3.0: snapshot previous row before document-body writes (version history).
+  if (touchedContent) {
+    try {
+      const cur = db.prepare('SELECT * FROM shelf_books WHERE id=?').get(req.params.id);
+      if (cur) {
+        const last = db.prepare('SELECT MAX(version_number) as v FROM shelf_book_versions WHERE book_id=?').get(req.params.id) as any;
+        db.prepare('INSERT INTO shelf_book_versions(book_id,version_number,snapshot_data,created_by,commit_message) VALUES(?,?,?,?,?)')
+          .run(req.params.id, (last?.v || 0) + 1, JSON.stringify(cur), req.user!.id, 'Auto snapshot before update');
+      }
+    } catch {}
+  }
+  for (const col of ['title_ru','title_tj','title_en','url','url_ru','url_tj','url_en','badge','kind','content','content_ru','content_tj','content_en','doc_lang','doc_number','act_date','external_id','source_url','cover_text','cover_emblem','cover_bg','cover_image','cover_theme','sort_order','is_visible']) {
     if (x[col] !== undefined) { sets.push(col + '=?'); vals.push(x[col] === '' ? null : x[col]); }
   }
+  if (x.published_at !== undefined) { sets.push('published_at=?'); vals.push(normDateTime(x.published_at)); }
   if (sets.length === 0) return res.status(400).json({error:'Nothing to update'});
   sets.push('updated_at=CURRENT_TIMESTAMP');
   vals.push(req.params.id);
   db.prepare(`UPDATE shelf_books SET ${sets.join(',')} WHERE id=?`).run(...vals);
   audit(req.user!.id,'update','shelf_book',Number(req.params.id));
   res.sendStatus(204);
+});
+// v2.3.0: shelf-book version history (list + rollback), mirrors content versions.
+app.get('/api/admin/shelf-books/:id/versions', auth, (req:Auth,res) => {
+  if (denyScoped(req,res)) return;
+  res.json(db.prepare('SELECT id, version_number, created_by, created_at, commit_message FROM shelf_book_versions WHERE book_id=? ORDER BY version_number DESC').all(req.params.id));
+});
+app.post('/api/admin/shelf-books/:id/rollback', auth, requirePerm('library.manage'), (req:Auth,res) => {
+  if (denyScoped(req,res)) return;
+  const v = db.prepare('SELECT snapshot_data FROM shelf_book_versions WHERE book_id=? AND version_number=?').get(req.params.id, req.body?.version_number) as any;
+  if (!v) return res.status(404).json({ error: 'Version not found' });
+  const snap = JSON.parse(v.snapshot_data);
+  const cols = ['title_ru','title_tj','title_en','url','url_ru','url_tj','url_en','badge','kind','content','content_ru','content_tj','content_en','doc_lang','doc_number','act_date','published_at','external_id','source_url','cover_text','cover_emblem','cover_bg','cover_image','cover_theme','sort_order','is_visible'];
+  db.prepare(`UPDATE shelf_books SET ${cols.map((c) => c + '=?').join(',')}, updated_at=CURRENT_TIMESTAMP WHERE id=?`)
+    .run(...cols.map((c) => snap[c] ?? null), req.params.id);
+  audit(req.user!.id,'rollback','shelf_book',Number(req.params.id));
+  res.json({ success: true });
+});
+// v2.3.0: ADLIA-sync architecture — re-import from the book's own source_url
+// (allowlisted hosts only). sync_status: ok | short | failed + synced_at stamp.
+app.post('/api/admin/shelf-books/:id/sync', auth, requirePerm('library.manage'), async (req:Auth,res) => {
+  if (denyScoped(req,res)) return;
+  const row = db.prepare('SELECT id, source_url FROM shelf_books WHERE id=?').get(req.params.id) as any;
+  if (!row) return res.status(404).json({ error: 'Not found' });
+  if (!row.source_url) return res.status(422).json({ error: 'No source_url to sync from' });
+  let parsed: URL;
+  try { parsed = new URL(row.source_url); } catch { return res.status(400).json({ error: 'Bad source_url' }); }
+  if ((parsed.protocol !== 'https:' && parsed.protocol !== 'http:') || !LIB_PDF_HOSTS.includes(parsed.hostname.toLowerCase())) {
+    return res.status(403).json({ error: 'Host not allowed' });
+  }
+  try {
+    const html = await fetchCapped(row.source_url, { timeoutMs: 90000, maxBytes: 32 * 1024 * 1024 });
+    const text = cleanImportedText(html.toString('utf8'));
+    if (text.length < 500) {
+      db.prepare("UPDATE shelf_books SET sync_status='short', synced_at=CURRENT_TIMESTAMP WHERE id=?").run(req.params.id);
+      return res.status(422).json({ error: 'Document text too short or unreachable' });
+    }
+    db.prepare('UPDATE shelf_books SET content=?, content_ru=COALESCE(content_ru, ?), content_tj=COALESCE(content_tj, ?), content_en=COALESCE(content_en, ?), sync_status=?, synced_at=CURRENT_TIMESTAMP, updated_at=CURRENT_TIMESTAMP WHERE id=?')
+      .run(text, text, text, text, 'ok', req.params.id);
+    audit(req.user!.id,'sync','shelf_book',Number(req.params.id));
+    bumpSync();
+    res.json({ chars: text.length, sync_status: 'ok' });
+  } catch (e:any) {
+    try { db.prepare("UPDATE shelf_books SET sync_status='failed', synced_at=CURRENT_TIMESTAMP WHERE id=?").run(req.params.id); } catch {}
+    res.status(502).json({ error: 'Sync failed', details: String(e?.message || e).slice(0, 300) });
+  }
 });
 app.delete('/api/admin/shelf-books/:id', auth, requirePerm('library.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;

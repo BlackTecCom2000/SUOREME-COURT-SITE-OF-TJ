@@ -25,6 +25,11 @@ interface ShelfBookRow {
   badge?: string | null;
   kind?: string | null;
   doc_lang?: string | null;
+  doc_number?: string | null;
+  act_date?: string | null;
+  external_id?: string | null;
+  synced_at?: string | null;
+  sync_status?: string | null;
   content?: string | null;
   content_ru?: string | null;
   content_tj?: string | null;
@@ -70,6 +75,9 @@ const EMPTY_FORM = {
   badge: 'PDF',
   kind: '',
   doc_lang: 'auto',
+  doc_number: '',
+  act_date: '',
+  external_id: '',
   content: '',
   content_ru: '',
   content_tj: '',
@@ -111,6 +119,49 @@ export const ShelfBooksManager: React.FC = () => {
   const [pendingFileLang, setPendingFileLang] = useState<'ru' | 'tj' | 'en'>('ru');
   const [uploadStatus, setUploadStatus] = useState('');
   const [coverUploadStatus, setCoverUploadStatus] = useState('');
+  const [versions, setVersions] = useState<any[]>([]);
+  const [syncStatus, setSyncStatus] = useState('');
+
+  const loadVersions = async (id: number) => {
+    try {
+      const r = await apiFetch(`/api/admin/shelf-books/${id}/versions`);
+      if (r.ok) setVersions(await r.json());
+      else setVersions([]);
+    } catch { setVersions([]); }
+  };
+
+  const handleRollback = async (v: number) => {
+    if (!editing || !window.confirm(`Откатить книгу к версии ${v}? Текущий текст будет заменён.`)) return;
+    try {
+      const r = await apiFetch(`/api/admin/shelf-books/${editing.id}/rollback`, {
+        method: 'POST',
+        body: JSON.stringify({ version_number: v }),
+      });
+      if (r.ok) {
+        setUploadStatus('Откачено к версии ' + v);
+        loadVersions(editing.id);
+        fetchBooks();
+      } else {
+        const d = await r.json().catch(() => null);
+        setUploadStatus(`Ошибка отката: ${(d && d.error) || r.status}`);
+      }
+    } catch { setUploadStatus('Ошибка сети'); }
+  };
+
+  const handleSyncNow = async () => {
+    if (!editing) return;
+    setSyncStatus('Синхронизация…');
+    try {
+      const r = await apiFetch(`/api/admin/shelf-books/${editing.id}/sync`, { method: 'POST' });
+      const d = await r.json().catch(() => null);
+      if (r.ok && d) {
+        setSyncStatus(`Синхронизировано: ${d.chars} символов`);
+        fetchBooks();
+      } else {
+        setSyncStatus(`Ошибка: ${(d && d.error) || r.status}`);
+      }
+    } catch { setSyncStatus('Ошибка сети'); }
+  };
   const libFileRef = React.useRef<HTMLInputElement>(null);
   const coverFileRef = React.useRef<HTMLInputElement>(null);
 
@@ -205,6 +256,9 @@ export const ShelfBooksManager: React.FC = () => {
       badge: row.badge || 'PDF',
       kind: row.kind || '',
       doc_lang: row.doc_lang || 'auto',
+      doc_number: (row as any).doc_number || '',
+      act_date: (row as any).act_date || '',
+      external_id: (row as any).external_id || '',
       cover_text: row.cover_text || '',
       cover_emblem: row.cover_emblem || '',
       cover_bg: row.cover_bg || '',
@@ -237,6 +291,9 @@ export const ShelfBooksManager: React.FC = () => {
             content_tj: typeof d.content_tj === 'string' ? d.content_tj : '',
             content_en: typeof d.content_en === 'string' ? d.content_en : '',
             doc_lang: d.doc_lang || prev.doc_lang,
+            doc_number: typeof d.doc_number === 'string' ? d.doc_number : prev.doc_number,
+            act_date: typeof d.act_date === 'string' ? d.act_date : prev.act_date,
+            external_id: typeof d.external_id === 'string' ? d.external_id : prev.external_id,
             source_url: d.source_url || '',
           }));
           if (d.doc_lang === 'tj') { setContentTab('tj'); setPendingFileLang('tj'); }
@@ -751,6 +808,31 @@ export const ShelfBooksManager: React.FC = () => {
               {!editing && (
                 <span className="text-[11px] text-slate-500">Импорт по URL доступен после создания книги.</span>
               )}
+              {editing && (
+                <div className="flex items-center gap-2 flex-wrap pt-1">
+                  <AdminButton variant="outline" size="sm" onClick={handleSyncNow}>
+                    Синхронизировать с источником
+                  </AdminButton>
+                  {syncStatus && (
+                    <span className="font-mono text-[11px] text-amber-300/90">{syncStatus}</span>
+                  )}
+                  <AdminButton variant="outline" size="sm" onClick={() => loadVersions(editing.id)}>
+                    История версий ({versions.length})
+                  </AdminButton>
+                </div>
+              )}
+              {editing && versions.length > 0 && (
+                <div className="flex flex-col gap-1 p-2 rounded-xl bg-slate-900/60 border border-slate-800 max-h-32 overflow-y-auto">
+                  {versions.map((v: any) => (
+                    <div key={v.version_number} className="flex items-center justify-between gap-2 font-mono text-[11px] text-slate-400">
+                      <span>v{v.version_number} · {String(v.created_at || '').slice(0, 19).replace('T', ' ')} · {v.commit_message || ''}</span>
+                      <button type="button" onClick={() => handleRollback(v.version_number)} className="px-2 py-0.5 rounded-lg border border-slate-700 text-amber-300 hover:border-amber-400">
+                        Откатить
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <AdminInput
@@ -770,6 +852,26 @@ export const ShelfBooksManager: React.FC = () => {
                 type="number"
                 value={String(formData.sort_order)}
                 onChange={(e) => setFormData({ ...formData, sort_order: Number(e.target.value) || 0 })}
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <AdminInput
+                label="Номер документа"
+                value={(formData as any).doc_number || ''}
+                onChange={(e) => setFormData({ ...formData, doc_number: e.target.value } as any)}
+                placeholder="№ 1234 / 2026"
+              />
+              <AdminInput
+                label="Дата акта (ГГГГ-ММ-ДД)"
+                value={(formData as any).act_date || ''}
+                onChange={(e) => setFormData({ ...formData, act_date: e.target.value } as any)}
+                placeholder="2026-09-23"
+              />
+              <AdminInput
+                label="Внешний ID (ADLIA)"
+                value={(formData as any).external_id || ''}
+                onChange={(e) => setFormData({ ...formData, external_id: e.target.value } as any)}
+                placeholder="adlia:doc:…"
               />
             </div>
             <div className="flex flex-col gap-1.5">
