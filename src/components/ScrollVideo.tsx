@@ -1,42 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 
 export const ScrollVideo: React.FC = () => {
   const { isDark } = useTheme();
-  const [scrollY, setScrollY] = useState(0);
-  const [pageScrollProgress, setPageScrollProgress] = useState(0);
+  // PERF: scroll writes bypass React state entirely — a single rAF-throttled
+  // handler writes transform/background directly to DOM nodes (zero re-renders,
+  // no forced layout: scrollHeight is cached and refreshed on resize only).
+  // No CSS transition on the parallax layer: it would fight per-frame updates.
+  const parallaxRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const maxScrollRef = useRef(1);
+  const rafRef = useRef(0);
+  const darkRef = useRef(isDark);
+  darkRef.current = isDark;
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      const maxScroll = Math.max(
+    const updateMax = () => {
+      maxScrollRef.current = Math.max(
         1,
         document.documentElement.scrollHeight - window.innerHeight
       );
-      const progress = Math.min(Math.max(currentScroll / maxScroll, 0), 1);
-      setScrollY(currentScroll);
-      setPageScrollProgress(progress);
+    };
+    updateMax();
+
+    const apply = () => {
+      rafRef.current = 0;
+      const y = window.scrollY;
+      const p = Math.min(Math.max(y / maxScrollRef.current, 0), 1);
+      const scale = 1 + Math.min(p * 0.08, 0.08);
+      const ty = Math.min(y * 0.04, 60);
+      if (parallaxRef.current) {
+        parallaxRef.current.style.transform = `scale(${scale.toFixed(4)}) translateY(-${ty.toFixed(1)}px)`;
+      }
+      const dark = darkRef.current;
+      const a = dark
+        ? Math.min(0.92, 0.5 + Math.max(0, (p - 0.15) * 0.55))
+        : Math.min(0.96, 0.75 + Math.max(0, (p - 0.15) * 0.25));
+      if (overlayRef.current) {
+        overlayRef.current.style.backgroundColor = dark
+          ? `rgba(5, 8, 15, ${a.toFixed(2)})`
+          : `rgba(246, 248, 251, ${a.toFixed(2)})`;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => {
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(apply);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateMax);
+    apply();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', updateMax);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
-
-  // Subtle zoom & parallax calculation based on scroll
-  const scale = 1.0 + Math.min(pageScrollProgress * 0.08, 0.08);
-  const translateY = Math.min(scrollY * 0.04, 60);
-
-  // Atmospheric overlay deepening as user scrolls down the page so Themis is a soft atmospheric accent
-  const darkAtmospheric = Math.min(
-    0.92,
-    0.50 + Math.max(0, (pageScrollProgress - 0.15) * 0.55)
-  );
-
-  const lightAtmospheric = Math.min(
-    0.96,
-    0.75 + Math.max(0, (pageScrollProgress - 0.15) * 0.25)
-  );
 
   return (
     <div
@@ -45,10 +63,9 @@ export const ScrollVideo: React.FC = () => {
     >
       {/* 1. Ultra-High Resolution Supreme Court Building Architecture (Continuous Cross-fade) */}
       <div
-        className="absolute inset-0 w-full h-full transform-gpu will-change-transform transition-transform duration-300 ease-out"
-        style={{
-          transform: `scale(${scale}) translateY(-${translateY}px)`,
-        }}
+        ref={parallaxRef}
+        className="absolute inset-0 w-full h-full transform-gpu"
+        style={{ transform: 'scale(1) translateY(-0px)' }}
       >
         {/* Day background */}
         <img
@@ -81,11 +98,10 @@ export const ScrollVideo: React.FC = () => {
 
       {/* 3. Deepening Atmospheric Overlay for Absolute Editorial & Card Legibility */}
       <div
-        className="absolute inset-0 transition-colors duration-500"
+        ref={overlayRef}
+        className="absolute inset-0"
         style={{
-          backgroundColor: isDark
-            ? `rgba(5, 8, 15, ${darkAtmospheric})`
-            : `rgba(246, 248, 251, ${lightAtmospheric})`,
+          backgroundColor: isDark ? 'rgba(5, 8, 15, 0.50)' : 'rgba(246, 248, 251, 0.75)',
         }}
       />
 

@@ -72,6 +72,9 @@ export const FoliantReader: React.FC<FoliantReaderProps> = ({
   const [pdfTexts, setPdfTexts] = useState<Record<number, string>>({});
   const [pdfTotal, setPdfTotal] = useState(0);
   const [pdfFailed, setPdfFailed] = useState(false);
+  // PERF: width/height ratio captured once from the first decoded page so every
+  // page slot reserves its final space up-front (no layout shift as pages stream in).
+  const [pdfRatio, setPdfRatio] = useState<number | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -175,7 +178,7 @@ export const FoliantReader: React.FC<FoliantReaderProps> = ({
   useEffect(() => {
     if (textContent || !pdfUrl) return;
     let cancelled = false;
-    setPdfImages({}); setPdfTexts({}); setPdfTotal(0); setPdfFailed(false);
+    setPdfImages({}); setPdfTexts({}); setPdfTotal(0); setPdfFailed(false); setPdfRatio(null);
     const fetchUrl = /^https?:\/\//i.test(pdfUrl) && !pdfUrl.startsWith(window.location.origin)
       ? `/api/library/pdf?url=${encodeURIComponent(pdfUrl)}`
       : pdfUrl;
@@ -394,20 +397,31 @@ export const FoliantReader: React.FC<FoliantReaderProps> = ({
             </div>
           ) : (
             <div className="foliant-scroll" style={{ userSelect: 'text', perspective: '1200px' } as any} onWheel={(e) => { if (e.ctrlKey || e.metaKey) { e.preventDefault(); const d = e.deltaY > 0 ? -0.07 : 0.07; setZoom(z => Math.min(2.4, Math.max(0.65, +(z + d).toFixed(2)))); } }}>
-              <div className="foliant-scroll-paper" style={{ userSelect: 'text', transform: `scale(${zoom}) translateZ(${zoom > 1 ? (zoom-1)*18 : 0}px)`, transformOrigin: 'top center', transition: 'transform 0.22s cubic-bezier(.2,.8,.2,1)', willChange: 'transform' } as any}>
+              <div className="foliant-scroll-paper" style={{ userSelect: 'text', transform: `scale(${zoom}) translateZ(${zoom > 1 ? (zoom-1)*18 : 0}px)`, transformOrigin: 'top center', transition: 'transform 0.22s cubic-bezier(.2,.8,.2,1)' } as any}>
                 {isPdfMode
                   ? Array.from({ length: pdfTotal }, (_, idx) => idx + 1).map(n => {
                       const speakingThis = isSpeaking && pdfTexts[n] && chunksRef.current.join(' ').includes((pdfTexts[n]||'').slice(0,40));
                       return (
                         <div key={n} className={`foliant-scroll-page is-image${speakingThis ? ' is-speaking' : ''}`} style={{ userSelect: 'text' } as any}>
                           {pdfImages[n] ? (
-                            <div style={{ position: 'relative' }}>
-                              <img src={pdfImages[n]} alt={`${L('Стр.','Стр.','P.')} ${n}`} style={{ width:'100%', height:'auto', display:'block', background:'#fff' }} draggable={false} />
+                            <div style={{ position: 'relative', aspectRatio: pdfRatio ? String(pdfRatio) : '3 / 4' }}>
+                              <img
+                                src={pdfImages[n]}
+                                alt={`${L('Стр.','Стр.','P.')} ${n}`}
+                                style={{ width:'100%', height:'100%', objectFit:'contain', display:'block', background:'#fff' }}
+                                draggable={false}
+                                onLoad={(e) => {
+                                  if (pdfRatio == null) {
+                                    const el = e.currentTarget;
+                                    if (el.naturalWidth && el.naturalHeight) setPdfRatio(el.naturalWidth / el.naturalHeight);
+                                  }
+                                }}
+                              />
                               {pdfTexts[n] && (
                                 <div aria-hidden="true" style={{ position: 'absolute', inset: 0, color: 'transparent', userSelect: 'text', overflow: 'hidden', whiteSpace: 'pre-wrap', wordBreak: 'break-word', padding: '8% 6%', fontSize: '11px', lineHeight: 1.7, opacity: 0.01 } as any}>{pdfTexts[n]}</div>
                               )}
                             </div>
-                          ) : <div className="foliant-loading"><span className="foliant-spinner" /></div>}
+                          ) : <div className="foliant-loading" style={{ aspectRatio: pdfRatio ? String(pdfRatio) : '3 / 4', minHeight: 320 }}><span className="foliant-spinner" /></div>}
                           <span className="foliant-scroll-num">{n}</span>
                         </div>
                       );

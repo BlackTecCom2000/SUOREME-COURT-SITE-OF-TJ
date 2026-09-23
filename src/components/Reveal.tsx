@@ -20,13 +20,17 @@ export const Reveal: React.FC<RevealProps> = ({
 
   useEffect(() => {
     if (priority) return;
-    
+
     const element = ref.current;
     if (!element) return;
 
+    // Reveal once and disconnect: no re-hide/re-animate churn while scrolling.
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
       },
       { threshold: 0.15 }
     );
@@ -51,12 +55,15 @@ export const Reveal: React.FC<RevealProps> = ({
     );
   }
 
+  // PERF: animate opacity + transform ONLY (never transition-all: glass props
+  // like backdrop-filter/border/shadow passed via className must not animate).
+  // will-change lives only in the pre-reveal state, never permanently.
   return (
     <Component
       ref={ref as any}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ease-out will-change-transform ${
-        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+      className={`transition-[opacity,transform] duration-700 ease-out ${
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0 will-change-transform'
       } ${className}`}
     >
       {children}
