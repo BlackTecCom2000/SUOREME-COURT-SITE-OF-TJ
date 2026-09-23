@@ -91,7 +91,7 @@ export const Layout: React.FC = () => {
         
         {!isStandalone && (
         <footer className="relative z-20 border-t border-theme-border bg-theme-surface/90 backdrop-blur-md px-4 py-8 sm:px-8 md:px-12 text-theme-textMuted font-mono text-xs shadow-sm mt-auto">
-          <div className="site-container grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="site-container grid grid-cols-1 gap-4 mb-6">
             <a
               href={PRESIDENT_MESSAGE.url}
               target="_blank"
@@ -108,22 +108,42 @@ export const Layout: React.FC = () => {
                 </span>
               </span>
             </a>
-            <div className="p-4 rounded-xl border border-theme-border bg-theme-bg/60">
-              <div className="text-[10px] uppercase tracking-widest text-theme-gold mb-2">
+          </div>
+          {/* Useful sites — running ticker along the bottom of the site */}
+          <div className="site-container mb-6">
+            <div className="flex items-center gap-3 px-4 pt-3">
+              <span className="text-[10px] uppercase tracking-widest text-theme-gold whitespace-nowrap">
                 {language === 'en' ? 'Useful links' : language === 'tj' ? 'Сомонаҳои муфид' : 'Полезные сайты'}
-              </div>
-              <div className="flex flex-wrap gap-x-4 gap-y-1.5">
-                {USEFUL_LINKS.map((l) => (
-                  <a
-                    key={l.url}
-                    href={l.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 hover:text-theme-gold transition-colors"
+              </span>
+              <span className="h-px flex-1 bg-theme-gold/25" aria-hidden="true" />
+            </div>
+            <div
+              className="ticker mt-2 rounded-xl border border-theme-border bg-theme-bg/60 overflow-hidden"
+              role="marquee"
+              aria-label={language === 'en' ? 'Useful links' : language === 'tj' ? 'Сомонаҳои муфид' : 'Полезные сайты'}
+            >
+              <div className="ticker-track">
+                {[0, 1].map((copy) => (
+                  <div
+                    key={copy}
+                    className="ticker-run"
+                    aria-hidden={copy === 1 ? 'true' : undefined}
                   >
-                    <ExternalLink size={11} />
-                    <span>{pickLink(l)}</span>
-                  </a>
+                    {USEFUL_LINKS.map((l) => (
+                      <a
+                        key={l.url}
+                        href={l.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        tabIndex={copy === 1 ? -1 : undefined}
+                        className="ticker-item"
+                      >
+                        <ExternalLink size={11} />
+                        <span>{pickLink(l)}</span>
+                        <span className="ticker-dot" aria-hidden="true">•</span>
+                      </a>
+                    ))}
+                  </div>
                 ))}
               </div>
             </div>

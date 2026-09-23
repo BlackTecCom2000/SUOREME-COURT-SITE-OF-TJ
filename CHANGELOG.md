@@ -2,6 +2,9 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.1.5 — Useful links footer ticker
+- «Полезные сайты» в футере — бегущая строка (пауза при наведении, остановка при `prefers-reduced-motion`, дублирующий прогон скрыт от скринридеров/таба).
+
 ## v2.1.4 — CSP dev report-only fix
 - Enforced CSP (`script-src 'self'`) blocked Vite dev inline preamble on the `:8787` SSR path → unstyled, non-hydrated page. Fix: `CMS_CSP_MODE` (`enforce` = prod default, `report-only` = dev default, `off`); dev serves Report-Only, production enforces. `.env.example` documents the variable.
 
