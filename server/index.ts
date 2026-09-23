@@ -314,7 +314,14 @@ app.use((_req, res, next) => {
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  res.setHeader('Content-Security-Policy', CSP_POLICY);
+  // SEC-06: enforce in production only. Vite dev injects an inline preamble
+  // (/@react-refresh) that `script-src 'self'` would block, killing hydration
+  // and JS-injected CSS on the :8787 dev SSR path — so dev stays Report-Only.
+  // Override: CMS_CSP_MODE=enforce|report-only|off.
+  const prod = process.env.NODE_ENV === 'production';
+  const mode = process.env.CMS_CSP_MODE || (prod ? 'enforce' : 'report-only');
+  if (mode === 'enforce') res.setHeader('Content-Security-Policy', CSP_POLICY);
+  else if (mode === 'report-only') res.setHeader('Content-Security-Policy-Report-Only', CSP_POLICY);
   if (process.env.CMS_HSTS === '1') {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
   }
