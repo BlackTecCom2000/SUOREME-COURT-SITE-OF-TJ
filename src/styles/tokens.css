@@ -1,0 +1,62 @@
+/* SUD.TJ Design Tokens — canonical scale (Phase 3 foundation, v2.2.0).
+   NEW variables only, aliasing existing values. Zero visual change:
+   nothing here overrides existing selectors; components adopt these
+   incrementally (see Project_Snapshot implementation sequence). */
+
+:root {
+  /* Spacing scale (4px base) */
+  --sp-0: 0;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* Radius scale — large & soft, no sharp cuts */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 9999px;
+
+  /* Glass surfaces (aliases of the live theme surfaces) */
+  --glass-1: var(--surface-card);
+  --glass-2: var(--surface-card-hover);
+  --glass-border: var(--border-primary);
+  --glass-border-hover: var(--border-hover);
+  --glass-shadow: var(--card-shadow);
+  --glass-blur-sm: 8px;
+  --glass-blur-md: 12px;
+  --glass-blur-xl: 20px;
+
+  /* Focus ring (a11y, single definition) */
+  --focus-ring: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--accent-gold);
+
+  /* Transitions — functional & calm only */
+  --dur-instant: 120ms;
+  --dur-fast: 220ms;
+  --dur-base: 350ms;
+  --dur-slow: 700ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Z scale (matches current usage: nav 50, modals 50-80) */
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-nav: 50;
+  --z-modal: 60;
+  --z-admin-modal: 70;
+  --z-search: 80;
+
+  /* Layout */
+  --container-max: 1680px;
+
+  /* Typography */
+  --font-serif: Georgia, 'Cormorant Garamond', serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}

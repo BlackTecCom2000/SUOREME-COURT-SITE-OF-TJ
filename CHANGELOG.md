@@ -2,6 +2,10 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.2.0 — IA + design tokens foundation
+- Phase 3 first_task: аудит frontend (routes без дублей, инвентарь UI-кита портал/админка, порядок секций homepage), предложенная IA (новые URL только для новых разделов, существующие не тронуты), архитектура токенов, план версий.
+- Фундамент: `src/styles/tokens.css` (spacing/radius/glass/focus/transitions/z/container/typography как алиасы, ноль визуальных изменений) + snapshot с IA-картой и последовательностью.
+
 ## v2.1.8 — Fix dead menu anchors
 - Пункты «Саҳифаҳо» вели в никуда на внутренних страницах (/about, /leadership, /news/*, /sitemap): якоря есть только на главной. Теперь — переход на главную + плавный скролл к разделу (без перезагрузки, работает и в мобильном меню).
 

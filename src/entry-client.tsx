@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { hydrateRoot, createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { DeviceCapabilityProvider } from './context/DeviceCapabilityContext';
+import './styles/tokens.css';
 import './index.css';
 
 const App = React.lazy(() => import('./App.tsx'));
