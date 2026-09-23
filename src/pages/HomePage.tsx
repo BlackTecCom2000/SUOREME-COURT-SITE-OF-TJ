@@ -80,11 +80,10 @@ export const HomePage: React.FC = () => {
     <>
       <ScrollVideo />
 
-      {/* Section 01: Hero with Live Process Pipeline [ 001 / 007 ] */}
-      <Section01Hero
-        onOpenESud={() => handleOpenSectionModal('esud')}
-        onOpenFiling={() => setNewFilingOpen(true)}
-        onScrollNext={() => handleScrollToSection('quick-actions')}
+      {/* Section 01: Judicial Information & Bank of Acts [ 001 / 007 ] (swapped with hero) */}
+      <Section06JudicialInformation
+        onOpenActs={() => handleOpenSectionModal('acts')}
+        onOpenNews={() => handleOpenSectionModal('news')}
       />
 
       {/* Quick Actions Bar */}
@@ -134,10 +133,11 @@ export const HomePage: React.FC = () => {
         <LegislativeLibrary />
       </InViewLoad>
 
-      {/* Section 06: Judicial Information & Bank of Acts [ 006 / 007 ] */}
-      <Section06JudicialInformation
-        onOpenActs={() => handleOpenSectionModal('acts')}
-        onOpenNews={() => handleOpenSectionModal('news')}
+      {/* Section 06: Hero with Live Process Pipeline [ 006 / 007 ] (swapped with information) */}
+      <Section01Hero
+        onOpenESud={() => handleOpenSectionModal('esud')}
+        onOpenFiling={() => setNewFilingOpen(true)}
+        onScrollNext={() => handleScrollToSection('contacts')}
       />
 
       {/* Section 07: Contacts & Regional Map [ 007 / 007 ] */}

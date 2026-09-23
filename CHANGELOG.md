@@ -2,6 +2,9 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.1.7 — Swap sections 001 and 006
+- Главная: секции 001 (Hero) и 006 (Judicial Information) поменяны местами; сквозная нумерация сохранена; кнопка «далее» hero теперь ведёт к контактам.
+
 ## v2.1.6 — Scroll glass performance optimization
 - `ScrollVideo`: убран setState на каждый scroll-tick (ноль ре-рендеров) — rAF + прямые DOM-записи, `scrollHeight` кэшируется (был forced reflow каждый тик), убран `transition-transform`, дерущийся с покадровыми обновлениями.
 - `Reveal`: `transition-all` → только `opacity,transform`; `will-change` только до появления; observer отключается после первого показа (без повторных анимаций).
