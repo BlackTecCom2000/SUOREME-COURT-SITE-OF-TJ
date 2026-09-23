@@ -247,7 +247,49 @@ const secret = process.env.CMS_JWT_SECRET || 'development-only-change-me';
 if (process.env.CMS_SEED_ADMIN_EMAIL && process.env.CMS_SEED_ADMIN_PASSWORD && !db.prepare('SELECT id FROM users WHERE email=?').get(process.env.CMS_SEED_ADMIN_EMAIL)) {
   db.prepare('INSERT INTO users(email,password_hash,name,role) VALUES(?,?,?,?)').run(process.env.CMS_SEED_ADMIN_EMAIL, bcrypt.hashSync(process.env.CMS_SEED_ADMIN_PASSWORD, 12), 'System Administrator', 'super_admin');
 }
-const app = express(); app.use(cors({ origin: process.env.CMS_ORIGIN || 'http://127.0.0.1:5173' })); app.use(express.json({ limit: '8mb' }));
+const CMS_ORIGINS = [process.env.CMS_ORIGIN || 'http://127.0.0.1:5173', 'http://localhost:5173', 'http://127.0.0.1:5173'];
+const app = express(); app.use(cors({ origin: CMS_ORIGINS, credentials: true })); app.use(express.json({ limit: '8mb' }));
+// SEC-05: cookie transport helpers (no extra deps).
+const parseCookies = (req: express.Request): Record<string, string> => {
+  const out: Record<string, string> = {};
+  const h = req.headers.cookie;
+  if (!h) return out;
+  for (const part of h.split(';')) {
+    const i = part.indexOf('=');
+    if (i < 0) continue;
+    out[part.slice(0, i).trim()] = decodeURIComponent(part.slice(i + 1).trim());
+  }
+  return out;
+};
+const isHttpsReq = (req: express.Request): boolean =>
+  req.secure || req.headers['x-forwarded-proto'] === 'https' || process.env.CMS_COOKIE_SECURE === '1';
+const cookieOpts = (req: express.Request) => ({
+  httpOnly: true as const,
+  path: '/',
+  maxAge: 8 * 60 * 60 * 1000,
+  sameSite: 'lax' as const,
+  secure: isHttpsReq(req),
+});
+// CSRF: cookie-authenticated mutations must come from an allowed origin.
+// Bearer-authed requests carry a custom header (never sent by plain HTML forms)
+// and SameSite=Lax already blocks cross-site cookie POSTs; missing Origin
+// (curl/scripts) is allowed, explicit mismatch is denied.
+const csrfCheck = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (!['POST', 'PATCH', 'PUT', 'DELETE'].includes(req.method)) return next();
+  const h = req.headers.authorization || '';
+  if (h.startsWith('Bearer ')) return next();
+  if (!parseCookies(req)['cms_token']) return next();
+  const origin = String(req.headers.origin || req.headers.referer || '');
+  if (!origin) return next();
+  let host = '';
+  try { host = new URL(origin).hostname.toLowerCase(); } catch { return res.status(403).json({ error: 'Forbidden' }); }
+  const allowed = new Set<string>(['localhost', '127.0.0.1', 'sud.tj', 'www.sud.tj']);
+  try { allowed.add(new URL(CMS_ORIGINS[0]).hostname.toLowerCase()); } catch {}
+  const reqHost = String(req.headers.host || '').split(':')[0].toLowerCase();
+  if (host === reqHost || allowed.has(host)) return next();
+  return res.status(403).json({ error: 'Forbidden' });
+};
+app.use(csrfCheck);
 // Baseline secure headers (no external deps; CSP kept report-tolerant for CDNs/fonts).
 // SEC-03: Content-Security-Policy in Report-Only mode. Documented in Project_Snapshot.
 // Allows: self, Google Fonts, inline styles (Tailwind/inline-style heavy app — justified),
@@ -279,7 +321,12 @@ app.use(systemRouter);
 app.use('/api/search', searchRouter);
 
 type Auth = express.Request & { user?: { id:number; role:string } };
-const auth = (req:Auth,res:express.Response,next:express.NextFunction) => { const token = req.headers.authorization?.replace('Bearer ',''); try { req.user = jwt.verify(token || '', secret) as {id:number;role:string}; const row = db.prepare('SELECT id, role, site_id FROM users WHERE id=? AND disabled=0').get((req.user as any).id) as any; if (!row) return res.status(401).json({ error:'Unauthorized' }); (req as any).scoped = { id: row.id, role: row.role, site_id: row.site_id || null }; next(); } catch { res.status(401).json({ error:'Unauthorized' }); } };
+const auth = (req:Auth,res:express.Response,next:express.NextFunction) => {
+  // SEC-05: httpOnly cookie first, Bearer fallback (scripts/transition).
+  const bearer = req.headers.authorization?.replace('Bearer ','');
+  const token = bearer || parseCookies(req)['cms_token'] || '';
+  (req as any).cookieAuth = !bearer && !!parseCookies(req)['cms_token'];
+  try { req.user = jwt.verify(token || '', secret) as {id:number;role:string}; const row = db.prepare('SELECT id, role, site_id FROM users WHERE id=? AND disabled=0').get((req.user as any).id) as any; if (!row) return res.status(401).json({ error:'Unauthorized' }); (req as any).scoped = { id: row.id, role: row.role, site_id: row.site_id || null }; next(); } catch { res.status(401).json({ error:'Unauthorized' }); } };
 // Site scope of the current admin user: null = full access (super_admin or portal-wide),
 // object = restricted to one court site, 'DENIED' = unknown site.
 const scopeOf = (req:Auth): Scope | null | 'DENIED' => {
@@ -301,7 +348,8 @@ const requireSuper = (req:Auth,res:express.Response,next:express.NextFunction) =
 };
 const audit = (userId:number|undefined, action:string, type:string, id?:number) => db.prepare('INSERT INTO audit_log(user_id,action,object_type,object_id) VALUES(?,?,?,?)').run(userId || null, action, type, id || null);
 // Login brute-force guard (SEC-02): shared sliding-window limiter, 10 req / 15 min / IP.
-app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) return res.status(401).json({error:'Invalid credentials'}); const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h'}); audit(user.id,'login','user',user.id); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
+app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) return res.status(401).json({error:'Invalid credentials'}); const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h'}); audit(user.id,'login','user',user.id); res.cookie('cms_token', token, cookieOpts(req)); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
+app.post('/api/admin/auth/logout', auth, (req:Auth,res) => { audit(req.user!.id,'logout','user',req.user!.id); res.clearCookie('cms_token', { path: '/' }); res.json({ ok: true }); });
 app.get('/api/admin/auth/me', auth, (req:Auth,res) => { const s=(req as any).scoped; const row=db.prepare('SELECT id,email,name,role,site_id FROM users WHERE id=?').get(s.id) as any; if(!row) return res.status(401).json({error:'Unauthorized'}); res.json({ ...row, permissions: permissionsFor(row.role) }); });
 // User management (super_admin only) — includes per-site access (site_id)
 app.get('/api/admin/users', auth, requirePerm('users.manage'), (_req,res) => res.json(db.prepare('SELECT id,email,name,role,site_id,disabled,created_at FROM users ORDER BY created_at DESC').all()));

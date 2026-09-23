@@ -5,6 +5,7 @@ import { AdminButton } from '../../components/ui/AdminButton';
 import { AdminBadge } from '../../components/ui/AdminBadge';
 import { AdminTable, AdminTableColumn } from '../../components/ui/AdminTable';
 import { AdminTabs } from '../../components/ui/AdminTabs';
+import { apiFetch } from '../../context/adminHttp';
 
 interface ContentItem {
   id: number;
@@ -30,12 +31,9 @@ export const NewsList: React.FC = () => {
   const fetchNews = async () => {
     setIsLoading(true);
     try {
-      const token = sessionStorage.getItem('cms-token');
       const statusParam = activeTab === 'all' ? '' : `&status=${activeTab}`;
       const searchParam = searchQuery.trim() ? `&search=${encodeURIComponent(searchQuery)}` : '';
-      const res = await fetch(`/api/admin/content?type=news${statusParam}${searchParam}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await apiFetch(`/api/admin/content?type=news${statusParam}${searchParam}`);
       if (res.ok) {
         const data = await res.json();
         setItems(data.items || []);
@@ -55,10 +53,8 @@ export const NewsList: React.FC = () => {
     e.stopPropagation();
     if (!confirm('Вы уверены, что хотите переместить публикацию в архив/удаленные?')) return;
     try {
-      const token = sessionStorage.getItem('cms-token');
-      const res = await fetch(`/api/admin/content/${id}`, {
+      const res = await apiFetch(`/api/admin/content/${id}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         fetchNews();

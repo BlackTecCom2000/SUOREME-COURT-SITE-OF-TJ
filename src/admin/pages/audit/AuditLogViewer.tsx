@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Activity, Search } from 'lucide-react';
 import { AdminTable, AdminTableColumn } from '../../components/ui/AdminTable';
+import { apiFetch } from '../../context/adminHttp';
 
 interface AuditEntry {
   id: number;
@@ -25,10 +26,7 @@ export const AuditLogViewer: React.FC = () => {
   const fetchAudit = async () => {
     setIsLoading(true);
     try {
-      const token = sessionStorage.getItem('cms-token');
-      const res = await fetch('/api/admin/audit', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await apiFetch('/api/admin/audit');
       if (res.ok) {
         const data = await res.json();
         setLogs(data.items || data || []);

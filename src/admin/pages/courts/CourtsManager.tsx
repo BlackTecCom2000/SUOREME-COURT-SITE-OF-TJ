@@ -8,6 +8,7 @@ import { AdminInput } from '../../components/ui/AdminInput';
 import { AdminSelect } from '../../components/ui/AdminSelect';
 import { JudicialTreeAdminPreview } from '../../components/JudicialTreeAdminPreview';
 import { REGIONAL_CLUSTERS } from '../../../data/sudTjData';
+import { apiFetch } from '../../context/adminHttp';
 
 interface CourtRecord {
   id: string | number;
@@ -113,7 +114,6 @@ export const CourtsManager: React.FC = () => {
   const handleSaveCourt = async () => {
     if (!formData.nameRu.trim()) return;
     try {
-      const token = sessionStorage.getItem('cms-token');
       const payload = {
         nameRu: formData.nameRu,
         nameTj: formData.nameTj,
@@ -127,12 +127,8 @@ export const CourtsManager: React.FC = () => {
       const url = editingCourt ? `/api/admin/courts/${editingCourt.id}` : '/api/admin/courts';
       const method = editingCourt ? 'PATCH' : 'POST';
 
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify(payload),
       });
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Brain, Database as DbIcon, Save, Activity } from 'lucide-react';
+import { apiFetch } from '../context/adminHttp';
 
 export const AiDashboard: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -19,12 +20,8 @@ export const AiDashboard: React.FC = () => {
     setIsIndexing(true);
     setNotice(null);
     try {
-      const res = await fetch('/api/ai/index-knowledge', {
+      const res = await apiFetch('/api/ai/index-knowledge', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('cms-token')}`
-        },
         body: JSON.stringify({ title, content, type, url })
       });
 

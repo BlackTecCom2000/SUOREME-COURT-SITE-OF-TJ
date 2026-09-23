@@ -7,6 +7,7 @@ import { AdminModal } from '../../components/ui/AdminModal';
 import { AdminInput } from '../../components/ui/AdminInput';
 import { AdminSelect } from '../../components/ui/AdminSelect';
 import { LivePreviewEngine } from '../../components/preview/LivePreviewEngine';
+import { apiFetch } from '../../context/adminHttp';
 
 interface JudicialAct {
   id: number;
@@ -48,10 +49,7 @@ export const JudicialActsManager: React.FC = () => {
   const fetchActs = async () => {
     setIsLoading(true);
     try {
-      const token = sessionStorage.getItem('cms-token');
-      const res = await fetch('/api/admin/judicial-acts', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await apiFetch('/api/admin/judicial-acts');
       if (res.ok) {
         const data = await res.json();
         setActs(data.items || data || []);
@@ -113,16 +111,11 @@ export const JudicialActsManager: React.FC = () => {
   const handleSaveAct = async () => {
     if (!formData.title_ru.trim()) return;
     try {
-      const token = sessionStorage.getItem('cms-token');
       const url = editingAct ? `/api/admin/judicial-acts/${editingAct.id}` : '/api/admin/judicial-acts';
       const method = editingAct ? 'PATCH' : 'POST';
 
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify(formData),
       });
 

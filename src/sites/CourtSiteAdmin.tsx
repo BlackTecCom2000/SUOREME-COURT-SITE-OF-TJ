@@ -111,10 +111,13 @@ const SiteTabs: React.FC<{
   </div>
 );
 
-const TOKEN_KEY = 'cms-token';
-const authHeader = () => {
-  const t = sessionStorage.getItem(TOKEN_KEY);
-  return t ? { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+// SEC-05: cookie transport — the httpOnly `cms_token` cookie is sent via credentials:include.
+const cfetch = (url: string, init: RequestInit = {}) => {
+  const headers = new Headers(init.headers || undefined);
+  if (init.body != null && typeof init.body === 'string' && !headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
+  }
+  return fetch(url, { ...init, headers, credentials: 'include' });
 };
 
 const translit = (s: string): string => {
@@ -131,7 +134,7 @@ export const CourtSiteAdmin: React.FC = () => {
   const { courtId = '' } = useParams();
   const { language } = useLanguage();
   const cfg = getCourtSite(courtId);
-  const [token, setToken] = useState<string | null>(() => sessionStorage.getItem(TOKEN_KEY));
+  const [authed, setAuthed] = useState<boolean | null>(null);
   const [me, setMe] = useState<any | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -142,13 +145,19 @@ export const CourtSiteAdmin: React.FC = () => {
   const [leaders, setLeaders] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const doLogout = useCallback(() => {
+    cfetch('/api/admin/auth/logout', { method: 'POST' }).catch(() => undefined);
+    setAuthed(false);
+    setMe(null);
+  }, []);
+
   const loadAll = useCallback(() => {
-    if (!cfg || !token) return;
+    if (!cfg || !authed) return;
     setIsLoading(true);
     Promise.all([
-      fetch('/api/admin/content', { headers: authHeader() }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
+      cfetch('/api/admin/content').then((r) => (r.ok ? r.json() : [])).catch(() => []),
       fetch('/api/hearings?court=' + encodeURIComponent(cfg.courtNameRu)).then((r) => (r.ok ? r.json() : [])).catch(() => []),
-      fetch('/api/admin/leadership?court=' + cfg.id, { headers: authHeader() }).then((r) => (r.ok ? r.json() : [])).catch(() => []),
+      cfetch('/api/admin/leadership?court=' + cfg.id).then((r) => (r.ok ? r.json() : [])).catch(() => []),
     ]).then(([content, h, l]) => {
       const arr = Array.isArray(content) ? content : content.items || [];
       setItems(arr.filter((c: any) => c.region === cfg.region));
@@ -156,17 +165,17 @@ export const CourtSiteAdmin: React.FC = () => {
       setLeaders(Array.isArray(l) ? l : []);
       setIsLoading(false);
     });
-  }, [cfg, token]);
+  }, [cfg, authed]);
 
   useEffect(() => { loadAll(); }, [loadAll]);
 
   useEffect(() => {
-    if (!token || me) return;
-    fetch('/api/admin/auth/me', { headers: authHeader() })
+    if (me) return;
+    cfetch('/api/admin/auth/me')
       .then((r) => (r.ok ? r.json() : null))
-      .then((u) => { if (u) setMe(u); else { sessionStorage.removeItem(TOKEN_KEY); setToken(null); } })
-      .catch(() => undefined);
-  }, [token, me]);
+      .then((u) => { if (u) { setMe(u); setAuthed(true); } else setAuthed(false); })
+      .catch(() => setAuthed(false));
+  }, [me]);
 
   if (!cfg) {
     return (
@@ -178,17 +187,24 @@ export const CourtSiteAdmin: React.FC = () => {
 
   const doLogin = () => {
     setLoginError('');
-    fetch('/api/admin/auth/login', {
+    cfetch('/api/admin/auth/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     })
       .then((r) => { if (!r.ok) throw new Error('auth'); return r.json(); })
-      .then((d) => { sessionStorage.setItem(TOKEN_KEY, d.token); setToken(d.token); setMe(d.user || null); })
+      .then((d) => { setAuthed(true); setMe(d.user || null); loadAll(); })
       .catch(() => setLoginError(language === 'tj' ? 'Ном ё гузарвожа нодуруст' : language === 'en' ? 'Invalid credentials' : 'Неверный логин или пароль'));
   };
 
-  if (!token) {
+  if (authed === null) {
+    return (
+      <div className="min-h-screen bg-theme-bg text-theme-text flex items-center justify-center p-4">
+        <div className="font-mono text-xs text-theme-textMuted">…</div>
+      </div>
+    );
+  }
+
+  if (!authed) {
     return (
       <div className="min-h-screen bg-theme-bg text-theme-text flex items-center justify-center p-4">
         <div className="w-full max-w-sm content-card p-6 space-y-4">
@@ -212,7 +228,7 @@ export const CourtSiteAdmin: React.FC = () => {
   }
 
   const hasAccess = !me || me.role === 'super_admin' || me.role === 'admin' || me.site_id === cfg.id;
-  if (token && me && !hasAccess) {
+  if (authed && me && !hasAccess) {
     return (
       <div className="min-h-screen bg-theme-bg text-theme-text flex items-center justify-center p-4">
         <div className="w-full max-w-md content-card p-8 text-center space-y-4">
@@ -224,7 +240,7 @@ export const CourtSiteAdmin: React.FC = () => {
           </p>
           <button
             type="button"
-            onClick={() => { sessionStorage.removeItem(TOKEN_KEY); setToken(null); setMe(null); }}
+            onClick={doLogout}
             className={btnPrimary + ' !h-10 !px-5 !text-sm'}
           >
             {language === 'en' ? 'Sign out' : language === 'tj' ? 'Баромад' : 'Выйти'}
@@ -239,18 +255,18 @@ export const CourtSiteAdmin: React.FC = () => {
 
   const removeContent = (id: number) => {
     if (!confirm('OK?')) return;
-    fetch('/api/admin/content/' + id, { method: 'DELETE', headers: authHeader() }).then(() => loadAll()).catch(() => undefined);
+    cfetch('/api/admin/content/' + id, { method: 'DELETE' }).then(() => loadAll()).catch(() => undefined);
   };
   const togglePublish = (row: any) => {
-    fetch('/api/admin/content/' + row.id, { method: 'PATCH', headers: authHeader(), body: JSON.stringify({ status: row.status === 'published' ? 'archived' : 'published' }) }).then(() => loadAll()).catch(() => undefined);
+    cfetch('/api/admin/content/' + row.id, { method: 'PATCH', body: JSON.stringify({ status: row.status === 'published' ? 'archived' : 'published' }) }).then(() => loadAll()).catch(() => undefined);
   };
   const removeHearing = (id: number) => {
     if (!confirm('OK?')) return;
-    fetch('/api/admin/hearings/' + id, { method: 'DELETE', headers: authHeader() }).then(() => loadAll()).catch(() => undefined);
+    cfetch('/api/admin/hearings/' + id, { method: 'DELETE' }).then(() => loadAll()).catch(() => undefined);
   };
   const removeLeader = (id: number) => {
     if (!confirm('OK?')) return;
-    fetch('/api/admin/leadership/' + id, { method: 'DELETE', headers: authHeader() }).then(() => loadAll()).catch(() => undefined);
+    cfetch('/api/admin/leadership/' + id, { method: 'DELETE' }).then(() => loadAll()).catch(() => undefined);
   };
 
   return (
@@ -275,7 +291,7 @@ export const CourtSiteAdmin: React.FC = () => {
             <button
               type="button"
               className={btnGhost}
-              onClick={() => { sessionStorage.removeItem(TOKEN_KEY); setToken(null); setMe(null); }}
+              onClick={doLogout}
             >
               <LogOut size={13} />
               <span>{language === 'en' ? 'Exit' : language === 'tj' ? 'Баромад' : 'Выйти'}</span>
@@ -321,9 +337,8 @@ const ContentManager: React.FC<{
   const submit = () => {
     const finalSlug = (slug.trim() || translit(titleRu)).slice(0, 80);
     if (titleRu.trim().length < 2 || !finalSlug) return;
-    fetch('/api/admin/content', {
+    cfetch('/api/admin/content', {
       method: 'POST',
-      headers: authHeader(),
       body: JSON.stringify({ type, slug: finalSlug, titleRu: titleRu.trim(), titleTj: titleTj.trim() || undefined, excerptRu: bodyRu.trim().slice(0, 300) || undefined, bodyRu: bodyRu.trim() || undefined, region, status: 'published' }),
     }).then((r) => { if (r.ok) { setOpen(false); setTitleRu(''); setTitleTj(''); setSlug(''); setBodyRu(''); onChanged(); } }).catch(() => undefined);
   };
@@ -419,9 +434,8 @@ const HearingsManager: React.FC<{
 
   const submit = () => {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
-    fetch('/api/admin/hearings', {
+    cfetch('/api/admin/hearings', {
       method: 'POST',
-      headers: authHeader(),
       body: JSON.stringify({ courtRu: courtName, courtTj: courtName, hearingDate: date, hearingTime: time || undefined, categoryRu: category.trim() || undefined, categoryTj: category.trim() || undefined, room: room.trim() || undefined }),
     }).then((r) => { if (r.ok) { setOpen(false); setDate(''); setCategory(''); setRoom(''); onChanged(); } }).catch(() => undefined);
   };
@@ -483,9 +497,8 @@ const LeadershipManager: React.FC<{
 
   const submit = () => {
     if (nameRu.trim().length < 2) return;
-    fetch('/api/admin/leadership', {
+    cfetch('/api/admin/leadership', {
       method: 'POST',
-      headers: authHeader(),
       body: JSON.stringify({ nameRu: nameRu.trim(), nameTj: nameTj.trim() || undefined, titleRu: titleRu.trim() || undefined, titleTj: titleTj.trim() || undefined, courtId }),
     }).then((r) => { if (r.ok) { setOpen(false); setNameRu(''); setNameTj(''); setTitleRu(''); setTitleTj(''); onChanged(); } }).catch(() => undefined);
   };

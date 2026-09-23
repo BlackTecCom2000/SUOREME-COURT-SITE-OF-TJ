@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 export interface AdminUser {
   id: number;
@@ -24,76 +24,55 @@ interface AdminAuthContextType {
   token: string | null;
   user: AdminUser | null;
   isAuthenticated: boolean;
-  login: (token: string, user: AdminUser) => void;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   hasPerm: (perm: string) => boolean;
 }
 
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined);
 
+// SEC-05: the JWT lives ONLY in the httpOnly `cms_token` cookie (set by the
+// server on login, sent automatically with credentials:include). Nothing
+// auth-related is kept in sessionStorage/localStorage anymore.
 export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [token, setToken] = useState<string | null>(() => sessionStorage.getItem('cms-token'));
-  const [user, setUser] = useState<AdminUser | null>(() => {
-    const cached = sessionStorage.getItem('cms-user');
-    if (cached) {
-      try {
-        return JSON.parse(cached);
-      } catch {}
-    }
-    return null;
-  });
+  const [user, setUser] = useState<AdminUser | null>(null);
+  const [ready, setReady] = useState(false);
 
-  const login = (newToken: string, newUser: AdminUser) => {
-    sessionStorage.setItem('cms-token', newToken);
-    sessionStorage.setItem('cms-user', JSON.stringify(newUser));
-    setToken(newToken);
-    setUser(newUser);
-    // Pull server-issued permissions immediately (backend is source of truth).
-    fetch('/api/admin/auth/me', { headers: { Authorization: `Bearer ${newToken}` } })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((full) => {
-        if (full && Array.isArray(full.permissions)) {
-          const merged = { ...newUser, permissions: full.permissions };
-          sessionStorage.setItem('cms-user', JSON.stringify(merged));
-          setUser(merged);
-        }
-      })
-      .catch(() => undefined);
-  };
-
-  const logout = () => {
-    sessionStorage.removeItem('cms-token');
-    sessionStorage.removeItem('cms-user');
-    setToken(null);
-    setUser(null);
-  };
-
-  // Verify auth validity on mount if token exists
+  // Boot: restore session from the cookie (survives reload without JS storage).
   useEffect(() => {
-    if (token && !user) {
-      fetch('/api/admin/auth/me', {
-        headers: { Authorization: `Bearer ${token}` },
+    fetch('/api/admin/auth/me', { credentials: 'include' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((userData) => {
+        if (userData && userData.id) setUser(userData);
       })
-        .then((res) => {
-          if (res.ok) return res.json();
-          throw new Error('Unauthorized');
-        })
-        .then((userData) => {
-          setUser(userData);
-          sessionStorage.setItem('cms-user', JSON.stringify(userData));
-        })
-        .catch(() => {
-          logout();
-        });
-    }
-  }, [token]);
+      .catch(() => undefined)
+      .finally(() => setReady(true));
+  }, []);
+
+  const login = useCallback(async (email: string, password: string) => {
+    const res = await fetch('/api/admin/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) throw new Error('Invalid credentials');
+    const me = await fetch('/api/admin/auth/me', { credentials: 'include' });
+    if (!me.ok) throw new Error('Invalid credentials');
+    setUser(await me.json());
+  }, []);
+
+  const logout = useCallback(() => {
+    fetch('/api/admin/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => undefined);
+    setUser(null);
+  }, []);
 
   // SEC-01: frontend mirror of the server permission matrix (visibility only —
   // the backend middleware is the source of truth).
   const hasPerm = (perm: string): boolean => {
     const perms = user?.permissions;
     if (Array.isArray(perms)) return perms.includes(perm) || perms.includes('*');
-    // Fallback for cached sessions without permissions: derive from known role sets.
+    // Fallback before /me resolves.
     const role = user?.role || '';
     if (role === 'super_admin') return true;
     if (role === 'admin' || role === 'administrator') return perm !== 'users.manage';
@@ -105,9 +84,9 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   return (
     <AdminAuthContext.Provider
       value={{
-        token,
+        token: null,
         user,
-        isAuthenticated: !!token,
+        isAuthenticated: ready && !!user,
         login,
         logout,
         hasPerm,

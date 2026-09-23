@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Bell, Send, Newspaper, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '../context/adminHttp';
 
 interface NotificationItem {
   id: string;
@@ -21,11 +22,7 @@ export const AdminNotificationMenu: React.FC = () => {
     // Fetch live notifications from dashboard stats & pending appeals
     const fetchNotifications = async () => {
       try {
-        const token = sessionStorage.getItem('cms-token');
-        if (!token) return;
-        const res = await fetch('/api/admin/dashboard', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await apiFetch('/api/admin/dashboard');
         if (res.ok) {
           const data = await res.json();
           const list: NotificationItem[] = [];

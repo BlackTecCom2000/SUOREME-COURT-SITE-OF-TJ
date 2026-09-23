@@ -20,24 +20,16 @@ export const AdminLogin: React.FC = () => {
     setError('');
 
     try {
-      const response = await fetch('/api/admin/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || 'Неверный логин или пароль');
-        setIsLoading(false);
-        return;
+      // SEC-05: session lives in the httpOnly cookie; nothing is stored in JS.
+      await login(email, password);
+    } catch (err: any) {
+      if (String(err?.message || '').includes('429')) {
+        setError('Слишком много попыток. Повторите позже.');
+      } else if (String(err?.message || '').includes('Failed to fetch')) {
+        setError('Ошибка соединения с защищенным сервером');
+      } else {
+        setError('Неверный логин или пароль');
       }
-
-      login(data.token, data.user);
-    } catch (err) {
-      setError('Ошибка соединения с защищенным сервером');
-    } finally {
       setIsLoading(false);
     }
   };

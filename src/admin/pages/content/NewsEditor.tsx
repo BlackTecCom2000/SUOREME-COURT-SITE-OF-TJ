@@ -20,6 +20,7 @@ import { AdminBadge } from '../../components/ui/AdminBadge';
 import { AdminTabs } from '../../components/ui/AdminTabs';
 import { LivePreviewEngine } from '../../components/preview/LivePreviewEngine';
 import { useAdminAuth } from '../../context/AdminAuthContext';
+import { apiFetch } from '../../context/adminHttp';
 
 type WorkflowStatus =
   | 'draft'
@@ -76,10 +77,9 @@ export const NewsEditor: React.FC = () => {
     return { ...meta, dirty };
   };
 
-  const editorAuthH = () => ({
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + sessionStorage.getItem('cms-token'),
-  });
+  // SEC-05: cookie transport via apiFetch (no Authorization header needed).
+  const editorFetch = (url: string, body: unknown) =>
+    apiFetch(url, { method: 'POST', body: JSON.stringify(body) });
 
   const applyMagicResult = (res: { title: string; excerpt: string; body: string }, lang: 'ru' | 'tj' | 'en') => {
     setFormData((prev: any) => ({
@@ -116,15 +116,11 @@ export const NewsEditor: React.FC = () => {
     setMagicBusy(true);
     setToolMsg(null);
     try {
-      const r = await fetch('/api/editor/magic', {
-        method: 'POST',
-        headers: editorAuthH(),
-        body: JSON.stringify({
-          mode, text: topic, lang: activeLang, variant,
-          pubType: mode === 'generate' ? pubType : undefined,
-          length: mode === 'generate' ? pubLength : undefined,
-          context: mode === 'generate' && pubContext.trim() ? pubContext.trim() : undefined,
-        }),
+      const r = await editorFetch('/api/editor/magic', {
+        mode, text: topic, lang: activeLang, variant,
+        pubType: mode === 'generate' ? pubType : undefined,
+        length: mode === 'generate' ? pubLength : undefined,
+        context: mode === 'generate' && pubContext.trim() ? pubContext.trim() : undefined,
       });
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || 'Magic error');
@@ -164,11 +160,7 @@ export const NewsEditor: React.FC = () => {
     for (const f of fields) {
       const v = String((formData as any)[f + '_' + src] || '');
       if (!v.trim()) continue;
-      const r = await fetch('/api/editor/translate', {
-        method: 'POST',
-        headers: editorAuthH(),
-        body: JSON.stringify({ text: v, from: src, to: dst }),
-      });
+      const r = await editorFetch('/api/editor/translate', { text: v, from: src, to: dst });
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || 'Translate error');
       const txt = d.text as string;
@@ -266,10 +258,7 @@ export const NewsEditor: React.FC = () => {
 
   useEffect(() => {
     if (isEditing) {
-      const token = sessionStorage.getItem('cms-token');
-      fetch(`/api/admin/content/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      apiFetch(`/api/admin/content/${id}`)
         .then((res) => {
           if (!res.ok) throw new Error('Not found');
           return res.json();
@@ -330,16 +319,11 @@ export const NewsEditor: React.FC = () => {
     };
 
     try {
-      const token = sessionStorage.getItem('cms-token');
       const url = isEditing ? `/api/admin/content/${id}` : '/api/admin/content';
       const method = isEditing ? 'PATCH' : 'POST';
 
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify(payload),
       });
 

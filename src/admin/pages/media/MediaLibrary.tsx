@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Upload, Copy, Check, FileText } from 'lucide-react';
 import { AdminButton } from '../../components/ui/AdminButton';
 import { AdminDrawer } from '../../components/ui/AdminDrawer';
+import { apiFetch } from '../../context/adminHttp';
 
 interface MediaItem {
   id: number;
@@ -22,10 +23,7 @@ export const MediaLibrary: React.FC = () => {
 
   const fetchMedia = async () => {
     try {
-      const token = sessionStorage.getItem('cms-token');
-      const res = await fetch('/api/admin/media', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await apiFetch('/api/admin/media');
       if (res.ok) {
         const data = await res.json();
         setMedia(data.items || data || []);
@@ -48,10 +46,8 @@ export const MediaLibrary: React.FC = () => {
     formData.append('file', files[0]);
 
     try {
-      const token = sessionStorage.getItem('cms-token');
-      const res = await fetch('/api/admin/media', {
+      const res = await apiFetch('/api/admin/media', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 

@@ -7,6 +7,7 @@ import { AdminModal } from '../../components/ui/AdminModal';
 import { AdminInput } from '../../components/ui/AdminInput';
 import { AdminSelect } from '../../components/ui/AdminSelect';
 import { COURT_SITES } from '../../../sites/registry';
+import { apiFetch } from '../../context/adminHttp';
 
 interface UserRecord {
   id: number;
@@ -37,10 +38,7 @@ export const UsersManager: React.FC = () => {
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
-      const token = sessionStorage.getItem('cms-token');
-      const res = await fetch('/api/admin/users', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await apiFetch('/api/admin/users');
       if (res.ok) {
         const data = await res.json();
         setUsers(data.items || data || []);
@@ -59,16 +57,11 @@ export const UsersManager: React.FC = () => {
   const handleSaveUser = async () => {
     if (!formData.email || !formData.name) return;
     try {
-      const token = sessionStorage.getItem('cms-token');
       const url = editingUser ? `/api/admin/users/${editingUser.id}` : '/api/admin/users';
       const method = editingUser ? 'PATCH' : 'POST';
 
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify(formData),
       });
 

@@ -7,6 +7,7 @@ import { AdminModal } from '../../components/ui/AdminModal';
 import { AdminInput } from '../../components/ui/AdminInput';
 import { AdminSelect } from '../../components/ui/AdminSelect';
 import { useAdminAuth } from '../../context/AdminAuthContext';
+import { apiFetch } from '../../context/adminHttp';
 import { BOOK_THEMES, DOC_KINDS, DOC_KIND_LABEL, DocKind, detectKind } from '../../../components/digital-court/LawBookshelf';
 import { pickTri } from '../../../sites/types';
 import { SHARED_LEGISLATION } from '../../../sites/shared';
@@ -113,10 +114,7 @@ export const ShelfBooksManager: React.FC = () => {
   const libFileRef = React.useRef<HTMLInputElement>(null);
   const coverFileRef = React.useRef<HTMLInputElement>(null);
 
-  const authHeaders = () => {
-    const token = sessionStorage.getItem('cms-token');
-    return { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
-  };
+  // SEC-05: cookie transport via apiFetch; server reads httpOnly cookie.
 
   const MAX_LIBRARY_FILE = 100 * 1024 * 1024;
 
@@ -151,7 +149,7 @@ export const ShelfBooksManager: React.FC = () => {
       xhr.onerror = () => reject(new Error('network'));
       xhr.ontimeout = () => reject(new Error('network'));
       xhr.open('POST', `/api/admin/library/upload?kind=${encodeURIComponent(kind)}`);
-      xhr.setRequestHeader('Authorization', `Bearer ${sessionStorage.getItem('cms-token')}`);
+      xhr.withCredentials = true;
       const fd = new FormData();
       fd.append('file', file);
       xhr.send(fd);
@@ -160,9 +158,7 @@ export const ShelfBooksManager: React.FC = () => {
   const fetchBooks = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/admin/shelf-books', {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem('cms-token')}` },
-      });
+      const res = await fetch('/api/admin/shelf-books', { credentials: 'include' });
       if (res.ok) {
         const data = await res.json();
         setBooks(data.items || []);
@@ -226,9 +222,7 @@ export const ShelfBooksManager: React.FC = () => {
     });
     setIsModalOpen(true);
     // Load full text (lists exclude content for weight)
-    fetch(`/api/admin/shelf-books/${row.id}`, {
-      headers: { Authorization: `Bearer ${sessionStorage.getItem('cms-token')}` },
-    })
+    apiFetch(`/api/admin/shelf-books/${row.id}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
         if (d) {
@@ -257,17 +251,14 @@ export const ShelfBooksManager: React.FC = () => {
     if (!canEdit || !editing || !formData.importUrl.trim()) return;
     setFormData((prev) => ({ ...prev, importStatus: 'Загрузка текста...' }));
     try {
-      const res = await fetch('/api/admin/library/import', {
+      const res = await apiFetch('/api/admin/library/import', {
         method: 'POST',
-        headers: authHeaders(),
         body: JSON.stringify({ bookId: editing.id, sourceUrl: formData.importUrl.trim() }),
       });
       const data = await res.json().catch(() => null);
       if (res.ok && data) {
         setFormData((prev) => ({ ...prev, importStatus: `Импортировано символов: ${data.chars}` }));
-        const full = await fetch(`/api/admin/shelf-books/${editing.id}`, {
-          headers: { Authorization: `Bearer ${sessionStorage.getItem('cms-token')}` },
-        }).then((r) => (r.ok ? r.json() : null));
+        const full = await apiFetch(`/api/admin/shelf-books/${editing.id}`).then((r) => (r.ok ? r.json() : null));
         if (full) {
           setFormData((prev) => ({
             ...prev,
@@ -290,9 +281,8 @@ export const ShelfBooksManager: React.FC = () => {
       const url = editing ? `/api/admin/shelf-books/${editing.id}` : '/api/admin/shelf-books';
       const { importUrl: _drop1, importStatus: _drop2, ...rest } = formData;
       const payload = { ...rest, kind: formData.kind || null };
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method: editing ? 'PATCH' : 'POST',
-        headers: authHeaders(),
         body: JSON.stringify(payload),
       });
       if (res.ok) {
@@ -307,9 +297,8 @@ export const ShelfBooksManager: React.FC = () => {
   const handleToggleVisible = async (row: ShelfBookRow) => {
     if (!canEdit) return;
     try {
-      const res = await fetch(`/api/admin/shelf-books/${row.id}`, {
+      const res = await apiFetch(`/api/admin/shelf-books/${row.id}`, {
         method: 'PATCH',
-        headers: authHeaders(),
         body: JSON.stringify({ is_visible: row.is_visible ? 0 : 1 }),
       });
       if (res.ok) fetchBooks();
@@ -322,9 +311,8 @@ export const ShelfBooksManager: React.FC = () => {
     if (!canEdit) return;
     if (!window.confirm(`Удалить книгу «${row.title_ru}» с полки?`)) return;
     try {
-      const res = await fetch(`/api/admin/shelf-books/${row.id}`, {
+      const res = await apiFetch(`/api/admin/shelf-books/${row.id}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${sessionStorage.getItem('cms-token')}` },
       });
       if (res.ok) fetchBooks();
     } catch (err) {
@@ -336,9 +324,8 @@ export const ShelfBooksManager: React.FC = () => {
     if (!canEdit) return;
     if (!window.confirm('Импортировать базовый набор из 15 кодексов и законов?')) return;
     try {
-      const res = await fetch('/api/admin/shelf-books/seed', {
+      const res = await apiFetch('/api/admin/shelf-books/seed', {
         method: 'POST',
-        headers: authHeaders(),
         body: JSON.stringify({
           items: SHARED_LEGISLATION.map((d) => ({
             title_ru: d.title.ru,
@@ -429,9 +416,8 @@ export const ShelfBooksManager: React.FC = () => {
     const a = sorted[i];
     const b = sorted[j];
     try {
-      const h = authHeaders();
-      const r1 = await fetch(`/api/admin/shelf-books/${a.id}`, { method: 'PATCH', headers: h, body: JSON.stringify({ sort_order: b.sort_order }) });
-      const r2 = await fetch(`/api/admin/shelf-books/${b.id}`, { method: 'PATCH', headers: h, body: JSON.stringify({ sort_order: a.sort_order }) });
+      const r1 = await apiFetch(`/api/admin/shelf-books/${a.id}`, { method: 'PATCH', body: JSON.stringify({ sort_order: b.sort_order }) });
+      const r2 = await apiFetch(`/api/admin/shelf-books/${b.id}`, { method: 'PATCH', body: JSON.stringify({ sort_order: a.sort_order }) });
       if (r1.ok && r2.ok) fetchBooks();
     } catch (err) {
       console.error(err);

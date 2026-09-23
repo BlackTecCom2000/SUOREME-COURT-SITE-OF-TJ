@@ -6,6 +6,7 @@ import { AdminTable, AdminTableColumn } from '../../components/ui/AdminTable';
 import { AdminDrawer } from '../../components/ui/AdminDrawer';
 import { AdminTabs } from '../../components/ui/AdminTabs';
 import { AdminSelect } from '../../components/ui/AdminSelect';
+import { apiFetch } from '../../context/adminHttp';
 
 interface Appeal {
   id: number;
@@ -34,10 +35,7 @@ export const AppealsManager: React.FC = () => {
   const fetchAppeals = async () => {
     setIsLoading(true);
     try {
-      const token = sessionStorage.getItem('cms-token');
-      const res = await fetch('/api/admin/appeals', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await apiFetch('/api/admin/appeals');
       if (res.ok) {
         const data = await res.json();
         setAppeals(data.items || data || []);
@@ -63,13 +61,8 @@ export const AppealsManager: React.FC = () => {
     if (!selectedAppeal) return;
     setIsSaving(true);
     try {
-      const token = sessionStorage.getItem('cms-token');
-      const res = await fetch(`/api/admin/appeals/${selectedAppeal.id}`, {
+      const res = await apiFetch(`/api/admin/appeals/${selectedAppeal.id}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({
           status: statusUpdate,
           internal_note: internalNote,

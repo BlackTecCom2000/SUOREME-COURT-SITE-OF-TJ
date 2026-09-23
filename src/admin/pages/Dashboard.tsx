@@ -15,6 +15,7 @@ import { AdminCard } from '../components/ui/AdminCard';
 import { AdminButton } from '../components/ui/AdminButton';
 import { AdminBadge } from '../components/ui/AdminBadge';
 import { useAdminAuth } from '../context/AdminAuthContext';
+import { apiFetch } from '../context/adminHttp';
 
 export const Dashboard: React.FC = () => {
   const { user } = useAdminAuth();
@@ -24,10 +25,7 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const token = sessionStorage.getItem('cms-token');
-        const res = await fetch('/api/admin/dashboard', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await apiFetch('/api/admin/dashboard');
         if (res.ok) {
           const json = await res.json();
           setData(json);

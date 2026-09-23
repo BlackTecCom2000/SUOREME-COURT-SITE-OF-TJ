@@ -15,6 +15,7 @@ import { AdminButton } from '../../components/ui/AdminButton';
 import { AdminInput } from '../../components/ui/AdminInput';
 import { AdminSelect } from '../../components/ui/AdminSelect';
 import { AdminTabs } from '../../components/ui/AdminTabs';
+import { apiFetch } from '../../context/adminHttp';
 
 export const SettingsManager: React.FC = () => {
   const [activeTab, setActiveTab] = useState('general');
@@ -30,8 +31,7 @@ export const SettingsManager: React.FC = () => {
 
   useEffect(() => {
     if (activeTab !== 'ai' || aiLoaded) return;
-    const token = sessionStorage.getItem('cms-token');
-    fetch('/api/admin/settings', { headers: { Authorization: 'Bearer ' + token } })
+    apiFetch('/api/admin/settings')
       .then((r) => (r.ok ? r.json() : {}))
       .then((d) => {
         setAiSettings((prev) => ({
@@ -48,10 +48,8 @@ export const SettingsManager: React.FC = () => {
 
   const saveAiSetting = (key: string, value: string) => {
     setAiSettings((prev) => ({ ...prev, [key]: value }));
-    const token = sessionStorage.getItem('cms-token');
-    fetch('/api/admin/settings', {
+    apiFetch('/api/admin/settings', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
       body: JSON.stringify({ key, value }),
     }).catch(() => undefined);
   };
