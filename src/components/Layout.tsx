@@ -109,6 +109,58 @@ export const Layout: React.FC = () => {
               </span>
             </a>
           </div>
+          {/* IA link groups mirror the information architecture */}
+          <div className="site-container grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            {[
+              {
+                title: language === 'en' ? 'Court' : language === 'tj' ? 'Суд' : 'Суд',
+                links: [
+                  { label: language === 'en' ? 'About' : language === 'tj' ? 'Дар бораи суд' : 'О суде', to: '/about' },
+                  { label: language === 'en' ? 'Leadership' : language === 'tj' ? 'Роҳбарият' : 'Руководство', to: '/leadership' },
+                  { label: language === 'en' ? 'E-Library' : language === 'tj' ? 'Китобхона' : 'Библиотека', to: '/library' },
+                  { label: language === 'en' ? 'Sitemap' : language === 'tj' ? 'Харитаи сомона' : 'Карта сайта', to: '/sitemap' },
+                ],
+              },
+              {
+                title: language === 'en' ? 'Services' : language === 'tj' ? 'Хизматрасониҳо' : 'Услуги',
+                tabs: [
+                  { label: language === 'en' ? 'Hearings' : language === 'tj' ? 'Мурофиаҳо' : 'Заседания', tab: 'hearings' as ModalTab },
+                  { label: language === 'en' ? 'Acts' : language === 'tj' ? 'Санадаҳо' : 'Акты', tab: 'acts' as ModalTab },
+                  { label: language === 'en' ? 'Duty calculator' : language === 'tj' ? 'Боҷ' : 'Пошлина', tab: 'duties' as ModalTab },
+                  { label: language === 'en' ? 'Appeals' : language === 'tj' ? 'Муроҷиатҳо' : 'Обращения', tab: 'appeals' as ModalTab },
+                ],
+              },
+              {
+                title: language === 'en' ? 'Information' : language === 'tj' ? 'Иттилоот' : 'Информация',
+                tabs: [
+                  { label: language === 'en' ? 'News' : language === 'tj' ? 'Хабарҳо' : 'Новости', tab: 'news' as ModalTab },
+                  { label: language === 'en' ? 'Announcements' : language === 'tj' ? 'Эълонҳо' : 'Объявления', tab: 'announcements' as ModalTab },
+                  { label: language === 'en' ? 'Vacancies' : language === 'tj' ? 'Ҷойҳои холӣ' : 'Вакансии', tab: 'vacancies' as ModalTab },
+                  { label: language === 'en' ? 'Journal' : language === 'tj' ? 'Маҷалла' : 'Журнал', tab: 'journal' as ModalTab },
+                ],
+              },
+            ].map((group) => (
+              <nav key={group.title} aria-label={group.title} className="p-4 rounded-xl border border-theme-border bg-theme-bg/60">
+                <div className="text-[10px] uppercase tracking-widest text-theme-gold mb-2">{group.title}</div>
+                <ul className="space-y-1">
+                  {group.links?.map((l) => (
+                    <li key={l.to + l.label}>
+                      <a href={l.to} onClick={(e) => { e.preventDefault(); navigate(l.to); }} className="text-xs text-theme-textSec hover:text-theme-gold transition-colors">
+                        {l.label}
+                      </a>
+                    </li>
+                  ))}
+                  {group.tabs?.map((l) => (
+                    <li key={l.tab + l.label}>
+                      <button type="button" onClick={() => handleOpenSectionModal(l.tab)} className="text-xs text-theme-textSec hover:text-theme-gold transition-colors">
+                        {l.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
           {/* Useful sites — running ticker along the bottom of the site */}
           <div className="site-container mb-6">
             <div className="flex items-center gap-3 px-4 pt-3">

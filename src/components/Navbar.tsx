@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { 
   ArrowUpRight, 
   Eye, 
@@ -64,6 +64,30 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [menuPopoverOpen, setMenuPopoverOpen] = useState(false);
   const [supremeCourtOpen, setSupremeCourtOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
+  // Scroll-spy: highlight the anchor section currently in view (home only).
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  useEffect(() => {
+    if (!isHome) {
+      setActiveSection(null);
+      return;
+    }
+    const ids = ['hero', 'quick-actions', 'case-search', 'my-cases', 'digital-justice', 'courts', 'information', 'contacts'];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) setActiveSection('#' + (e.target as HTMLElement).id);
+        }
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+    const els = ids.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [isHome, location.pathname]);
 
   const navLinks: NavItem[] = [
     { key: 'home', nameKey: 'nav.home', href: '#hero' },
@@ -74,6 +98,21 @@ export const Navbar: React.FC<NavbarProps> = ({
     { key: 'acts', nameKey: 'nav.acts', href: '#information' },
     { key: 'contacts', nameKey: 'nav.contacts', href: '#contacts' },
   ];
+
+  const eServices: { id: string; titleTj: string; titleRu: string; titleEn: string; tab: string; icon: any }[] = [
+    { id: 'hearings', titleTj: 'Рӯйхати мурофиаҳо', titleRu: 'График судебных заседаний', titleEn: 'Hearings Schedule', tab: 'hearings', icon: Calendar },
+    { id: 'acts', titleTj: 'Бонки санадҳои судӣ', titleRu: 'Банк судебных актов', titleEn: 'Judicial Acts Database', tab: 'acts', icon: BookOpen },
+    { id: 'duties', titleTj: 'Ҳисобкунаки боҷи давлатӣ', titleRu: 'Калькулятор госпошлины', titleEn: 'State Duty Calculator', tab: 'duties', icon: Calculator },
+    { id: 'docs', titleTj: 'Ҳуҷҷатҳои намунавӣ', titleRu: 'Образцы заявлений и бланки', titleEn: 'Document Templates', tab: 'docs', icon: FileText },
+    { id: 'appeals', titleTj: 'Муроҷиати электронӣ', titleRu: 'Электронные обращения', titleEn: 'Electronic Appeals', tab: 'appeals', icon: HelpCircle },
+    { id: 'courts', titleTj: 'Харитаи судҳои ҷумҳурӣ', titleRu: 'Сеть и контакты судов', titleEn: 'Judicial Court Network', tab: 'courts', icon: Building },
+  ];
+
+  const openServiceTab = (tab: string) => {
+    setMenuPopoverOpen(false);
+    setMobileMenuOpen(false);
+    if (onOpenSectionModal) onOpenSectionModal(tab);
+  };
 
   const supremeCourtMenu = [
     {
@@ -446,66 +485,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <span>{language === 'tj' ? 'Хизматрасониҳои электронӣ' : language === 'en' ? 'E-Judicial Services' : 'Электронные услуги'}</span>
                     </div>
                     <ul className="flex flex-col gap-1 list-none p-0 m-0">
-                      {[
-                        {
-                          id: 'hearings',
-                          titleTj: 'Рӯйхати мурофиаҳо',
-                          titleRu: 'График судебных заседаний',
-                          titleEn: 'Hearings Schedule',
-                          tab: 'hearings',
-                          icon: Calendar
-                        },
-                        {
-                          id: 'acts',
-                          titleTj: 'Бонки санадҳои судӣ',
-                          titleRu: 'Банк судебных актов',
-                          titleEn: 'Judicial Acts Database',
-                          tab: 'acts',
-                          icon: BookOpen
-                        },
-                        {
-                          id: 'duties',
-                          titleTj: 'Ҳисобкунаки боҷи давлатӣ',
-                          titleRu: 'Калькулятор госпошлины',
-                          titleEn: 'State Duty Calculator',
-                          tab: 'duties',
-                          icon: Calculator
-                        },
-                        {
-                          id: 'docs',
-                          titleTj: 'Ҳуҷҷатҳои намунавӣ',
-                          titleRu: 'Образцы заявлений и бланки',
-                          titleEn: 'Document Templates',
-                          tab: 'docs',
-                          icon: FileText
-                        },
-                        {
-                          id: 'appeals',
-                          titleTj: 'Муроҷиати электронӣ',
-                          titleRu: 'Электронные обращения',
-                          titleEn: 'Electronic Appeals',
-                          tab: 'appeals',
-                          icon: HelpCircle
-                        },
-                        {
-                          id: 'courts',
-                          titleTj: 'Харитаи судҳои ҷумҳурӣ',
-                          titleRu: 'Сеть и контакты судов',
-                          titleEn: 'Judicial Court Network',
-                          tab: 'courts',
-                          icon: Building
-                        },
-                      ].map((service) => {
+                      {eServices.map((service) => {
                         const Icon = service.icon;
                         const title = language === 'en' ? service.titleEn : language === 'tj' ? service.titleTj : service.titleRu;
                         return (
                           <li key={service.id}>
                             <button
                               type="button"
-                              onClick={() => {
-                                setMenuPopoverOpen(false);
-                                if (onOpenSectionModal) onOpenSectionModal(service.tab);
-                              }}
+                              onClick={() => openServiceTab(service.tab)}
                               className="w-full text-left p-1.5 px-2 rounded-xl hover:bg-theme-bg/80 border border-transparent hover:border-emerald-500/30 transition-all group flex items-center gap-2"
                             >
                               <Icon size={13} className="text-emerald-400 shrink-0 group-hover:scale-110 transition-transform" />
@@ -527,18 +514,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <span>{language === 'tj' ? 'Саҳифаҳо' : language === 'en' ? 'Pages' : 'Страницы'}</span>
                       </div>
                       <ul className="flex flex-col gap-1 list-none p-0 m-0">
-                        {navLinks.map((item) => (
+                        {navLinks.map((item) => {
+                          const active = activeSection === item.href;
+                          return (
                           <li key={item.key}>
                             <a
                               href={item.href}
                               onClick={(e) => handleLinkClick(e, item)}
-                              className="flex items-center justify-between p-1.5 px-2 rounded-xl text-xs font-mono text-theme-textSec hover:text-theme-text hover:bg-theme-bg/80 transition-colors"
+                              aria-current={active ? 'true' : undefined}
+                              className={`flex items-center justify-between p-1.5 px-2 rounded-xl text-xs font-mono transition-colors ${
+                                active
+                                  ? 'text-theme-gold bg-theme-gold/10 border border-theme-gold/30'
+                                  : 'text-theme-textSec hover:text-theme-text hover:bg-theme-bg/80 border border-transparent'
+                              }`}
                             >
                               <span className="capitalize truncate">{t(item.nameKey)}</span>
                               <ArrowUpRight size={12} className="text-theme-gold shrink-0" />
                             </a>
                           </li>
-                        ))}
+                          );
+                        })}
                       </ul>
                     </div>
 
@@ -656,24 +651,97 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
+            {/* Mobile quick actions parity (search + AI assistant) */}
+            <div className="grid grid-cols-2 gap-2">
+              {onOpenSearch && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenSearch();
+                  }}
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-theme-surface/60 border border-theme-border text-xs font-mono text-theme-textSec"
+                >
+                  <Search size={14} className="text-theme-gold" />
+                  <span>{language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}</span>
+                </button>
+              )}
+              {onOpenAiAssistant && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenAiAssistant();
+                  }}
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-theme-gold/15 border border-theme-gold/40 text-xs font-mono text-theme-gold font-bold"
+                >
+                  <Sparkles size={14} />
+                  <span>{language === 'tj' ? 'Ёвар' : language === 'en' ? 'AI Assistant' : 'AI-Помощник'}</span>
+                </button>
+              )}
+            </div>
+
+            {/* Mobile e-services accordion parity (same 6 services as desktop) */}
+            <div className="p-3 rounded-2xl border border-theme-border bg-theme-surface/60">
+              <button
+                type="button"
+                onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                className="w-full flex items-center justify-between text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider"
+              >
+                <span className="flex items-center gap-1.5">
+                  <Gavel size={14} />
+                  {language === 'tj' ? 'Хизматрасониҳои электронӣ' : language === 'en' ? 'E-Services' : 'Э-услуги'}
+                </span>
+                <ChevronDown size={14} className={`transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileServicesOpen && (
+                <ul className="flex flex-col gap-1 list-none p-0 mt-3 pt-2 border-t border-theme-border/60">
+                  {eServices.map((service) => {
+                    const Icon = service.icon;
+                    const title = language === 'en' ? service.titleEn : language === 'tj' ? service.titleTj : service.titleRu;
+                    return (
+                      <li key={service.id}>
+                        <button
+                          type="button"
+                          onClick={() => openServiceTab(service.tab)}
+                          className="w-full text-left py-1.5 px-2 rounded-lg text-xs font-mono text-theme-textSec hover:text-theme-text hover:bg-theme-bg/80 flex items-center gap-2"
+                        >
+                          <Icon size={13} className="text-emerald-400 shrink-0" />
+                          <span className="truncate">{title}</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+
             {/* Portal Links */}
             <div>
               <span className="font-mono text-[10px] text-theme-textMuted uppercase tracking-widest block mb-2 px-1">
                 {language === 'tj' ? 'Бахшҳои асосии сомона' : language === 'en' ? 'Portal Navigation' : 'Навигация'}
               </span>
               <ul className="flex flex-col gap-1.5 list-none p-0 m-0">
-                {navLinks.map((item) => (
+                {navLinks.map((item) => {
+                  const active = activeSection === item.href;
+                  return (
                   <li key={item.key}>
                     <a
                       href={item.href}
                       onClick={(e) => handleLinkClick(e, item)}
-                      className="flex items-center justify-between font-mono text-xs text-theme-textSec hover:text-theme-text py-2 px-2.5 rounded-xl bg-theme-surface/40 border border-theme-border/60 transition-colors"
+                      aria-current={active ? 'true' : undefined}
+                      className={`flex items-center justify-between font-mono text-xs py-2 px-2.5 rounded-xl border transition-colors ${
+                        active
+                          ? 'text-theme-gold bg-theme-gold/10 border-theme-gold/40'
+                          : 'text-theme-textSec hover:text-theme-text bg-theme-surface/40 border-theme-border/60'
+                      }`}
                     >
                       <span className="capitalize">{t(item.nameKey)}</span>
                       <ArrowUpRight size={13} className="text-theme-gold" />
                     </a>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </div>
           </div>

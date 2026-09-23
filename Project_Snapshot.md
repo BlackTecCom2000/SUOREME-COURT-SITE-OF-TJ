@@ -162,6 +162,12 @@ Antigravity (AI Orchestrator)
 - v2.1.8 (tag pushed): fixed dead «Саҳифаҳо» menu buttons. Audit: all 24 JudicialModal tabs have content (subagent-verified), all API lists non-empty (acts 3, hearings 8, courts 77, news 11) — real cause was anchor links dead on non-home pages (no element → no scroll). Fix: navigate('/') + delayed smooth scroll via useNavigate (no reload, mobile menu covered). tsc clean (1 pre-existing), build 6.79s, backup 8183 + restore-test green.
 - v2.2.0 (tag pushed): Phase 3 foundation. tokens.css imported in entry-client (no visual change by construction: new vars only). tsc clean (pre-existing only), build 6.85s, backup 8183 + restore-test green.
 - v2.2.1 (tag pushed): portal base UI kit (Badge/Card/Input/Select/Table/Tabs/Modal/EmptyState, admin-compatible APIs, theme tokens); dead btn dupes removed (visuals unchanged by cascade analysis); SitemapPage proof-use. tsc clean, build 7.52s, backup 8184 + restore-test green.
+- v2.2.2 (tag pushed): global shell. Scroll-spy active anchors (IO, home-only, desktop+mobilе); mobile e-services accordion + search/AI parity (shared eServices array, no duplication); footer IA grid Суд/Услуги/Информация (routes + modal tabs). tsc clean (1 pre-existing), build 7.56s, backup 8192 + restore-test green.
+
+## v2.2.2 BEFORE - global shell audit
+- Navbar: no active states anywhere (anchors, modal buttons, language has pill); mobile menu lacks e-services group + search/AI shortcuts (has language, supreme accordion, anchors, file-doc CTA); desktop mega-menu complete (9+6+anchors).
+- Footer (Layout): president card, useful-links ticker (v2.1.5), sitemap/copyright row, credits. No IA link groups.
+- Plan: scroll-spy active section (IO over 7 anchor ids, home only) for col-3 + mobile anchors; mobile e-services accordion + search/AI row (same handlers as desktop); footer IA grid (Суд/Услуги/Информация groups → real routes + modal tabs via Layout handlers). No URL changes, no new routes.
 
 ## v2.2.1 BEFORE - base UI audit
 - Button cascade: block1 (278-444) pill-mono system vs block2 btn-base system (554+). Effective winners (later in file): btn-primary = gold/white/rounded-xl (block2), btn-secondary/ghost/icon = block2 variants. Dead (overridden, safe to delete): block1 btn-primary/secondary/ghost/icon. Live uniques: btn-outline (block1 only), btn-base, btn-gold (=btn-primary alias, keep).

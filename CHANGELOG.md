@@ -2,6 +2,11 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.2.2 — Global shell (navbar + footer IA)
+- Scroll-spy active states для якорей (десктоп + мобильное меню, только на главной).
+- Мобильный паритет: аккордеон e-услуг (те же 6 табов) + кнопки поиска/AI.
+- Footer: IA-группы Суд/Услуги/Информация (реальные роуты + табы модалки).
+
 ## v2.2.1 — Portal base UI kit
 - Удалены мёртвые первые определения `.btn-primary/.btn-secondary/.btn-ghost/.btn-icon` (побеждал btn-base блок — визуал не изменился); `.btn-gold` оставлен алиасом, `.btn-outline`/`.btn-base` живы.
 - Новый портал-кит `src/components/ui/` с API админ-кита на theme-токенах: Badge/Card/Input/Select/Table/Tabs/Modal/EmptyState. Админ-кит не тронут (конвергенция позже).
