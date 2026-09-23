@@ -2,6 +2,15 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.4.0 — Legal UX remediation (full audit)
+- Legal honesty: CourtQrCode rewritten as real-URL tile (no fake QR); CourtDetailsDrawer/SelectedCourtContextHub blocks trilingual "official website" without scan claims; InteractiveProcessFlow VERIFIED→IN REGISTRY + QR caveat; CaseSearchEngine PUBLIC→DEMO LEDGER; CaseDashboard/DocumentCenter/CaseWorkspaceModal Demo badges trilingual.
+- Data integrity: Hero/Dashboard live `/api/stats` + health status; Blueprint fake UPTIME/LOAD deleted; JudicialActsManager no sample-fallback (loadError); receptionGuarantee neutral ×3; NewFilingModal + JudicialModal appeals POST /api/appeals with submitError/rateLimited i18n.
+- UX/i18n: hover→click copy ru/en/tj; tooltip keyboard focus-within (CourtLeaf/Navbar/CourtSiteNavbar); NewFilingModal trilingual submit.
+- Legislation filters: LibraryPage language + year filters, expanded search (title/docNumber/badge/meta); LawBookshelf ShelfBook docNumber/actDate/publishedAt mapping + meta.
+- Court network type filter: Section06 chips (all/city/district/military/regional) → JudicialTreeView; BlueprintRegionalColumn regional case + isMatched default-true fix.
+- News attribution: AnnouncementItem.source + JudicialNewsHub trilingual court source + link title.
+- Typecheck: AdminProfileMenu roles, SettingsManager typed settings, LawBookshelf LegislationLink from types, optional domain chains, getCourtAddress fallbacks, unused-import cleanup — tsc clean; build:client OK; smoke 8×200 (health/search/sitemap/news/shelf/courts/acts + Vite).
+
 ## v2.3.0 — Legal search and repository
 - Поиск: фильтры дат/категории/суда, полнотекст (body+content), релевантность (заголовок первым), таб заседаний; фильтры списков актов и книг.
 - Репозиторий: метаданные книг (номер/дата/опубликовано/external_id/sync), версионность с откатом, связанные документы, sync-now с источником (ADLIA-архитектура).

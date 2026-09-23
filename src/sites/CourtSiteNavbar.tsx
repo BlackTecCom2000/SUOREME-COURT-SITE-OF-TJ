@@ -26,7 +26,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
   onOpenEsud,
   onOpenAppeals,
 }) => {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const { isDark, toggleTheme } = useTheme();
   const { isHighContrast, toggleContrast } = useA11y();
   const [menuPopoverOpen, setMenuPopoverOpen] = useState(false);
@@ -192,7 +192,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
               <Settings size={14} />
               <span className="hidden lg:inline">{language === 'tj' ? 'Админ' : language === 'en' ? 'Admin' : 'Админ'}</span>
             </a>
-            <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
+            <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 z-50">
               <div className="bg-gray-900 border border-gray-700 text-white text-[10px] font-mono py-1 px-2 rounded-lg shadow-lg whitespace-nowrap">
                 {language === 'tj' ? 'Админкаи суд' : language === 'en' ? 'Court admin' : 'Админка суда'}
               </div>

@@ -92,7 +92,7 @@ export const JudicialTreeView: React.FC<JudicialTreeViewProps> = ({
           (c) =>
             c.nameRu.toLowerCase().includes(q) ||
             c.nameTj.toLowerCase().includes(q) ||
-            c.domain.toLowerCase().includes(q)
+            (c.domain && c.domain.toLowerCase().includes(q))
         )
       );
       if (match) {

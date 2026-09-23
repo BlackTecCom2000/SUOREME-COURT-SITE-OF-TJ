@@ -89,6 +89,18 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
+            <span
+              title={
+                language === 'tj'
+                  ? 'Маълумоти намоишӣ, на парвандаи воқеӣ'
+                  : language === 'en'
+                    ? 'Showcase data, not a real case file'
+                    : 'Демонстрационные данные, а не реальное дело'
+              }
+              className="px-2 py-1 rounded-full border border-theme-gold/40 text-theme-gold font-mono text-[10px] uppercase tracking-widest"
+            >
+              Demo
+            </span>
             <button
               type="button"
               onClick={onClose}

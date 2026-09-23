@@ -10,7 +10,7 @@ interface ScalesGLBProps {
 }
 
 export const ScalesGLB: React.FC<ScalesGLBProps> = ({
-  balanceState = 'neutral',
+  balanceState: _balanceState = 'neutral',
   isDark = true,
   modelPath
 }) => {

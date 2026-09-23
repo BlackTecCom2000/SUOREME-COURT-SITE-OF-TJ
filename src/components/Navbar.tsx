@@ -405,8 +405,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Settings size={14} />
               <span className="hidden lg:inline">{language === 'tj' ? 'Админ' : language === 'en' ? 'Admin' : 'Админ'}</span>
             </a>
-            {/* Custom Tooltip */}
-            <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50">
+            {/* Custom Tooltip (hover + keyboard focus) */}
+            <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 z-50">
               <div className="bg-gray-900 border border-gray-700 text-white text-[10px] font-mono py-1 px-2 rounded-lg shadow-lg whitespace-nowrap">
                 {language === 'tj' ? 'Панели идоракунӣ' : language === 'en' ? 'Admin Panel' : 'Админ-панель'}
               </div>

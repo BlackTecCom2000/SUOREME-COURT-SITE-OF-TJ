@@ -144,7 +144,13 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
             type="button"
             onClick={() => setShowQr(!showQr)}
             className="p-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-300 hover:text-amber-400 hover:border-amber-400/50 transition-all font-mono text-xs flex items-center gap-1.5"
-            title="Показать QR-код доступа"
+            title={
+              language === 'tj'
+                ? 'Пайванди сомонаи расмии суд'
+                : language === 'en'
+                ? 'Official court website link'
+                : 'Ссылка на официальный сайт суда'
+            }
           >
             <QrCode size={16} />
             <span className="hidden sm:inline">QR</span>
@@ -162,18 +168,18 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
         </div>
       </div>
 
-      {/* 3. QR POPUP MODAL (IF TOGGLED) */}
+      {/* 3. Official site link panel (real QR arrives with the verification backend) */}
       {showQr && (
         <div className="mb-6 p-4 rounded-xl border border-amber-400/40 bg-slate-950 flex flex-col sm:flex-row items-center gap-4 animate-fadeIn">
-          <div className="p-2 rounded-lg bg-white shrink-0 shadow-md">
+          <div className="shrink-0">
             <CourtQrCode value={portalUrl} size={84} />
           </div>
           <div>
             <span className="font-mono text-xs font-bold text-amber-400 uppercase tracking-wider block">
-              Прямой QR-код официального сайта суда
+              Официальный сайт суда
             </span>
             <p className="font-sans text-xs text-slate-300 mt-1 leading-relaxed">
-              Отсканируйте камерой смартфона для быстрого перехода на защищенный веб-портал {court.domain}.
+              Прямая ссылка на защищенный веб-портал {court.domain}. QR-проверка документов появится вместе с backend верификации.
             </p>
             <span className="font-mono text-[11px] text-slate-400 mt-1 block">{portalUrl}</span>
           </div>

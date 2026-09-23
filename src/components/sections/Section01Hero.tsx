@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowDown, ArrowUpRight, ShieldCheck, Sparkles, FileText } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
@@ -17,6 +17,25 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
   onScrollNext,
 }) => {
   const { language, t } = useLanguage();
+  // Live portal counters — real /api/stats only, never hardcoded.
+  const [liveStats, setLiveStats] = useState<{ courts?: number; acts?: number; hearings?: number } | null>(null);
+  useEffect(() => {
+    let alive = true;
+    fetch('/api/stats', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!alive || !d) return;
+        setLiveStats({
+          courts: Number(d.courts) || 0,
+          acts: Number(d.acts) || 0,
+          hearings: Number(d.hearings) || 0,
+        });
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   return (
     <section
@@ -123,26 +142,32 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
               </div>
             </Reveal>
 
-            {/* Quick Live Stats Pill */}
+            {/* Live portal counters (real /api/stats; skeleton until loaded) */}
             <Reveal delay={450}>
               <div className="mt-8 pt-6 border-t border-theme-border/40 grid grid-cols-3 gap-4 text-left font-mono">
                 <div>
                   <span className="text-xs text-theme-textMuted uppercase block">
                     {language === 'tj' ? 'Судҳо' : language === 'en' ? 'Courts' : 'Суды'}
                   </span>
-                  <span className="text-lg font-bold text-theme-text">86</span>
+                  <span className="text-lg font-bold text-theme-text" aria-live="polite">
+                    {liveStats ? liveStats.courts : '…'}
+                  </span>
                 </div>
                 <div>
                   <span className="text-xs text-theme-textMuted uppercase block">
                     {language === 'tj' ? 'Санадҳо' : language === 'en' ? 'Acts' : 'Акты'}
                   </span>
-                  <span className="text-lg font-bold text-theme-gold">142K+</span>
+                  <span className="text-lg font-bold text-theme-gold" aria-live="polite">
+                    {liveStats ? liveStats.acts : '…'}
+                  </span>
                 </div>
                 <div>
                   <span className="text-xs text-theme-textMuted uppercase block">
-                    {language === 'tj' ? 'Эътимоднокӣ' : language === 'en' ? 'Uptime' : 'Надёжность'}
+                    {language === 'tj' ? 'Маҷлисҳо' : language === 'en' ? 'Hearings' : 'Заседания'}
                   </span>
-                  <span className="text-lg font-bold text-emerald-400">99.98%</span>
+                  <span className="text-lg font-bold text-emerald-400" aria-live="polite">
+                    {liveStats ? liveStats.hearings : '…'}
+                  </span>
                 </div>
               </div>
             </Reveal>

@@ -28,6 +28,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
   const { language, t } = useLanguage();
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState<'all' | 'city' | 'district' | 'military' | 'regional'>('all');
   const [selectedCourt, setSelectedCourt] = useState<CourtNodeData | null>(null);
   const [isImmersiveOpen, setIsImmersiveOpen] = useState(false);
 
@@ -115,6 +116,38 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
               )}
             </div>
 
+            {/* Court type filter chips */}
+            <div
+              className="flex flex-wrap items-center gap-1.5"
+              role="group"
+              aria-label={language === 'tj' ? 'Филtri навъи суд' : language === 'en' ? 'Court type filters' : 'Фильтры типа суда'}
+            >
+              {(
+                [
+                  { id: 'all', tj: 'Ҳама', ru: 'Все', en: 'All' },
+                  { id: 'city', tj: 'Шаҳрӣ', ru: 'Городские', en: 'City' },
+                  { id: 'district', tj: 'Ноҳиявӣ', ru: 'Районные', en: 'District' },
+                  { id: 'military', tj: 'Ҳарбӣ', ru: 'Военные', en: 'Military' },
+                  { id: 'regional', tj: 'Вилоятӣ', ru: 'Областные', en: 'Regional' },
+                ] as const
+              ).map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  aria-pressed={typeFilter === opt.id}
+                  onClick={() => setTypeFilter(opt.id as typeof typeFilter)}
+                  className={
+                    'px-2.5 py-1 rounded-full border font-mono text-[10px] uppercase tracking-wider transition-colors ' +
+                    (typeFilter === opt.id
+                      ? 'border-theme-gold bg-theme-gold/15 text-theme-gold'
+                      : 'border-theme-border text-theme-textMuted hover:border-theme-borderHover hover:text-theme-text')
+                  }
+                >
+                  {language === 'tj' ? opt.tj : language === 'en' ? opt.en : opt.ru}
+                </button>
+              ))}
+            </div>
+
           </div>
         </Reveal>
       </div>
@@ -126,6 +159,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
             
               <JudicialTreeView
                 searchQuery={searchQuery}
+                activeCourtTypeFilter={typeFilter}
                 onSelectCourt={(court) => setSelectedCourt(court)}
                 selectedCourtId={selectedCourt?.id}
               />

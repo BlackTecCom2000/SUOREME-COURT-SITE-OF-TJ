@@ -31,11 +31,11 @@ export const RegionalBranch: React.FC<RegionalBranchProps> = ({
   const matchesSearch = (court: CourtNodeData) => {
     if (!searchQuery.trim()) return false;
     const q = searchQuery.toLowerCase();
-    return (
+    return !!(
       court.nameRu.toLowerCase().includes(q) ||
       court.nameTj.toLowerCase().includes(q) ||
       (court.nameEn && court.nameEn.toLowerCase().includes(q)) ||
-      court.domain.toLowerCase().includes(q)
+      (court.domain && court.domain.toLowerCase().includes(q))
     );
   };
 

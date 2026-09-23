@@ -120,14 +120,26 @@ export const DocumentCenter: React.FC<DocumentCenterProps> = ({ isOpen, onClose 
       >
         {/* Header */}
         <div className="px-6 py-5 border-b border-theme-border bg-theme-surface/60 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-theme-gold/15 border border-theme-gold/30 text-theme-gold">
-              <FileText size={20} />
-            </div>
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-theme-text">
-                {language === 'tj' ? 'Маркази ҳуҷҷатҳои электронӣ' : language === 'en' ? 'Digital Document Center' : 'Центр электронных документов'}
-              </h3>
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-theme-gold/15 border border-theme-gold/30 text-theme-gold">
+                <FileText size={20} />
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-semibold text-theme-text">
+                  {language === 'tj' ? 'Маркази ҳуҷҷатҳои электронӣ' : language === 'en' ? 'Digital Document Center' : 'Центр электронных документов'}{' '}
+                  <span
+                    title={
+                      language === 'tj'
+                        ? 'Намоиш: рӯйхат ба ҳисоби корбар вобаста нест'
+                        : language === 'en'
+                          ? 'Showcase: list is not tied to a user account'
+                          : 'Витрина: список не привязан к учётной записи'
+                    }
+                    className="align-middle ml-1 px-2 py-0.5 rounded-full border border-theme-gold/40 text-theme-gold font-mono text-[10px] uppercase tracking-widest"
+                  >
+                    Demo
+                  </span>
+                </h3>
               <p className="text-xs text-theme-textMuted font-mono">
                 {language === 'tj' ? 'Боргузорӣ, имзои ЭЦП ва ирсоли бевосита ба суд' : language === 'en' ? 'Upload, E-Sign & Direct Court Submission' : 'Загрузка, подписание ЭЦП и прямая отправка в суд'}
               </p>

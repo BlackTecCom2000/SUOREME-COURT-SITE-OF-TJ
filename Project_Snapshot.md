@@ -201,3 +201,18 @@ Antigravity (AI Orchestrator)
 - Backup dest: single disk C: (783GB free) -> primary C:\SUD_TJ_Backups\<version>\ outside repo; GitHub = code offsite; DB-hash backups excluded from git.
 - Continuity gaps: README 1.6KB stub, .env.example 423B, no CHANGELOG.md, lockfile present (pnpm-lock.yaml), node v26.8.1.
 - Rules: per-change backup+tests+commit+tag+push+verify; no force-push; no history rewrite; no public URL changes; no invented data.
+
+## SUPREME_COURT_PORTAL_FULL_LEGAL_UX_DATA_REMEDIATION 2026-09-23 - BEFORE/AFTER → v2.4.0
+- BEFORE: QR blocks claimed scannable codes without generator; process flow "VERIFIED & ENFORCED" + "Public Ledger" overstated live guarantees; CaseDashboard/DocumentCenter/CaseWorkspaceModal without Demo markers; Hero/Dashboard mixed static placeholders (UPTIME/LOAD, 100% OPERATIONAL, sample acts); receptionGuarantee promised 30-day fixed outcomes; appeals client-side only; hover-only tooltips inaccessible; legislation catalog lacked language/year filters; court type filter missing regional branch match; news source attribution weak; tsc had 25+ errors (roles, optional domain, unused imports).
+- AFTER (implemented): CourtQrCode = host link tile + QR-later note; drawer/hub trilingual official-site labels; Demo badges + DEMO LEDGER + IN REGISTRY caveats; live /api/stats + health ONLINE; sample-fallback removed (loadError); neutral receptionGuarantee; real POST /api/appeals + rateLimited i18n; hover→click + group-focus-within; LibraryPage docLang/year filters + expanded search + ShelfBook meta; Section06 type chips incl. regional + isMatched fix; AnnouncementItem.source + JudicialNewsHub attribution; TS fixes (AdminProfileMenu 9 roles, SettingsManager typed, LegislationLink from types, getCourtAddress fallbacks, !! domain matches, unused cleanup).
+- Verification 2026-09-23: `tsc --noEmit` clean (0 errors); `pnpm run build:client` OK (~6.9s); smoke on live dev: /api/health, /api/search, /sitemap.xml, /api/news, /api/shelf-books, /api/courts, /api/judicial_acts, :8787 SSR, :5173 Vite all 200. Scheduled task SuD_ST_Dev running; Vite restarted on 5173.
+- Reports (static + smoke; instrumental browser profiling unavailable in sandbox):
+  - Legal: no fabricated statutes/stats; demo surfaces marked DEMO; no fake QR/scan claims; reception guarantees non-binding neutral wording; appeals only report success after POST.
+  - UX: click not hover for copy hints; keyboard focus reveals tooltips; demo badges trilingual; filters discoverable without losing search.
+  - Data: stats/health from live API; acts manager surfaces fetch errors; no silent sample data.
+  - A11y: focus-within tooltips, aria-pressed filter chips, trilingual titles on interactive tiles.
+  - Responsive: new elib-filters + court type chips have mobile CSS; existing breakpoints unchanged.
+  - Localization: TJ/RU/EN keys for submitError/rateLimited/click-hints/demo markers/source titles.
+  - Security: no new endpoints; appeals rate-limited server-side (preset); no secrets in changes.
+- Changed files (35): AdminProfileMenu, Dashboard, JudicialActsManager, SettingsManager, ClientOnly, JudicialModal, Navbar, CaseDashboard, CaseSearchEngine, CaseWorkspaceModal, DocumentCenter, InteractiveLawBook, InteractiveProcessFlow, LawBookshelf, NewFilingModal, CourtDetailsDrawer, CourtQrCode, JudicialTreeView, SelectedCourtContextHub, BlueprintRegionalColumn, CourtLeaf, RegionalBranch, JudicialNewsHub, Section01Hero, Section06JudicialNetwork, ScalesGLB, DeviceCapabilityContext, sudTjData, entry-client, i18n/{en,ru,tj}, LibraryPage(.css), CourtSiteNavbar.
+- Packaging: backup 2.4.0 → restore-test → commit "v2.4.0: Legal UX remediation" → tag v2.4.0 → push release-2.0 + tag.

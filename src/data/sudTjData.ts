@@ -200,8 +200,8 @@ export function getCourtShortName(court: CourtNodeData, lang: Language): string 
 
 export function getCourtAddress(court: CourtNodeData, lang: Language): string {
   if (lang === 'en' && court.addressEn) return court.addressEn;
-  if (lang === 'tj') return court.addressTj;
-  return court.addressRu;
+  if (lang === 'tj') return court.addressTj || court.addressRu || '';
+  return court.addressRu || court.addressTj || '';
 }
 
 export function getRegionName(cluster: RegionCluster, lang: Language): string {
@@ -1167,6 +1167,7 @@ export interface AnnouncementItem {
   titleEn?: string;
   date: string;
   url?: string;
+  source?: string;
 }
 
 export const OFFICIAL_ANNOUNCEMENTS: AnnouncementItem[] = [

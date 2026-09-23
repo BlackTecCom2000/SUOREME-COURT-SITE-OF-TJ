@@ -33,7 +33,19 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-theme-text tracking-tight">
-              {language === 'tj' ? 'Парвандаҳои ман' : language === 'en' ? 'My Cases Dashboard' : 'Мои дела в производстве'}
+              {language === 'tj' ? 'Парвандаҳои ман' : language === 'en' ? 'My Cases Dashboard' : 'Мои дела в производстве'}{' '}
+              <span
+                title={
+                  language === 'tj'
+                    ? 'Маълумоти намоишӣ: кабинети шахсӣ баъди авторизатсия дастрас мешавад'
+                    : language === 'en'
+                      ? 'Demo data: personal workspace unlocks after sign-in'
+                      : 'Демо-данные: личный кабинет станет доступен после входа'
+                }
+                className="align-middle ml-1 px-2 py-0.5 rounded-full border border-theme-gold/40 text-theme-gold font-mono text-[10px] uppercase tracking-widest"
+              >
+                Demo
+              </span>
             </h2>
           </div>
 
@@ -85,7 +97,9 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
                 <div className="rounded-2xl bg-theme-bg/60 border border-theme-border/60 p-4 mb-6">
                   <div className="text-[10px] font-mono uppercase text-theme-textMuted mb-3 flex items-center justify-between">
                     <span>{language === 'tj' ? 'ТАЪРИХИ РАВАНД' : language === 'en' ? 'CASE PROGRESS' : 'ХОД ДЕЛА'}</span>
-                    <span className="text-theme-gold">STEP 3 OF 4</span>
+                    <span className="text-theme-gold">
+                      {language === 'tj' ? 'ҚАДАМИ 3 АЗ 4 • ДЕМО' : language === 'en' ? 'STEP 3 OF 4 • DEMO' : 'ШАГ 3 ИЗ 4 • ДЕМО'}
+                    </span>
                   </div>
 
                   <div className="space-y-3">

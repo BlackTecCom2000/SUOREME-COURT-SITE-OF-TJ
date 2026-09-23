@@ -355,7 +355,18 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
             <span>
               {language === 'tj' ? `Ёфт шуд: ${filteredCases.length}` : language === 'en' ? `Results found: ${filteredCases.length}` : `Найдено записей: ${filteredCases.length}`}
             </span>
-            <span className="text-[11px] text-theme-gold">SUD.TJ // PUBLIC LEDGER</span>
+            <span
+              className="text-[11px] text-theme-gold"
+              title={
+                language === 'tj'
+                  ? 'Маълумоти намоишӣ, на феҳристи воқеӣ'
+                  : language === 'en'
+                    ? 'Demo dataset, not the live registry'
+                    : 'Демо-данные, а не живой реестр'
+              }
+            >
+              SUD.TJ // DEMO LEDGER
+            </span>
           </div>
 
           {filteredCases.length === 0 ? (

@@ -2,12 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft,
-  BookOpen,
   ChevronLeft,
   ChevronRight,
-  FileText,
   LibraryBig,
-  Scale,
   Search,
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -19,8 +16,6 @@ import {
   DocKind,
   actToShelfBook,
   useShelfBooks,
-  coverFor,
-  BOOK_THEMES,
 } from '../components/digital-court/LawBookshelf';
 import { FoliantReader } from '../components/digital-court/FoliantReader';
 import { DiamondCatalog } from '../components/library/DiamondCatalog';
@@ -31,7 +26,7 @@ const L = (language: string, tj: string, ru: string, en: string) =>
   language === 'tj' ? tj : language === 'en' ? en : ru;
 
 export const LibraryPage: React.FC = () => {
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   usePageMeta(
     L(language, 'Китобхонаи электронии суд', 'Электронная библиотека суда', 'Electronic Court Library')
   );
@@ -39,6 +34,8 @@ export const LibraryPage: React.FC = () => {
   const [acts, setActs] = useState<ShelfBook[]>([]);
   const [query, setQuery] = useState('');
   const [kindFilter, setKindFilter] = useState<'all' | DocKind>('all');
+  const [docLangFilter, setDocLangFilter] = useState<'all' | 'tj' | 'ru' | 'en' | 'multi'>('all');
+  const [yearFilter, setYearFilter] = useState<'all' | string>('all');
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [docPage, setDocPage] = useState(1);
   const [contents, setContents] = useState<Record<string, any>>({});
@@ -85,16 +82,42 @@ export const LibraryPage: React.FC = () => {
     return c;
   }, [all, language]);
 
+  const yearOptions = useMemo(() => {
+    const years = new Set<string>();
+    all.forEach((b) => {
+      const raw = b.actDate || b.publishedAt || '';
+      const y = String(raw).slice(0, 4);
+      if (/^\d{4}$/.test(y)) years.add(y);
+    });
+    return Array.from(years).sort((a, b) => Number(b) - Number(a));
+  }, [all]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return all.filter((b) => {
       const dl = (b.docLang || '').toLowerCase();
       if (dl && dl !== 'auto' && dl !== 'multi' && dl !== language) return false;
       if (kindFilter !== 'all' && (b.kind || 'other') !== kindFilter) return false;
+      if (docLangFilter !== 'all') {
+        const fl = dl || 'multi';
+        if (fl !== docLangFilter && !(docLangFilter === 'multi' && (fl === 'auto' || fl === 'multi'))) return false;
+      }
+      if (yearFilter !== 'all') {
+        const raw = b.actDate || b.publishedAt || '';
+        if (String(raw).slice(0, 4) !== yearFilter) return false;
+      }
       if (!q) return true;
-      return pickTri(b.title, language).toLowerCase().includes(q);
+      const hay = [
+        pickTri(b.title, language),
+        b.docNumber || '',
+        b.badge || '',
+        ...(b.meta || []).map((m) => `${m.value}`),
+      ]
+        .join(' ')
+        .toLowerCase();
+      return hay.includes(q);
     });
-  }, [all, query, language, kindFilter]);
+  }, [all, query, language, kindFilter, docLangFilter, yearFilter]);
 
   useEffect(() => {
     if (filtered.length === 0) return;
@@ -298,6 +321,52 @@ export const LibraryPage: React.FC = () => {
                     {pickTri(DOC_KIND_LABEL[k], language)} · {kindCounts[k]}
                   </button>
                 )
+            )}
+          </div>
+
+          <div className="elib-filters" role="group" aria-label={L(language, 'Филтрҳои иловагӣ', 'Дополнительные фильтры', 'Additional filters')}>
+            <label className="elib-filter">
+              <span>{L(language, 'Забон', 'Язык', 'Language')}</span>
+              <select
+                value={docLangFilter}
+                onChange={(e) => setDocLangFilter(e.target.value as typeof docLangFilter)}
+                aria-label={L(language, 'Филтр аз рӯи забон', 'Фильтр по языку', 'Filter by language')}
+              >
+                <option value="all">{L(language, 'Ҳама', 'Все', 'All')}</option>
+                <option value="tj">TJ</option>
+                <option value="ru">RU</option>
+                <option value="en">EN</option>
+                <option value="multi">{L(language, 'Бисёрзабонӣ', 'Многоязычный', 'Multilingual')}</option>
+              </select>
+            </label>
+            {yearOptions.length > 0 && (
+              <label className="elib-filter">
+                <span>{L(language, 'Сол', 'Год', 'Year')}</span>
+                <select
+                  value={yearFilter}
+                  onChange={(e) => setYearFilter(e.target.value)}
+                  aria-label={L(language, 'Филтр аз рӯи сол', 'Фильтр по году', 'Filter by year')}
+                >
+                  <option value="all">{L(language, 'Ҳама', 'Все', 'All')}</option>
+                  {yearOptions.map((y) => (
+                    <option key={y} value={y}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {(docLangFilter !== 'all' || yearFilter !== 'all') && (
+              <button
+                type="button"
+                className="elib-filter-reset"
+                onClick={() => {
+                  setDocLangFilter('all');
+                  setYearFilter('all');
+                }}
+              >
+                {L(language, 'Тоза кардан', 'Сбросить', 'Reset')}
+              </button>
             )}
           </div>
         </div>

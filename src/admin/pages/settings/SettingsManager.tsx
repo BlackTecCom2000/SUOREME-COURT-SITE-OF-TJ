@@ -32,8 +32,8 @@ export const SettingsManager: React.FC = () => {
   useEffect(() => {
     if (activeTab !== 'ai' || aiLoaded) return;
     apiFetch('/api/admin/settings')
-      .then((r) => (r.ok ? r.json() : {}))
-      .then((d) => {
+      .then((r) => (r.ok ? r.json() : {} as Record<string, string>))
+      .then((d: Record<string, string>) => {
         setAiSettings((prev) => ({
           ai_writer_enabled: d.ai_writer_enabled ?? prev.ai_writer_enabled,
           ai_translate_enabled: d.ai_translate_enabled ?? prev.ai_translate_enabled,

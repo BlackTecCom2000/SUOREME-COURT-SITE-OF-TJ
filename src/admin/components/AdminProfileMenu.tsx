@@ -22,14 +22,17 @@ export const AdminProfileMenu: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const roleLabel = {
+  const roleLabel = ({
     super_admin: 'Главный Администратор',
+    admin: 'Администратор',
     administrator: 'Администратор системы',
     editor: 'Редактор контента',
     publisher: 'Издатель',
     court_manager: 'Куратор судебной сети',
+    content_manager: 'Менеджер контента',
+    reviewer: 'Рецензент',
     viewer: 'Наблюдатель',
-  }[user?.role || 'editor'];
+  } as Record<string, string>)[user?.role || 'editor'] || user?.role || 'editor';
 
   return (
     <div className="relative" ref={menuRef}>

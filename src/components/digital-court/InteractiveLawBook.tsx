@@ -29,7 +29,7 @@ const COVER_THEMES = [
 
 export const InteractiveLawBook: React.FC<{ books?: ShowcaseBook[] }> = ({ books }) => {
   const { language, t } = useLanguage();
-  const showcase = ((books && books.length > 0 ? books : SHOWCASE_BOOKS).filter((b) => !!b.url) as { url: string; title: TriText }[]).slice(0, 3);
+  const showcase = (books && books.length > 0 ? books : SHOWCASE_BOOKS).filter((b): b is ShowcaseBook & { url: string } => !!b.url).slice(0, 3);
   const [openUrl, setOpenUrl] = useState<string | null>(null);
   const [flipUrl, setFlipUrl] = useState<string | null>(null);
   const [pageIdx, setPageIdx] = useState<Record<string, number>>({});

@@ -165,21 +165,25 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
             </div>
           </div>
 
-          {/* QR Code & Mobile Sync */}
+          {/* Official site link (QR verification arrives with the verification backend) */}
           <div className="p-4 rounded-xl bg-theme-surface border border-theme-border flex items-center gap-4 mb-6 shadow-xs">
-            <div className="p-1.5 rounded-lg bg-white shrink-0 shadow-sm">
+            <div className="shrink-0">
               <CourtQrCode value={court.url} size={64} />
             </div>
             <div>
               <span className="font-mono text-xs font-semibold text-theme-text uppercase block">
-                QR-КОД ДОСТУПА
+                {language === 'en'
+                  ? 'OFFICIAL WEBSITE'
+                  : language === 'tj'
+                  ? 'СОМОНАИ РАСМӢ'
+                  : 'ОФИЦИАЛЬНЫЙ САЙТ'}
               </span>
               <p className="text-[11px] text-theme-textSec font-sans mt-0.5 leading-snug">
                 {language === 'en'
-                  ? 'Scan to open the official court dossier on mobile.'
+                  ? 'Direct link to the official court website.'
                   : language === 'tj'
-                  ? 'Барои кушодани сомонаи суд дар телефон QR-кодро сканер кунед.'
-                  : 'Отсканируйте для быстрого перехода на сайт суда со смартфона.'}
+                  ? 'Пайванди мустақим ба сомонаи расмии суд.'
+                  : 'Прямая ссылка на официальный сайт суда.'}
               </p>
             </div>
           </div>

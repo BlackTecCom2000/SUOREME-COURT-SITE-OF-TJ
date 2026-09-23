@@ -3,9 +3,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Search, Scale, BookOpen, Landmark, Gavel, ExternalLink, FileText, X, Maximize2, Minimize2 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import type { TriText } from '../../sites/types';
+import type { LegislationLink, TriText } from '../../sites/types';
 import { pickTri } from '../../sites/types';
-import type { LegislationLink } from '../../sites/shared';
 import { SHARED_LEGISLATION } from '../../sites/shared';
 import { useSiteSync } from '../../hooks/useSiteSync';
 import './LegislativeLibrary.css';
@@ -32,6 +31,9 @@ export interface ShelfBook {
   coverBg?: string | null;
   coverImage?: string | null;
   docLang?: string | null;
+  docNumber?: string | null;
+  actDate?: string | null;
+  publishedAt?: string | null;
 }
 
 export type DocKind = 'constitution' | 'code' | 'law' | 'document' | 'quote' | 'other';
@@ -149,8 +151,13 @@ export const dbToShelfBook = (row: any): ShelfBook => ({
   coverBg: row.cover_bg || null,
   coverImage: row.cover_image || null,
   docLang: row.doc_lang || null,
+  docNumber: row.doc_number || null,
+  actDate: row.act_date || null,
+  publishedAt: row.published_at || null,
   meta: [
-    { label: T('Формат', 'Формат', 'Format'), value: 'PDF' },
+    ...(row.doc_number ? [{ label: T('Рақам', 'Номер', 'Number'), value: String(row.doc_number) }] : []),
+    ...(row.act_date ? [{ label: T('Сана', 'Дата', 'Date'), value: String(row.act_date) }] : []),
+    ...(row.published_at ? [{ label: T('Нашр', 'Публикация', 'Published'), value: String(row.published_at).slice(0, 10) }] : []),
     { label: T('Манбаъ', 'Источник', 'Source'), value: 'sud.tj' },
     { label: T('Забонҳо', 'Языки', 'Languages'), value: row.doc_lang ? String(row.doc_lang).toUpperCase() : 'TJ · RU · EN' },
   ],
@@ -195,10 +202,15 @@ export const actToShelfBook = (row: any): ShelfBook => ({
   badge: row.doc_number || undefined,
   cover: undefined,
   kind: detectKind(row.title_ru || ''),
+  docLang: row.title_en ? 'multi' : null,
+  docNumber: row.doc_number || null,
+  actDate: row.act_date || null,
+  publishedAt: row.published_at || null,
   meta: [
     ...(row.doc_number ? [{ label: T('Рақам', 'Номер', 'Number'), value: String(row.doc_number) }] : []),
     ...(row.category ? [{ label: T('Гурӯҳ', 'Категория', 'Category'), value: String(row.category) }] : []),
     ...(row.act_date ? [{ label: T('Сана', 'Дата', 'Date'), value: String(row.act_date) }] : []),
+    ...(row.published_at ? [{ label: T('Нашр', 'Публикация', 'Published'), value: String(row.published_at).slice(0, 10) }] : []),
   ],
 });
 

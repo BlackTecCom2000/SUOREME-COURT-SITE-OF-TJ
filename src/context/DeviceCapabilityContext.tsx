@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export type DeviceTier = 'high-end' | 'medium' | 'low-end';
 
-interface DeviceCapabilityContextProps {
+export interface DeviceCapabilityContextProps {
   tier: DeviceTier;
   isReducedMotion: boolean;
 }

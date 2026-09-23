@@ -27,6 +27,7 @@ interface JudicialAct {
 export const JudicialActsManager: React.FC = () => {
   const [acts, setActs] = useState<JudicialAct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCollegium, setSelectedCollegium] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,32 +54,11 @@ export const JudicialActsManager: React.FC = () => {
       if (res.ok) {
         const data = await res.json();
         setActs(data.items || data || []);
+        setLoadError(null);
       } else {
-        // Fallback verified sample acts
-        setActs([
-          {
-            id: 1,
-            doc_number: 'ПР-2026/89',
-            doc_type: 'Постановление Пленума',
-            title_ru: 'О судебной практике по спорам о защите права собственности',
-            collegium: 'Гражданская коллегия',
-            case_number: '№ 2-104/2026',
-            act_date: '2026-06-15',
-            category: 'Право собственности',
-            status: 'published',
-          },
-          {
-            id: 2,
-            doc_number: 'ОПР-2026/14',
-            doc_type: 'Определение коллегии',
-            title_ru: 'По кассационной жалобе по экономическому спору',
-            collegium: 'Экономическая коллегия',
-            case_number: '№ Э-54/2026',
-            act_date: '2026-05-20',
-            category: 'Экономические споры',
-            status: 'published',
-          },
-        ]);
+        // No invented fallback acts: empty registry + error state (data-integrity rule).
+        setActs([]);
+        setLoadError('Не удалось загрузить реестр актов (/api/admin/judicial-acts). Проверьте соединение и права.');
       }
     } catch (err) {
       console.error(err);
@@ -261,6 +241,11 @@ export const JudicialActsManager: React.FC = () => {
       </div>
 
       {/* Main Table */}
+      {loadError && (
+        <div role="alert" className="p-3 rounded-xl border border-red-500/30 bg-red-950/40 text-red-300 text-xs font-mono">
+          {loadError}
+        </div>
+      )}
       <AdminTable
         columns={columns}
         data={filteredActs}

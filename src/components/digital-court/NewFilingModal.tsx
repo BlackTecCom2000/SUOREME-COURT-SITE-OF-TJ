@@ -38,6 +38,7 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedCaseNum, setSubmittedCaseNum] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -50,15 +51,60 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
     if (step > 1) setStep((prev) => (prev - 1) as any);
   };
 
-  const handleSubmit = () => {
+  // Real submission: POST /api/appeals. Success screen appears ONLY after 201
+  // with the server-issued id (no invented case numbers).
+  const handleSubmit = async () => {
     setIsSubmitting(true);
-    setTimeout(() => {
-      const generated = `01-${Math.floor(1000 + Math.random() * 9000)}/26`;
-      setSubmittedCaseNum(generated);
+    setSubmitError(null);
+    const message = [
+      formData.claimTitle ? `Предмет: ${formData.claimTitle}` : '',
+      formData.claimDesc ? `Суть: ${formData.claimDesc}` : '',
+      formData.defendantName ? `Ответчик: ${formData.defendantName}` : '',
+      formData.defendantAddress ? `Адрес ответчика: ${formData.defendantAddress}` : '',
+      formData.claimSum ? `Сумма иска: ${formData.claimSum} TJS` : '',
+      `Суд: ${formData.court}, категория: ${formData.category}`,
+    ]
+      .filter(Boolean)
+      .join('\n');
+    try {
+      const res = await fetch('/api/appeals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: formData.plaintiffName.trim(),
+          phone: formData.plaintiffPhone.trim(),
+          subject: formData.claimTitle.trim().slice(0, 200) || undefined,
+          message,
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        if (res.status === 429) {
+          throw new Error(
+            language === 'tj'
+              ? 'Шумо дархостҳои зиёд фиристодед. Лутфан дертар такрор кунед.'
+              : language === 'en'
+                ? 'Too many requests. Please try again later.'
+                : 'Слишком много запросов. Повторите позже.'
+          );
+        }
+        throw new Error(
+          (data && data.error) ||
+            (language === 'tj'
+              ? 'Маълумот нопурра аст (ном, телефон, матн лозим).'
+              : language === 'en'
+                ? 'Incomplete data (name, phone, message required).'
+                : 'Неполные данные (нужны имя, телефон, текст).')
+        );
+      }
+      setSubmittedCaseNum(`№ ${data.id}`);
       setIsSubmitting(false);
       setStep(4);
       if (onSuccess) onSuccess();
-    }, 1500);
+    } catch (err: any) {
+      setIsSubmitting(false);
+      setSubmitError(err?.message || 'Error');
+    }
   };
 
   return (
@@ -175,6 +221,19 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
                   className="w-full h-11 px-3 rounded-xl bg-theme-bg border border-theme-border text-theme-text text-xs focus:outline-none focus:border-theme-gold"
                 />
               </div>
+
+              <div>
+                <label className="block font-mono text-xs text-theme-textMuted uppercase mb-1.5">
+                  {language === 'tj' ? 'Мазмуни муроҷиат' : language === 'en' ? 'Appeal Details' : 'Суть обращения'}
+                </label>
+                <textarea
+                  value={formData.claimDesc}
+                  onChange={(e) => setFormData({ ...formData, claimDesc: e.target.value })}
+                  placeholder={language === 'tj' ? 'Мухтасаран шарҳ диҳед…' : language === 'en' ? 'Briefly describe…' : 'Кратко опишите суть…'}
+                  rows={3}
+                  className="w-full px-3 py-2.5 rounded-xl bg-theme-bg border border-theme-border text-theme-text text-xs focus:outline-none focus:border-theme-gold resize-y"
+                />
+              </div>
             </div>
           )}
 
@@ -196,6 +255,13 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
                   placeholder="ИНН / ПИНФЛ заявителя"
                   value={formData.plaintiffId}
                   onChange={(e) => setFormData({ ...formData, plaintiffId: e.target.value })}
+                  className="w-full h-10 px-3 rounded-xl bg-theme-bg border border-theme-border text-theme-text text-xs"
+                />
+                <input
+                  type="tel"
+                  placeholder={language === 'tj' ? 'Телефон (+992 …)' : language === 'en' ? 'Phone (+992 …)' : 'Телефон (+992 …)'}
+                  value={formData.plaintiffPhone}
+                  onChange={(e) => setFormData({ ...formData, plaintiffPhone: e.target.value })}
                   className="w-full h-10 px-3 rounded-xl bg-theme-bg border border-theme-border text-theme-text text-xs"
                 />
               </div>
@@ -246,18 +312,23 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
                 <CheckCircle2 size={36} />
               </div>
               <h3 className="text-xl font-bold text-theme-text">
-                {language === 'tj' ? 'Ариза бомуваффақият қабул шуд!' : language === 'en' ? 'Claim Successfully Submitted!' : 'Исковое заявление успешно зарегистрировано!'}
+                {language === 'tj' ? 'Муроҷиат сабт шуд!' : language === 'en' ? 'Appeal Registered!' : 'Обращение зарегистрировано!'}
               </h3>
               <div className="font-mono text-sm p-3 rounded-2xl bg-theme-surface border border-theme-border inline-block text-theme-gold font-bold">
-                УИН ДЕЛА: {submittedCaseNum}
+                {language === 'tj' ? 'Рақами муроҷиат' : language === 'en' ? 'Appeal No.' : 'Обращение №'} {submittedCaseNum}
               </div>
               <p className="text-xs text-theme-textSec max-w-md mx-auto">
                 {language === 'tj'
-                  ? 'Парванда ба таври худкор ба судяи дахлдор вобаста карда мешавад. Огоҳинома дар бораи таъини маҷлис ба почта ва кабинети шахсӣ фиристода мешавад.'
+                  ? 'Муроҷиати шумо дар низоми суд ба қайд гирифта шуд ва мутобиқи қонунгузорӣ баррасӣ мегардад.'
                   : language === 'en'
-                  ? 'Case is automatically routed for judge assignment. Hearing notification will be dispatched to your account.'
-                  : 'Дело автоматически направлено на распределение состава суда. Оповещение о назначении заседания поступит в ваш личный кабинет.'}
+                  ? 'Your appeal has been registered in the court system and will be reviewed as prescribed by law.'
+                  : 'Ваше обращение зарегистрировано в системе суда и будет рассмотрено в порядке, установленном законодательством.'}
               </p>
+            </div>
+          )}
+          {submitError && step < 4 && (
+            <div role="alert" className="mx-6 mb-4 p-3 rounded-xl border border-red-500/30 bg-red-950/40 text-red-300 text-xs font-mono">
+              {submitError}
             </div>
           )}
         </div>
@@ -284,7 +355,7 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
               disabled={isSubmitting}
               className="btn-primary text-xs"
             >
-              <span>{isSubmitting ? 'Отправка...' : step === 3 ? (language === 'tj' ? 'Ирсол ба суд' : language === 'en' ? 'Submit to Court' : 'Подписать и отправить') : (language === 'tj' ? 'Давом додан' : language === 'en' ? 'Next' : 'Далее')}</span>
+              <span>{isSubmitting ? (language === 'tj' ? 'Ирсол...' : language === 'en' ? 'Sending...' : 'Отправка...') : step === 3 ? (language === 'tj' ? 'Ирсол ба суд' : language === 'en' ? 'Submit to Court' : 'Подписать и отправить') : (language === 'tj' ? 'Давом додан' : language === 'en' ? 'Next' : 'Далее')}</span>
               <ArrowRight size={13} />
             </button>
           ) : (

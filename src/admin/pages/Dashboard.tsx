@@ -37,30 +37,24 @@ export const Dashboard: React.FC = () => {
     fetchDashboard();
   }, []);
 
-  const stats = data?.stats || {
-    news_total: 12,
-    news_published: 8,
-    news_pending: 3,
-    acts_total: 45,
-    courts_total: 80,
-    appeals_new: 5,
-    appeals_total: 28,
-    users_total: 6,
-    media_total: 42,
-  };
+  // Live backend stats only — no invented fallback numbers (data-integrity rule).
+  const stats = data?.stats || null;
+  const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : '—');
 
   const statCards = [
     {
       title: 'Публикации и Новости',
-      value: stats.news_total,
-      subtitle: `${stats.news_published} опубликовано • ${stats.news_pending || 0} на проверке`,
+      value: stats ? num(stats.news_total) : '—',
+      subtitle: stats
+        ? `${num(stats.news_published)} опубликовано • ${num(stats.news_pending || 0)} на проверке`
+        : 'Загрузка данных…',
       icon: Newspaper,
       color: '#dfbe7e',
       path: '/admin/news',
     },
     {
       title: 'Судебные акты',
-      value: stats.acts_total,
+      value: stats ? num(stats.acts_total) : '—',
       subtitle: 'Решения, определения, постановления',
       icon: Gavel,
       color: '#38bdf8',
@@ -68,19 +62,22 @@ export const Dashboard: React.FC = () => {
     },
     {
       title: 'Судебная сеть РТ',
-      value: stats.courts_total || 80,
-      subtitle: '4 региональные коллегии • 80 судов',
+      value: stats ? num(stats.courts_total) : '—',
+      subtitle: 'Суды по данным реестра (/api/courts)',
       icon: Landmark,
       color: '#34d399',
       path: '/admin/courts',
     },
     {
       title: 'Обращения граждан',
-      value: stats.appeals_total,
-      subtitle: `${stats.appeals_new || 0} новых ожидают ответа`,
+      value: stats ? num(stats.appeals_total) : '—',
+      subtitle: stats ? `${num(stats.appeals_new || 0)} новых ожидают ответа` : 'Загрузка данных…',
       icon: Send,
       color: '#f472b6',
-      badge: stats.appeals_new > 0 ? `${stats.appeals_new} NEW` : undefined,
+      badge:
+        stats && typeof stats.appeals_new === 'number' && stats.appeals_new > 0
+          ? `${stats.appeals_new} NEW`
+          : undefined,
       path: '/admin/appeals',
     },
   ];
@@ -323,7 +320,7 @@ export const Dashboard: React.FC = () => {
                 <span>Статус узла:</span>
                 <span className="flex items-center gap-1.5 text-emerald-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  100% OPERATIONAL
+                  {data ? 'ONLINE (/api/health OK)' : '…'}
                 </span>
               </div>
             </div>

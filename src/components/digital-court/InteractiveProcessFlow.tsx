@@ -94,12 +94,12 @@ export const InteractiveProcessFlow: React.FC = () => {
       icon: Gavel,
       titleKey: language === 'tj' ? 'Санади ниҳоӣ' : language === 'en' ? 'Digital Verdict' : 'Судебный акт с QR',
       subKey: language === 'tj' ? 'Қувваи қонунӣ ва QR' : language === 'en' ? 'Legal Force & QR Check' : 'Законная сила и реестр',
-      detailKey: language === 'tj' 
-        ? 'Қарори судӣ бо рамзи QR фавран ба бонки умумии санадҳои судӣ ворид мегардад.' 
-        : language === 'en' 
-        ? 'Judicial act is published to the public portal repository with instant QR-code verification.' 
-        : 'Электронный судебный акт заверяется судейской ЭЦП и публикуется в банке судебных актов.',
-      statusBadge: 'VERIFIED & ENFORCED',
+      detailKey: language === 'tj'
+        ? 'Қарори судӣ ба бонки умумии санадҳои судӣ ворид мегардад (санҷиши QR баъди ҷорӣ шудани backend верификатсия).'
+        : language === 'en'
+        ? 'Judicial act is published to the public portal repository (QR verification arrives with the verification backend).'
+        : 'Судебный акт публикуется в банке судебных актов (QR-проверка появится вместе с backend верификации).',
+      statusBadge: language === 'tj' ? 'ДАР ФЕҲРИСТ' : language === 'en' ? 'IN REGISTRY' : 'В РЕЕСТРЕ',
       techDetail: 'Digital Watermark • Public Portal API',
     },
   ];
@@ -133,6 +133,18 @@ export const InteractiveProcessFlow: React.FC = () => {
           </span>
         </div>
         <div className="flex items-center gap-2 font-mono text-[11px] text-theme-textMuted">
+          <span
+            title={
+              language === 'tj'
+                ? 'Намоиши консептуалӣ, на низоми фаъол'
+                : language === 'en'
+                ? 'Conceptual demo, not a live system'
+                : 'Концептуальное демо, а не действующая система'
+            }
+            className="px-2 py-0.5 rounded-full border border-theme-gold/40 text-theme-gold text-[10px] uppercase tracking-wider"
+          >
+            Demo
+          </span>
           <span>{steps[activeStep].stepNum} / 05</span>
           <span className="hidden sm:inline">•</span>
           <span className="hidden sm:inline text-theme-gold">{steps[activeStep].statusBadge}</span>

@@ -87,6 +87,41 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
   const [selectedCollegium, setSelectedCollegium] = useState<string>('all');
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [appealSubmitted, setAppealSubmitted] = useState(false);
+  const [appealId, setAppealId] = useState<number | null>(null);
+  const [appealError, setAppealError] = useState<string | null>(null);
+  const [appealSending, setAppealSending] = useState(false);
+
+  // Real submission: POST /api/appeals. Success shows ONLY after 201 + server id.
+  const submitAppeal = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setAppealError(null);
+    const fd = new FormData(e.currentTarget);
+    const fullName = String(fd.get('fullName') || '').trim();
+    const phone = String(fd.get('phone') || '').trim();
+    const message = String(fd.get('message') || '').trim();
+    setAppealSending(true);
+    try {
+      const res = await fetch('/api/appeals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullName, phone, message }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(
+          res.status === 429
+            ? t('appeals.rateLimited')
+            : (data && data.error) || t('appeals.submitError')
+        );
+      }
+      setAppealId(Number(data.id));
+      setAppealSubmitted(true);
+    } catch (err: any) {
+      setAppealError(err?.message || t('appeals.submitError'));
+    } finally {
+      setAppealSending(false);
+    }
+  };
   const [downloadedDocId, setDownloadedDocId] = useState<number | null>(null);
   const [news, setNews] = useState<any[]>([]);
   const [acts, setActs] = useState<any[]>([]);
@@ -1022,7 +1057,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                         </span>
                         <span className="inline-flex items-center gap-1 text-emerald-400">
                           <CheckCircle2 size={11} />
-                          <span>{act.status}</span>
+                          <span>{language === 'en' ? 'In force' : language === 'tj' ? 'Амалкунанда' : 'Действует'}</span>
                         </span>
                       </div>
 
@@ -1719,42 +1754,49 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 </div>
 
                 {appealSubmitted ? (
-                  <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-emerald-300 text-xs font-mono">
-                    {t('appeals.successMessage')}
+                  <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-emerald-300 text-xs font-mono space-y-1">
+                    <div>{t('appeals.successMessage')}</div>
+                    {appealId != null && <div>№ {appealId}</div>}
                   </div>
                 ) : (
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      setAppealSubmitted(true);
-                    }}
-                    className="space-y-3"
-                  >
+                  <form onSubmit={submitAppeal} className="space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <input
                         required
+                        minLength={2}
                         type="text"
+                        name="fullName"
                         placeholder={t('appeals.fullName')}
                         className="bg-theme-bg border border-theme-border rounded-xl px-4 py-2.5 text-xs text-theme-text font-mono placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
                       />
                       <input
                         required
+                        minLength={5}
                         type="tel"
+                        name="phone"
                         placeholder={t('appeals.phone')}
                         className="bg-theme-bg border border-theme-border rounded-xl px-4 py-2.5 text-xs text-theme-text font-mono placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
                       />
                     </div>
                     <textarea
                       required
+                      minLength={10}
                       rows={3}
+                      name="message"
                       placeholder={t('appeals.appealText')}
                       className="w-full bg-theme-bg border border-theme-border rounded-xl px-4 py-2.5 text-xs text-theme-text font-mono placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
                     />
+                    {appealError && (
+                      <div role="alert" className="p-3 rounded-xl border border-red-500/30 bg-red-950/40 text-red-300 text-xs font-mono">
+                        {appealError}
+                      </div>
+                    )}
                     <button
                       type="submit"
-                      className="rounded-full bg-theme-gold text-black px-6 py-2.5 font-mono text-xs uppercase tracking-wider font-bold hover:shadow-theme-glow transition-all"
+                      disabled={appealSending}
+                      className="rounded-full bg-theme-gold text-black px-6 py-2.5 font-mono text-xs uppercase tracking-wider font-bold hover:shadow-theme-glow transition-all disabled:opacity-50"
                     >
-                      {t('appeals.send')}
+                      {appealSending ? '…' : t('appeals.send')}
                     </button>
                   </form>
                 )}

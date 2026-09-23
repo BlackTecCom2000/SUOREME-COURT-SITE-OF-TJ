@@ -96,7 +96,7 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
                 </div>
 
                 <div className="flex items-center justify-between text-[11px] font-mono text-theme-textMuted border-t border-theme-border/40 pt-2.5 mt-2">
-                  <span className="flex items-center gap-1 text-cyan-400 font-semibold">
+                  <span className="flex items-center gap-1 text-cyan-400 font-semibold" title={language === 'tj' ? 'Манбаи хабар' : language === 'en' ? 'News source' : 'Источник новости'}>
                     <Globe size={12} /> {item.courtDomain}
                   </span>
                   <span className="flex items-center gap-1">
@@ -142,7 +142,9 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
                 </div>
 
                 <div className="flex items-center justify-between text-[11px] font-mono text-theme-textMuted border-t border-theme-border/40 pt-2.5 mt-2">
-                  <span className="text-theme-gold font-semibold uppercase">СУДИ ОЛИИ ҶТ</span>
+                  <span className="text-theme-gold font-semibold uppercase">
+                    {ann.source || (language === 'tj' ? 'СУДИ ОЛИИ ҶТ' : language === 'en' ? 'SUPREME COURT OF RT' : 'СУДИ ОЛИИ ҶТ')}
+                  </span>
                   <span className="flex items-center gap-1">
                     <Clock size={11} /> {ann.date}
                   </span>

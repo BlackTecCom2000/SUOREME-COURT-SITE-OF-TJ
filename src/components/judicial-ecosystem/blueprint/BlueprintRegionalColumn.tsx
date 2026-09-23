@@ -40,19 +40,21 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
   const isMatched = (c: CourtNodeData) => {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      return (
+      return !!(
         c.nameRu.toLowerCase().includes(q) ||
         c.nameTj.toLowerCase().includes(q) ||
         (c.nameEn && c.nameEn.toLowerCase().includes(q)) ||
-        c.domain.toLowerCase().includes(q)
+        (c.domain && c.domain.toLowerCase().includes(q))
       );
     }
     if (activeCourtTypeFilter !== 'all') {
       if (activeCourtTypeFilter === 'city') return c.type === 'city';
       if (activeCourtTypeFilter === 'district') return c.type === 'district';
       if (activeCourtTypeFilter === 'military') return c.type === 'military';
+      if (activeCourtTypeFilter === 'regional') return c.type === 'regional';
+      return false;
     }
-    return false;
+    return true;
   };
 
   const isDimmed = (c: CourtNodeData) => {
@@ -195,28 +197,8 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
             : `0 4px 14px ${cluster.colorHex}12, inset 0 0 8px ${cluster.colorHex}06`,
         }}
       >
-        {/* TOP ROW: Server Metrics (Left) & Regional Court Main Node (Right) */}
+        {/* TOP ROW: Regional Court Main Node (fake server-metrics placeholder removed — no telemetry source) */}
         <div className="w-full flex items-center gap-3 mb-2.5">
-          {/* Server Metrics / Uptime Placeholder */}
-          <div
-            className={`
-              shrink-0 w-[80px] h-[72px] rounded-xl p-2 flex flex-col items-center justify-between
-              border transition-all
-              ${isDark ? 'border-white/10 bg-[#060c19]' : 'border-slate-300 bg-slate-50'}
-            `}
-            style={{ borderColor: `${cluster.colorHex}50` }}
-          >
-             <div className="w-full flex justify-between items-center px-1">
-                <span className="text-[9px] font-mono opacity-50 uppercase text-current">UPTIME</span>
-                <span className="text-[10px] font-mono font-bold text-emerald-400">99.9%</span>
-             </div>
-             <div className="w-full h-[1px] bg-white/10" />
-             <div className="w-full flex justify-between items-center px-1">
-                <span className="text-[9px] font-mono opacity-50 uppercase text-current">LOAD</span>
-                <span className="text-[10px] font-mono font-bold text-cyan-400">24%</span>
-             </div>
-          </div>
-
           {/* Regional Court Primary Node */}
           <div className="flex-1">
             <BlueprintCourtNode

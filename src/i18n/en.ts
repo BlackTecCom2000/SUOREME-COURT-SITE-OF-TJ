@@ -207,7 +207,7 @@ export const en = {
     title1: 'Legislative',
     title1Italic: 'base',
     title2: 'of the Republic of Tajikistan',
-    description: 'Complete collection of codes and laws — from the Constitution to procedural codes. Hover a book to reveal its cover.',
+    description: 'Complete collection of codes and laws — from the Constitution to procedural codes. Click a book to reveal its cover.',
     searchPlaceholder: 'Search codes or laws...',
     openDoc: 'Open document',
     closeDoc: 'Close book',
@@ -230,7 +230,7 @@ export const en = {
     description:
       'Every appeal is recorded in the centralized electronic records system and processed within the statutory deadline under direct oversight of the Supreme Court leadership.',
     receptionTitle: 'Electronic Public Reception',
-    receptionGuarantee: '30-DAY STATUTORY RESPONSE GUARANTEE',
+    receptionGuarantee: 'REVIEW WITHIN THE TIME LIMITS SET BY LAW',
     receptionPersonal: 'Personal reception by the Chief Justice: Monday 09:00 - 12:00',
     receptionNotice: 'Anonymous appeals without full name and valid residential address are not processed',
     ctaSubmitAppeal: 'Submit Official Appeal',
@@ -244,6 +244,8 @@ export const en = {
     attachFile: 'Attach Document (PDF, DOCX)',
     send: 'Submit Appeal',
     successMessage: 'Your appeal has been successfully registered in the unified sud.tj system.',
+    submitError: 'Could not submit your appeal. Check the data and retry.',
+    rateLimited: 'Too many requests. Please try again later.',
   },
 
   // Section 10: Supreme Court Contacts & Footer
