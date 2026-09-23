@@ -2,6 +2,11 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.2.1 — Portal base UI kit
+- Удалены мёртвые первые определения `.btn-primary/.btn-secondary/.btn-ghost/.btn-icon` (побеждал btn-base блок — визуал не изменился); `.btn-gold` оставлен алиасом, `.btn-outline`/`.btn-base` живы.
+- Новый портал-кит `src/components/ui/` с API админ-кита на theme-токенах: Badge/Card/Input/Select/Table/Tabs/Modal/EmptyState. Админ-кит не тронут (конвергенция позже).
+- Proof-use: SitemapPage → Card + Badge (те же gold-визуалы).
+
 ## v2.2.0 — IA + design tokens foundation
 - Phase 3 first_task: аудит frontend (routes без дублей, инвентарь UI-кита портал/админка, порядок секций homepage), предложенная IA (новые URL только для новых разделов, существующие не тронуты), архитектура токенов, план версий.
 - Фундамент: `src/styles/tokens.css` (spacing/radius/glass/focus/transitions/z/container/typography как алиасы, ноль визуальных изменений) + snapshot с IA-картой и последовательностью.

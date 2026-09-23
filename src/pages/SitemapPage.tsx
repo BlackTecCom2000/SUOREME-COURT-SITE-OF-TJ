@@ -4,6 +4,8 @@ import { ArrowUpRight, LibraryBig, Map } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { Card } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
 import { DOC_KINDS, DOC_KIND_LABEL } from '../components/digital-court/LawBookshelf';
 import { pickTri } from '../sites/types';
 
@@ -81,14 +83,16 @@ export const SitemapPage: React.FC = () => {
       <p className="font-mono text-xs text-theme-textMuted mb-8">SUD.TJ // TJ · RU · EN</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {groups.map((g) => (
-          <section
+          <Card
             key={g.title}
-            className="rounded-2xl border border-theme-border bg-theme-surface/70 backdrop-blur-md p-5 shadow-sm"
+            title={
+              <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-theme-gold">
+                <LibraryBig size={14} />
+                {g.title}
+              </span>
+            }
+            headerAction={<Badge variant="gold">{String(g.links.length).padStart(2, '0')}</Badge>}
           >
-            <h2 className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-theme-gold mb-3">
-              <LibraryBig size={14} />
-              {g.title}
-            </h2>
             <ul className="space-y-1">
               {g.links.map((l, i) => (
                 <li key={i}>
@@ -105,7 +109,7 @@ export const SitemapPage: React.FC = () => {
                 </li>
               ))}
             </ul>
-          </section>
+          </Card>
         ))}
       </div>
     </div>

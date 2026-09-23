@@ -274,88 +274,9 @@ html.is-morphing-theme ::view-transition-new(root) {
 
 
 @layer components {
-  /* Unified Judicial Button Motion System */
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    height: 2.75rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    border-radius: 9999px;
-    background-color: var(--accent-gold);
-    color: #000000;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
-                background-color 200ms ease,
-                border-color 200ms ease;
-    cursor: pointer;
-    user-select: none;
-    will-change: transform;
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(223, 190, 126, 0.4), var(--glow-gold);
-  }
-  .btn-primary:active {
-    transform: translateY(0px) scale(0.97);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-  .btn-primary:focus-visible {
-    outline: 2px solid var(--accent-gold);
-    outline-offset: 3px;
-  }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    height: 2.75rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    border-radius: 9999px;
-    background-color: var(--surface-card);
-    border: 1px solid var(--border-primary);
-    color: var(--text-primary);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
-                border-color 200ms ease,
-                color 200ms ease,
-                background-color 200ms ease;
-    cursor: pointer;
-    user-select: none;
-    will-change: transform;
-  }
-  .btn-secondary:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent-gold);
-    color: var(--accent-gold);
-    box-shadow: 0 4px 16px rgba(223, 190, 126, 0.2);
-  }
-  .btn-secondary:active {
-    transform: translateY(0px) scale(0.97);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  }
-  .btn-secondary:focus-visible {
-    outline: 2px solid var(--accent-gold);
-    outline-offset: 3px;
-  }
-
+  /* NOTE (v2.2.1): dead first definitions of .btn-primary/.btn-secondary/
+     .btn-ghost/.btn-icon removed — the btn-base system below won the cascade,
+     so effective visuals are unchanged. .btn-outline lives only here. */
   .btn-outline {
     display: inline-flex;
     align-items: center;
@@ -392,55 +313,6 @@ html.is-morphing-theme ::view-transition-new(root) {
   .btn-outline:focus-visible {
     outline: 2px solid var(--accent-gold);
     outline-offset: 2px;
-  }
-
-  .btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.375rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.75rem;
-    background: transparent;
-    color: var(--text-secondary);
-    transition: transform 180ms ease, color 180ms ease, background-color 180ms ease;
-    cursor: pointer;
-    user-select: none;
-  }
-  .btn-ghost:hover {
-    color: var(--accent-gold);
-    background-color: rgba(223, 190, 126, 0.08);
-    transform: translateY(-1px);
-  }
-  .btn-ghost:active {
-    transform: scale(0.96);
-  }
-
-  /* Micro-interactions for interactive icons and controls */
-  .btn-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    border-radius: 0.75rem;
-    border: 1px solid var(--border-primary);
-    background-color: var(--surface-card);
-    color: var(--text-secondary);
-    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
-                border-color 200ms ease,
-                color 200ms ease,
-                box-shadow 200ms ease;
-    cursor: pointer;
-    user-select: none;
-  }
-  .btn-icon:hover {
-    transform: scale(1.06);
-    border-color: var(--accent-gold);
-    color: var(--accent-gold);
-    box-shadow: 0 0 14px rgba(223, 190, 126, 0.25);
-  }
-  .btn-icon:active {
-    transform: scale(0.94);
   }
 
   /* Content Safe Backdrop Card */

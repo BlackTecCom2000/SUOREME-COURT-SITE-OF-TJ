@@ -161,6 +161,11 @@ Antigravity (AI Orchestrator)
 - v2.1.7 (tag pushed): swapped homepage sections 001 Hero ↔ 006 Judicial Information (order + on-screen numbers, hero next-scroll → contacts). tsc clean, build 6.87s, backup 8183 + restore-test green.
 - v2.1.8 (tag pushed): fixed dead «Саҳифаҳо» menu buttons. Audit: all 24 JudicialModal tabs have content (subagent-verified), all API lists non-empty (acts 3, hearings 8, courts 77, news 11) — real cause was anchor links dead on non-home pages (no element → no scroll). Fix: navigate('/') + delayed smooth scroll via useNavigate (no reload, mobile menu covered). tsc clean (1 pre-existing), build 6.79s, backup 8183 + restore-test green.
 - v2.2.0 (tag pushed): Phase 3 foundation. tokens.css imported in entry-client (no visual change by construction: new vars only). tsc clean (pre-existing only), build 6.85s, backup 8183 + restore-test green.
+- v2.2.1 (tag pushed): portal base UI kit (Badge/Card/Input/Select/Table/Tabs/Modal/EmptyState, admin-compatible APIs, theme tokens); dead btn dupes removed (visuals unchanged by cascade analysis); SitemapPage proof-use. tsc clean, build 7.52s, backup 8184 + restore-test green.
+
+## v2.2.1 BEFORE - base UI audit
+- Button cascade: block1 (278-444) pill-mono system vs block2 btn-base system (554+). Effective winners (later in file): btn-primary = gold/white/rounded-xl (block2), btn-secondary/ghost/icon = block2 variants. Dead (overridden, safe to delete): block1 btn-primary/secondary/ghost/icon. Live uniques: btn-outline (block1 only), btn-base, btn-gold (=btn-primary alias, keep).
+- Portal ui/: Button only. Admin ui/*10 complete. Plan: portal kit mirrors admin prop APIs (Badge/Card/Input/Select/Table/Tabs/Modal/EmptyState) styled with theme tokens + tokens.css scale; admin kit untouched (converge later). Proof-use: SitemapPage → Card/Badge (same gold visuals).
 
 ## PHASE 3 (IA + Premium UI) BEFORE 2026-09-23 - AUDIT
 - Routes (no dupes, all public URLs kept): / /about /leadership /news|announcements|vacancies|journal/:slug /courts/:courtId /courts/:courtId/admin /library /sitemap +/* . No redirects needed (nothing renamed).
