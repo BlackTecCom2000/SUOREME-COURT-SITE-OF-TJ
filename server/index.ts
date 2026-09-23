@@ -7,8 +7,10 @@ import cors from 'cors';
 import { z } from 'zod';
 import path from 'node:path';
 import fs from 'node:fs';
-import { execFileSync } from 'node:child_process';
+import dns from 'node:dns';
+dns.setDefaultResultOrder('ipv4first');
 import { aiRouter } from './routes/ai';
+import { fetchCapped } from './utils/fetch';
 import { translateText, magicGenerate, magicImprove, magicTransform, detectLang } from './editorTools';
 import { loginLimiter, appealsLimiter, questionnaireLimiter, editorLimiter } from './middleware/rateLimit';
 import { requirePerm, hasPerm, permissionsFor, permForContentStatus } from './middleware/rbac';
@@ -290,28 +292,32 @@ const csrfCheck = (req: express.Request, res: express.Response, next: express.Ne
   return res.status(403).json({ error: 'Forbidden' });
 };
 app.use(csrfCheck);
-// Baseline secure headers (no external deps; CSP kept report-tolerant for CDNs/fonts).
-// SEC-03: Content-Security-Policy in Report-Only mode. Documented in Project_Snapshot.
-// Allows: self, Google Fonts, inline styles (Tailwind/inline-style heavy app — justified),
-// data:/blob: images (PDF page renders), same-origin API + Vite HMR ws, pdf.js workers.
-// No object-src; framing limited to self (mirrors X-Frame-Options).
+// Baseline secure headers (no external deps).
+// SEC-03/SEC-06: Content-Security-Policy ENFORCED (was Report-Only; the allowlist
+// below served clean during the report-only window with no app breakage).
+// Allows: self, Google Fonts, inline styles (Tailwind/inline-style heavy app —
+// justified), data:/blob: images (PDF page renders), same-origin API + Vite HMR
+// ws, pdf.js workers. No object-src; framing limited to self (mirrors X-Frame-Options).
+// SEC-07: HSTS is opt-in via CMS_HSTS=1 — enable ONLY behind verified production TLS.
+const CSP_POLICY =
+  "default-src 'self'; " +
+  "script-src 'self'; " +
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+  "img-src 'self' data: blob: https:; " +
+  "font-src 'self' https://fonts.gstatic.com data:; " +
+  "connect-src 'self' ws: wss: https:; " +
+  "media-src 'self' blob: data:; " +
+  "worker-src 'self' blob:; " +
+  "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'";
 app.use((_req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  res.setHeader(
-    'Content-Security-Policy-Report-Only',
-    "default-src 'self'; " +
-      "script-src 'self'; " +
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-      "img-src 'self' data: blob: https:; " +
-      "font-src 'self' https://fonts.gstatic.com data:; " +
-      "connect-src 'self' ws: wss: https:; " +
-      "media-src 'self' blob: data:; " +
-      "worker-src 'self' blob:; " +
-      "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
-  );
+  res.setHeader('Content-Security-Policy', CSP_POLICY);
+  if (process.env.CMS_HSTS === '1') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
   next();
 });
 app.use('/uploads', express.static(uploadDir, { setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff') }));
@@ -744,7 +750,7 @@ app.get('/api/admin/shelf-books/:id', auth, (req:Auth,res) => {
 // Proxy remote PDFs through the server (browser CORS blocks direct
 // fetching from official portals). Host allowlist only - not an open proxy.
 const LIB_PDF_HOSTS = ['sud.tj', 'www.sud.tj', 'president.tj', 'www.president.tj', 'adliya.tj', 'www.adliya.tj', 'qonunguzori.tj', 'www.qonunguzori.tj'];
-app.get('/api/library/pdf', (req, res) => {
+app.get('/api/library/pdf', async (req, res) => {
   const u = String(req.query.url || '');
   let parsed: URL;
   try {
@@ -755,7 +761,7 @@ app.get('/api/library/pdf', (req, res) => {
   if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') return res.status(400).json({ error: 'Bad url' });
   if (!LIB_PDF_HOSTS.includes(parsed.hostname.toLowerCase())) return res.status(403).json({ error: 'Host not allowed' });
   try {
-    const data = execFileSync('curl.exe', ['-s', '--max-time', '90', '-4', '-L', '--max-filesize', String(50 * 1024 * 1024), u], { maxBuffer: 60 * 1024 * 1024 });
+    const data = await fetchCapped(u, { timeoutMs: 90000, maxBytes: 50 * 1024 * 1024 });
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Cache-Control', 'public, max-age=86400');
     res.send(data);
@@ -764,8 +770,8 @@ app.get('/api/library/pdf', (req, res) => {
   }
 });
 // Import full text of a legislation document by URL (official portals
-// allowlist only, e.g. adliya.tj). Uses curl -4 (forced IPv4 for TJ hosts).
-app.post('/api/admin/library/import', auth, requirePerm('library.manage'), (req:Auth,res) => {
+// allowlist only, e.g. adliya.tj). Cross-platform fetch (IPv4-first DNS).
+app.post('/api/admin/library/import', auth, requirePerm('library.manage'), async (req:Auth,res) => {
   if (denyScoped(req,res)) return;
 
   const p=z.object({bookId:z.number().int(),sourceUrl:z.string().max(1000)}).safeParse(req.body || {});
@@ -781,7 +787,7 @@ app.post('/api/admin/library/import', auth, requirePerm('library.manage'), (req:
   }
   try {
     const url = parsed.toString();
-    const html = execFileSync('curl.exe', ['-s', '--max-time', '90', '-4', '-L', url], { maxBuffer: 32 * 1024 * 1024 });
+    const html = await fetchCapped(url, { timeoutMs: 90000, maxBytes: 32 * 1024 * 1024 });
     const text = cleanImportedText(html.toString('utf8'));
     if (text.length < 500) return res.status(422).json({ error: 'Document text too short or unreachable', gotBytes: html.length, gotChars: text.length });
     // Fill legacy content + all lang variants so language switch works even if doc was imported before multilingual support
