@@ -43,6 +43,17 @@
     --video-overlay: rgba(5, 8, 15, 0.86);
     --data-token-color: #ffffff;
     --data-accent-color: #dfbe7e;
+    /* Clean glass on dark needs a touch more opacity to read, but still light */
+    --glass-surface: rgba(255, 255, 255, 0.08);
+    --glass-surface-strong: rgba(255, 255, 255, 0.12);
+    --glass-surface-hover: rgba(255, 255, 255, 0.14);
+    --glass-surface-active: rgba(255, 255, 255, 0.17);
+    --glass-border: rgba(255, 255, 255, 0.16);
+    --glass-border-subtle: rgba(255, 255, 255, 0.11);
+    --glass-border-hover: rgba(255, 255, 255, 0.24);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+    --glass-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.34);
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.22);
   }
 
   /* Unified Supreme Court Container Max-Width */
@@ -344,8 +355,7 @@ html.is-morphing-theme ::view-transition-new(root) {
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
-  /* Soft inner top highlight + edge reflection: physical-glass feel.
-     Absolute overlay, never intercepts clicks, inherits card radius. */
+  /* Soft inner top highlight + edge reflection — ultra-subtle so background stays clean. */
   .glass::before,
   .content-card::before {
     content: "";
@@ -354,7 +364,7 @@ html.is-morphing-theme ::view-transition-new(root) {
     border-radius: inherit;
     pointer-events: none;
     box-shadow: var(--glass-highlight-inner);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0) 22%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 18%);
   }
   .glass-card {
     border-radius: var(--glass-radius-card);
@@ -404,6 +414,38 @@ html.is-morphing-theme ::view-transition-new(root) {
   }
 }
 
+/* ── Cross-browser Liquid Glass — deterministic fallback ─────────
+   Layer 1 base surface always present. Layer 2 blur is enhancement.
+   @supports fallback (spec) prevents white opaque takeover on
+   Firefox/Safari without backdrop-filter. Kept OUTSIDE @layer so
+   Tailwind JIT cannot purge it. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .content-card {
+    background: var(--glass-fallback-surface) !important;
+    border-color: var(--glass-fallback-border) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: var(--glass-fallback-shadow), var(--glass-highlight) !important;
+  }
+  .glass-premium,
+  .glass-ultra {
+    background: var(--glass-fallback-surface) !important;
+    border-color: var(--glass-fallback-border) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: var(--glass-fallback-shadow), var(--glass-highlight) !important;
+  }
+  [data-theme="dark"] .glass,
+  [data-theme="dark"] .content-card,
+  [data-theme="dark"] .glass-premium,
+  [data-theme="dark"] .glass-ultra {
+    background: var(--glass-fallback-surface-dark) !important;
+    border-color: var(--glass-fallback-border-dark) !important;
+    box-shadow: var(--glass-fallback-shadow-dark), var(--glass-highlight) !important;
+  }
+}
+
 /* Tablet: keep glass look, trim blur cost. */
 @media (max-width: 1024px) {
   .glass-premium, .glass-ultra {
@@ -411,12 +453,12 @@ html.is-morphing-theme ::view-transition-new(root) {
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   }
 }
-/* Mobile: preserve transparency + hierarchy, lighter blur/shadow. */
+/* Mobile: preserve transparency + hierarchy, even lighter to keep background clean. */
 @media (max-width: 768px) {
   .glass, .content-card, .glass-premium, .glass-ultra {
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
-    box-shadow: 0 8px 24px rgba(15, 30, 50, 0.08), var(--glass-highlight);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 6px 20px rgba(15, 30, 50, 0.05), var(--glass-highlight);
   }
 }
 /* Low-end devices: blur off globally (existing rule) + solid readable fallback. */

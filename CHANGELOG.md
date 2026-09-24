@@ -2,6 +2,11 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.5.1 — Clean background + Cross-browser Liquid Glass fallback
+- Clean: `src/styles/tokens.css` — glass opacity снижена `0.16→0.06` (surface), `0.32→0.14` (border), `0.55→0.30` (highlight), blur `24→18px`; фон стал чистым без белой пелены, золотая окантовка сохранена. `src/index.css` — блик `0.09→0.04`, mobile blur `16→14px`. Dark theme получил отдельные чуть плотнее значения для читаемости.
+- Cross-browser: добавлен детерминированный fallback `rgba(245,248,252,0.88)` / border `0.70` / shadow `0.12` (dark `14,22,38,0.88`) через `@supports not ((backdrop-filter) or (-webkit-backdrop-filter))` вне `@layer` (не вырезается Tailwind). Layer system 1-base surface → 2-blur enhancement → 3-border → 4-highlight → 5-shadow → 6-accent. Webkit + standard. Safari iOS / Firefox / Chrome / Edge дают максимально близкий результат без белых непрозрачных карточек.
+- QA: tsc 0, build 6.24s OK, dev/vite 200, health 200, production CSS содержит fallback (verified).
+
 ## v2.5.0 — Global Liquid Glass Premium Ultra
 - Tokens: `src/styles/tokens.css` gains the single theme-independent glass family (`--glass-surface*/--glass-border*/--glass-blur*/--glass-saturation*/--glass-radius-*/--glass-shadow*/--glass-highlight*`).
 - Primitives: `src/index.css` adds `.glass/.glass-card/.glass-panel/.glass-large/.glass-chip/.glass-premium/.glass-ultra/.glass-active` (surface + blur/saturate + border + radius + shadow + top highlight via ::before); `.content-card` migrated onto the same tokens (~40 usages auto-upgraded); low-end solid fallback, mobile/tablet blur reduction, a11y-mode opaque override.

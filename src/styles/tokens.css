@@ -32,32 +32,42 @@
   --glass-blur-md: 12px;
   --glass-blur-xl: 20px;
 
-  /* ── BlackTecCom Liquid Glass Premium Ultra (global, theme-independent) ──
-     ONE surface family for every standard card/panel across the portal.
-     Light AND dark themes share these tokens so cards read as a single
-     premium glass system; text contrast comes from theme text tokens. */
-  --glass-surface: rgba(255, 255, 255, 0.16);
-  --glass-surface-strong: rgba(255, 255, 255, 0.2);
-  --glass-surface-hover: rgba(255, 255, 255, 0.22);
-  --glass-surface-active: rgba(255, 255, 255, 0.26);
-  --glass-surface-dark: rgba(8, 18, 35, 0.16);
-  --glass-border: rgba(255, 255, 255, 0.32);
-  --glass-border-subtle: rgba(255, 255, 255, 0.22);
-  --glass-border-hover: rgba(255, 255, 255, 0.45);
-  --glass-border-active: rgba(200, 150, 40, 0.55);
-  --glass-blur: 24px;
-  --glass-blur-premium: 32px;
-  --glass-blur-ultra: 40px;
-  --glass-saturation: 160%;
-  --glass-saturation-premium: 180%;
+  /* ── BlackTecCom Liquid Glass Premium Ultra — CLEAN (low white haze) ──
+     ONE surface family for every standard card/panel. Values are intentionally
+     subtle so the page background stays clean — no milky white veil. Dark
+     theme gets slightly stronger values via [data-theme="dark"] overrides
+     in index.css. */
+  --glass-surface: rgba(255, 255, 255, 0.06);
+  --glass-surface-strong: rgba(255, 255, 255, 0.09);
+  --glass-surface-hover: rgba(255, 255, 255, 0.11);
+  --glass-surface-active: rgba(255, 255, 255, 0.14);
+  --glass-surface-dark: rgba(8, 18, 35, 0.10);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-subtle: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(255, 255, 255, 0.22);
+  --glass-border-active: rgba(200, 150, 40, 0.45);
+  --glass-blur: 18px;
+  --glass-blur-premium: 24px;
+  --glass-blur-ultra: 32px;
+  --glass-saturation: 150%;
+  --glass-saturation-premium: 165%;
   --glass-radius-card: 24px;
   --glass-radius-panel: 28px;
   --glass-radius-large: 30px;
   --glass-radius-small: 16px;
-  --glass-shadow: 0 12px 40px rgba(15, 30, 50, 0.1);
-  --glass-shadow-hover: 0 18px 55px rgba(15, 30, 50, 0.15);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.55);
-  --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px rgba(15, 30, 50, 0.06);
+  --glass-shadow-hover: 0 12px 40px rgba(15, 30, 50, 0.09);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.30);
+  --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+
+  /* Cross-browser deterministic fallback — used when backdrop-filter unsupported.
+     Spec fallback_surface 0.88 keeps card readable without milky veil on clean bg. */
+  --glass-fallback-surface: rgba(245, 248, 252, 0.88);
+  --glass-fallback-border: rgba(255, 255, 255, 0.70);
+  --glass-fallback-shadow: 0 12px 40px rgba(15, 30, 50, 0.12);
+  --glass-fallback-surface-dark: rgba(14, 22, 38, 0.88);
+  --glass-fallback-border-dark: rgba(255, 255, 255, 0.14);
+  --glass-fallback-shadow-dark: 0 12px 40px rgba(0, 0, 0, 0.32);
 
   /* Focus ring (a11y, single definition) */
   --focus-ring: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--accent-gold);
