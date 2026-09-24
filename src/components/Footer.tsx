@@ -17,11 +17,17 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
   const tickerRef = useRef<HTMLDivElement>(null);
   const [showTop, setShowTop] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [marquee, setMarquee] = useState({ speed: 36, direction: 'left' as 'left'|'right', autoplay: true, pause_on_hover: true, pause_on_focus: true, logo_size: 84, gap: 12 });
+  const [usefulSites, setUsefulSites] = useState<typeof USEFUL_LINKS>(USEFUL_LINKS);
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 600);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  useEffect(() => {
+    fetch('/api/useful-sites').then(r=> r.ok? r.json(): USEFUL_LINKS).then((d:any)=> { if(Array.isArray(d) && d.length) setUsefulSites(d.map((x:any)=> ({url:x.url, labelRu:x.label_ru||x.labelRu, labelTj:x.label_tj||x.labelTj, labelEn:x.label_en||x.labelEn}))); }).catch(()=>{});
+    fetch('/api/marquee-config').then(r=> r.ok? r.json(): null).then((c:any)=> { if(c) setMarquee({speed:c.speed||36, direction:c.direction||'left', autoplay:!!c.autoplay, pause_on_hover:!!c.pause_on_hover, pause_on_focus:!!c.pause_on_focus, logo_size:c.logo_size||84, gap:c.gap||12}); }).catch(()=>{});
   }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -208,8 +214,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
               </section>
             </div>
 
-            {/* Useful Links — СОМОНАҲОИ МУФИД — GlassLogoCard horizontal responsive carousel/grid */}
-            <section aria-label="СОМОНАҲОИ МУФИД" className="glass glass-card p-5 mb-8">
+            {/* Useful Links — СОМОНАҲОИ МУФИД — infinite marquee, Liquid Glass, admin configurable */}
+            <section aria-label="СОМОНАҲОИ МУФИД" className="glass glass-card p-5 mb-8 overflow-hidden">
               <div className="flex items-center justify-between mb-4 gap-3">
                 <h2 className="text-[11px] uppercase tracking-widest text-[var(--court-gold)] font-mono">СОМОНАҲОИ МУФИД</h2>
                 <div className="hidden sm:flex items-center gap-1.5">
@@ -222,34 +228,49 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 </div>
               </div>
               <div
-                ref={tickerRef}
-                className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-thin pb-2 -mx-1 px-1"
-                style={{ scrollbarWidth: 'thin' }}
-                role="list"
-                aria-label={language === 'en' ? 'Useful links' : 'Полезные сайты'}
-                tabIndex={0}
-                onKeyDown={(e) => { if (e.key === 'ArrowRight') scrollBy(1); if (e.key === 'ArrowLeft') scrollBy(-1); }}
+                className="ticker rounded-[16px] border border-white/10 overflow-hidden"
+                role="marquee"
+                aria-label={language === 'en' ? 'Useful links marquee' : 'Бегущая лента полезных сайтов'}
+                onMouseEnter={() => { if (marquee.pause_on_hover) { const el = document.querySelector('.ticker-track') as HTMLElement; if (el) el.style.animationPlayState = 'paused'; }}}
+                onMouseLeave={() => { if (marquee.pause_on_hover && marquee.autoplay) { const el = document.querySelector('.ticker-track') as HTMLElement; if (el) el.style.animationPlayState = 'running'; }}}
+                onFocus={() => { if (marquee.pause_on_focus) { const el = document.querySelector('.ticker-track') as HTMLElement; if (el) el.style.animationPlayState = 'paused'; }}}
+                onBlur={() => { if (marquee.pause_on_focus && marquee.autoplay) { const el = document.querySelector('.ticker-track') as HTMLElement; if (el) el.style.animationPlayState = 'running'; }}}
               >
-                {USEFUL_LINKS.map((l) => (
-                  <a
-                    key={l.url}
-                    href={l.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    role="listitem"
-                    className="snap-start shrink-0 w-[160px] sm:w-[180px] h-[84px] glass border border-white/20 hover:border-[var(--court-gold)]/30 rounded-[16px] flex flex-col items-center justify-center gap-1.5 p-2 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--court-gold)] group"
-                  >
-                    <span className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-[10px] font-mono text-slate-600 group-hover:text-[var(--court-gold)] group-hover:bg-white/20 transition-colors shrink-0" aria-hidden="true">
-                      {pickLink(l).slice(0, 2).toUpperCase()}
-                    </span>
-                    <span className="text-[11px] font-medium text-slate-800 leading-tight line-clamp-2">{pickLink(l)}</span>
-                    <span className="text-[9px] font-mono text-slate-500 truncate max-w-full px-2">{new URL(l.url).hostname}</span>
-                  </a>
-                ))}
+                <div
+                  className="ticker-track"
+                  style={{ animationDuration: `${marquee.speed}s`, animationDirection: marquee.direction === 'right' ? 'reverse' as const : 'normal' as const, animationPlayState: marquee.autoplay ? 'running' as const : 'paused' as const, gap: `${marquee.gap}px` } as React.CSSProperties}
+                >
+                  {[0, 1].map((copy) => (
+                    <div key={copy} className="ticker-run" aria-hidden={copy === 1 ? 'true' : undefined} style={{ gap: `${marquee.gap}px` } as React.CSSProperties}>
+                      {usefulSites.map((l) => (
+                        <a
+                          key={`${copy}-${l.url}`}
+                          href={l.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          tabIndex={copy === 1 ? -1 : undefined}
+                          role="listitem"
+                          className="ticker-item glass border border-white/20 hover:border-[var(--court-gold)]/30 rounded-[16px] flex flex-col items-center justify-center gap-1.5 p-2 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--court-gold)] group shrink-0"
+                          style={{ width: `${Math.max(140, marquee.logo_size * 2.1)}px`, height: `${marquee.logo_size}px` } as React.CSSProperties}
+                        >
+                          <span className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-[10px] font-mono text-slate-600 group-hover:text-[var(--court-gold)] group-hover:bg-white/20 transition-colors shrink-0" aria-hidden="true">
+                            {pickLink(l).slice(0, 2).toUpperCase()}
+                          </span>
+                          <span className="text-[11px] font-medium text-slate-800 leading-tight line-clamp-2">{pickLink(l)}</span>
+                          <span className="text-[9px] font-mono text-slate-500 truncate max-w-full px-2">{(() => { try { return new URL(l.url).hostname } catch { return l.url } })()}</span>
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="sm:hidden flex justify-center gap-2 mt-2 text-[10px] font-mono text-slate-500">
-                <span>← swipe →</span>
+              <div className="flex justify-between items-center mt-2 text-[10px] font-mono text-slate-500">
+                <span className="sm:hidden">← swipe / touch →</span>
+                <span className="hidden sm:inline opacity-60">{marquee.autoplay ? (language === 'en' ? 'Auto • hover to pause' : 'Авто • пауза при наведении') : (language === 'en' ? 'Paused' : 'Пауза')}</span>
+                <span className="hidden sm:inline opacity-60">{marquee.speed}s • {marquee.direction}</span>
               </div>
+              {/* hidden fallback scroll container for touch/keyboard when marquee disabled */}
+              <div ref={tickerRef} className="hidden" aria-hidden="true" />
             </section>
 
             {/* Bottom bar — GlassBottomBar light, not black */}

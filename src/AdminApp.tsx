@@ -17,6 +17,8 @@ import { SettingsManager } from './admin/pages/settings/SettingsManager';
 import { DutyAdminManager } from './admin/pages/duty/DutyAdminManager';
 import { JudicialSystemVisualEditor } from './admin/pages/content/JudicialSystemVisualEditor';
 import { AiDashboard } from './admin/pages/AiDashboard';
+import { UsefulSitesManager } from './admin/pages/useful/UsefulSitesManager';
+import { SiteBuilder } from './admin/pages/siteBuilder/SiteBuilder';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 
@@ -79,6 +81,8 @@ const AdminRoutes: React.FC = () => {
           <Route path="settings" element={<SettingsManager />} />
           <Route path="ai" element={<AiDashboard />} />
           <Route path="duty" element={<DutyAdminManager />} />
+          <Route path="useful" element={<UsefulSitesManager />} />
+          <Route path="site-builder" element={<SiteBuilder />} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Routes>

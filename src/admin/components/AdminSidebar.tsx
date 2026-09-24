@@ -16,6 +16,8 @@ import {
   Layers,
   LibraryBig,
   Brain,
+  Link2,
+  PanelsTopLeft,
 } from 'lucide-react';
 import { NationalEmblem } from '../../components/judicial-ecosystem/NationalEmblem';
 import { useAdminAuth } from '../context/AdminAuthContext';
@@ -58,6 +60,12 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           path: '/admin',
           exact: true,
         },
+        {
+          icon: PanelsTopLeft,
+          label: 'Визуальный конструктор',
+          path: '/admin/site-builder',
+          anyOf: ['content.edit', 'settings.manage'],
+        },
       ],
     },
     {
@@ -74,6 +82,12 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           label: 'Медиатека',
           path: '/admin/media',
           anyOf: ['media.manage'],
+        },
+        {
+          icon: Link2,
+          label: 'Полезные сайты',
+          path: '/admin/useful',
+          anyOf: ['content.edit', 'settings.manage'],
         },
       ],
     },

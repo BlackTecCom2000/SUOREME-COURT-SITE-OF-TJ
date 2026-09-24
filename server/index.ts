@@ -127,7 +127,62 @@ try {
       db.exec("UPDATE shelf_books SET url_ru = url WHERE url IS NOT NULL AND url_ru IS NULL");
     }
   } catch {}
-} catch { /* already migrated */ }
+  } catch { /* already migrated */ }
+
+  // SITE_CMS_AND_LIVE_VISUAL_EDITOR — global site CMS + marquee + visual builder
+  try {
+    db.exec(`CREATE TABLE IF NOT EXISTS useful_sites(id INTEGER PRIMARY KEY, url TEXT NOT NULL, label_tj TEXT, label_ru TEXT NOT NULL, label_en TEXT, image TEXT, icon TEXT, category TEXT, status TEXT DEFAULT 'published' CHECK(status IN ('draft','published','archived')), sort_order INTEGER DEFAULT 0, language TEXT DEFAULT 'ru', published_at TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)`);
+    db.exec(`CREATE TABLE IF NOT EXISTS site_marquee_config(id INTEGER PRIMARY KEY CHECK(id=1), speed INTEGER DEFAULT 36, direction TEXT DEFAULT 'left' CHECK(direction IN ('left','right')), autoplay INTEGER DEFAULT 1, pause_on_hover INTEGER DEFAULT 1, pause_on_focus INTEGER DEFAULT 1, logo_size INTEGER DEFAULT 84, gap INTEGER DEFAULT 12, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)`);
+    // Seed marquee config if empty
+    const mc = db.prepare('SELECT count(*) as c FROM site_marquee_config').get() as any;
+    if (mc.c === 0) db.exec(`INSERT INTO site_marquee_config(id, speed, direction, autoplay, pause_on_hover, pause_on_focus, logo_size, gap) VALUES(1,36,'left',1,1,1,84,12)`);
+    // Seed useful_sites from portalLinks.ts if empty
+    const uc = db.prepare('SELECT count(*) as c FROM useful_sites').get() as any;
+    if (uc.c === 0) {
+      const ins = db.prepare(`INSERT INTO useful_sites(url, label_tj, label_ru, label_en, status, sort_order, published_at) VALUES(?,?,?,?,?,?,datetime('now'))`);
+      const seed = [
+        ['https://president.tj','Президенти ҶТ','Президент РТ','President of RT'],
+        ['https://majmilli.tj','Маҷлиси миллӣ','Маджлиси милли','Majlisi Milli'],
+        ['https://parlament.tj','Маҷлиси намояндагон','Маджлиси намояндагон','Majlisi Namoyandagon'],
+        ['https://constcourt.tj','Суди конститутсионӣ','Конституционный суд','Constitutional Court'],
+        ['https://mmih.tj','Маркази миллии қонунгузорӣ','Национальный центр законодательства','National Legislation Centre'],
+        ['https://khovar.tj','АМИТ Ховар','НИАТ Ховар','NIAT Khovar'],
+        ['https://jumhuriyat.tj','«Ҷумҳурият»','«Джумхурият»','Jumhuriyat'],
+      ];
+      seed.forEach((s, i) => ins.run(s[0], s[1], s[2], s[3], 'published', i));
+    }
+    db.exec(`CREATE TABLE IF NOT EXISTS site_sections(id TEXT PRIMARY KEY, key TEXT NOT NULL, title_tj TEXT, title_ru TEXT, title_en TEXT, subtitle_tj TEXT, subtitle_ru TEXT, subtitle_en TEXT, description_tj TEXT, description_ru TEXT, description_en TEXT, image TEXT, icon TEXT, link TEXT, category TEXT, language TEXT DEFAULT 'ru', status TEXT DEFAULT 'published' CHECK(status IN ('draft','published','archived')), sort_order INTEGER DEFAULT 0, visible INTEGER DEFAULT 1, settings TEXT, published_at TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)`);
+    db.exec(`CREATE TABLE IF NOT EXISTS site_design_settings(key TEXT PRIMARY KEY, draft_value TEXT, published_value TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)`);
+    db.exec(`CREATE TABLE IF NOT EXISTS site_versions(id INTEGER PRIMARY KEY, snapshot_data TEXT NOT NULL, author_id INTEGER, author_name TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP, commit_message TEXT, type TEXT DEFAULT 'site_builder')`);
+    // Seed homepage sections (hero, news, courts etc.) if empty
+    const sc = db.prepare('SELECT count(*) as c FROM site_sections').get() as any;
+    if (sc.c === 0) {
+      const ins2 = db.prepare(`INSERT INTO site_sections(id, key, title_ru, title_tj, title_en, category, sort_order, visible, status, settings) VALUES(?,?,?,?,?,?,?,?,?,?)`);
+      const defaults: any[] = [
+        ['hero','hero','Главный баннер','Баннери асосӣ','Hero banner','Главная страница',0,1,'published','{}'],
+        ['news','news','Новости','Хабарҳо','News','Главная страница',1,1,'published','{}'],
+        ['courts','courts','Судебная сеть','Шабакаи судӣ','Court network','Главная страница',2,1,'published','{}'],
+        ['legislation','legislation','Законодательство','Қонунгузорӣ','Legislation','Главная страница',3,1,'published','{}'],
+        ['services','services','Услуги','Хизматрасониҳо','Services','Главная страница',4,1,'published','{}'],
+        ['contacts','contacts','Контакты','Тамос','Contacts','Главная страница',5,1,'published','{}'],
+        ['footer','footer','Подвал','Поёни сомона','Footer','Главная страница',6,1,'published','{}'],
+        ['useful','useful','Полезные сайты','Сомонаҳои муфид','Useful sites','Главная страница',7,1,'published','{}'],
+      ];
+      defaults.forEach((d) => ins2.run(...d));
+    }
+    // Seed design settings (glass intensity etc.)
+    const ds = db.prepare('SELECT count(*) as c FROM site_design_settings').get() as any;
+    if (ds.c === 0) {
+      const ins3 = db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`);
+      ins3.run('glass_intensity','0.14','0.14');
+      ins3.run('glass_blur','24','24');
+      ins3.run('glass_border','0.22','0.22');
+      ins3.run('glass_radius','24','24');
+      ins3.run('glass_shadow','0.12','0.12');
+      ins3.run('gold_accent','#d4a42d','#d4a42d');
+      ins3.run('preset','premium','premium');
+    }
+  } catch (e) { console.error('site cms migration failed', e); }
 
 const seedDutyData = () => {
   const catCount = db.prepare('SELECT count(*) as c FROM duty_categories').get() as any;
@@ -1180,6 +1235,164 @@ app.post('/api/duty/history', (req, res) => {
   if (!p.success) return res.status(400).json({ error: 'Invalid payload' });
   const row = db.prepare('INSERT INTO duty_history (category_id, amount_input, result_amount, result_currency, user_id) VALUES (?, ?, ?, ?, ?)').run(p.data.categoryId, p.data.amountInput, p.data.resultAmount, p.data.resultCurrency, null);
   res.status(201).json({ id: row.lastInsertRowid });
+});
+
+// ── SITE_CMS_AND_LIVE_VISUAL_EDITOR ────────────────────────────────────
+// Public: useful sites (published only) + marquee + site sections + design
+app.get('/api/useful-sites', cache(60), (_req, res) => {
+  res.json(db.prepare("SELECT * FROM useful_sites WHERE status='published' ORDER BY sort_order, id").all());
+});
+app.get('/api/marquee-config', cache(60), (_req, res) => {
+  const cfg = db.prepare('SELECT * FROM site_marquee_config WHERE id=1').get() as any;
+  res.json(cfg || { speed:36, direction:'left', autoplay:1, pause_on_hover:1, pause_on_focus:1, logo_size:84, gap:12 });
+});
+app.get('/api/site-sections', cache(60), (_req, res) => {
+  res.json(db.prepare(`SELECT * FROM site_sections WHERE status='published' AND visible=1 ORDER BY sort_order, id`).all());
+});
+app.get('/api/design-settings', cache(60), (_req, res) => {
+  const rows = db.prepare('SELECT key, published_value as value FROM site_design_settings').all() as any[];
+  const out: Record<string,string> = {}; rows.forEach(r=> out[r.key]=r.value); res.json(out);
+});
+// Admin: useful sites CRUD + marquee
+app.get('/api/admin/useful-sites', auth, (req:Auth,res)=>{ if(denyScoped(req,res)) return; res.json(db.prepare('SELECT * FROM useful_sites ORDER BY sort_order, id').all()); });
+app.post('/api/admin/useful-sites', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const p=z.object({url:z.string().url(), label_ru:z.string().min(1), label_tj:z.string().optional(), label_en:z.string().optional(), image:z.string().optional(), icon:z.string().optional(), category:z.string().optional(), language:z.string().optional(), status:z.enum(['draft','published','archived']).optional(), sort_order:z.number().optional()}).safeParse(req.body);
+  if(!p.success) return res.status(400).json({error:'Invalid', details:p.error.flatten()});
+  const d=p.data; const r=db.prepare('INSERT INTO useful_sites(url,label_ru,label_tj,label_en,image,icon,category,language,status,sort_order,published_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,datetime("now"),datetime("now"))').run(d.url,d.label_ru,d.label_tj||d.label_ru,d.label_en||d.label_ru,d.image||null,d.icon||null,d.category||'useful',d.language||'ru',d.status||'draft',d.sort_order ?? 999);
+  audit(req.user!.id,'create','useful_site',Number(r.lastInsertRowid)); res.status(201).json({id:r.lastInsertRowid});
+});
+app.put('/api/admin/useful-sites/:id', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const p=z.object({url:z.string().url().optional(), label_ru:z.string().optional(), label_tj:z.string().optional(), label_en:z.string().optional(), image:z.string().optional().nullable(), icon:z.string().optional().nullable(), category:z.string().optional(), language:z.string().optional(), status:z.enum(['draft','published','archived']).optional(), sort_order:z.number().optional()}).safeParse(req.body);
+  if(!p.success) return res.status(400).json({error:'Invalid'});
+  const cur=db.prepare('SELECT * FROM useful_sites WHERE id=?').get(req.params.id) as any; if(!cur) return res.status(404).json({error:'Not found'});
+  const d={...cur, ...p.data, updated_at: new Date().toISOString() } as any;
+  db.prepare('UPDATE useful_sites SET url=?, label_ru=?, label_tj=?, label_en=?, image=?, icon=?, category=?, language=?, status=?, sort_order=?, updated_at=datetime("now"), published_at=CASE WHEN ?="published" THEN COALESCE(published_at, datetime("now")) ELSE published_at END WHERE id=?')
+    .run(d.url,d.label_ru,d.label_tj,d.label_en,d.image,d.icon,d.category,d.language,d.status,d.sort_order,d.status,req.params.id);
+  audit(req.user!.id,'update','useful_site',Number(req.params.id)); res.json({ok:true});
+});
+app.delete('/api/admin/useful-sites/:id', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const cur=db.prepare('SELECT * FROM useful_sites WHERE id=?').get(req.params.id) as any; if(!cur) return res.status(404).json({error:'Not found'});
+  // safety: don't allow delete without confirm? Require query confirm=1
+  db.prepare('DELETE FROM useful_sites WHERE id=?').run(req.params.id); audit(req.user!.id,'delete','useful_site',Number(req.params.id)); res.json({ok:true});
+});
+app.post('/api/admin/useful-sites/reorder', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const p=z.object({order: z.array(z.number())}).safeParse(req.body); if(!p.success) return res.status(400).json({error:'Invalid order'});
+  const upd=db.prepare('UPDATE useful_sites SET sort_order=? WHERE id=?');
+  p.data.order.forEach((id, idx)=> upd.run(idx, id)); audit(req.user!.id,'reorder','useful_site',0); res.json({ok:true});
+});
+app.post('/api/admin/useful-sites/:id/duplicate', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const cur=db.prepare('SELECT * FROM useful_sites WHERE id=?').get(req.params.id) as any; if(!cur) return res.status(404).json({error:'Not found'});
+  const r=db.prepare('INSERT INTO useful_sites(url,label_ru,label_tj,label_en,image,icon,category,language,status,sort_order,published_at) VALUES(?,?,?,?,?,?,?,?,?,?,datetime("now"))')
+    .run(cur.url, cur.label_ru+' (копия)', cur.label_tj, cur.label_en, cur.image, cur.icon, cur.category, cur.language, 'draft', 999);
+  audit(req.user!.id,'duplicate','useful_site',Number(r.lastInsertRowid)); res.status(201).json({id:r.lastInsertRowid});
+});
+app.get('/api/admin/marquee-config', auth, (req:Auth,res)=>{ if(denyScoped(req,res)) return; res.json(db.prepare('SELECT * FROM site_marquee_config WHERE id=1').get()); });
+app.post('/api/admin/marquee-config', auth, requirePerm('settings.manage'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const p=z.object({speed:z.number().min(5).max(120), direction:z.enum(['left','right']), autoplay:z.boolean(), pause_on_hover:z.boolean(), pause_on_focus:z.boolean(), logo_size:z.number().min(40).max(200), gap:z.number().min(4).max(48)}).safeParse(req.body);
+  if(!p.success) return res.status(400).json({error:'Invalid', details:p.error.flatten()});
+  const d=p.data;
+  db.prepare('UPDATE site_marquee_config SET speed=?, direction=?, autoplay=?, pause_on_hover=?, pause_on_focus=?, logo_size=?, gap=?, updated_at=datetime("now") WHERE id=1')
+    .run(d.speed, d.direction, d.autoplay?1:0, d.pause_on_hover?1:0, d.pause_on_focus?1:0, d.logo_size, d.gap);
+  // version snapshot for draft/publish audit
+  const snap=JSON.stringify(db.prepare('SELECT * FROM site_marquee_config WHERE id=1').get());
+  db.prepare('INSERT INTO site_versions(snapshot_data, author_id, author_name, commit_message, type) VALUES(?,?,?,?,?)').run(snap, req.user!.id, req.user!.name||req.user!.email, `marquee ${d.speed}s ${d.direction}`, 'marquee');
+  audit(req.user!.id,'update','marquee_config',1); res.json({ok:true});
+});
+// Site sections (visual builder)
+app.get('/api/admin/site-sections', auth, (req:Auth,res)=>{ if(denyScoped(req,res)) return; res.json(db.prepare('SELECT * FROM site_sections ORDER BY sort_order, id').all()); });
+app.post('/api/admin/site-sections', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const p=z.object({key:z.string().min(1), title_ru:z.string().optional(), title_tj:z.string().optional(), title_en:z.string().optional(), subtitle_ru:z.string().optional(), subtitle_tj:z.string().optional(), subtitle_en:z.string().optional(), description_ru:z.string().optional(), description_tj:z.string().optional(), description_en:z.string().optional(), image:z.string().optional().nullable(), icon:z.string().optional().nullable(), link:z.string().optional().nullable(), category:z.string().optional(), language:z.string().optional(), status:z.enum(['draft','published','archived']).optional(), sort_order:z.number().optional(), visible:z.boolean().optional(), settings:z.any().optional()}).safeParse(req.body);
+  if(!p.success) return res.status(400).json({error:'Invalid', details:p.error.flatten()});
+  const d=p.data; const id=d.key + '_' + Date.now();
+  db.prepare('INSERT INTO site_sections(id, key, title_ru, title_tj, title_en, subtitle_ru, subtitle_tj, subtitle_en, description_ru, description_tj, description_en, image, icon, link, category, language, status, sort_order, visible, settings, published_at, updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime("now"))')
+    .run(id, d.key, d.title_ru||null, d.title_tj||null, d.title_en||null, d.subtitle_ru||null, d.subtitle_tj||null, d.subtitle_en||null, d.description_ru||null, d.description_tj||null, d.description_en||null, d.image||null, d.icon||null, d.link||null, d.category||'Главная страница', d.language||'ru', d.status||'draft', d.sort_order??99, d.visible?1:1, JSON.stringify(d.settings||{}), d.status==='published'? new Date().toISOString(): null);
+  audit(req.user!.id,'create','site_section',0); res.status(201).json({id});
+});
+app.put('/api/admin/site-sections/:id', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const cur=db.prepare('SELECT * FROM site_sections WHERE id=?').get(req.params.id) as any; if(!cur) return res.status(404).json({error:'Not found'});
+  const p=z.object({title_ru:z.string().optional(), title_tj:z.string().optional(), title_en:z.string().optional(), subtitle_ru:z.string().optional(), subtitle_tj:z.string().optional(), subtitle_en:z.string().optional(), description_ru:z.string().optional(), description_tj:z.string().optional(), description_en:z.string().optional(), image:z.string().optional().nullable(), icon:z.string().optional().nullable(), link:z.string().optional().nullable(), category:z.string().optional(), language:z.string().optional(), status:z.enum(['draft','published','archived']).optional(), sort_order:z.number().optional(), visible:z.boolean().optional(), settings:z.any().optional()}).safeParse(req.body);
+  if(!p.success) return res.status(400).json({error:'Invalid'});
+  const d={...cur, ...p.data} as any;
+  db.prepare('UPDATE site_sections SET title_ru=?, title_tj=?, title_en=?, subtitle_ru=?, subtitle_tj=?, subtitle_en=?, description_ru=?, description_tj=?, description_en=?, image=?, icon=?, link=?, category=?, language=?, status=?, sort_order=?, visible=?, settings=?, updated_at=datetime("now"), published_at=CASE WHEN ?="published" THEN COALESCE(published_at, datetime("now")) ELSE published_at END WHERE id=?')
+    .run(d.title_ru,d.title_tj,d.title_en,d.subtitle_ru,d.subtitle_tj,d.subtitle_en,d.description_ru,d.description_tj,d.description_en,d.image,d.icon,d.link,d.category,d.language,d.status,d.sort_order, d.visible?1:0, JSON.stringify(d.settings||{}), d.status, req.params.id);
+  audit(req.user!.id,'update','site_section',0); res.json({ok:true});
+});
+app.delete('/api/admin/site-sections/:id', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const cur=db.prepare('SELECT * FROM site_sections WHERE id=?').get(req.params.id) as any; if(!cur) return res.status(404).json({error:'Not found'});
+  // critical system components guard
+  if(['hero','footer'].includes(cur.key)) return res.status(400).json({error:'Cannot delete critical system component without confirmation: hero/footer'});
+  db.prepare('DELETE FROM site_sections WHERE id=?').run(req.params.id); audit(req.user!.id,'delete','site_section',0); res.json({ok:true});
+});
+app.post('/api/admin/site-sections/reorder', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const p=z.object({order: z.array(z.string())}).safeParse(req.body); if(!p.success) return res.status(400).json({error:'Invalid'});
+  const upd=db.prepare('UPDATE site_sections SET sort_order=? WHERE id=?'); p.data.order.forEach((id, idx)=> upd.run(idx, id)); audit(req.user!.id,'reorder','site_section',0); res.json({ok:true});
+});
+app.post('/api/admin/site-sections/:id/duplicate', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const cur=db.prepare('SELECT * FROM site_sections WHERE id=?').get(req.params.id) as any; if(!cur) return res.status(404).json({error:'Not found'});
+  const nid=cur.key+'_'+Date.now();
+  db.prepare('INSERT INTO site_sections(id, key, title_ru, title_tj, title_en, subtitle_ru, subtitle_tj, subtitle_en, description_ru, description_tj, description_en, image, icon, link, category, language, status, sort_order, visible, settings, published_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)')
+    .run(nid, cur.key, cur.title_ru, cur.title_tj, cur.title_en, cur.subtitle_ru, cur.subtitle_tj, cur.subtitle_en, cur.description_ru, cur.description_tj, cur.description_en, cur.image, cur.icon, cur.link, cur.category, cur.language, 'draft', 999, cur.visible, cur.settings, null);
+  audit(req.user!.id,'duplicate','site_section',0); res.status(201).json({id:nid});
+});
+// Design settings (global glass)
+app.get('/api/admin/design-settings', auth, (req:Auth,res)=>{ if(denyScoped(req,res)) return; res.json(db.prepare('SELECT key, draft_value, published_value FROM site_design_settings').all()); });
+app.post('/api/admin/design-settings', auth, requirePerm('settings.manage'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const p=z.object({key:z.string(), value:z.string()}).safeParse(req.body); if(!p.success) return res.status(400).json({error:'Invalid'});
+  db.prepare('INSERT INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET draft_value=excluded.draft_value, updated_at=datetime("now")').run(p.data.key, p.data.value, p.data.value);
+  // immediate draft only, publish separately
+  audit(req.user!.id,'update','design_setting',0); res.json({ok:true});
+});
+// Draft / Publish / Versions
+app.post('/api/admin/site/publish', auth, requirePerm('content.publish'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  // publish: copy draft to published for design_settings and site_sections where status=draft -> published?
+  // For simplicity, publish means snapshot current draft as published and version
+  const draftSections=db.prepare('SELECT * FROM site_sections').all();
+  const designRows=db.prepare('SELECT * FROM site_design_settings').all();
+  const payload=JSON.stringify({sections:draftSections, design:designRows, marquee: db.prepare('SELECT * FROM site_marquee_config WHERE id=1').get()});
+  // mark site_sections draft -> published if they were draft and visible
+  // design: copy draft_value to published_value
+  db.prepare('UPDATE site_design_settings SET published_value=draft_value, updated_at=datetime("now")').run();
+  db.prepare('INSERT INTO site_versions(snapshot_data, author_id, author_name, commit_message, type) VALUES(?,?,?,?,?)').run(payload, req.user!.id, req.user!.name||req.user!.email, req.body.message||'Publish site', 'publish');
+  audit(req.user!.id,'publish','site_builder',0); res.json({ok:true});
+});
+app.post('/api/admin/site/save-draft', auth, requirePerm('content.edit'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const payload=JSON.stringify(req.body.snapshot||{});
+  db.prepare('INSERT INTO site_versions(snapshot_data, author_id, author_name, commit_message, type) VALUES(?,?,?,?,?)').run(payload, req.user!.id, req.user!.name||req.user!.email, req.body.message||'Save draft', 'draft');
+  audit(req.user!.id,'save_draft','site_builder',0); res.json({ok:true});
+});
+app.get('/api/admin/site-versions', auth, (req:Auth,res)=>{ if(denyScoped(req,res)) return; res.json(db.prepare('SELECT id, author_name, created_at, commit_message, type FROM site_versions ORDER BY id DESC LIMIT 50').all()); });
+app.post('/api/admin/site-versions/:id/rollback', auth, requirePerm('content.publish'), (req:Auth,res)=>{
+  if(denyScoped(req,res)) return;
+  const ver=db.prepare('SELECT * FROM site_versions WHERE id=?').get(req.params.id) as any; if(!ver) return res.status(404).json({error:'Not found'});
+  // rollback: restore snapshot as draft
+  try{
+    const snap=JSON.parse(ver.snapshot_data);
+    if(snap.sections){
+      // naive: delete and reinsert sections
+      db.exec('DELETE FROM site_sections');
+      const ins=db.prepare('INSERT INTO site_sections(id, key, title_ru, title_tj, title_en, subtitle_ru, subtitle_tj, subtitle_en, description_ru, description_tj, description_en, image, icon, link, category, language, status, sort_order, visible, settings) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+      for(const s of snap.sections) ins.run(s.id, s.key, s.title_ru, s.title_tj, s.title_en, s.subtitle_ru, s.subtitle_tj, s.subtitle_en, s.description_ru, s.description_tj, s.description_en, s.image, s.icon, s.link, s.category, s.language, s.status, s.sort_order, s.visible, s.settings);
+    }
+    if(snap.design){
+      for(const d of snap.design) db.prepare('INSERT OR REPLACE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)').run(d.key, d.draft_value, d.published_value);
+    }
+  }catch(e){ return res.status(400).json({error:'Invalid snapshot'}); }
+  db.prepare('INSERT INTO site_versions(snapshot_data, author_id, author_name, commit_message, type) VALUES(?,?,?,?,?)').run(ver.snapshot_data, req.user!.id, req.user!.name||req.user!.email, `Rollback to #${ver.id}`, 'rollback');
+  audit(req.user!.id,'rollback','site_builder',Number(req.params.id)); res.json({ok:true});
 });
 
 // SSR and Static Frontend

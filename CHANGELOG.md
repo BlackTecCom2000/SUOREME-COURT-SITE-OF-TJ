@@ -2,6 +2,13 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.9.0 — Site CMS and Live Visual Editor + Useful sites marquee
+- Marquee восстановлен: `src/components/Footer.tsx` ticker `36s left` дублированный track бесшовный, без скачка, `speed/direction/autoplay/pauseOnHover/pauseOnFocus/logo_size/gap/order` из админки `site_marquee_config` + `useful_sites` single source; carousel/grid убран. Админка `src/admin/pages/useful/UsefulSitesManager.tsx` — CRUD + drag reorder + duplicate + publish.
+- Global CMS: таблицы `useful_sites`, `site_sections` (8 секций), `site_design_settings` (glass intensity etc.), `site_versions` (история), `site_marquee_config` seeded; API `/api/useful-sites`, `/api/marquee-config`, `/api/admin/useful-sites*`, `/api/admin/site-sections*`, `/api/admin/design-settings`, `/api/admin/site/*` draft/publish/version/rollback; frontend получает published, draft не трогает production.
+- Visual Builder: `src/admin/pages/siteBuilder/SiteBuilder.tsx` three-panel Components (12) | Live Preview (реальный preview, device switcher 1920/1440/1024/768/390) | Properties (content/layout/visibility/spacing/typography/background/glass/animation/links/responsive) + `@dnd-kit` drag & drop секций, не ломает layout, design tokens live меняют `--glass-*` + `--court-gold`.
+- Draft/Publish/Version: save-draft → `site_versions` type draft, publish → copy draft→published + snapshot type publish, history + rollback, preview режимов, publish только по команде, rollback, логирование, защита критических hero/footer.
+- QA: tsc 0, build 9.64s, marquee 7 items 36s left autoplay pauseOnHover, admin useful 200, site-sections 8.
+
 ## v2.8.1 — Footer visual integration — light glass
 - Footer темный `bg #050f1e` сплошной → светлый translucent glass `rgba 255,255,255,0.08` `border white/20` `backdrop-blur` — единая система с верхней частью, фон мягко просвечивает, не просто белый.
 - Все карточки футера унифицированы на `GlobalGlassSurface` `0.14` `blur 24` `border 0.30` `radius 24-30`: president/nav/network/map/contacts/useful — opacity 0.12-0.18, без `bg-black`/`bg-slate-950`/`opaque dark`.
