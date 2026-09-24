@@ -20,7 +20,7 @@ export const AdminShell: React.FC = () => {
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="admin-shell bg-[#030712] text-slate-100 font-sans">
+    <div className="admin-shell bg-theme-bg text-theme-text font-sans">
       {/* 1. Desktop Sidebar */}
       <div className="admin-sidebar-slot">
         <AdminSidebar
@@ -33,7 +33,7 @@ export const AdminShell: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex" role="dialog" aria-modal="true" aria-label="Меню админки">
           <div
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-theme-bg/70 backdrop-blur-md"
             onClick={() => setIsMobileMenuOpen(false)}
           />
           <div className="admin-drawer-panel relative z-10">
@@ -54,13 +54,13 @@ export const AdminShell: React.FC = () => {
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         />
 
-        {/* Dynamic Content Viewport */}
-        <main className="admin-content p-4 sm:p-6 lg:p-8 bg-[#030712] relative">
-          {/* Subtle Ambient Circuit Grid Overlay */}
+        {/* Dynamic Content Viewport — same background system as public site */}
+        <main className="admin-content p-4 sm:p-6 lg:p-8 bg-transparent relative">
+          {/* Subtle Ambient — same as public DigitalDataRain, very low opacity */}
           <div
-            className="absolute inset-0 pointer-events-none opacity-[0.03]"
+            className="absolute inset-0 pointer-events-none opacity-[0.02]"
             style={{
-              backgroundImage: 'radial-gradient(#dfbe7e 1px, transparent 1px)',
+              backgroundImage: 'radial-gradient(var(--court-gold) 1px, transparent 1px)',
               backgroundSize: '24px 24px',
             }}
           />

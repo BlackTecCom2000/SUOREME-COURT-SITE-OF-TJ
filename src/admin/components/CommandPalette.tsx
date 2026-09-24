@@ -177,10 +177,10 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
     .filter((g) => g.items.length > 0);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 p-4 bg-black/80 backdrop-blur-md animate-fadeIn select-none">
-      <div className="relative w-full max-w-xl rounded-2xl border border-amber-400/40 bg-[#070d1a] shadow-2xl shadow-black/95 overflow-hidden flex flex-col">
-        {/* Search Header */}
-        <div className="flex items-center px-4 py-3.5 border-b border-slate-800 bg-[#0a1120] gap-3">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 p-4 bg-theme-bg/70 backdrop-blur-md animate-fadeIn select-none">
+      <div className="relative w-full max-w-xl glass glass-premium overflow-hidden flex flex-col">
+        {/* Search Header — same as public */}
+        <div className="flex items-center px-4 py-3.5 border-b border-[var(--glass-border)] gap-3">
           <Search size={18} className="text-amber-400 shrink-0" />
           <input
             autoFocus
@@ -188,18 +188,18 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Введите команду или раздел системы (напр. Новости, Акты, Суды)..."
-            className="w-full bg-transparent text-white font-sans text-sm placeholder-slate-500 focus:outline-none"
+            className="w-full bg-transparent text-theme-text font-sans text-sm placeholder-theme-textMuted focus:outline-none"
           />
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+            className="p-1 rounded-lg text-theme-textMuted hover:text-theme-text hover:bg-[var(--glass-surface-hover)] border border-transparent hover:border-[var(--glass-border-hover)]"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Results Stream */}
-        <div className="max-h-96 overflow-y-auto p-2 divide-y divide-slate-800/40">
+        <div className="max-h-96 overflow-y-auto p-2 divide-y divide-[var(--glass-border)]/40">
           {filteredGroups.length === 0 ? (
             <div className="py-8 text-center text-slate-500 font-mono text-xs">
               Ничего не найдено по запросу "{query}"

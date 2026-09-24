@@ -2,6 +2,11 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.9.1 — Admin synced to public Liquid Glass Premium Ultra
+- Админка темная `bg #030712` `glass-admin dark` → светлая единая система: `AdminShell bg-theme-bg`, `AdminSidebar glass` `border var(--glass-border)` `text-theme-textSec`, `AdminTopbar glass sticky 32px`, `AdminCard glass glass-card` `border var(--glass-border)`, `AdminModal glass glass-premium`, `AdminTable glass`, `CommandPalette bg-theme-bg/70` — тот же `Global Liquid Glass Premium Ultra` что публичный сайт (`--glass-surface 0.14` etc., `--court-gold`, `--text-primary`).
+- Удалены `black full-screen`, `separate dark theme`, `opaque dark cards`, `independent admin system`, `huge empty spaces` — админ теперь не отдельный черный сайт, визуально одна система с public + login.
+- Сохранены backend/API/database/auth/permissions/routes/CMS — только визуал.
+
 ## v2.9.0 — Site CMS and Live Visual Editor + Useful sites marquee
 - Marquee восстановлен: `src/components/Footer.tsx` ticker `36s left` дублированный track бесшовный, без скачка, `speed/direction/autoplay/pauseOnHover/pauseOnFocus/logo_size/gap/order` из админки `site_marquee_config` + `useful_sites` single source; carousel/grid убран. Админка `src/admin/pages/useful/UsefulSitesManager.tsx` — CRUD + drag reorder + duplicate + publish.
 - Global CMS: таблицы `useful_sites`, `site_sections` (8 секций), `site_design_settings` (glass intensity etc.), `site_versions` (история), `site_marquee_config` seeded; API `/api/useful-sites`, `/api/marquee-config`, `/api/admin/useful-sites*`, `/api/admin/site-sections*`, `/api/admin/design-settings`, `/api/admin/site/*` draft/publish/version/rollback; frontend получает published, draft не трогает production.

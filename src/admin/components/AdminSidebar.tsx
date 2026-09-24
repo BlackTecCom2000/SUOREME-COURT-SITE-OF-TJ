@@ -171,12 +171,12 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     <aside
       className={`
         admin-sidebar ${isCollapsed ? 'is-collapsed' : ''}
-        glass-admin select-none z-40 border-r !rounded-none
+        glass select-none z-40 border-r !rounded-none
       `}
-      style={{ borderColor: 'rgba(255,255,255,0.08)', boxShadow: 'var(--glass-shadow)' }}
+      style={{ borderColor: 'var(--glass-border)', boxShadow: 'var(--glass-shadow)' }}
     >
-      {/* 1. Header / Supreme Court Brand — glass navigation */}
-      <div className="p-4 border-b border-white/10 flex items-center justify-between">
+      {/* Header — same GlassNavigation as public site */}
+      <div className="p-4 border-b border-[var(--glass-border)] flex items-center justify-between">
         <div className="flex items-center gap-3 overflow-hidden">
           <div className="shrink-0 drop-shadow-[0_0_8px_rgba(223,190,126,0.3)]">
             <NationalEmblem size={isCollapsed ? 32 : 36} />
@@ -186,7 +186,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               <span className="font-serif font-bold text-xs text-[#e8c679] leading-tight tracking-wider uppercase truncate">
                 СУДИ ОЛИИ ҶТ
               </span>
-              <span className="font-mono text-[9px] text-slate-400 tracking-widest uppercase">
+              <span className="font-mono text-[9px] text-theme-textMuted tracking-widest uppercase">
                 CONTROL CENTER
               </span>
             </div>
@@ -210,7 +210,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           .map((group, gIdx) => (
           <div key={gIdx} className="space-y-1">
             {!isCollapsed && (
-              <div className="px-3 py-1 font-mono text-[9px] uppercase tracking-widest text-slate-500 font-bold text-left">
+              <div className="px-3 py-1 font-mono text-[9px] uppercase tracking-widest text-theme-textMuted font-bold text-left">
                 {group.title}
               </div>
             )}
@@ -225,8 +225,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                   transition-all duration-200 group relative
                   ${
                     isActive
-                      ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-md shadow-amber-500/5 font-semibold backdrop-blur-md'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5 hover:border hover:border-white/10 border border-transparent'
+                      ? 'bg-[var(--court-gold)]/15 text-[var(--court-gold)] border border-[var(--court-gold)]/30 shadow-[var(--glass-shadow)] font-semibold'
+                      : 'text-theme-textSec hover:text-theme-text hover:bg-[var(--glass-surface-hover)] hover:border-[var(--glass-border-hover)] border border-transparent'
                   }
                   ${isCollapsed ? 'justify-center px-0' : ''}
                 `}
@@ -243,8 +243,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         ))}
       </div>
 
-      {/* 3. Footer System Telemetry Status — glass */}
-      <div className="p-3 border-t border-white/10 bg-transparent">
+      {/* Footer — same glass, no dark */}
+      <div className="p-3 border-t border-[var(--glass-border)] bg-transparent">
         {!isCollapsed ? (
           <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 px-1">
             <div className="flex items-center gap-1.5">

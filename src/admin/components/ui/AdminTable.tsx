@@ -25,11 +25,11 @@ export function AdminTable<T>({
   onRowClick,
 }: AdminTableProps<T>) {
   return (
-    <div className="w-full rounded-xl border border-slate-800 bg-[#070d1a]/80 overflow-hidden shadow-lg">
+    <div className="w-full glass overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-slate-800 bg-slate-900/90 text-slate-400 font-mono text-xs uppercase tracking-wider">
+            <tr className="border-b border-[var(--glass-border)] bg-[var(--glass-surface)] text-theme-textMuted font-mono text-xs uppercase tracking-wider">
               {columns.map((col, idx) => (
                 <th
                   key={idx}
@@ -41,19 +41,19 @@ export function AdminTable<T>({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60 font-sans text-sm text-slate-200">
+          <tbody className="divide-y divide-[var(--glass-border)]/60 font-sans text-sm text-theme-text">
             {isLoading ? (
               <tr>
-                <td colSpan={columns.length} className="py-12 text-center text-slate-500 font-mono text-xs">
+                <td colSpan={columns.length} className="py-12 text-center text-theme-textMuted font-mono text-xs">
                   <div className="flex items-center justify-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                    <span className="w-2 h-2 rounded-full bg-[var(--court-gold)] animate-ping" />
                     Загрузка данных...
                   </div>
                 </td>
               </tr>
             ) : data.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="py-12 text-center text-slate-500 font-mono text-xs">
+                <td colSpan={columns.length} className="py-12 text-center text-theme-textMuted font-mono text-xs">
                   {emptyMessage}
                 </td>
               </tr>
@@ -64,7 +64,7 @@ export function AdminTable<T>({
                   onClick={() => onRowClick?.(row)}
                   className={`
                     transition-colors duration-150
-                    ${onRowClick ? 'cursor-pointer hover:bg-[#0c1527]' : 'hover:bg-slate-900/40'}
+                    ${onRowClick ? 'cursor-pointer hover:bg-[var(--glass-surface-hover)]' : 'hover:bg-[var(--glass-surface-hover)]/50'}
                   `}
                 >
                   {columns.map((col, colIdx) => (

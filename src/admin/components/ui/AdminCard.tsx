@@ -20,9 +20,9 @@ export const AdminCard: React.FC<AdminCardProps> = ({
   return (
     <div
       className={`
-        relative glass-admin rounded-2xl p-5 sm:p-6
+        relative glass glass-card p-5 sm:p-6
         text-left transition-all duration-300
-        ${hoverEffect ? 'hover:border-amber-400/40 hover:shadow-amber-500/5 hover:-translate-y-0.5' : ''}
+        ${hoverEffect ? 'hover:border-[var(--court-gold)]/40 hover:shadow-[var(--glass-shadow-hover)] hover:-translate-y-0.5' : ''}
         ${className}
       `}
       {...props}
@@ -33,15 +33,15 @@ export const AdminCard: React.FC<AdminCardProps> = ({
       </div>
 
       {(title || subtitle || headerAction) && (
-        <div className="flex items-start justify-between gap-4 pb-4 mb-4 border-b border-white/10">
+        <div className="flex items-start justify-between gap-4 pb-4 mb-4 border-b border-[var(--glass-border)]">
           <div>
             {typeof title === 'string' ? (
-              <h3 className="font-serif font-bold text-lg text-white tracking-wide">{title}</h3>
+              <h3 className="font-serif font-bold text-lg text-theme-text tracking-wide">{title}</h3>
             ) : (
               title
             )}
             {subtitle && (
-              <p className="font-mono text-xs text-slate-400 mt-0.5 uppercase tracking-wider">{subtitle}</p>
+              <p className="font-mono text-xs text-theme-textMuted mt-0.5 uppercase tracking-wider">{subtitle}</p>
             )}
           </div>
           {headerAction && <div className="shrink-0">{headerAction}</div>}

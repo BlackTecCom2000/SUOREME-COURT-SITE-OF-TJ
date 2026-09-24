@@ -35,9 +35,9 @@ export const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-[#030712] text-slate-100 flex flex-col md:flex-row overflow-hidden select-none">
-      {/* LEFT — GlassBrandPanel: subtle circuit, official branding, reduced emptiness */}
-      <div className="relative w-full md:w-[55%] min-h-[360px] md:min-h-screen glass-admin !rounded-none border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden">
+    <div className="min-h-screen w-screen bg-theme-bg text-theme-text flex flex-col md:flex-row overflow-hidden select-none">
+      {/* LEFT — GlassBrandPanel — same light glass as public site */}
+      <div className="relative w-full md:w-[55%] min-h-[360px] md:min-h-screen glass !rounded-none border-b md:border-b-0 md:border-r border-[var(--glass-border)] flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden">
         {/* Subtle Background Circuit Mesh */}
         <div
           className="absolute inset-0 pointer-events-none opacity-20"
@@ -61,26 +61,26 @@ export const AdminLogin: React.FC = () => {
           <span>SUD.TJ / SECURE ADMINISTRATIVE NODE</span>
         </div>
 
-        {/* Center Institutional Identity — soft glass layer */}
+        {/* Center Institutional Identity — same system */}
         <div className="relative z-10 my-auto py-8 text-left max-w-lg">
-          <div className="inline-flex p-3 rounded-2xl glass-admin border border-white/10 shadow-[0_0_30px_rgba(223,190,126,0.18)] mb-6">
+          <div className="inline-flex p-3 rounded-2xl glass border border-[var(--glass-border)] shadow-[var(--glass-shadow)] mb-6">
             <NationalEmblem size={64} />
           </div>
 
-          <h1 className="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl text-white tracking-wide leading-tight">
+          <h1 className="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl text-theme-text tracking-wide leading-tight">
             СУДИ ОЛИИ ҶУМҲУРИИ ТОҶИКИСТОН
           </h1>
-          <h2 className="font-serif text-sm sm:text-base text-[#e8c679] tracking-widest uppercase mt-2">
+          <h2 className="font-serif text-sm sm:text-base text-[var(--court-gold)] tracking-widest uppercase mt-2">
             ВЕРХОВНЫЙ СУД РЕСПУБЛИКИ ТАДЖИКИСТАН
           </h2>
 
-          <p className="font-sans text-xs sm:text-sm text-slate-400 mt-6 leading-relaxed border-l-2 border-[#dfbe7e]/50 pl-4">
+          <p className="font-sans text-xs sm:text-sm text-theme-textMuted mt-6 leading-relaxed border-l-2 border-[var(--court-gold)]/50 pl-4">
             Единый цифровой центр управления судебной информацией, электронным правосудием и обращениями граждан.
           </p>
         </div>
 
         {/* Bottom Security Telemetry Status */}
-        <div className="relative z-10 flex items-center justify-between text-[11px] font-mono text-slate-500 border-t border-slate-800/80 pt-4">
+        <div className="relative z-10 flex items-center justify-between text-[11px] font-mono text-theme-textMuted border-t border-[var(--glass-border)] pt-4">
           <div className="flex items-center gap-2 text-emerald-400">
             <ShieldCheck size={14} />
             <span className="uppercase tracking-wider">SECURE CONNECTION ENFORCED</span>
@@ -89,20 +89,20 @@ export const AdminLogin: React.FC = () => {
         </div>
       </div>
 
-      {/* RIGHT — GlassAuthenticationPanel: part of global glass, floating 30px */}
-      <div className="w-full md:w-[45%] flex items-center justify-center p-6 sm:p-10 lg:p-12 relative bg-[#030712]">
-        <div className="w-full max-w-[440px] glass-admin-strong !rounded-[30px] p-8 shadow-[0_25px_80px_rgba(0,0,0,0.22)] text-left"
+      {/* RIGHT — GlassAuthenticationPanel — same light glass as public site */}
+      <div className="w-full md:w-[45%] flex items-center justify-center p-6 sm:p-10 lg:p-12 relative bg-theme-bg">
+        <div className="w-full max-w-[440px] glass glass-premium !rounded-[30px] p-8 text-left"
           style={{ backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)' } as React.CSSProperties}>
-          {/* Card Title — glass header */}
-          <div className="pb-5 mb-6 border-b border-white/10">
-            <div className="flex items-center gap-2 text-amber-400 mb-1">
+          {/* Card Title — same header as public */}
+          <div className="pb-5 mb-6 border-b border-[var(--glass-border)]">
+            <div className="flex items-center gap-2 text-[var(--court-gold)] mb-1">
               <Lock size={15} />
               <span className="font-mono text-xs uppercase tracking-wider font-semibold">
                 Авторизация сотрудника
               </span>
             </div>
-            <h3 className="font-serif font-bold text-2xl text-white">Вход в систему</h3>
-            <p className="font-sans text-xs text-slate-400 mt-1">
+            <h3 className="font-serif font-bold text-2xl text-theme-text">Вход в систему</h3>
+            <p className="font-sans text-xs text-theme-textMuted mt-1">
               Введите служебный логин и пароль администратора
             </p>
           </div>

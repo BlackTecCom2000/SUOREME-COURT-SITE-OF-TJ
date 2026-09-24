@@ -84,8 +84,8 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="space-y-8 animate-fadeIn text-left">
-      {/* 1. TOP WELCOME BANNER — GlassPanel strong, not solid dark rectangle */}
-      <div className="relative glass-admin-strong rounded-3xl p-6 sm:p-8 overflow-hidden">
+      {/* 1. TOP WELCOME BANNER — same glass as public site */}
+      <div className="relative glass glass-premium rounded-3xl p-6 sm:p-8 overflow-hidden">
         <div
           className="absolute -right-10 -bottom-10 w-80 h-80 rounded-full opacity-10 pointer-events-none"
           style={{ background: 'radial-gradient(circle, #dfbe7e 0%, transparent 70%)' }}
