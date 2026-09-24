@@ -35,9 +35,9 @@ export const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-[#02050e] text-slate-100 flex flex-col md:flex-row overflow-hidden select-none">
-      {/* LEFT SECTION (55%): INSTITUTIONAL BRANDING & ARCHITECTURAL IDENTITY */}
-      <div className="relative w-full md:w-[55%] min-h-[360px] md:min-h-screen bg-[#040813] border-b md:border-b-0 md:border-r border-[#dfbe7e]/20 flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden">
+    <div className="min-h-screen w-screen bg-[#030712] text-slate-100 flex flex-col md:flex-row overflow-hidden select-none">
+      {/* LEFT — GlassBrandPanel: subtle circuit, official branding, reduced emptiness */}
+      <div className="relative w-full md:w-[55%] min-h-[360px] md:min-h-screen glass-admin !rounded-none border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden">
         {/* Subtle Background Circuit Mesh */}
         <div
           className="absolute inset-0 pointer-events-none opacity-20"
@@ -61,9 +61,9 @@ export const AdminLogin: React.FC = () => {
           <span>SUD.TJ / SECURE ADMINISTRATIVE NODE</span>
         </div>
 
-        {/* Center Institutional Identity */}
+        {/* Center Institutional Identity — soft glass layer */}
         <div className="relative z-10 my-auto py-8 text-left max-w-lg">
-          <div className="inline-flex p-3 rounded-2xl border border-[#dfbe7e]/40 bg-[#070e20]/80 shadow-[0_0_30px_rgba(223,190,126,0.25)] mb-6 drop-shadow-xl">
+          <div className="inline-flex p-3 rounded-2xl glass-admin border border-white/10 shadow-[0_0_30px_rgba(223,190,126,0.18)] mb-6">
             <NationalEmblem size={64} />
           </div>
 
@@ -89,11 +89,12 @@ export const AdminLogin: React.FC = () => {
         </div>
       </div>
 
-      {/* RIGHT SECTION (45%): LUXURY AUTHENTICATION CARD */}
-      <div className="w-full md:w-[45%] flex items-center justify-center p-6 sm:p-10 lg:p-12 relative bg-[#02050e]">
-        <div className="w-full max-w-md rounded-3xl border border-slate-800/90 bg-[#070d1a]/95 backdrop-blur-2xl p-7 sm:p-9 shadow-2xl shadow-black/90 text-left">
-          {/* Card Title */}
-          <div className="pb-5 mb-6 border-b border-slate-800">
+      {/* RIGHT — GlassAuthenticationPanel: part of global glass, floating 30px */}
+      <div className="w-full md:w-[45%] flex items-center justify-center p-6 sm:p-10 lg:p-12 relative bg-[#030712]">
+        <div className="w-full max-w-[440px] glass-admin-strong !rounded-[30px] p-8 shadow-[0_25px_80px_rgba(0,0,0,0.22)] text-left"
+          style={{ backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)' } as React.CSSProperties}>
+          {/* Card Title — glass header */}
+          <div className="pb-5 mb-6 border-b border-white/10">
             <div className="flex items-center gap-2 text-amber-400 mb-1">
               <Lock size={15} />
               <span className="font-mono text-xs uppercase tracking-wider font-semibold">

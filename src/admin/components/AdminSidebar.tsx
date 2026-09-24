@@ -157,11 +157,12 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     <aside
       className={`
         admin-sidebar ${isCollapsed ? 'is-collapsed' : ''}
-        bg-[#040813] border-r border-slate-800/80 select-none z-40
+        glass-admin select-none z-40 border-r !rounded-none
       `}
+      style={{ borderColor: 'rgba(255,255,255,0.08)', boxShadow: 'var(--glass-shadow)' }}
     >
-      {/* 1. Header / Supreme Court Brand */}
-      <div className="p-4 border-b border-slate-800/80 flex items-center justify-between">
+      {/* 1. Header / Supreme Court Brand — glass navigation */}
+      <div className="p-4 border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3 overflow-hidden">
           <div className="shrink-0 drop-shadow-[0_0_8px_rgba(223,190,126,0.3)]">
             <NationalEmblem size={isCollapsed ? 32 : 36} />
@@ -210,8 +211,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                   transition-all duration-200 group relative
                   ${
                     isActive
-                      ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-md shadow-amber-500/5 font-semibold'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                      ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-md shadow-amber-500/5 font-semibold backdrop-blur-md'
+                      : 'text-slate-400 hover:text-white hover:bg-white/5 hover:border hover:border-white/10 border border-transparent'
                   }
                   ${isCollapsed ? 'justify-center px-0' : ''}
                 `}
@@ -228,8 +229,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         ))}
       </div>
 
-      {/* 3. Footer System Telemetry Status */}
-      <div className="p-3 border-t border-slate-800/80 bg-[#02050e]">
+      {/* 3. Footer System Telemetry Status — glass */}
+      <div className="p-3 border-t border-white/10 bg-transparent">
         {!isCollapsed ? (
           <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 px-1">
             <div className="flex items-center gap-1.5">

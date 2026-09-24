@@ -84,8 +84,8 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="space-y-8 animate-fadeIn text-left">
-      {/* 1. TOP WELCOME BANNER */}
-      <div className="relative rounded-3xl border border-amber-400/30 bg-gradient-to-r from-[#0a1226] via-[#070d1a] to-[#040813] p-6 sm:p-8 overflow-hidden shadow-2xl">
+      {/* 1. TOP WELCOME BANNER — GlassPanel strong, not solid dark rectangle */}
+      <div className="relative glass-admin-strong rounded-3xl p-6 sm:p-8 overflow-hidden">
         <div
           className="absolute -right-10 -bottom-10 w-80 h-80 rounded-full opacity-10 pointer-events-none"
           style={{ background: 'radial-gradient(circle, #dfbe7e 0%, transparent 70%)' }}
@@ -173,7 +173,7 @@ export const Dashboard: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <button
                 onClick={() => navigate('/admin/news/new')}
-                className="p-4 rounded-xl border border-slate-800 bg-[#091124] hover:border-amber-400/50 hover:bg-[#0d1833] transition-all text-left group"
+                className="p-4 rounded-xl glass border border-white/10 hover:border-amber-400/40 hover:bg-white/5 transition-all text-left group"
               >
                 <Newspaper size={20} className="text-amber-400 mb-2 group-hover:scale-110 transition-transform" />
                 <span className="font-serif font-semibold text-xs text-white block">Новость</span>
@@ -182,7 +182,7 @@ export const Dashboard: React.FC = () => {
 
               <button
                 onClick={() => navigate('/admin/acts?action=new')}
-                className="p-4 rounded-xl border border-slate-800 bg-[#091124] hover:border-sky-400/50 hover:bg-[#0d1833] transition-all text-left group"
+                className="p-4 rounded-xl glass border border-white/10 hover:border-sky-400/40 hover:bg-white/5 transition-all text-left group"
               >
                 <Gavel size={20} className="text-sky-400 mb-2 group-hover:scale-110 transition-transform" />
                 <span className="font-serif font-semibold text-xs text-white block">Судебный акт</span>
@@ -191,7 +191,7 @@ export const Dashboard: React.FC = () => {
 
               <button
                 onClick={() => navigate('/admin/courts?action=new')}
-                className="p-4 rounded-xl border border-slate-800 bg-[#091124] hover:border-emerald-400/50 hover:bg-[#0d1833] transition-all text-left group"
+                className="p-4 rounded-xl glass border border-white/10 hover:border-emerald-400/40 hover:bg-white/5 transition-all text-left group"
               >
                 <Landmark size={20} className="text-emerald-400 mb-2 group-hover:scale-110 transition-transform" />
                 <span className="font-serif font-semibold text-xs text-white block">Суд РТ</span>
@@ -200,7 +200,7 @@ export const Dashboard: React.FC = () => {
 
               <button
                 onClick={() => navigate('/admin/media')}
-                className="p-4 rounded-xl border border-slate-800 bg-[#091124] hover:border-cyan-400/50 hover:bg-[#0d1833] transition-all text-left group"
+                className="p-4 rounded-xl glass border border-white/10 hover:border-cyan-400/40 hover:bg-white/5 transition-all text-left group"
               >
                 <PlusCircle size={20} className="text-cyan-400 mb-2 group-hover:scale-110 transition-transform" />
                 <span className="font-serif font-semibold text-xs text-white block">Медиа файл</span>
@@ -276,7 +276,7 @@ export const Dashboard: React.FC = () => {
                 data.activity.slice(0, 6).map((log: any) => (
                   <div
                     key={log.id}
-                    className="flex items-start gap-2.5 text-xs p-2 rounded-lg bg-slate-900/60 border border-slate-800/80"
+                    className="flex items-start gap-2.5 text-xs p-2 rounded-lg glass border border-white/10"
                   >
                     <Activity size={14} className="text-amber-400 mt-0.5 shrink-0" />
                     <div className="flex-1 overflow-hidden">

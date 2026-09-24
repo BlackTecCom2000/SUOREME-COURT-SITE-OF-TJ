@@ -20,8 +20,8 @@ export const AdminCard: React.FC<AdminCardProps> = ({
   return (
     <div
       className={`
-        relative rounded-2xl border border-slate-800 bg-[#070d1a]/90 backdrop-blur-xl p-5 sm:p-6
-        shadow-xl shadow-black/40 text-left transition-all duration-300
+        relative glass-admin rounded-2xl p-5 sm:p-6
+        text-left transition-all duration-300
         ${hoverEffect ? 'hover:border-amber-400/40 hover:shadow-amber-500/5 hover:-translate-y-0.5' : ''}
         ${className}
       `}
@@ -33,7 +33,7 @@ export const AdminCard: React.FC<AdminCardProps> = ({
       </div>
 
       {(title || subtitle || headerAction) && (
-        <div className="flex items-start justify-between gap-4 pb-4 mb-4 border-b border-slate-800/80">
+        <div className="flex items-start justify-between gap-4 pb-4 mb-4 border-b border-white/10">
           <div>
             {typeof title === 'string' ? (
               <h3 className="font-serif font-bold text-lg text-white tracking-wide">{title}</h3>

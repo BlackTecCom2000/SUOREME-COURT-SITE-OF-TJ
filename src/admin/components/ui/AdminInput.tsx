@@ -29,10 +29,10 @@ export const AdminInput = forwardRef<HTMLInputElement, AdminInputProps>(
             ref={ref}
             id={inputId}
             className={`
-              w-full h-11 px-4 rounded-xl font-sans text-sm
-              bg-slate-900/90 text-white placeholder-slate-500
-              border border-slate-700/80 transition-all duration-200
-              focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50
+              w-full h-11 px-4 rounded-[16px] font-sans text-sm
+              bg-white/5 text-white placeholder-slate-500
+              border border-white/20 transition-all duration-200 backdrop-blur-sm
+              focus:outline-none focus:border-amber-400/60 focus:ring-1 focus:ring-amber-400/40
               ${leftIcon ? 'pl-11' : ''}
               ${rightIcon ? 'pr-11' : ''}
               ${error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/30' : ''}

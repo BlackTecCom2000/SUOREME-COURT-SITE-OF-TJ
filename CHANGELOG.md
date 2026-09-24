@@ -2,6 +2,12 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.6.0 — MASTER Liquid Glass Premium Ultra — Public + Control Center + Login unified
+- Global system v2.0: `src/styles/tokens.css` обновлен к MASTER spec (`surface 0.14`/hover 0.19/active 0.23/strong 0.18/dark 0.28 navy, border 0.22/0.34/active gold 0.60, blur 24/32/40 sat 160%, radius xs 12 sm 16 md 20 lg 24 xl 30, shadow 0.12/0.18 floating 0.22, highlight 0.42/0.08, court gold/navy, status colors) + fallback tokens. `src/components/ui/GlassSurface.tsx` новый primitive с variants subtle/default/strong/interactive/active/floating/modal/navigation.
+- Control Center — единая экосистема: `AdminSidebar` glass-admin deep navy semi-transparent, `AdminTopbar` sticky glass premium 32px blur, `AdminCard` glass-admin (border white/10, AdminCard header unified), `Dashboard` welcome GlassPanel strong (не solid градиент), summary cards единая surface, quick-actions children lighter glass subtle (white/5), security journal log items glass subtle, platform status / citizen requests empty states — все на glass.
+- Login — `AdminLogin` split: left GlassBrandPanel (glass-admin + circuit mesh + soft layers, эмблема в glass), right GlassAuthenticationPanel floating 30px blur 32 strong `440px` max-width, inputs `GlassInput` `bg white/5 border 0.16 radius 16 focus gold`, gold button — часть global gold system. Вертикальный hard divider убран, пустота уменьшена.
+- QA: tsc 0, build:client 6.21s OK, health/vite/admin 200, production CSS fallback present, responsive <768 blur 14px, a11y focus visible, perf no blur animation.
+
 ## v2.5.1 — Clean background + Cross-browser Liquid Glass fallback
 - Clean: `src/styles/tokens.css` — glass opacity снижена `0.16→0.06` (surface), `0.32→0.14` (border), `0.55→0.30` (highlight), blur `24→18px`; фон стал чистым без белой пелены, золотая окантовка сохранена. `src/index.css` — блик `0.09→0.04`, mobile blur `16→14px`. Dark theme получил отдельные чуть плотнее значения для читаемости.
 - Cross-browser: добавлен детерминированный fallback `rgba(245,248,252,0.88)` / border `0.70` / shadow `0.12` (dark `14,22,38,0.88`) через `@supports not ((backdrop-filter) or (-webkit-backdrop-filter))` вне `@layer` (не вырезается Tailwind). Layer system 1-base surface → 2-blur enhancement → 3-border → 4-highlight → 5-shadow → 6-accent. Webkit + standard. Safari iOS / Firefox / Chrome / Edge дают максимально близкий результат без белых непрозрачных карточек.

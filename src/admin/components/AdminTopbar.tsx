@@ -31,7 +31,8 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
   };
 
   return (
-    <header className="admin-topbar px-4 sm:px-6 bg-[#040813]/90 backdrop-blur-md border-b border-slate-800/80 flex items-center justify-between gap-4 z-30 select-none">
+    <header className="admin-topbar sticky top-0 px-4 sm:px-6 glass-admin flex items-center justify-between gap-4 z-30 select-none !rounded-none border-b border-white/10"
+      style={{ backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)' } as React.CSSProperties}>
       {/* Left: Mobile Menu Trigger & Breadcrumb Title */}
       <div className="flex items-center gap-3 overflow-hidden text-left min-w-0 flex-1">
         <button
@@ -59,7 +60,7 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
         {/* Command Palette Trigger */}
         <button
           onClick={onOpenCommandPalette}
-          className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900/90 text-slate-400 hover:text-white hover:border-amber-400/40 transition-all text-xs font-mono"
+          className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-xl glass-admin border border-white/10 text-slate-400 hover:text-white hover:border-amber-400/40 transition-all text-xs font-mono"
         >
           <Search size={14} className="text-amber-400" />
           <span>Быстрый поиск / команды</span>

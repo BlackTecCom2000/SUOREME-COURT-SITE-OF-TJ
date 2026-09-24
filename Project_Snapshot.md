@@ -202,6 +202,11 @@ Antigravity (AI Orchestrator)
 - Continuity gaps: README 1.6KB stub, .env.example 423B, no CHANGELOG.md, lockfile present (pnpm-lock.yaml), node v26.8.1.
 - Rules: per-change backup+tests+commit+tag+push+verify; no force-push; no history rewrite; no public URL changes; no invented data.
 
+## MASTER v2.6.0 UNIFIED ECOSYSTEM 2026-09-24 → v2.6.0
+- BEFORE: Public portal уже на glass (v2.5.0), но Control Center жил отдельно: sidebar `bg #040813` hard, topbar `bg #040813/90`, cards `bg #070d1a/90` непрозрачные, quick-actions `bg #091124` solid, security log `bg slate-900/60` blocks, login split hard divider `border #dfbe7e/20` + floating `bg #070d1a/95` — ощущение двух проектов. Tokens рассинхрон (clean 0.06 vs spec 0.14), нет GlassSurface primitive.
+- AFTER: tokens обновлены к MASTER spec 2.0 (`0.14/0.19/0.23/0.18/dark 0.28 navy, border 0.22/0.34/gold 0.60, blur 24/32/40, shadow floating 0.22, radius xs-xl, highlight 0.42, court/status colors`), `GlassSurface.tsx` primitive с 8 variants. Control Center: sidebar/topbar glass-admin navy, AdminCard glass-admin, Dashboard welcome strong, summary единая surface, quick-actions children lighter glass, security journal subtle glass, platform status стеклянный. Login: left GlassBrandPanel + right GlassAuthenticationPanel floating 440px 30px 32px blur, GlassInput 0.05/0.16 radius 16.
+- Verify: tsc 0, build 6.21s OK, health/vite/admin 200, production CSS fallback present, responsive <768 OK, a11y focus visible, perf no blur animation, no logic/API/content changes.
+
 ## v2.5.1 CLEAN + CROSS-BROWSER 2026-09-24 → v2.5.1
 - Patch: фон стал чистым — `tokens.css` glass `0.16→0.06` (border `0.32→0.14`, highlight `0.55→0.30`, blur `24→18px`, блик `0.09→0.04`); dark theme отдельные `0.08` чтобы стекло не белило. Cross-browser: добавлен детерминированный fallback `245,248,252,0.88` / border `0.70` / shadow `0.12` (dark `14,22,38,0.88`) через `@supports not ((backdrop-filter) or (-webkit-backdrop-filter))` вне `@layer` (не вырезается Tailwind); layer system 1-surface → 2-blur → 3-border → 4-highlight → 5-shadow → 6-accent. Webkit + standard. Проверка: tsc 0, build 6.24s OK, dev/vite 200, health 200, production CSS содержит fallback (verified grep), smoke/routes как в v2.5.0.
 

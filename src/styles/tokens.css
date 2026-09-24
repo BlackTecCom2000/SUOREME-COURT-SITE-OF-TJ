@@ -32,33 +32,44 @@
   --glass-blur-md: 12px;
   --glass-blur-xl: 20px;
 
-  /* ── BlackTecCom Liquid Glass Premium Ultra — CLEAN (low white haze) ──
-     ONE surface family for every standard card/panel. Values are intentionally
-     subtle so the page background stays clean — no milky white veil. Dark
-     theme gets slightly stronger values via [data-theme="dark"] overrides
-     in index.css. */
-  --glass-surface: rgba(255, 255, 255, 0.06);
-  --glass-surface-strong: rgba(255, 255, 255, 0.09);
-  --glass-surface-hover: rgba(255, 255, 255, 0.11);
-  --glass-surface-active: rgba(255, 255, 255, 0.14);
-  --glass-surface-dark: rgba(8, 18, 35, 0.10);
-  --glass-border: rgba(255, 255, 255, 0.14);
-  --glass-border-subtle: rgba(255, 255, 255, 0.10);
-  --glass-border-hover: rgba(255, 255, 255, 0.22);
-  --glass-border-active: rgba(200, 150, 40, 0.45);
-  --glass-blur: 18px;
-  --glass-blur-premium: 24px;
-  --glass-blur-ultra: 32px;
-  --glass-saturation: 150%;
-  --glass-saturation-premium: 165%;
+  /* ── BlackTecCom Liquid Glass Premium Ultra v2.0 (MASTER) ──
+     Single global family for Public Portal + Control Center + Login.
+     CLEAN semantics kept: low white haze so architectural background
+     stays visible; values match MASTER_TASK spec, dark theme overrides
+     in index.css keep density for admin continuity. */
+  --glass-surface: rgba(255, 255, 255, 0.14);
+  --glass-surface-hover: rgba(255, 255, 255, 0.19);
+  --glass-surface-active: rgba(255, 255, 255, 0.23);
+  --glass-surface-strong: rgba(255, 255, 255, 0.18);
+  --glass-surface-dark: rgba(5, 15, 30, 0.28);
+  --glass-surface-subtle: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --glass-border-subtle: rgba(255, 255, 255, 0.14);
+  --glass-border-hover: rgba(255, 255, 255, 0.34);
+  --glass-border-active: rgba(212, 164, 45, 0.60);
+  --glass-blur: 24px;
+  --glass-blur-premium: 32px;
+  --glass-blur-ultra: 40px;
+  --glass-saturation: 160%;
+  --glass-saturation-premium: 160%;
+  --glass-radius-xs: 12px;
+  --glass-radius-sm: 16px;
+  --glass-radius-md: 20px;
   --glass-radius-card: 24px;
   --glass-radius-panel: 28px;
   --glass-radius-large: 30px;
+  --glass-radius-xl: 30px;
   --glass-radius-small: 16px;
-  --glass-shadow: 0 8px 32px rgba(15, 30, 50, 0.06);
-  --glass-shadow-hover: 0 12px 40px rgba(15, 30, 50, 0.09);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.30);
-  --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --glass-shadow-hover: 0 18px 55px rgba(0, 0, 0, 0.18);
+  --glass-shadow-floating: 0 25px 80px rgba(0, 0, 0, 0.22);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --court-gold: #d4a42d;
+  --court-navy: #050f1e;
+  --status-success: #10b981;
+  --status-warning: #d4a42d;
+  --status-error: #ef4444;
 
   /* Cross-browser deterministic fallback — used when backdrop-filter unsupported.
      Spec fallback_surface 0.88 keeps card readable without milky veil on clean bg. */
