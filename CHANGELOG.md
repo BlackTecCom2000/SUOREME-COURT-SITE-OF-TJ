@@ -2,6 +2,17 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.8.0 — Court network page — Liquid Glass Premium Ultra redesign
+- Glass: все карточки на Global GlassSurface `0.14/24px/24px/0.10` — устранены белые opaque, верх/низ одинаковые, иконки/border/radius/shadow/blur унифицированы.
+- Регионы: 4 карточки одинаковой структуры/прозрачности, цвет только как точка/акцент линия 2px `colorHex` — убрана заливка всей карточки, яркие градиенты/neon убраны.
+- Пустота уменьшена: header `mb-6→4`, search `mb-6→4`, canvas `my-4→2` `min-h 560→520`, trunk `152px→36px` subtle line без glow/rainbow, gap `4→3`.
+- Декоративная линия с цветными точками заменена на тонкую `h-px bg-white/10` с 4 точками `1.5px` + цент gold `2px`, active gold.
+- Внутренние рамки убраны: region box `border colorHex → white/10 glass-card`, connector svg удален, military pill упрощен до `glass glass-card` с `MapPin+Shield`.
+- Иерархия улучшена: header часть glass, компактный, поиск заметный `h-11 glass white/20` placeholder i18n `название/регион/город` + gold icon, фильтры compact Glass controls, результаты live без перезагрузки.
+- Списки: default 5 судов, кнопка `Показать все (n)` expands, mobile 1 col — нет бесконечных карточек; item `minimal_glass_list_item` `MapPin 11 + name + type 9px + ChevronRight 12` `min-h 44` touch target.
+- Статистика компактная: `glass border white/10 10px mono` `1 вилоятӣ • 2 шаҳрӣ • 7 ноҳия` с точкой accent, без лишних inner рамок.
+- QA: tsc 0, build 6.43s, no logic/API/route changes, data integrity сохранена (77 судов single source).
+
 ## v2.7.0 — Real site footer Liquid Glass Premium Ultra
 - Архитектура: новый `src/components/Footer.tsx` multi-layer (deep navy `050f1e` + subtle architectural gradient/circuit 0.04 + premium glass 30px). Старый сплошной голубой footer и ticker полностью заменены — контент сохранен, визуал натуральное продолжение сайта.
 - Полезные ссылки 7 шт (`portalLinks.ts` USEFUL_LINKS single source) → GlassLogoCard `160×84` `rounded 16` `object-fit contain` `aspect ratio` `hover gold/30` `focus ring`, горизонтальный carousel/grid desktop стрелки + mobile swipe + keyboard ArrowLeft/Right + touch scroll-snap.

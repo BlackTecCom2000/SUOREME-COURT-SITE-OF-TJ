@@ -36,12 +36,12 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
     <section
       id="courts"
       aria-label={t('nav.courts')}
-      className="relative py-14 lg:py-28 overflow-hidden text-theme-text select-none border-t border-theme-border/30"
+      className="relative py-10 lg:py-16 overflow-hidden text-theme-text select-none border-t border-theme-border/30"
     >
       <DigitalDataRain density="sparse" speed="slow" opacity={0.2} colorTheme="cyan" />
 
-      {/* 1. Header Row */}
-      <div className="relative flex flex-col gap-6 px-5 sm:px-8 md:px-12 mb-6">
+      {/* 1. Header — compact, часть glass системы */}
+      <div className="relative flex flex-col gap-4 px-5 sm:px-8 md:px-12 mb-4">
         <Reveal delay={100}>
           <div className="flex items-center justify-between font-mono text-theme-text max-w-xs sm:max-w-none text-xs">
             <div className="flex items-center gap-3">
@@ -85,25 +85,23 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
         </div>
       </div>
 
-      {/* 2. Mode Selector (Network vs Tree) & Real-time Search */}
-      <div className="px-5 sm:px-8 md:px-12 mb-6">
+      {/* 2. Search — заметный, glass, live update без перезагрузки */}
+      <div className="px-5 sm:px-8 md:px-12 mb-4">
         <Reveal delay={320}>
-          <div className="p-4 glass glass-panel flex flex-col md:flex-row items-center justify-between gap-4">
-            
-            {/* Toggle (Removed) */}
-
-            {/* Instant Search Bar */}
-            <div className="relative w-full md:w-80">
+          <div className="p-3 glass glass-panel flex flex-col md:flex-row items-center justify-between gap-3">
+            {/* Prominent search — full width on mobile */}
+            <div className="relative w-full md:w-[420px] shrink-0">
               <Search
-                size={14}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-textMuted"
+                size={16}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--court-gold)]"
               />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t('network.searchPlaceholder')}
-                className="w-full bg-theme-bg/70 border border-theme-border rounded-xl pl-9 pr-4 py-2 text-xs font-mono text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold focus:ring-1 focus:ring-theme-gold transition-all"
+                placeholder={language === 'tj' ? 'Ҷустуҷӯи суд аз рӯи ном, минтақа, шаҳр...' : language === 'en' ? 'Search court by name, region, city...' : 'Поиск суда по названию, региону, городу...'}
+                aria-label={t('network.searchPlaceholder')}
+                className="w-full h-11 glass border border-white/20 rounded-[16px] pl-10 pr-10 py-2 text-sm font-mono text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-[var(--court-gold)] focus:ring-1 focus:ring-[var(--court-gold)] transition-all"
               />
               {searchQuery && (
                 <button
@@ -152,10 +150,10 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
         </Reveal>
       </div>
 
-      {/* 3. Main Dynamic Canvas Area */}
-      <div className="px-5 sm:px-8 md:px-12 flex-1 flex flex-col justify-center my-4">
+      {/* 3. Main Canvas — reduced empty space between levels */}
+      <div className="px-5 sm:px-8 md:px-12 flex-1 flex flex-col justify-center my-2">
         <Reveal delay={380}>
-          <div className="relative w-full aspect-[4/5] sm:aspect-[16/10] min-h-[400px] md:min-h-[560px] max-h-[780px] glass glass-panel overflow-hidden">
+          <div className="relative w-full sm:aspect-[16/10] min-h-[360px] md:min-h-[520px] max-h-[740px] glass glass-panel overflow-hidden">
             
               <JudicialTreeView
                 searchQuery={searchQuery}

@@ -102,20 +102,20 @@ export const JudicialTreeView: React.FC<JudicialTreeViewProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`
-        relative w-full overflow-visible select-none glass glass-large transition-all duration-700 p-4 sm:p-6 lg:p-8
-      `}
+      className="relative w-full overflow-visible select-none glass glass-large p-3 sm:p-4 transition-all duration-700"
     >
-      {/* 1. Background Digital PCB Circuits & Subtle Grid */}
-      <BlueprintBackgroundCircuits />
+      {/* Background — very subtle, low opacity */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none" aria-hidden="true">
+        <BlueprintBackgroundCircuits />
+      </div>
 
-      {/* 2. Top Banner Header */}
-      <div className="w-full flex justify-center mb-4 relative z-30">
+      {/* 2. Top Banner — compact */}
+      <div className="w-full flex justify-center mb-2 relative z-30">
         <BlueprintTopHeader />
       </div>
 
-      {/* 3. Central Authority Wing (Supreme Court Root + Supporting Units) */}
-      <div className="w-full relative z-20 mb-6">
+      {/* 3. Central Authority — compact, same glass system */}
+      <div className="w-full relative z-20 mb-3">
         <BlueprintCentralAuthority
           onSelectSupremeCourt={() => onSelectCourt(SUPREME_COURT_NODE)}
           isSelected={selectedCourtId === SUPREME_COURT_NODE.id}
@@ -123,8 +123,8 @@ export const JudicialTreeView: React.FC<JudicialTreeViewProps> = ({
         />
       </div>
 
-      {/* 4. Four Regional Columns - CSS Responsive Flex/Grid with Auto Height */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 items-start relative z-20">
+      {/* 4. Regions — 4 cards same structure, desktop 4 / tablet 2×2 / mobile 1 col */}
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 items-start relative z-20">
         {hydratedClusters.map((cluster, idx) => (
           <BlueprintRegionalColumn
             key={`blueprint-col-${cluster.id}`}
