@@ -107,7 +107,7 @@ export const Section08ElectronicCourt: React.FC<Section08ElectronicCourtProps> =
             <Reveal key={item.id} delay={200 + idx * 70}>
               <div
                 onClick={() => onOpenService(item.id)}
-                className="group p-6 sm:p-7 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md hover:border-theme-borderHover hover:bg-theme-surfaceHover transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[190px] shadow-theme-card relative overflow-hidden"
+                className="group p-6 sm:p-7 glass glass-card hover:border-theme-borderHover transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[190px] relative overflow-hidden"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">

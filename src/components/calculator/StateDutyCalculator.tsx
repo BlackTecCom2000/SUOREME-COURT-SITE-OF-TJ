@@ -160,7 +160,7 @@ export function StateDutyCalculator({ language }: { language: 'ru' | 'tj' | 'en'
         </div>
 
         {/* Right Column: Results */}
-        <div className="bg-white dark:bg-[#1a2b49] p-8 rounded-lg shadow-lg border border-gray-100 dark:border-gray-800 flex flex-col justify-between">
+        <div className="glass glass-card p-8 dark:bg-[#1a2b49] flex flex-col justify-between">
           <div>
             <h3 className="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">
               {t.resultTitle[language]}

@@ -80,7 +80,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
           {/* LEFT: Stage Navigator */}
           <div className="lg:col-span-3 flex flex-col justify-between gap-5">
             <Reveal delay={250}>
-              <div className="p-4 rounded-2xl border border-theme-border bg-theme-surface/70 backdrop-blur-md">
+              <div className="p-4 glass glass-card">
                 <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest block font-bold mb-1">
                   [ 01 / 03 SYMBOLS ]
                 </span>
@@ -101,7 +101,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
               />
             </Reveal>
 
-            <div className="hidden lg:block p-3 rounded-2xl border border-theme-border/50 bg-theme-surface/40 text-[11px] font-mono text-theme-textMuted text-center">
+            <div className="hidden lg:block p-3 glass glass-chip text-[11px] font-mono text-theme-textMuted text-center">
               <span className="text-theme-gold font-semibold">↻ ПОВЕРНИТЕ ОБЪЕКТ</span>
             </div>
           </div>
@@ -243,7 +243,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-2xl rounded-3xl border border-theme-border bg-theme-bg p-6 sm:p-8 shadow-2xl text-theme-text flex flex-col max-h-[85vh] overflow-hidden"
+              className="w-full max-w-2xl glass glass-premium p-6 sm:p-8 text-theme-text flex flex-col max-h-[85vh] overflow-hidden"
             >
               <div className="flex items-center justify-between pb-4 border-b border-theme-border">
                 <div className="flex items-center gap-2.5">
@@ -259,7 +259,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
                 <button
                   type="button"
                   onClick={() => setStoryModalOpen(false)}
-                  className="p-1.5 rounded-xl bg-theme-surface border border-theme-border text-theme-textMuted hover:text-theme-text"
+                  className="p-1.5 glass glass-chip text-theme-textMuted hover:text-theme-text"
                 >
                   <X size={18} />
                 </button>
@@ -268,19 +268,19 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
               <div className="flex-1 overflow-y-auto py-5 space-y-4 text-xs sm:text-sm text-theme-textSec leading-relaxed">
                 {activeStage === 'themis' && (
                   <>
-                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                    <div className="p-4 glass glass-card space-y-2">
                       <h5 className="font-bold text-theme-text text-sm">1. Происхождение и развитие образа</h5>
                       <p>
                         Фемида (Темис) — древнегреческая богиня права и законного порядка. В античной традиции она олицетворяет не карательную силу, а божественный порядок, мудрость и беспристрастный суд.
                       </p>
                     </div>
-                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                    <div className="p-4 glass glass-card space-y-2">
                       <h5 className="font-bold text-theme-text text-sm">2. Значение повязки, весов и меча</h5>
                       <p>
                         <strong>Повязка на глазах</strong> появилась в XVI веке как символ беспристрастия — судья не должен взирать на богатство, статус или влияние сторон. <strong>Весы</strong> в правой руке символизируют точное взвешивание доказательств. <strong>Меч</strong> олицетворяет силу закона и неотвратимость защиты прав человека.
                       </p>
                     </div>
-                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                    <div className="p-4 glass glass-card space-y-2">
                       <h5 className="font-bold text-theme-text text-sm">3. Цифровая трансформация</h5>
                       <p>
                         В современной судебной системе Республики Таджикистан принципы Фемиды реализуются через объективное автоматическое распределение дел между судьями без человеческого фактора.
@@ -291,13 +291,13 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
 
                 {activeStage === 'scales' && (
                   <>
-                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                    <div className="p-4 glass glass-card space-y-2">
                       <h5 className="font-bold text-theme-text text-sm">1. Древнейший символ равновесия</h5>
                       <p>
                         Весы как символ правосудия восходят к Древнему Египту (суд Осириса) и символизируют баланс между добром и злом, виной и невиновностью, правами и обязанностями.
                       </p>
                     </div>
-                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                    <div className="p-4 glass glass-card space-y-2">
                       <h5 className="font-bold text-theme-text text-sm">2. Состязательность и равенство сторон</h5>
                       <p>
                         В судопроизводстве две чаши весов символизируют сторону истца и сторону ответчика (обвинения и защиты). Суд взвешивает юридическую силу доводов с абсолютной математической точностью.
@@ -308,13 +308,13 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
 
                 {activeStage === 'hammer' && (
                   <>
-                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                    <div className="p-4 glass glass-card space-y-2">
                       <h5 className="font-bold text-theme-text text-sm">1. Традиция и власть судебного вердикта</h5>
                       <p>
                         Судейский молот (гавел) происходит из старинных традиций средневековых судов и собраний. Удар молота символизирует тишину в зале суда, переход от прений сторон к вынесению решения и вступление акта в законную силу.
                       </p>
                     </div>
-                    <div className="p-4 rounded-2xl bg-theme-surface/70 border border-theme-border space-y-2">
+                    <div className="p-4 glass glass-card space-y-2">
                       <h5 className="font-bold text-theme-text text-sm">2. Цифровая фиксация решения</h5>
                       <p>
                         В платформе «Электронный суд» момент вынесения решения заверяется судейской усиленной квалифицированной ЭЦП с криптографической временной меткой (TSA).

@@ -12,7 +12,7 @@ export const NotFoundPage: React.FC = () => {
 
   return (
     <div className="site-container px-4 py-20 text-center text-theme-text">
-      <div className="mx-auto max-w-md rounded-3xl border border-theme-border bg-theme-surface/70 backdrop-blur-md p-10 shadow-sm">
+      <div className="mx-auto max-w-md glass glass-panel p-10">
         <span className="mx-auto mb-4 flex w-14 h-14 items-center justify-center rounded-2xl bg-theme-gold/15 border border-theme-gold/30 text-theme-gold">
           <Scale size={26} />
         </span>

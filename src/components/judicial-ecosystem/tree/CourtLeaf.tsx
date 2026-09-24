@@ -102,8 +102,7 @@ export const CourtLeaf: React.FC<CourtLeafProps> = ({
       <div
         className="
           absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200
-          pointer-events-none z-50 w-max max-w-[260px] p-2 rounded-lg
-          bg-theme-surface border border-theme-border shadow-2xl text-center
+          pointer-events-none z-50 w-max max-w-[260px] p-2 glass glass-chip text-center
         "
       >
         <span className="text-[11px] font-mono text-theme-text leading-tight block">

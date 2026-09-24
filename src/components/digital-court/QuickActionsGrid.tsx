@@ -146,7 +146,7 @@ export const QuickActionsGrid: React.FC<QuickActionsGridProps> = ({ onAction }) 
                 whileHover={{ y: -3 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onAction(action.id)}
-                className={`w-full text-left p-5 sm:p-6 rounded-2xl border border-theme-border/60 bg-theme-surface/80 backdrop-blur-md transition-all duration-300 shadow-theme-card flex flex-col justify-between min-h-[170px] group ${action.bgGlow}`}
+                className={`w-full text-left p-5 sm:p-6 glass glass-card transition-all duration-300 flex flex-col justify-between min-h-[170px] group ${action.bgGlow}`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-3.5">

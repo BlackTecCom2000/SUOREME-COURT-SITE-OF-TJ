@@ -44,7 +44,7 @@ const SiteTable: React.FC<{
   isLoading?: boolean;
   emptyMessage?: string;
 }> = ({ columns, data, keyExtractor, isLoading, emptyMessage }) => (
-  <div className="w-full rounded-xl border border-theme-border bg-theme-surface overflow-hidden">
+  <div className="w-full glass glass-chip overflow-hidden">
     <div className="overflow-x-auto">
       <table className="w-full text-left border-collapse">
         <thead>

@@ -16,7 +16,7 @@ export const JudicialActPreview: React.FC<JudicialActPreviewProps> = ({
   return (
     <div
       className={`
-        relative rounded-xl p-5 border border-theme-gold/40 content-card border border-theme-border select-none
+        relative rounded-xl p-5 glass glass-chip border-theme-gold/40 select-none
         transition-all duration-500 animate-in fade-in zoom-in-95
         ${className}
       `}

@@ -39,16 +39,16 @@ export const CourtQrCode: React.FC<CourtQrCodeProps> = ({
       target="_blank"
       rel="noopener noreferrer"
       title={host}
-      className={`inline-flex flex-col items-center justify-center gap-1 p-2 rounded-lg bg-white text-slate-800 hover:bg-slate-100 transition-colors ${className}`}
+      className={`inline-flex flex-col items-center justify-center gap-1 p-2 glass glass-chip text-theme-text transition-colors ${className}`}
       style={{ width: size + 16, minHeight: size + 16 }}
     >
       <Globe size={Math.max(20, Math.round(size / 3))} aria-hidden="true" />
       <span className="font-mono text-[10px] leading-tight break-all text-center px-1">{host}</span>
-      <span className="inline-flex items-center gap-1 font-mono text-[10px] font-bold uppercase text-amber-700">
+      <span className="inline-flex items-center gap-1 font-mono text-[10px] font-bold uppercase text-theme-gold">
         <ExternalLink size={11} aria-hidden="true" />
         {open}
       </span>
-      <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400">{soon}</span>
+      <span className="font-mono text-[9px] uppercase tracking-wider text-theme-textMuted">{soon}</span>
     </a>
   );
 };

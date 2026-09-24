@@ -126,7 +126,7 @@ export const Section05DigitalRegistry: React.FC<Section05DigitalRegistryProps> =
             <Reveal key={cluster.id} delay={450 + idx * 50}>
               <div
                 onClick={onExploreNetwork}
-                className="group p-5 rounded-xl border border-theme-border bg-theme-surface backdrop-blur-md hover:border-theme-borderHover hover:bg-theme-surfaceHover transition-all cursor-pointer shadow-theme-card"
+                className="group p-5 glass glass-card hover:border-theme-borderHover transition-all cursor-pointer"
               >
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-mono text-xs font-semibold" style={{ color: cluster.colorHex }}>

@@ -39,7 +39,7 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
         </div>
 
         {/* 3D Interactive News Slider Stage */}
-        <div className="w-full rounded-3xl border border-theme-border bg-theme-surface/70 backdrop-blur-xl p-4 sm:p-6 shadow-2xl">
+        <div className="w-full glass glass-panel p-4 sm:p-6 shadow-2xl">
           <Judicial3DNewsSlider
             onOpenNewsItem={() => onOpenNewsModal?.('news')}
             onOpenAllNews={() => onOpenNewsModal?.('news')}
@@ -87,7 +87,7 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
             <Reveal key={item.id} delay={100 + idx * 30}>
               <div
                 onClick={() => onOpenNewsModal?.('news')}
-                className="group p-4 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md hover:border-cyan-500/60 hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                className="group p-4 glass glass-card hover:border-cyan-500/60 transition-all duration-300 cursor-pointer flex flex-col justify-between"
               >
                 <div>
                   <h4 className="font-serif font-bold text-xs sm:text-sm text-theme-text group-hover:text-cyan-400 transition-colors leading-snug mb-3 line-clamp-3">
@@ -133,7 +133,7 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
             <Reveal key={ann.id} delay={120 + idx * 30}>
               <div
                 onClick={() => onOpenNewsModal?.('news')}
-                className="group p-4 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md hover:border-theme-gold hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                className="group p-4 glass glass-card hover:border-theme-gold transition-all duration-300 cursor-pointer flex flex-col justify-between"
               >
                 <div>
                   <h4 className="font-serif font-bold text-xs sm:text-sm text-theme-text group-hover:text-theme-gold transition-colors leading-relaxed mb-3">

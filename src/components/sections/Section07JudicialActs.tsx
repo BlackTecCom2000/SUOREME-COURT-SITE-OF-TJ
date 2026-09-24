@@ -73,7 +73,7 @@ export const Section07JudicialActs: React.FC<Section07JudicialActsProps> = ({
           <Reveal key={act.id} delay={200 + i * 50}>
             <div
               onClick={onOpenActs}
-              className="group p-5 rounded-2xl border border-theme-border bg-theme-surface backdrop-blur-md hover:border-theme-gold transition-all duration-300 cursor-pointer flex flex-col justify-between shadow-theme-card"
+              className="group p-5 glass glass-card hover:border-theme-gold transition-all duration-300 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between text-xs font-mono text-theme-textMuted mb-3">

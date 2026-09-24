@@ -19,7 +19,7 @@ export const Card: React.FC<CardProps> = ({
   className = '',
 }) => (
   <section
-    className={`rounded-2xl border border-theme-border bg-theme-surface/70 backdrop-blur-md p-5 sm:p-6 shadow-theme-card transition-colors ${
+    className={`glass glass-card p-5 sm:p-6 ${
       hoverEffect ? 'hover:border-theme-gold/50' : ''
     } ${className}`}
   >

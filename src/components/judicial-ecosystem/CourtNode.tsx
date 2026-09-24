@@ -41,7 +41,7 @@ export const CourtNode: React.FC<CourtNodeProps> = ({
           ? `0 0 15px ${colorHex}25`
           : undefined,
       }}
-      className={`group relative w-full text-left p-3 rounded-xl border border-theme-border bg-theme-surface backdrop-blur-md hover:border-theme-borderHover hover:bg-theme-surfaceHover focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-gold transition-all duration-200 cursor-pointer flex flex-col justify-between select-none shadow-sm ${
+      className={`group relative w-full text-left p-3 glass glass-chip hover:border-theme-borderHover focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-gold transition-all duration-200 cursor-pointer flex flex-col justify-between select-none ${
         isSelected ? 'ring-1' : ''
       }`}
     >

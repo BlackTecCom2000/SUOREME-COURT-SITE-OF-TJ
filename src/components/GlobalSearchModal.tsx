@@ -129,7 +129,7 @@ export const GlobalSearchModal: React.FC<{ isOpen: boolean; onClose: () => void 
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="w-full max-w-2xl rounded-3xl border border-theme-gold/25 bg-theme-surface/95 backdrop-blur-xl shadow-2xl overflow-hidden">
+      <div className="w-full max-w-2xl glass glass-premium border-theme-gold/25 shadow-2xl overflow-hidden">
         <div className="flex items-center gap-2 px-4 py-3 border-b border-theme-border">
           <Search size={16} className="text-theme-gold shrink-0" />
           <input

@@ -591,7 +591,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
             className={`px-4 py-2 rounded-2xl text-xs font-mono font-medium transition-all whitespace-nowrap border shadow-sm ${
               activeCategory === cat.id
                 ? 'border-theme-gold bg-theme-gold text-black font-bold shadow-theme-gold/20 scale-102'
-                : 'border-theme-border bg-theme-surface/70 text-theme-textSec hover:border-theme-gold/50 hover:text-theme-text'
+                : 'border-theme-border bg-[var(--glass-surface)] text-theme-textSec hover:border-theme-gold/50 hover:text-theme-text'
             }`}
           >
             {language === 'tj' ? cat.labelTj : language === 'en' ? cat.labelEn : cat.labelRu}
@@ -631,10 +631,10 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
                       setSelectedEntityId(entity.id);
                     }
                   }}
-                  className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between text-left group relative overflow-hidden ${
+                  className={`p-4 glass glass-card transition-all duration-200 cursor-pointer flex flex-col justify-between text-left group relative overflow-hidden ${
                     isSelected
                       ? 'border-theme-gold bg-theme-gold/15 shadow-md shadow-theme-gold/15 scale-[1.01]'
-                      : 'border-theme-border bg-theme-surface/80 hover:border-theme-gold/50 hover:bg-theme-surface'
+                      : 'border-theme-border bg-[var(--glass-surface)] hover:border-theme-gold/50'
                   }`}
                 >
                   {/* Subtle active gold accent bar on left */}
@@ -698,7 +698,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="p-6 rounded-3xl border border-theme-gold/40 content-card border border-theme-border space-y-5"
+              className="p-6 glass glass-panel border-theme-gold/40 space-y-5"
             >
               {/* Header of Detail Card */}
               <div className="border-b border-theme-border pb-4">
@@ -727,7 +727,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
 
               {/* Leader info banner if available */}
               {getLeader(selectedEntity) && (
-                <div className="p-3.5 rounded-2xl bg-theme-bg/70 border border-theme-border flex items-center justify-between">
+                <div className="p-3.5 glass glass-chip flex items-center justify-between">
                   <div>
                     <span className="text-[10px] font-mono text-theme-textMuted uppercase block">
                       {language === 'tj' ? 'Роҳбар / Раис:' : language === 'en' ? 'Presiding Officer / Head:' : 'Руководитель / Председатель:'}

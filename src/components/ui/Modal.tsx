@@ -47,9 +47,9 @@ export const Modal: React.FC<ModalProps> = ({
       }}
     >
       <div
-        className={`w-full ${maxWidth} my-auto max-h-[90dvh] flex flex-col rounded-3xl border border-theme-border bg-theme-surface shadow-2xl overflow-hidden`}
+        className={`w-full ${maxWidth} my-auto max-h-[90dvh] flex flex-col glass glass-premium overflow-hidden`}
       >
-        <div className="flex items-start justify-between gap-3 px-5 py-4 border-b border-theme-border bg-theme-bg/60">
+        <div className="flex items-start justify-between gap-3 px-5 py-4 border-b border-theme-border/60">
           <div className="min-w-0">
             {typeof title === 'string' ? (
               <h2 className="font-serif font-bold text-lg text-theme-text leading-snug">{title}</h2>
@@ -69,7 +69,7 @@ export const Modal: React.FC<ModalProps> = ({
         </div>
         <div className="px-5 py-4 overflow-y-auto">{children}</div>
         {footer && (
-          <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-theme-border bg-theme-bg/60">
+          <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-theme-border/60">
             {footer}
           </div>
         )}

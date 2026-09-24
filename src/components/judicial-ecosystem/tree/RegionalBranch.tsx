@@ -60,8 +60,8 @@ export const RegionalBranch: React.FC<RegionalBranchProps> = ({
       >
         <div
           className="
-            w-full h-full rounded-xl border flex items-center justify-between px-5
-            backdrop-blur-xl bg-theme-surface/95 shadow-md
+            w-full h-full glass glass-chip
+            flex items-center justify-between px-5
             transition-all duration-300
           "
           style={{

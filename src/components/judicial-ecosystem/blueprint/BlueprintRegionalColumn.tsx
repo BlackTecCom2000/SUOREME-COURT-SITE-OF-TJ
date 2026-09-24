@@ -159,8 +159,8 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
                 ? 'border-amber-400 bg-amber-500/20 text-amber-300 shadow-[0_0_15px_rgba(223,190,126,0.3)]'
                 : 'border-[#dfbe7e]/50 bg-[#060b18]/60 text-white hover:border-amber-400 hover:bg-[#0a142e]/70'
               : isRegionSelected
-              ? 'border-amber-600 bg-amber-50/80 text-amber-950 shadow-md ring-1 ring-amber-400'
-              : 'border-[#ca8a04]/50 bg-white/75 text-slate-900 hover:border-amber-600 hover:bg-white/80'
+                ? 'border-amber-600 bg-[var(--glass-surface-active)] text-amber-950 shadow-md ring-1 ring-amber-400'
+              : 'border-[#ca8a04]/50 bg-[var(--glass-surface)] text-slate-900 hover:border-amber-600 hover:bg-[var(--glass-surface-hover)]'
           }
         `}
         style={{
@@ -186,7 +186,7 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
           ${
             isDark
               ? 'bg-[#030712]/60 shadow-[0_8px_30px_rgba(0,0,0,0.6)]'
-              : 'bg-white/70 shadow-[0_6px_20px_rgba(0,0,0,0.06)]'
+              : 'bg-[var(--glass-surface)] shadow-[0_6px_20px_rgba(0,0,0,0.06)]'
           }
           ${isRegionSelected ? 'ring-1 ring-amber-400/50' : ''}
         `}
@@ -274,8 +274,8 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
                   : selectedCourtId === militaryCourt.id
                   ? 'border-slate-900 bg-slate-900/90 text-white shadow-md scale-102'
                   : isMatched(militaryCourt)
-                  ? 'border-amber-600 bg-amber-50/80 text-amber-950 shadow-md scale-102'
-                  : 'border-slate-300 bg-white/75 hover:border-slate-600 hover:bg-slate-100/80'
+                  ? 'border-amber-600 bg-[var(--glass-surface-active)] text-amber-950 shadow-md scale-102'
+                  : 'border-slate-300 bg-[var(--glass-surface)] hover:border-slate-600 hover:bg-[var(--glass-surface-hover)]'
               }
             `}
             style={{

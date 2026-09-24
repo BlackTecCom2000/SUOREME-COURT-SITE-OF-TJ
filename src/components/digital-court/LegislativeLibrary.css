@@ -687,10 +687,12 @@
   transform: translateX(-50%) translateY(4px);
   width: 200px;
   padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border-primary);
-  background: var(--surface-card);
-  box-shadow: var(--card-shadow);
+  border-radius: var(--glass-radius-small);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-surface-strong);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease, transform 0.2s ease;

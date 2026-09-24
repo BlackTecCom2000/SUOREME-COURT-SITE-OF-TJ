@@ -7,7 +7,6 @@ import {
   getRegionName,
 } from '../../data/sudTjData';
 import { useLanguage } from '../../context/LanguageContext';
-import { useTheme } from '../../context/ThemeContext';
 import { CourtQrCode } from './CourtQrCode';
 import {
   ExternalLink,
@@ -37,7 +36,6 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
   onOpenService,
 }) => {
   const { language } = useLanguage();
-  const { isDark } = useTheme();
   const [showQr, setShowQr] = useState(false);
 
   const cluster = REGIONAL_CLUSTERS.find((r) => r.id === court.regionId);
@@ -76,12 +74,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
   return (
     <div
       className={`
-        relative w-full rounded-2xl border p-5 sm:p-7 shadow-2xl transition-all duration-300 animate-fadeIn select-none text-left
-        ${
-          isDark
-            ? 'bg-[#070d1a]/95 border-amber-400/40 shadow-black/80'
-            : 'bg-white/95 border-slate-300 shadow-slate-300/40'
-        }
+        relative w-full glass glass-panel p-5 sm:p-7 transition-all duration-300 animate-fadeIn select-none text-left
       `}
     >
       {/* 1. TOP BREADCRUMB TRAIL & CLOSE BUTTON */}

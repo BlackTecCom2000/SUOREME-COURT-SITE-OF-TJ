@@ -5,7 +5,6 @@ import {
   SUPREME_COURT_NODE,
   getSortedRegionalClusters,
 } from '../../data/sudTjData';
-import { useTheme } from '../../context/ThemeContext';
 import { BlueprintBackgroundCircuits } from './blueprint/BlueprintBackgroundCircuits';
 import { BlueprintTopHeader } from './blueprint/BlueprintTopHeader';
 import { BlueprintCentralAuthority } from './blueprint/BlueprintCentralAuthority';
@@ -28,7 +27,6 @@ export const JudicialTreeView: React.FC<JudicialTreeViewProps> = ({
   onSelectRegion,
   selectedCourtId,
 }) => {
-  const { isDark } = useTheme();
   const [courtsData, setCourtsData] = useState<CourtNodeData[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredRegionId, setHoveredRegionId] = useState<string | null>(null);
@@ -105,12 +103,7 @@ export const JudicialTreeView: React.FC<JudicialTreeViewProps> = ({
     <div
       ref={containerRef}
       className={`
-        relative w-full overflow-visible select-none rounded-3xl border transition-all duration-700 p-4 sm:p-6 lg:p-8
-        ${
-          isDark
-            ? 'bg-[#02050e]/75 border-[#dfbe7e]/30 shadow-2xl shadow-black/80 backdrop-blur-xl'
-            : 'bg-[#f8fafc]/80 border-slate-300 shadow-xl shadow-slate-300/40 backdrop-blur-xl'
-        }
+        relative w-full overflow-visible select-none glass glass-large transition-all duration-700 p-4 sm:p-6 lg:p-8
       `}
     >
       {/* 1. Background Digital PCB Circuits & Subtle Grid */}

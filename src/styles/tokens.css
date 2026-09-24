@@ -25,15 +25,39 @@
   --radius-3xl: 32px;
   --radius-full: 9999px;
 
-  /* Glass surfaces (aliases of the live theme surfaces) */
+  /* Glass surfaces (legacy aliases of the live theme surfaces) */
   --glass-1: var(--surface-card);
   --glass-2: var(--surface-card-hover);
-  --glass-border: var(--border-primary);
-  --glass-border-hover: var(--border-hover);
-  --glass-shadow: var(--card-shadow);
   --glass-blur-sm: 8px;
   --glass-blur-md: 12px;
   --glass-blur-xl: 20px;
+
+  /* ── BlackTecCom Liquid Glass Premium Ultra (global, theme-independent) ──
+     ONE surface family for every standard card/panel across the portal.
+     Light AND dark themes share these tokens so cards read as a single
+     premium glass system; text contrast comes from theme text tokens. */
+  --glass-surface: rgba(255, 255, 255, 0.16);
+  --glass-surface-strong: rgba(255, 255, 255, 0.2);
+  --glass-surface-hover: rgba(255, 255, 255, 0.22);
+  --glass-surface-active: rgba(255, 255, 255, 0.26);
+  --glass-surface-dark: rgba(8, 18, 35, 0.16);
+  --glass-border: rgba(255, 255, 255, 0.32);
+  --glass-border-subtle: rgba(255, 255, 255, 0.22);
+  --glass-border-hover: rgba(255, 255, 255, 0.45);
+  --glass-border-active: rgba(200, 150, 40, 0.55);
+  --glass-blur: 24px;
+  --glass-blur-premium: 32px;
+  --glass-blur-ultra: 40px;
+  --glass-saturation: 160%;
+  --glass-saturation-premium: 180%;
+  --glass-radius-card: 24px;
+  --glass-radius-panel: 28px;
+  --glass-radius-large: 30px;
+  --glass-radius-small: 16px;
+  --glass-shadow: 0 12px 40px rgba(15, 30, 50, 0.1);
+  --glass-shadow-hover: 0 18px 55px rgba(15, 30, 50, 0.15);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 
   /* Focus ring (a11y, single definition) */
   --focus-ring: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--accent-gold);

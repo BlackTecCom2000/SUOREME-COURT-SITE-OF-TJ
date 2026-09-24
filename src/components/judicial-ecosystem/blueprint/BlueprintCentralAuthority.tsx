@@ -63,8 +63,8 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
             flex flex-col items-center justify-center text-center group
             ${
               isDark
-                ? 'border-[#dfbe7e]/70 bg-[#060b18]/80 shadow-[0_0_18px_rgba(223,190,126,0.18)] hover:border-[#dfbe7e] hover:shadow-[0_0_25px_rgba(223,190,126,0.35)]'
-                : 'border-[#ca8a04]/70 bg-white/75 shadow-[0_4px_15px_rgba(202,138,4,0.15)] hover:border-[#ca8a04] hover:shadow-[0_6px_20px_rgba(202,138,4,0.25)]'
+              ? 'border-[#dfbe7e]/70 bg-[#060b18]/80 shadow-[0_0_18px_rgba(223,190,126,0.18)] hover:border-[#dfbe7e] hover:shadow-[0_0_25px_rgba(223,190,126,0.35)]'
+              : 'border-[#ca8a04]/70 bg-[var(--glass-surface)] shadow-[0_4px_15px_rgba(202,138,4,0.15)] hover:border-[#ca8a04] hover:shadow-[0_6px_20px_rgba(202,138,4,0.25)]'
             }
           `}
         >
@@ -122,9 +122,9 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
                 ? isSelected
                   ? 'border-[#ffea88] bg-[#0c1326]/75 shadow-[0_0_50px_rgba(255,234,136,0.6)] scale-105'
                   : 'border-[#dfbe7e] bg-[#070e20]/75 hover:border-[#ffea88] shadow-[0_0_35px_rgba(223,190,126,0.35)] hover:shadow-[0_0_50px_rgba(223,190,126,0.55)] hover:scale-102'
-                : isSelected
-                ? 'border-[#ca8a04] bg-[#f8fafc]/75 shadow-[0_10px_35px_rgba(202,138,4,0.4)] scale-105'
-                : 'border-[#ca8a04]/80 bg-white/75 hover:border-[#ca8a04] shadow-[0_4px_25px_rgba(202,138,4,0.2)] hover:shadow-[0_8px_35px_rgba(202,138,4,0.35)] hover:scale-102'
+              : isSelected
+              ? 'border-[#ca8a04] bg-[var(--glass-surface-strong)] shadow-[0_10px_35px_rgba(202,138,4,0.4)] scale-105'
+              : 'border-[#ca8a04]/80 bg-[var(--glass-surface)] hover:border-[#ca8a04] shadow-[0_4px_25px_rgba(202,138,4,0.2)] hover:shadow-[0_8px_35px_rgba(202,138,4,0.35)] hover:scale-102'
             }
           `}
           style={{
@@ -202,8 +202,8 @@ export const BlueprintCentralAuthority: React.FC<BlueprintCentralAuthorityProps>
             flex flex-col items-center justify-center text-center group
             ${
               isDark
-                ? 'border-[#dfbe7e]/70 bg-[#060b18]/80 shadow-[0_0_18px_rgba(223,190,126,0.18)] hover:border-[#dfbe7e] hover:shadow-[0_0_25px_rgba(223,190,126,0.35)]'
-                : 'border-[#ca8a04]/70 bg-white/75 shadow-[0_4px_15px_rgba(202,138,4,0.15)] hover:border-[#ca8a04] hover:shadow-[0_6px_20px_rgba(202,138,4,0.25)]'
+              ? 'border-[#dfbe7e]/70 bg-[#060b18]/80 shadow-[0_0_18px_rgba(223,190,126,0.18)] hover:border-[#dfbe7e] hover:shadow-[0_0_25px_rgba(223,190,126,0.35)]'
+              : 'border-[#ca8a04]/70 bg-[var(--glass-surface)] shadow-[0_4px_15px_rgba(202,138,4,0.15)] hover:border-[#ca8a04] hover:shadow-[0_6px_20px_rgba(202,138,4,0.25)]'
             }
           `}
         >

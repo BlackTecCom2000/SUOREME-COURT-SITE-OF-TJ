@@ -260,7 +260,7 @@ export const CourtSitePage: React.FC = () => {
             <Reveal delay={240}>
               <a
                 href="#court-hearings"
-                className="group flex flex-col items-center justify-center text-center gap-3 p-4 sm:p-5 rounded-2xl border border-theme-border bg-theme-surface hover:border-theme-gold hover:-translate-y-1 transition-all h-full min-h-[150px] sm:min-h-[170px]"
+                className="group flex flex-col items-center justify-center text-center gap-3 p-4 sm:p-5 glass glass-card hover:border-theme-gold hover:-translate-y-1 transition-all h-full min-h-[150px] sm:min-h-[170px]"
               >
                 <span className="p-3 rounded-full border border-theme-border text-theme-textSec group-hover:border-theme-gold group-hover:text-theme-gold transition-colors">
                   <Scale size={26} />
@@ -485,7 +485,7 @@ export const CourtSitePage: React.FC = () => {
             title={pickTri(cfg.contacts.address, language)}
           />
           <Reveal>
-            <div className="p-5 sm:p-6 rounded-xl border border-theme-border bg-theme-surface backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-theme-card">
+            <div className="p-5 sm:p-6 glass glass-panel flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-1.5 font-mono text-xs text-theme-textSec">
                 <div className="flex items-center gap-2"><Mail size={13} className="text-theme-gold" /><span>{cfg.contacts.email}</span></div>
                 {cfg.contacts.phones.map((p) => (

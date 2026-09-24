@@ -57,7 +57,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
               type="button"
               onClick={() => setIsImmersiveOpen(true)}
               aria-label={t('network.fullscreenBtn')}
-              className="flex items-center gap-1.5 font-mono text-xs text-theme-gold hover:text-theme-text px-3.5 py-1.5 rounded-full bg-theme-surface border border-theme-gold/40 hover:border-theme-gold transition-all shadow-sm"
+              className="flex items-center gap-1.5 font-mono text-xs text-theme-gold hover:text-theme-text px-3.5 py-1.5 rounded-full glass border-theme-gold/40 hover:border-theme-gold transition-all"
             >
               <Maximize2 size={13} />
               <span className="hidden sm:inline">
@@ -88,7 +88,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
       {/* 2. Mode Selector (Network vs Tree) & Real-time Search */}
       <div className="px-5 sm:px-8 md:px-12 mb-6">
         <Reveal delay={320}>
-          <div className="p-4 rounded-2xl bg-theme-surface border border-theme-border backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-4 shadow-theme-card">
+          <div className="p-4 glass glass-panel flex flex-col md:flex-row items-center justify-between gap-4">
             
             {/* Toggle (Removed) */}
 
@@ -155,7 +155,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
       {/* 3. Main Dynamic Canvas Area */}
       <div className="px-5 sm:px-8 md:px-12 flex-1 flex flex-col justify-center my-4">
         <Reveal delay={380}>
-          <div className="relative w-full aspect-[4/5] sm:aspect-[16/10] min-h-[400px] md:min-h-[560px] max-h-[780px] rounded-3xl border border-theme-border bg-theme-surface backdrop-blur-xl overflow-hidden shadow-theme-card">
+          <div className="relative w-full aspect-[4/5] sm:aspect-[16/10] min-h-[400px] md:min-h-[560px] max-h-[780px] glass glass-panel overflow-hidden">
             
               <JudicialTreeView
                 searchQuery={searchQuery}
@@ -165,7 +165,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
               />
 
             {/* Floating Quick Legend in Canvas Bottom Left */}
-            <div className="absolute left-4 bottom-4 z-20 hidden md:flex items-center gap-3 bg-theme-bg/85 backdrop-blur-md px-3.5 py-2 rounded-xl border border-theme-border font-mono text-[10px] text-theme-textSec">
+            <div className="absolute left-4 bottom-4 z-20 hidden md:flex items-center gap-3 glass glass-chip px-3.5 py-2 font-mono text-[10px] text-theme-textSec">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-[#dfbe7e] shadow-[0_0_8px_rgba(223,190,126,0.8)]" />
                 <span>{t('network.legendSupreme')}</span>
@@ -185,7 +185,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
             </div>
 
             {/* Hint in Canvas Bottom Right */}
-            <div className="absolute right-4 bottom-4 z-20 font-mono text-[10px] text-theme-textMuted bg-theme-bg/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-theme-border hidden sm:block">
+            <div className="absolute right-4 bottom-4 z-20 font-mono text-[10px] text-theme-textMuted glass glass-chip px-3 py-1.5 hidden sm:block">
               {t('network.legendHint')}
             </div>
           </div>

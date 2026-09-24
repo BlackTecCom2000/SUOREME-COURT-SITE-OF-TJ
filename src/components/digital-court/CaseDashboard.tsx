@@ -66,7 +66,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {myActiveCases.map((caseItem, idx) => (
           <Reveal key={caseItem.id} delay={100 + idx * 70}>
-            <div className="rounded-3xl border border-theme-border/70 bg-theme-surface/80 backdrop-blur-xl p-6 sm:p-7 shadow-theme-card flex flex-col justify-between h-full hover:border-theme-borderHover transition-all duration-300">
+            <div className="glass glass-card p-6 sm:p-7 flex flex-col justify-between h-full hover:border-theme-borderHover transition-all duration-300">
               
               {/* Header */}
               <div>

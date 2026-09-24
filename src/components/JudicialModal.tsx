@@ -287,7 +287,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-5xl max-h-[92vh] flex flex-col bg-theme-bgSec border border-theme-border rounded-2xl shadow-2xl overflow-hidden text-theme-text"
+        className="relative w-full max-w-5xl max-h-[92vh] flex flex-col glass glass-premium overflow-hidden text-theme-text"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
@@ -321,7 +321,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
         </div>
 
         {/* Horizontal Navigation Tab Bar */}
-        <div className="flex items-center gap-1 sm:gap-1.5 px-6 py-2 border-b border-theme-border overflow-x-auto bg-theme-bg text-xs font-mono scrollbar-none">
+        <div className="flex items-center gap-1 sm:gap-1.5 px-6 py-2 border-b border-theme-border/60 overflow-x-auto text-xs font-mono scrollbar-none">
           {[
             { id: 'about', labelRu: 'О суде', labelTj: 'Маълумот', labelEn: 'About Court' },
             { id: 'leadership', labelRu: 'Руководство', labelTj: 'Роҳбарият', labelEn: 'Leadership' },
@@ -526,7 +526,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 ))}
               </div>
 
-              <div className="p-3 rounded-xl bg-theme-bg/60 border border-theme-border flex items-center gap-2 text-xs text-theme-textSec">
+              <div className="p-3 glass glass-chip flex items-center gap-2 text-xs text-theme-textSec">
                 <FileText size={14} className="text-rose-400 shrink-0" />
                 <span className="font-mono text-[11px] text-theme-text">
                   Қонуни конститутсионии Ҷумҳурии Тоҷикистон «Дар бораи судҳои Ҷумҳурии Тоҷикистон» аз 26 июли соли 2014, № 1084 (90 Кб PDF)
@@ -573,11 +573,11 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     <span>{language === 'tj' ? 'Қарорҳои дастурии охирин' : language === 'en' ? 'Recent Directives' : 'Постановления'}</span>
                   </div>
                   <div className="space-y-2 text-xs">
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 flex items-center justify-between">
+                    <div className="p-2 glass glass-chip flex items-center justify-between">
                       <span className="font-mono text-theme-text">№ 1-2026 // Оид ба мурофиаи рақамӣ</span>
                       <span className="font-mono text-[10px] text-theme-gold">02.2026</span>
                     </div>
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 flex items-center justify-between">
+                    <div className="p-2 glass glass-chip flex items-center justify-between">
                       <span className="font-mono text-theme-text">№ 4-2025 // Оид ба баҳсҳои молумулкӣ</span>
                       <span className="font-mono text-[10px] text-theme-gold">12.2025</span>
                     </div>
@@ -598,7 +598,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
               />
 
               {/* Exact Hierarchical Official Blueprint Reference */}
-              <div className="p-4 sm:p-6 rounded-3xl bg-theme-surface border border-theme-border space-y-6">
+              <div className="p-4 sm:p-6 glass glass-card space-y-6">
                 <div className="flex items-center justify-between border-b border-theme-border pb-3">
                   <span className="font-mono text-xs text-theme-gold uppercase tracking-widest font-bold">
                     [ СХЕМАИ ИЕРАРХИЯИ ДАСТГОҲ ВА ҲАЙАТҲО // BLUEPRINT ]
@@ -621,27 +621,27 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
 
                 {/* Level 2: Top Deputies & Central Organs */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-center text-xs">
-                  <div className="p-2.5 rounded-xl bg-theme-bg border border-theme-border font-mono font-medium">МУОВИНИ ЯКУМИ РАИС</div>
-                  <div className="p-2.5 rounded-xl bg-theme-bg border border-theme-border font-mono font-medium">МУОВИНИ РАИС</div>
-                  <div className="p-2.5 rounded-xl bg-theme-bg border border-theme-border font-mono font-medium">МУОВИНИ РАИС – РАИСИ КОЛЛЕГИЯИ ҲАРБӢ</div>
+                                      <div className="p-2.5 glass glass-chip font-mono font-medium">МУОВИНИ ЯКУМИ РАИС</div>
+                                      <div className="p-2.5 glass glass-chip font-mono font-medium">МУОВИНИ РАИС</div>
+                                      <div className="p-2.5 glass glass-chip font-mono font-medium">МУОВИНИ РАИС – РАИСИ КОЛЛЕГИЯИ ҲАРБӢ</div>
                   <button
                     type="button"
                     onClick={() => onSelectTab('plenum')}
-                    className="p-2.5 rounded-xl bg-theme-bg border border-theme-gold/40 text-theme-gold font-mono font-bold hover:bg-theme-gold/15 transition-colors"
+                    className="p-2.5 glass glass-chip border-theme-gold/40 text-theme-gold font-mono font-bold hover:bg-theme-gold/15 transition-colors"
                   >
                     ПЛЕНУМИ СУДИ ОЛӢ
                   </button>
                   <button
                     type="button"
                     onClick={() => onSelectTab('presidium')}
-                    className="p-2.5 rounded-xl bg-theme-bg border border-theme-gold/40 text-theme-gold font-mono font-bold hover:bg-theme-gold/15 transition-colors"
+                    className="p-2.5 glass glass-chip border-theme-gold/40 text-theme-gold font-mono font-bold hover:bg-theme-gold/15 transition-colors"
                   >
                     РАЁСАТИ СУДИ ОЛӢ
                   </button>
                   <button
                     type="button"
                     onClick={() => onSelectTab('training')}
-                    className="p-2.5 rounded-xl bg-theme-bg border border-cyan-500/40 text-cyan-400 font-mono font-medium hover:bg-cyan-500/15 transition-colors"
+                    className="p-2.5 glass glass-chip border-cyan-500/40 text-cyan-400 font-mono font-medium hover:bg-cyan-500/15 transition-colors"
                   >
                     МАРКАЗИ ТАЪЛИМИИ СУДЯҲО
                   </button>
@@ -1044,7 +1044,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 }).map((act) => (
                   <div
                     key={act.id}
-                    className="p-4 rounded-2xl bg-theme-surface/80 border border-theme-border hover:border-theme-gold hover:shadow-md transition-all duration-200 group flex items-start gap-3.5 cursor-pointer backdrop-blur-md"
+                    className="p-4 glass glass-card group flex items-start gap-3.5 cursor-pointer"
                   >
                     <div className="w-8 h-8 rounded-xl bg-theme-gold/15 text-theme-gold border border-theme-gold/30 flex items-center justify-center font-mono font-bold text-xs shrink-0 group-hover:scale-105 group-hover:bg-theme-gold group-hover:text-black transition-all">
                       {act.id}

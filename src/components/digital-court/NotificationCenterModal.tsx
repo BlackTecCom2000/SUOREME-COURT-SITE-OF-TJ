@@ -109,7 +109,7 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
-        className="w-full max-w-2xl max-h-[85vh] rounded-3xl border border-theme-border bg-theme-bg shadow-2xl flex flex-col overflow-hidden text-theme-text"
+        className="w-full max-w-2xl max-h-[85vh] glass glass-premium flex flex-col overflow-hidden text-theme-text"
       >
         {/* Header */}
         <div className="px-6 py-5 border-b border-theme-border bg-theme-surface/60 flex items-center justify-between">

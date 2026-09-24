@@ -152,7 +152,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                 <button
                   type="button"
                   onClick={onOpenContacts}
-                  className="w-full py-3.5 rounded-full border border-theme-border bg-theme-surface hover:border-theme-gold hover:text-theme-text font-mono text-xs uppercase tracking-wider text-theme-textSec flex items-center justify-center gap-2 transition-all shadow-sm"
+                  className="w-full py-3.5 rounded-full glass border-theme-border hover:border-theme-gold hover:text-theme-text font-mono text-xs uppercase tracking-wider text-theme-textSec flex items-center justify-center gap-2 transition-all"
                 >
                   <span>{t('contacts.ctaAllContacts')}</span>
                   <ArrowUpRight size={14} />
@@ -221,7 +221,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
 
       {/* Final Institutional Statement */}
       <Reveal delay={400}>
-        <div className="p-8 rounded-3xl border border-theme-border bg-theme-surface backdrop-blur-xl text-center shadow-theme-card relative overflow-hidden">
+        <div className="p-8 glass glass-panel text-center relative overflow-hidden">
           <div className="max-w-2xl mx-auto">
             <h3 className="text-xl sm:text-2xl font-serif tracking-tight text-theme-text mb-2">
               {t('contacts.title1')} {t('contacts.title2')}

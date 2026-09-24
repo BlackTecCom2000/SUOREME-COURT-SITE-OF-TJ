@@ -116,7 +116,7 @@ export const DocumentCenter: React.FC<DocumentCenterProps> = ({ isOpen, onClose 
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
-        className="w-full max-w-4xl max-h-[85vh] rounded-3xl border border-theme-border bg-theme-bg shadow-2xl flex flex-col overflow-hidden text-theme-text"
+        className="w-full max-w-4xl max-h-[85vh] glass glass-premium flex flex-col overflow-hidden text-theme-text"
       >
         {/* Header */}
         <div className="px-6 py-5 border-b border-theme-border bg-theme-surface/60 flex items-center justify-between">
@@ -178,7 +178,7 @@ export const DocumentCenter: React.FC<DocumentCenterProps> = ({ isOpen, onClose 
             {docs.map((doc) => (
               <div
                 key={doc.id}
-                className="p-4 rounded-2xl border border-theme-border bg-theme-surface/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                className="p-4 glass glass-card flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-xl bg-theme-bg border border-theme-border text-theme-gold">

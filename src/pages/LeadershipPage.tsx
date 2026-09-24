@@ -129,7 +129,7 @@ export const LeadershipPage: React.FC = () => {
               
               <div className="flex flex-col md:flex-row gap-10 p-8 sm:p-10 content-card relative z-10 h-full">
                 
-                <div className="w-56 h-72 sm:w-64 sm:h-80 bg-theme-surface rounded-2xl flex items-center justify-center border border-theme-border flex-shrink-0 shadow-2xl">
+                <div className="w-56 h-72 sm:w-64 sm:h-80 glass glass-card flex items-center justify-center flex-shrink-0">
                   <div className="flex flex-col items-center gap-3">
                     <span className="font-serif font-bold text-theme-gold text-5xl">{leader.initials || 'РО'}</span>
                     <span className="text-[10px] font-mono tracking-widest uppercase text-theme-textMuted">СУДИ ОЛӢ</span>

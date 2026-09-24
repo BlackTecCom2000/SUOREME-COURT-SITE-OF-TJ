@@ -315,18 +315,131 @@ html.is-morphing-theme ::view-transition-new(root) {
     outline-offset: 2px;
   }
 
-  /* Content Safe Backdrop Card */
+  /* Content Safe Backdrop Card — Liquid Glass Premium Ultra surface.
+     Single global glass system: every standard card/panel uses this family. */
   .content-card {
-    background-color: var(--surface-card);
-    border: 1px solid var(--border-primary);
-    border-radius: 1rem;
+    position: relative;
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius-card);
     padding: 1.5rem;
-    backdrop-filter: blur(12px);
-    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    box-shadow: var(--glass-shadow), var(--glass-highlight);
     transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
                 border-color 240ms ease,
-                box-shadow 240ms ease;
+                box-shadow 240ms ease,
+                background-color 240ms ease;
   }
+
+  /* ── BlackTecCom Liquid Glass Premium Ultra primitives ──────────────
+     ONE reusable surface family. Use .glass + a shape class on every
+     standard card/panel instead of hand-written backgrounds. Do NOT set
+     bg-white / opaque fills on elements carrying these classes. */
+  .glass {
+    position: relative;
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    box-shadow: var(--glass-shadow), var(--glass-highlight);
+  }
+  /* Soft inner top highlight + edge reflection: physical-glass feel.
+     Absolute overlay, never intercepts clicks, inherits card radius. */
+  .glass::before,
+  .content-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: var(--glass-highlight-inner);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0) 22%);
+  }
+  .glass-card {
+    border-radius: var(--glass-radius-card);
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 240ms ease,
+                box-shadow 240ms ease,
+                background-color 240ms ease;
+  }
+  a.glass-card:hover, button.glass-card:hover, div.glass-card:hover, section.glass-card:hover, article.glass-card:hover {
+    background: var(--glass-surface-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover), var(--glass-highlight);
+  }
+  a.glass-card:active, button.glass-card:active {
+    background: var(--glass-surface-active);
+  }
+  .glass-panel {
+    border-radius: var(--glass-radius-panel);
+  }
+  .glass-large {
+    border-radius: var(--glass-radius-large);
+  }
+  .glass-chip {
+    border-radius: var(--glass-radius-small);
+  }
+  /* Premium/ultra tiers: modals, dropdowns, popovers, nav shells. */
+  .glass-premium {
+    border-radius: var(--glass-radius-panel);
+    background: var(--glass-surface-strong);
+    backdrop-filter: blur(var(--glass-blur-premium)) saturate(var(--glass-saturation-premium));
+    -webkit-backdrop-filter: blur(var(--glass-blur-premium)) saturate(var(--glass-saturation-premium));
+  }
+  .glass-ultra {
+    border-radius: var(--glass-radius-large);
+    background: var(--glass-surface-strong);
+    backdrop-filter: blur(var(--glass-blur-ultra)) saturate(var(--glass-saturation-premium));
+    -webkit-backdrop-filter: blur(var(--glass-blur-ultra)) saturate(var(--glass-saturation-premium));
+  }
+  /* Gold selected/active state: border + glow, NEVER a solid fill. */
+  .glass-active {
+    border: 1px solid var(--glass-border-active) !important;
+    box-shadow: var(--glass-shadow), var(--glass-highlight), 0 0 28px rgba(200, 150, 40, 0.22) !important;
+  }
+  .glass:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+}
+
+/* Tablet: keep glass look, trim blur cost. */
+@media (max-width: 1024px) {
+  .glass-premium, .glass-ultra {
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  }
+}
+/* Mobile: preserve transparency + hierarchy, lighter blur/shadow. */
+@media (max-width: 768px) {
+  .glass, .content-card, .glass-premium, .glass-ultra {
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    box-shadow: 0 8px 24px rgba(15, 30, 50, 0.08), var(--glass-highlight);
+  }
+}
+/* Low-end devices: blur off globally (existing rule) + solid readable fallback. */
+html[data-device-tier="low-end"] .glass,
+html[data-device-tier="low-end"] .content-card,
+html[data-device-tier="low-end"] .glass-premium,
+html[data-device-tier="low-end"] .glass-ultra {
+  background: var(--surface-card);
+  border-color: var(--border-primary);
+}
+/* Accessibility mode: opaque high-contrast surfaces win over glass. */
+html[data-a11y="true"] .glass,
+html[data-a11y="true"] .content-card,
+html[data-a11y="true"] .glass-premium,
+html[data-a11y="true"] .glass-ultra {
+  background: var(--surface-card);
+  border-color: var(--border-primary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html[data-a11y="true"] .glass::before,
+html[data-a11y="true"] .content-card::before {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

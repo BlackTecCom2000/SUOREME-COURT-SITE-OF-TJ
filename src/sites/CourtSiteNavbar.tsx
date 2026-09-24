@@ -84,12 +84,12 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
       <div className="site-container px-4 sm:px-6 md:px-8 pt-3 sm:pt-4 flex items-center justify-between gap-2">
 
         {/* Left: back + emblem + title + controls */}
-        <div className="pointer-events-auto flex items-center gap-2 sm:gap-3 bg-theme-surface/90 backdrop-blur-xl p-1.5 sm:p-2 rounded-2xl border border-theme-border shadow-lg min-w-0">
+        <div className="pointer-events-auto flex items-center gap-2 sm:gap-3 glass glass-card p-1.5 sm:p-2 min-w-0">
           <Link
             to="/"
             aria-label="SUD.TJ"
             title="SUD.TJ"
-            className="p-1.5 rounded-xl text-theme-textMuted hover:text-theme-gold hover:bg-theme-bg/60 transition-colors shrink-0"
+            className="p-1.5 rounded-xl text-theme-textMuted hover:text-theme-gold hover:bg-white/10 transition-colors shrink-0"
           >
             <ArrowLeft size={15} />
           </Link>
@@ -145,7 +145,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
           <button
             type="button"
             onClick={toggleTheme}
-            className="p-1.5 rounded-xl border border-theme-border hover:border-theme-borderHover hover:text-theme-text transition-colors bg-theme-bg/60 text-theme-textSec hidden sm:flex items-center justify-center shadow-xs"
+            className="p-1.5 glass glass-chip hover:text-theme-text transition-colors hidden sm:flex items-center justify-center"
             aria-label="theme"
           >
             {isDark ? <Sun size={13} className="text-amber-400" /> : <Moon size={13} className="text-indigo-600" />}
@@ -155,7 +155,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
           <button
             type="button"
             onClick={toggleContrast}
-            className={'p-1.5 rounded-xl border transition-colors hidden sm:flex items-center shadow-xs ' + (isHighContrast ? 'border-yellow-400 text-yellow-400 bg-black/60' : 'border-theme-border hover:border-theme-borderHover hover:text-theme-text bg-theme-bg/60 text-theme-textSec')}
+            className={'p-1.5 glass glass-chip transition-colors hidden sm:flex items-center ' + (isHighContrast ? 'border-yellow-400 text-yellow-400' : 'hover:text-theme-text')}
             aria-label="accessibility"
           >
             <Eye size={13} />
@@ -168,7 +168,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
             type="button"
             onClick={onOpenSearch}
             title={language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}
-            className="p-2 sm:px-3 sm:py-2 rounded-2xl bg-theme-surface/90 backdrop-blur-xl border border-theme-border text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono shadow-md"
+            className="p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
           >
             <Search size={14} />
             <span className="hidden md:inline">{language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}</span>
@@ -187,7 +187,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
           <div className="relative group hidden sm:block">
             <a
               href={'/courts/' + config.id + '/admin'}
-              className="p-2 sm:px-3 sm:py-2 rounded-2xl bg-theme-surface/90 backdrop-blur-xl border border-theme-border text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono shadow-md"
+              className="p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
             >
               <Settings size={14} />
               <span className="hidden lg:inline">{language === 'tj' ? 'Админ' : language === 'en' ? 'Admin' : 'Админ'}</span>
@@ -213,7 +213,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
             <button
               type="button"
               onClick={() => setMenuPopoverOpen(!menuPopoverOpen)}
-              className={'p-2.5 rounded-2xl bg-theme-surface/90 backdrop-blur-xl border transition-colors flex items-center gap-1.5 text-xs font-mono shadow-md ' + (menuPopoverOpen ? 'border-theme-gold text-theme-gold' : 'border-theme-border text-theme-text hover:border-theme-gold')}
+              className={'p-2.5 glass glass-chip transition-colors flex items-center gap-1.5 text-xs font-mono ' + (menuPopoverOpen ? 'border-theme-gold text-theme-gold' : 'border-theme-border text-theme-text hover:border-theme-gold')}
             >
               <Compass size={16} />
               <span className="hidden md:inline">{language === 'tj' ? 'Мундариҷа' : language === 'en' ? 'Explore' : 'Навигация'}</span>

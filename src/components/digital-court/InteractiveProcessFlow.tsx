@@ -115,7 +115,7 @@ export const InteractiveProcessFlow: React.FC = () => {
 
   return (
     <div 
-      className="relative rounded-2xl border border-theme-border/60 bg-theme-surface/75 backdrop-blur-xl p-5 sm:p-6 md:p-7 shadow-theme-card overflow-hidden select-none transition-all duration-300 hover:border-theme-borderHover"
+      className="relative glass glass-card p-5 sm:p-6 md:p-7 overflow-hidden select-none transition-all duration-300 hover:border-theme-borderHover"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
     >

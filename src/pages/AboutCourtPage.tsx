@@ -30,7 +30,7 @@ export const AboutCourtPage: React.FC = () => {
             {t('hero.description')}
           </p>
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-6 bg-theme-surface border border-theme-border rounded-xl">
+            <div className="p-6 glass glass-chip">
               <h3 className="text-xl font-medium text-theme-text mb-4">
                 {language === 'en' ? 'Powers' : language === 'tj' ? 'Ваколатҳо' : 'Полномочия'}
               </h3>
@@ -40,7 +40,7 @@ export const AboutCourtPage: React.FC = () => {
                 <li>• {language === 'en' ? 'Uniform interpretation of laws' : language === 'tj' ? 'Тафсири ягонаи қонунҳо' : 'Единое толкование законов'}</li>
               </ul>
             </div>
-            <div className="p-6 bg-theme-surface border border-theme-border rounded-xl">
+            <div className="p-6 glass glass-chip">
               <h3 className="text-xl font-medium text-theme-text mb-4">
                 {language === 'en' ? 'Jurisdiction' : language === 'tj' ? 'Тобият' : 'Юрисдикция'}
               </h3>

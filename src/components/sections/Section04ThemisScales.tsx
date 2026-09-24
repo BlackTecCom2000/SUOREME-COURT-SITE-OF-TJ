@@ -66,7 +66,7 @@ export const Section04ThemisScales: React.FC = () => {
 
             {/* Constitutional Pillar Card */}
             <Reveal delay={400}>
-              <div className="p-5 sm:p-6 rounded-xl border border-theme-border bg-theme-surface backdrop-blur-md flex items-center justify-between gap-4 shadow-theme-card">
+              <div className="p-5 sm:p-6 glass glass-chip flex items-center justify-between gap-4">
                 <div>
                   <div className="font-mono text-xs text-theme-gold uppercase tracking-wider mb-1">
                     {t('themisScales.constArticle5')}

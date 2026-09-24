@@ -72,7 +72,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
-        className="w-full max-w-5xl h-[88vh] rounded-3xl border border-theme-border bg-theme-bg shadow-2xl flex flex-col overflow-hidden text-theme-text"
+        className="w-full max-w-5xl h-[88vh] glass glass-premium flex flex-col overflow-hidden text-theme-text"
       >
         {/* Workspace Top Header */}
         <div className="px-6 py-5 border-b border-theme-border bg-theme-surface/60 flex items-center justify-between gap-4">
@@ -156,7 +156,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
         <div className="flex-1 p-6 overflow-y-auto bg-theme-bg/50">
           {activeTab === 'overview' && (
             <div className="space-y-6">
-              <div className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5">
+              <div className="glass glass-card p-5">
                 <h4 className="font-mono text-xs uppercase text-theme-gold tracking-wider mb-2">
                   {language === 'tj' ? 'МОҲИЯТИ ДАЪВО' : language === 'en' ? 'CASE SUMMARY' : 'СУТЬ ИСКОВЫХ ТРЕБОВАНИЙ'}
                 </h4>
@@ -169,7 +169,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
               </div>
 
               {/* Complete Stage Timeline */}
-              <div className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5">
+              <div className="glass glass-card p-5">
                 <h4 className="font-mono text-xs uppercase text-theme-gold tracking-wider mb-4">
                   {language === 'tj' ? 'ХОДИ РАВАНДИ МУРОФИАВӢ' : language === 'en' ? 'PROCEDURAL TIMELINE' : 'ПРОЦЕССУАЛЬНЫЙ ТАЙМЛАЙН'}
                 </h4>
@@ -225,7 +225,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
               ].map((doc, i) => (
                 <div
                   key={i}
-                  className="p-4 rounded-2xl border border-theme-border bg-theme-surface/70 hover:bg-theme-surfaceHover flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  className="p-4 glass glass-card flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2.5 rounded-xl bg-theme-bg border border-theme-border text-theme-gold">
@@ -269,7 +269,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
           )}
 
           {activeTab === 'hearings' && (
-            <div className="p-6 rounded-2xl border border-theme-border bg-theme-surface/70 text-center">
+            <div className="p-6 glass glass-card text-center">
               <Calendar size={32} className="text-theme-gold mx-auto mb-3" />
               <h4 className="text-base font-semibold text-theme-text mb-1">
                 {language === 'tj' ? 'Маҷлиси таъиншуда: 15.09.2026, 10:00' : language === 'en' ? 'Scheduled Hearing: 15.09.2026, 10:00' : 'Назначенное заседание: 15.09.2026, 10:00'}
@@ -293,7 +293,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
 
           {activeTab === 'parties' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl border border-theme-border bg-theme-surface/70">
+              <div className="p-4 glass glass-card">
                 <span className="font-mono text-[10px] uppercase text-sky-400 font-bold block mb-1">
                   {language === 'tj' ? 'ДАЪВОГАР' : language === 'en' ? 'PLAINTIFF' : 'ИСТЕЦ'}
                 </span>
@@ -301,7 +301,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
                 <p className="text-xs text-theme-textSec mt-1">ИНН: 020048191 • Представитель по доверенности: Адвокат Хакимов Р.</p>
               </div>
 
-              <div className="p-4 rounded-2xl border border-theme-border bg-theme-surface/70">
+              <div className="p-4 glass glass-card">
                 <span className="font-mono text-[10px] uppercase text-amber-400 font-bold block mb-1">
                   {language === 'tj' ? 'ҶАВОБГАР' : language === 'en' ? 'DEFENDANT' : 'ОТВЕТЧИК'}
                 </span>
@@ -312,7 +312,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
           )}
 
           {(activeTab === 'notifications' || activeTab === 'payments' || activeTab === 'history') && (
-            <div className="p-6 rounded-2xl border border-theme-border bg-theme-surface/70 font-mono text-xs text-theme-textSec space-y-2">
+            <div className="p-6 glass glass-card font-mono text-xs text-theme-textSec space-y-2">
               <div className="flex items-center justify-between py-2 border-b border-theme-border/40">
                 <span className="text-theme-text">SHA-256 System Event Integrity Verification</span>
                 <span className="text-emerald-400 font-bold">100% VALID</span>
@@ -348,7 +348,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
       {/* Embedded PDF Viewer Modal Simulator */}
       {pdfPreviewOpen && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-          <div className="w-full max-w-3xl rounded-3xl border border-theme-border bg-theme-bg p-6 shadow-2xl flex flex-col max-h-[85vh]">
+          <div className="w-full max-w-3xl glass glass-premium p-6 flex flex-col max-h-[85vh]">
             <div className="flex items-center justify-between pb-3 border-b border-theme-border mb-4">
               <div className="flex items-center gap-2">
                 <FileText size={18} className="text-theme-gold" />

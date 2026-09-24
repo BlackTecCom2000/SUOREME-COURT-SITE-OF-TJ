@@ -2,6 +2,14 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.5.0 — Global Liquid Glass Premium Ultra
+- Tokens: `src/styles/tokens.css` gains the single theme-independent glass family (`--glass-surface*/--glass-border*/--glass-blur*/--glass-saturation*/--glass-radius-*/--glass-shadow*/--glass-highlight*`).
+- Primitives: `src/index.css` adds `.glass/.glass-card/.glass-panel/.glass-large/.glass-chip/.glass-premium/.glass-ultra/.glass-active` (surface + blur/saturate + border + radius + shadow + top highlight via ::before); `.content-card` migrated onto the same tokens (~40 usages auto-upgraded); low-end solid fallback, mobile/tablet blur reduction, a11y-mode opaque override.
+- Migrated (~55 components): portal ui Kit (Card/Modal/Tabs), Breadcrumbs, footer, Navbar + CourtSiteNavbar shells, all digital-court modal panels + inner rows, CaseSearchEngine/CaseDashboard/QuickActionsGrid/InteractiveProcessFlow, JudicialNewsHub + 3D slider, JudicialModal shell/rows/tiles, all homepage section cards, court hubs/drawer/nodes/tree container, CourtQrCode tile, CourtSitePage/Admin tiles, StateDutyCalculator panel, About/Leadership/NotFound/Sitemap surfaces, leglible tooltip.
+- White boxes removed: `bg-white/95` hubs, `bg-white/75` blueprint light branches, `bg-[#f8fafc]` containers, opaque `bg-theme-surface/bg-theme-bg` panels, `hover:bg-theme-surfaceHover` washes.
+- Exceptions (documented): dark blueprint/judicial-map glow subsystems (no white boxes; light branches fixed), document paper (PDF/page/reader bodies), admin dark kit, inputs/tables/micro-rows, tooltips/badges, a11y opaque mode.
+- QA: tsc 0 errors, build:client OK, smoke 8/8, routes 9/9 200, DOM SSR check (home 51 glass / 0 opaque-white). Screenshots desktop/tablet/mobile left to user in Chrome (no browser tooling in sandbox).
+
 ## v2.4.0 — Legal UX remediation (full audit)
 - Legal honesty: CourtQrCode rewritten as real-URL tile (no fake QR); CourtDetailsDrawer/SelectedCourtContextHub blocks trilingual "official website" without scan claims; InteractiveProcessFlow VERIFIED→IN REGISTRY + QR caveat; CaseSearchEngine PUBLIC→DEMO LEDGER; CaseDashboard/DocumentCenter/CaseWorkspaceModal Demo badges trilingual.
 - Data integrity: Hero/Dashboard live `/api/stats` + health status; Blueprint fake UPTIME/LOAD deleted; JudicialActsManager no sample-fallback (loadError); receptionGuarantee neutral ×3; NewFilingModal + JudicialModal appeals POST /api/appeals with submitError/rateLimited i18n.

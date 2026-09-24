@@ -200,7 +200,7 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
 
   return (
     <section id="case-search" className="relative py-12 sm:py-16 px-4 sm:px-8 md:px-12 site-container select-none">
-      <div className="rounded-3xl border border-theme-border/70 bg-theme-surface/75 backdrop-blur-xl p-6 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden">
+      <div className="glass glass-panel p-6 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden">
         
         {/* Subtle decorative glow */}
         <div className="absolute top-0 right-1/4 w-72 h-72 rounded-full bg-theme-gold/10 blur-3xl pointer-events-none" />

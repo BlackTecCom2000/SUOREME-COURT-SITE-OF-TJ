@@ -60,7 +60,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg h-full bg-theme-bgSec border-l border-theme-border p-6 sm:p-8 flex flex-col justify-between overflow-y-auto text-theme-text shadow-2xl animate-in slide-in-from-right duration-300 scrollbar-thin"
+        className="relative w-full max-w-lg h-full glass p-6 sm:p-8 flex flex-col justify-between overflow-y-auto text-theme-text animate-in slide-in-from-right duration-300 scrollbar-thin"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top bar: Region tag & Close button */}
@@ -112,7 +112,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
             href={court.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-between p-4 rounded-xl border border-theme-border bg-theme-surface hover:border-theme-borderHover transition-all group mb-6 shadow-sm"
+            className="w-full flex items-center justify-between p-4 glass glass-chip hover:border-theme-borderHover transition-all group mb-6"
           >
             <div className="flex flex-col">
               <span className="text-[10px] font-mono text-theme-textMuted uppercase tracking-wider">
@@ -130,7 +130,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
 
           {/* Institutional Contact Grid */}
           <div className="space-y-3 mb-6 font-mono text-xs">
-            <div className="p-3.5 rounded-xl bg-theme-surface border border-theme-border flex items-start gap-3 shadow-xs">
+            <div className="p-3.5 glass glass-chip flex items-start gap-3">
               <MapPin size={16} className="text-theme-gold shrink-0 mt-0.5" />
               <div>
                 <span className="text-[10px] text-theme-textMuted uppercase block">
@@ -143,7 +143,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="p-3.5 rounded-xl bg-theme-surface border border-theme-border flex items-start gap-2.5 shadow-xs">
+              <div className="p-3.5 glass glass-chip flex items-start gap-2.5">
                 <Phone size={15} className="text-cyan-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-[10px] text-theme-textMuted uppercase block">
@@ -153,7 +153,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-theme-surface border border-theme-border flex items-start gap-2.5 shadow-xs">
+              <div className="p-3.5 glass glass-chip flex items-start gap-2.5">
                 <Mail size={15} className="text-emerald-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-[10px] text-theme-textMuted uppercase block">
@@ -166,7 +166,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
           </div>
 
           {/* Official site link (QR verification arrives with the verification backend) */}
-          <div className="p-4 rounded-xl bg-theme-surface border border-theme-border flex items-center gap-4 mb-6 shadow-xs">
+          <div className="p-4 glass glass-chip flex items-center gap-4 mb-6">
             <div className="shrink-0">
               <CourtQrCode value={court.url} size={64} />
             </div>
@@ -190,7 +190,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
 
           {/* Latest News / Announcements for this court */}
           {(court.latestNewsRu || court.latestNewsTj) && (
-            <div className="p-4 rounded-xl bg-theme-surface border border-theme-border mb-6 shadow-xs">
+            <div className="p-4 glass glass-chip mb-6">
               <div className="flex items-center gap-2 font-mono text-[10px] text-theme-gold uppercase tracking-wider mb-2">
                 <Newspaper size={12} />
                 <span>{t('network.drawerLatestNews')}</span>
@@ -211,7 +211,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
                 onClose();
                 onOpenService?.('esud');
               }}
-              className="p-2.5 rounded-lg bg-theme-surface border border-theme-border hover:border-theme-gold hover:text-theme-text flex flex-col items-center justify-center gap-1 transition-all text-theme-textSec"
+              className="p-2.5 glass glass-chip hover:border-theme-gold hover:text-theme-text flex flex-col items-center justify-center gap-1 transition-all text-theme-textSec"
             >
               <Send size={14} className="text-theme-gold" />
               <span>{t('network.drawerSubmitAppeal')}</span>
@@ -223,7 +223,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
                 onClose();
                 onOpenService?.('hearings');
               }}
-              className="p-2.5 rounded-lg bg-theme-surface border border-theme-border hover:border-cyan-400 hover:text-theme-text flex flex-col items-center justify-center gap-1 transition-all text-theme-textSec"
+              className="p-2.5 glass glass-chip hover:border-cyan-400 hover:text-theme-text flex flex-col items-center justify-center gap-1 transition-all text-theme-textSec"
             >
               <Clock size={14} className="text-cyan-400" />
               <span>{t('network.drawerHearings')}</span>
@@ -235,7 +235,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
                 onClose();
                 onOpenService?.('duties');
               }}
-              className="p-2.5 rounded-lg bg-theme-surface border border-theme-border hover:border-emerald-400 hover:text-theme-text flex flex-col items-center justify-center gap-1 transition-all text-theme-textSec"
+              className="p-2.5 glass glass-chip hover:border-emerald-400 hover:text-theme-text flex flex-col items-center justify-center gap-1 transition-all text-theme-textSec"
             >
               <Calculator size={14} className="text-emerald-400" />
               <span>{t('network.drawerStateDuty')}</span>

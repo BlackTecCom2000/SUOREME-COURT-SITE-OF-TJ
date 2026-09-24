@@ -332,7 +332,7 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
                     ? 'border-[#dfbe7e]/80 shadow-[0_15px_40px_rgba(0,0,0,0.7)]'
                     : 'border-white/10 hover:border-white/30'
                 }
-                ${isDark ? 'bg-[#040813]' : 'bg-white'}
+                ${isDark ? 'bg-[#040813]' : 'bg-[var(--glass-surface-strong)] glass'}
               `}
               style={{
                 transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) rotateX(${isCenter ? tiltOffset.y * 0.5 : 0}deg) scale(${scale})`,

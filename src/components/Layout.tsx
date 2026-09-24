@@ -90,7 +90,7 @@ export const Layout: React.FC = () => {
         />
         
         {!isStandalone && (
-        <footer className="relative z-20 border-t border-theme-border bg-theme-surface/90 backdrop-blur-md px-4 py-8 sm:px-8 md:px-12 text-theme-textMuted font-mono text-xs shadow-sm mt-auto">
+        <footer className="relative z-20 glass px-4 py-8 sm:px-8 md:px-12 text-theme-textMuted font-mono text-xs mt-auto">
           <div className="site-container grid grid-cols-1 gap-4 mb-6">
             <a
               href={PRESIDENT_MESSAGE.url}

@@ -117,7 +117,7 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
-        className="w-full max-w-2xl max-h-[90vh] rounded-3xl border border-theme-border bg-theme-bg shadow-2xl flex flex-col overflow-hidden text-theme-text"
+        className="w-full max-w-2xl max-h-[90vh] glass glass-premium flex flex-col overflow-hidden text-theme-text"
       >
         {/* Header */}
         <div className="px-6 py-5 border-b border-theme-border bg-theme-surface/60 flex items-center justify-between">
@@ -239,7 +239,7 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
 
           {step === 2 && (
             <div className="space-y-4">
-              <div className="p-4 rounded-2xl border border-theme-border bg-theme-surface/50 space-y-3">
+              <div className="p-4 glass glass-card space-y-3">
                 <span className="font-mono text-xs text-sky-400 font-bold block uppercase">
                   {language === 'tj' ? 'Маълумот оид ба Даъвогар' : language === 'en' ? 'Plaintiff Information' : 'Сведения об Истце'}
                 </span>
@@ -266,7 +266,7 @@ export const NewFilingModal: React.FC<NewFilingModalProps> = ({
                 />
               </div>
 
-              <div className="p-4 rounded-2xl border border-theme-border bg-theme-surface/50 space-y-3">
+              <div className="p-4 glass glass-card space-y-3">
                 <span className="font-mono text-xs text-amber-400 font-bold block uppercase">
                   {language === 'tj' ? 'Маълумот оид ба Ҷавобгар' : language === 'en' ? 'Defendant Information' : 'Сведения об Ответчике'}
                 </span>

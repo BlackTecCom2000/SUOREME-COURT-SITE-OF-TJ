@@ -56,7 +56,7 @@ export const ImmersivePresentationModal: React.FC<ImmersivePresentationModalProp
       className="fixed inset-0 z-50 flex flex-col bg-theme-bg text-theme-text overflow-hidden animate-in fade-in duration-300 pointer-events-auto"
     >
       {/* 1. Immersive Top HUD Navigation Bar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 sm:p-6 border-b border-theme-border bg-theme-surface/80 backdrop-blur-xl z-20">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 sm:p-6 border-b border-theme-border/60 glass z-20">
         
         {/* Title & Live Status */}
         <div className="flex items-center gap-4">
@@ -104,7 +104,7 @@ export const ImmersivePresentationModal: React.FC<ImmersivePresentationModalProp
       </div>
 
       {/* 2. Macro National Statistics HUD Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 px-6 py-2 border-b border-theme-border bg-theme-surface/50 font-mono text-xs text-theme-textSec">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 px-6 py-2 border-b border-theme-border/60 font-mono text-xs text-theme-textSec">
         <div className="flex items-center gap-2">
           <span className="text-theme-gold font-bold">{totalCourts}</span>
           <span className="text-theme-textMuted">{t('registry.totalCourts')}</span>

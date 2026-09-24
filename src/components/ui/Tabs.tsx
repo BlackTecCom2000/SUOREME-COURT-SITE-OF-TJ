@@ -18,7 +18,7 @@ interface TabsProps {
 export const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onChange, className = '' }) => (
   <div
     role="tablist"
-    className={`inline-flex max-w-full items-center gap-1 p-1 rounded-xl border border-theme-border bg-theme-surface/70 backdrop-blur-md overflow-x-auto ${className}`}
+    className={`inline-flex max-w-full items-center gap-1 p-1 glass glass-chip overflow-x-auto ${className}`}
   >
     {tabs.map((t) => {
       const active = t.id === activeTab;
@@ -32,7 +32,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onChange, className
           className={`inline-flex shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-lg font-mono text-xs transition-colors ${
             active
               ? 'bg-theme-gold text-black font-bold'
-              : 'text-theme-textMuted hover:text-theme-text hover:bg-theme-bg/60'
+              : 'text-theme-textMuted hover:text-theme-text hover:bg-white/10'
           }`}
         >
           {t.icon}

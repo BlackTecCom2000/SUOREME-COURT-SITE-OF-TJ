@@ -14,7 +14,7 @@ export const Breadcrumbs: React.FC<{ items: Crumb[] }> = ({ items }) => {
   const home = language === 'tj' ? 'Асосӣ' : language === 'en' ? 'Home' : 'Главная';
   return (
     <nav aria-label="Breadcrumb" className="mb-4">
-      <ol className="inline-flex flex-wrap items-center gap-1.5 px-3 py-1.5 rounded-full border border-theme-border bg-theme-surface/70 backdrop-blur-md font-mono text-[11px] text-theme-textMuted">
+      <ol className="inline-flex flex-wrap items-center gap-1.5 px-3 py-1.5 rounded-full glass font-mono text-[11px] text-theme-textMuted">
         <li>
           <Link to="/" className="inline-flex items-center gap-1 hover:text-theme-gold transition-colors">
             <Home size={12} />

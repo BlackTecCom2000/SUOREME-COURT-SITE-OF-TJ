@@ -84,10 +84,10 @@ export const BlueprintCourtNode: React.FC<BlueprintCourtNodeProps> = ({
               ? 'bg-[#0f172a]/80 shadow-[0_0_15px_rgba(223,190,126,0.2)] scale-[1.03] z-30'
               : 'bg-[#020617]/75 hover:bg-[#0f172a]/80 hover:scale-[1.02] z-10'
             : isSelected
-            ? 'bg-slate-100/80 shadow-[0_4px_16px_rgba(0,0,0,0.1)] scale-[1.03] z-30'
+            ? 'bg-[var(--glass-surface-active)] shadow-[0_4px_16px_rgba(0,0,0,0.1)] scale-[1.03] z-30'
             : isHighlighted
-            ? 'bg-amber-50/80 shadow-[0_4px_12px_rgba(202,138,4,0.1)] scale-[1.03] z-30'
-            : 'bg-white/75 hover:bg-slate-50/80 hover:scale-[1.02] z-10'
+            ? 'bg-[var(--glass-surface-hover)] shadow-[0_4px_12px_rgba(202,138,4,0.1)] scale-[1.03] z-30'
+            : 'bg-[var(--glass-surface)] hover:bg-[var(--glass-surface-hover)] hover:scale-[1.02] z-10'
         }
       `}
       style={{

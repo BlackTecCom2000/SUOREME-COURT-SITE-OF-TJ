@@ -30,8 +30,8 @@ export const BlueprintTopHeader: React.FC = () => {
           backdrop-blur-xl select-none
           ${
             isDark
-              ? 'border-[#dfbe7e]/80 bg-[#060a14]/80 shadow-[0_0_25px_rgba(223,190,126,0.25)]'
-              : 'border-[#ca8a04]/80 bg-white/75 shadow-[0_4px_20px_rgba(202,138,4,0.2)]'
+            ? 'border-[#dfbe7e]/80 bg-[#060a14]/80 shadow-[0_0_25px_rgba(223,190,126,0.25)]'
+            : 'border-[#ca8a04]/80 bg-[var(--glass-surface-strong)] shadow-[0_4px_20px_rgba(202,138,4,0.2)]'
           }
         `}
         style={{

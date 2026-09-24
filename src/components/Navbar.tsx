@@ -276,10 +276,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="site-container px-4 sm:px-6 md:px-8 pt-3 sm:pt-4 flex items-center justify-between">
         
         {/* Top Left: Emblem, Title & Quick Controls */}
-        <div className="pointer-events-auto flex items-center gap-3 bg-theme-surface/90 backdrop-blur-xl p-1.5 sm:p-2 rounded-2xl border border-theme-border shadow-lg">
+        <div className="pointer-events-auto flex items-center gap-3 glass glass-card p-1.5 sm:p-2">
           <a
             href="#hero"
-            className="flex items-center gap-3 px-2 py-1 rounded-xl hover:bg-theme-bg/60 transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-gold group"
+            className="flex items-center gap-3 px-2 py-1 rounded-xl hover:bg-white/10 transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-gold group"
           >
             <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full p-0.5 border border-theme-gold/40 bg-theme-bg/80 shadow-md shadow-theme-gold/15 group-hover:scale-105 group-hover:border-theme-gold transition-all duration-300 flex items-center justify-center shrink-0">
               <img
@@ -376,7 +376,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               onClick={onOpenSearch}
               title={language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}
-              className="p-2 sm:px-3 sm:py-2 rounded-2xl bg-theme-surface/90 backdrop-blur-xl border border-theme-border text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono shadow-md"
+              className="p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
             >
               <Search size={14} />
               <span className="hidden md:inline">{language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}</span>
@@ -400,7 +400,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative group">
             <a
               href="/admin"
-              className="p-2 sm:px-3 sm:py-2 rounded-2xl bg-theme-surface/90 backdrop-blur-xl border border-theme-border text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono shadow-md"
+              className="p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
             >
               <Settings size={14} />
               <span className="hidden lg:inline">{language === 'tj' ? 'Админ' : language === 'en' ? 'Admin' : 'Админ'}</span>
@@ -432,7 +432,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               type="button"
               onClick={() => setMenuPopoverOpen(!menuPopoverOpen)}
-              className={`p-2.5 rounded-2xl bg-theme-surface/90 backdrop-blur-xl border transition-colors flex items-center gap-1.5 text-xs font-mono shadow-md ${
+              className={`p-2.5 glass glass-chip transition-colors flex items-center gap-1.5 text-xs font-mono ${
                 menuPopoverOpen ? 'border-theme-gold text-theme-gold shadow-theme-gold/20' : 'border-theme-border text-theme-text hover:border-theme-gold'
               }`}
             >
@@ -460,7 +460,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             <button
                               type="button"
                               onClick={item.action}
-                              className="w-full text-left p-1.5 px-2 rounded-xl hover:bg-theme-bg/80 border border-transparent hover:border-theme-gold/30 transition-all group cursor-pointer flex items-center justify-between"
+                              className="w-full text-left p-1.5 px-2 rounded-xl hover:bg-white/10 border border-transparent hover:border-theme-gold/30 transition-all group cursor-pointer flex items-center justify-between"
                             >
                               <div className="min-w-0 pr-1">
                                 <div className="text-xs font-serif font-bold text-theme-text group-hover:text-theme-gold transition-colors truncate">
@@ -493,7 +493,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             <button
                               type="button"
                               onClick={() => openServiceTab(service.tab)}
-                              className="w-full text-left p-1.5 px-2 rounded-xl hover:bg-theme-bg/80 border border-transparent hover:border-emerald-500/30 transition-all group flex items-center gap-2"
+                              className="w-full text-left p-1.5 px-2 rounded-xl hover:bg-white/10 border border-transparent hover:border-emerald-500/30 transition-all group flex items-center gap-2"
                             >
                               <Icon size={13} className="text-emerald-400 shrink-0 group-hover:scale-110 transition-transform" />
                               <span className="text-xs font-mono text-theme-textSec group-hover:text-theme-text transition-colors truncate">
@@ -525,7 +525,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                               className={`flex items-center justify-between p-1.5 px-2 rounded-xl text-xs font-mono transition-colors ${
                                 active
                                   ? 'text-theme-gold bg-theme-gold/10 border border-theme-gold/30'
-                                  : 'text-theme-textSec hover:text-theme-text hover:bg-theme-bg/80 border border-transparent'
+                                  : 'text-theme-textSec hover:text-theme-text hover:bg-white/10 border border-transparent'
                               }`}
                             >
                               <span className="capitalize truncate">{t(item.nameKey)}</span>
@@ -563,7 +563,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? t('nav.close') : 'Menu'}
-              className="p-2 rounded-2xl bg-theme-surface/90 backdrop-blur-xl border border-theme-border text-theme-text hover:bg-theme-surfaceHover transition-colors shadow-md"
+              className="p-2 glass glass-chip text-theme-text transition-colors"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -575,10 +575,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Slide-down Overlay Navigation */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-theme-bg/98 backdrop-blur-2xl p-5 pt-20 flex flex-col justify-between md:hidden pointer-events-auto animate-in fade-in duration-200 overflow-y-auto">
+        <div className="fixed inset-0 z-40 glass glass-premium p-5 pt-20 flex flex-col justify-between md:hidden pointer-events-auto animate-in fade-in duration-200 overflow-y-auto">
           <div className="space-y-4">
             {/* Mobile Language Switcher */}
-            <div className="flex items-center justify-between p-3 rounded-2xl border border-theme-border bg-theme-surface/60">
+            <div className="flex items-center justify-between p-3 glass glass-card">
               <div className="flex items-center gap-2 text-xs font-mono text-theme-textMuted">
                 <Globe2 size={14} className="text-theme-gold" />
                 <span>{language === 'tj' ? 'Забони сомона' : language === 'en' ? 'Language' : 'Язык портала'}</span>
