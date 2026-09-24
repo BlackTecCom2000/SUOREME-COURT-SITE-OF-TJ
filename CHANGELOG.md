@@ -2,6 +2,13 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.8.1 — Footer visual integration — light glass
+- Footer темный `bg #050f1e` сплошной → светлый translucent glass `rgba 255,255,255,0.08` `border white/20` `backdrop-blur` — единая система с верхней частью, фон мягко просвечивает, не просто белый.
+- Все карточки футера унифицированы на `GlobalGlassSurface` `0.14` `blur 24` `border 0.30` `radius 24-30`: president/nav/network/map/contacts/useful — opacity 0.12-0.18, без `bg-black`/`bg-slate-950`/`opaque dark`.
+- Контакты/карта/bottom bar переведены: карта `bg rgba 5,15,30,0.35→255,255,255,0.14`, контакты `text-white→slate-900`, `text-slate-300→slate-700`, bottom bar `rgba 5,15,30,0.65→255,255,255,0.14` `border 0.28` текст deep navy.
+- Background continuity: архитектурный градиент сохранен но светлый `0.04` + `white/20` линии, footer продолжает основной `bg-theme-bg`, не отдельный dark background.
+- QA: tsc 0, build 6.62s, no dark footer, все карточки Global Glass, фон просвечивает, gold accent единый, responsive/cross-browser PASS.
+
 ## v2.8.0 — Court network page — Liquid Glass Premium Ultra redesign
 - Glass: все карточки на Global GlassSurface `0.14/24px/24px/0.10` — устранены белые opaque, верх/низ одинаковые, иконки/border/radius/shadow/blur унифицированы.
 - Регионы: 4 карточки одинаковой структуры/прозрачности, цвет только как точка/акцент линия 2px `colorHex` — убрана заливка всей карточки, яркие градиенты/neon убраны.
