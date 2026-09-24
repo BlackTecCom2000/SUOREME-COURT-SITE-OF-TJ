@@ -2,6 +2,13 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.9.3 — Redesign admin login to match public portal (cinematic glass)
+- Фон синхронизирован: `src/hooks/useSiteBackground.ts` + `src/components/GlobalBackground.tsx` (shared) — `AdminLogin` теперь рендерит тот же `GlobalBackground` что `ScrollVideo` (`imageDay/Night` из `site_design_settings background_image_day/night` published, fallback `/supreme-court-day.jpg`, poll 30s) — `background image/position/atmosphere/color grading/overlay/brightness/responsive` едины, без белой пелены, живой насыщенный; при смене фона в CMS login меняется автоматически. `server/index.ts` seed `background_image_day/night`.
+- Layout cinematic split: `AdminLogin` `flex-col-reverse md:flex-row` — desktop split left branding `55%` right login `45%` glass-premium `440px` `30px` blur 32, tablet adaptive, mobile single column priority login form (order reverse), same global background, no overflow.
+- Login card premium: `glass glass-premium` `backdrop blur 32` `border white/20` `shadow floating` `24-32 radius` не белая/черная opaque, HUD `circuit 0.10` gold accent `p-3 glass` + `NationalEmblem`, large premium typography `2xl-4xl gold`, soft glow, parallax via GlobalBackground.
+- Global Design System единый: `AdminLogin` + Public + Admin используют те же `colors/typography/glass/buttons/inputs/radius/borders/shadows/background/animations/responsive` — `GlobalBackground`, `GlassInput`, `AdminButton primary gold`, `glass-premium`.
+- QA: tsc 0, build 7.71s, main vs login одинаковый background/цвета/glass/inputs/borders/animations, responsive/mobile, cross-browser backdrop-filter -webkit + @supports, auth не тронут.
+
 ## v2.9.2 — Restore natural background Liquid Glass (remove white overlay)
 - Удален глобальный белый overlay: `src/components/ScrollVideo.tsx:36-104` `rgba 246,248,251 0.75→0` + `to-white/70` + vignette `rgba 15,23,42,0.18` → subtle `rgba 0,0,0,0` + `0.02` radial, `p 0.12` dark only; `src/components/Footer.tsx:40` `bg rgba 255,255,255,0.08 backdrop-blur-sm` + `linear 0.6 white` + circuit `0.03` → `bg transparent border white/10` + `radial 0.04` без white, svg удален — фон здания насыщенный, голубое небо естественное, глубина без молочной пелены, glass только на UI-карточках.
 - QA: tsc 0, build 6.48s, background без UI насыщенный, под карточками здание четко, hero/нижние секции, Chrome/Firefox/Edge/Safari/Mobile проверены.

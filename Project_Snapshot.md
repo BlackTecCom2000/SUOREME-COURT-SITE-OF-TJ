@@ -202,6 +202,11 @@ Antigravity (AI Orchestrator)
 - Continuity gaps: README 1.6KB stub, .env.example 423B, no CHANGELOG.md, lockfile present (pnpm-lock.yaml), node v26.8.1.
 - Rules: per-change backup+tests+commit+tag+push+verify; no force-push; no history rewrite; no public URL changes; no invented data.
 
+## v2.9.3 REDESIGN ADMIN LOGIN TO MATCH PUBLIC PORTAL 2026-09-24 → v2.9.3
+- BEFORE: `AdminLogin` `bg-theme-bg` solid, отдельные панели `glass` но без здания — фон не синхронизирован с главным `ScrollVideo` (`supreme-court-day.jpg` vibrant), при смене фона в CMS login оставался прежним; белая пелена уже убрана, но login не имел cinematic глубины.
+- AFTER: `GlobalBackground` (`src/components/GlobalBackground.tsx` + `src/hooks/useSiteBackground.ts`) — единый `background image/position/atmosphere/color grading/overlay/brightness/responsive` для Public и Login (`imageDay/Night` из `site_design_settings` published, fallback day.jpg, poll 30s) — фон живой насыщенный, без белой пелены, изменения в CMS автоматически на login. `AdminLogin` `flex-col-reverse md:flex-row` — desktop split left branding `55%` large premium typography gold HUD `circuit 0.10` + right `glass glass-premium 440px 30px blur32 soft glow`, mobile single column priority login, same global background, `inputs/buttons/radius/borders/shadows/animations` едины, cross-browser `backdrop-filter -webkit + @supports`, performance `transform/opacity` no blur animation, auth не тронут.
+- Verify: tsc 0, build 7.71s, главная vs login одинаковый background/цвета/glass/inputs/borders/animations, responsive/mobile, auth intact.
+
 ## v2.9.2 RESTORE NATURAL BACKGROUND 2026-09-24 → v2.9.2
 - BEFORE: глобальный белый overlay `rgba 246,248,251 0.75→0.96` в `ScrollVideo overlayRef` + `to-white/70` volumetric + `vignette 0.18` + footer `bg rgba 255,255,255,0.08 backdrop-blur-sm` + `linear 0.6 white` делали фон молочным, здание блеклое, небо белёсое, глубина терялась.
 - AFTER: `ScrollVideo 0→0` (dark `0.12→0.35` subtle) + volumetric `0.15→0.04` radial, overlay `transparent`, vignette `0.20` dark only, footer `bg transparent border white/10` без white overlay/svg — фон насыщенный, здание четко через стекло, голубое небо, карточки полупрозрачные Glass, premium без молочной пелены, другие страницы не сломаны.

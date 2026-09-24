@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { useSiteBackground } from '../hooks/useSiteBackground';
 
 export const ScrollVideo: React.FC = () => {
   const { isDark } = useTheme();
+  const { imageDay, imageNight } = useSiteBackground();
   // PERF: scroll writes bypass React state entirely — a single rAF-throttled
   // handler writes transform/background directly to DOM nodes (zero re-renders,
   // no forced layout: scrollHeight is cached and refreshed on resize only).
@@ -65,9 +67,9 @@ export const ScrollVideo: React.FC = () => {
         className="absolute inset-0 w-full h-full transform-gpu"
         style={{ transform: 'scale(1) translateY(-0px)' }}
       >
-        {/* Day background */}
+        {/* Day background — synced via GlobalBackground system, no white overlay */}
         <img
-          src="/supreme-court-day.jpg"
+          src={imageDay}
           alt="Бинои Суди Олии Ҷумҳурии Тоҷикистон (Рӯз)"
           loading="eager"
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${
@@ -76,7 +78,7 @@ export const ScrollVideo: React.FC = () => {
         />
         {/* Night background */}
         <img
-          src="/supreme-court-night.jpg"
+          src={imageNight}
           alt="Бинои Суди Олии Ҷумҳурии Тоҷикистон (Шаб)"
           loading="eager"
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${

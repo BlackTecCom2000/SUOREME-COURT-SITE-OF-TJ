@@ -181,7 +181,14 @@ try {
       ins3.run('glass_shadow','0.12','0.12');
       ins3.run('gold_accent','#d4a42d','#d4a42d');
       ins3.run('preset','premium','premium');
+      ins3.run('background_image_day','/supreme-court-day.jpg','/supreme-court-day.jpg');
+      ins3.run('background_image_night','/supreme-court-night.jpg','/supreme-court-night.jpg');
     }
+    // Ensure background images exist even if design_settings already seeded (v2.9.2 → v2.9.3 upgrade)
+    try {
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('background_image_day','/supreme-court-day.jpg','/supreme-court-day.jpg');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('background_image_night','/supreme-court-night.jpg','/supreme-court-night.jpg');
+    } catch {}
   } catch (e) { console.error('site cms migration failed', e); }
 
 const seedDutyData = () => {

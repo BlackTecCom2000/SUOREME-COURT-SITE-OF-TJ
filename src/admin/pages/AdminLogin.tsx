@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NationalEmblem } from '../../components/judicial-ecosystem/NationalEmblem';
+import { GlobalBackground } from '../../components/GlobalBackground';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import { AdminInput } from '../components/ui/AdminInput';
 import { AdminButton } from '../components/ui/AdminButton';
@@ -35,7 +36,8 @@ export const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-theme-bg text-theme-text flex flex-col md:flex-row overflow-hidden select-none">
+    <div className="min-h-screen w-screen bg-transparent text-theme-text flex flex-col-reverse md:flex-row overflow-hidden select-none relative">
+      <GlobalBackground />
       {/* LEFT — GlassBrandPanel — same light glass as public site */}
       <div className="relative w-full md:w-[55%] min-h-[360px] md:min-h-screen glass !rounded-none border-b md:border-b-0 md:border-r border-[var(--glass-border)] flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden">
         {/* Subtle Background Circuit Mesh */}
@@ -89,8 +91,8 @@ export const AdminLogin: React.FC = () => {
         </div>
       </div>
 
-      {/* RIGHT — GlassAuthenticationPanel — same light glass as public site */}
-      <div className="w-full md:w-[45%] flex items-center justify-center p-6 sm:p-10 lg:p-12 relative bg-theme-bg">
+      {/* RIGHT — GlassAuthenticationPanel — same light glass, background synced */}
+      <div className="w-full md:w-[45%] flex items-center justify-center p-6 sm:p-10 lg:p-12 relative bg-transparent">
         <div className="w-full max-w-[440px] glass glass-premium !rounded-[30px] p-8 text-left"
           style={{ backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)' } as React.CSSProperties}>
           {/* Card Title — same header as public */}
