@@ -2,6 +2,12 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.7.0 — Real site footer Liquid Glass Premium Ultra
+- Архитектура: новый `src/components/Footer.tsx` multi-layer (deep navy `050f1e` + subtle architectural gradient/circuit 0.04 + premium glass 30px). Старый сплошной голубой footer и ticker полностью заменены — контент сохранен, визуал натуральное продолжение сайта.
+- Полезные ссылки 7 шт (`portalLinks.ts` USEFUL_LINKS single source) → GlassLogoCard `160×84` `rounded 16` `object-fit contain` `aspect ratio` `hover gold/30` `focus ring`, горизонтальный carousel/grid desktop стрелки + mobile swipe + keyboard ArrowLeft/Right + touch scroll-snap.
+- Навигация СУДИ ОЛИИ (4 ссылки single source) → GlassNavigationColumn `24px` `white/10` subtle gold active; СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ → GlassList accordion из `REGIONAL_CLUSTERS` (4 региона, 77 судов single source, lazy 8 + more); карта — Liquid Glass SVG Tajikistan mini-map с gold/cyan accent, selected/hover состояния, mobile usable, alt list.
+- Контакты ТАМОС `GlassContactPanel` premium: реальный адрес `734018, Душанбе 55` / `info@sud.tj` mailto / `+992 372331415` tel — единственные источники `t('contacts.*')`, без fake; bottom bar `GlassBottomBar` compact `rgba 5,15,30,0.65` blur premium, copyright + IT BlackTecCom `GlassBrandBadge` compact + back-to-top `FloatingGlassButton` fixed gold/cyan, `opacity+transform`, видима после 600px, aria-label, keyboard.
+
 ## v2.6.0 — MASTER Liquid Glass Premium Ultra — Public + Control Center + Login unified
 - Global system v2.0: `src/styles/tokens.css` обновлен к MASTER spec (`surface 0.14`/hover 0.19/active 0.23/strong 0.18/dark 0.28 navy, border 0.22/0.34/active gold 0.60, blur 24/32/40 sat 160%, radius xs 12 sm 16 md 20 lg 24 xl 30, shadow 0.12/0.18 floating 0.22, highlight 0.42/0.08, court gold/navy, status colors) + fallback tokens. `src/components/ui/GlassSurface.tsx` новый primitive с variants subtle/default/strong/interactive/active/floating/modal/navigation.
 - Control Center — единая экосистема: `AdminSidebar` glass-admin deep navy semi-transparent, `AdminTopbar` sticky glass premium 32px blur, `AdminCard` glass-admin (border white/10, AdminCard header unified), `Dashboard` welcome GlassPanel strong (не solid градиент), summary cards единая surface, quick-actions children lighter glass subtle (white/5), security journal log items glass subtle, platform status / citizen requests empty states — все на glass.
