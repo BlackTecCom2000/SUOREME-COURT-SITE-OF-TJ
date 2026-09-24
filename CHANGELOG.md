@@ -2,6 +2,16 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.9.4 — Finalize Global Liquid Glass + managed atmosphere
+- Белые линии-разрывы удалены: `border-t border-theme-border/30` из 13 секций (`Section*`) — случайные разрывы интерфейса убраны, функциональные разделители сохранены.
+- Global Liquid Glass для ВСЕХ кнопок/карточек: `btn-primary/gold/secondary/ghost/btn-outline` → `glass` `0.14-0.23` `blur 24` `border 0.22` `radius 24` `shadow 0.12` `highlight 0.42` с `backdrop-filter`/`-webkit-` + `@supports` fallback; `AdminButton` → `glass` с gold/cyan акцентами; `content-card` уже glass.
+- Нижние карточки видимы: `Section07Contacts` и `Footer` используют `glass-strong 0.18` + `inner highlight` + `soft shadow`, текст `deep navy` контраст, border заметен `0.22` без opaque white, здание не конфликтует.
+- Background atmosphere возвращен управляемым: `GlobalBackground` + `ScrollVideo` — `Background Image` → `Atmospheric White Overlay` (`--bg-overlay-opacity 0.12`, `--bg-blur 0`, `--bg-saturation 100%`, `--bg-brightness 100%`, `--bg-contrast 100%`) → `Liquid Glass UI`; overlay слабый, здание/небо видимы, не молочная пелена, `background blur` отдельно от `glass blur`.
+- Admin `Настройки → Дизайн → Background & Glass` — Background (Image/Position/Size), Atmosphere (White Overlay Opacity/Blur/Saturation/Brightness/Contrast), Glass (Opacity/Blur/Saturation/Border/Shadow/Highlight/Radius) — все через `site_design_settings` draft/published, Live Preview сразу (Blur +10 → фон размыт, Glass Opacity +10 → карточки плотнее) на Desktop/Tablet/Mobile.
+- Presets: Premium/Ultra/Clear/Soft — Apply/Preview/Save/Reset, меняют Global Tokens, не создают хаотичный CSS.
+- Global sync: Public + Admin + Login + Mobile + Footer получают опубликованные `--glass-*`/`--bg-*`/`--court-gold`, изменение в админке синхронно везде.
+- QA: нет белых линий, все карточки/кнопки glass, нижние карточки видны, текст читаемый, фон не молочный, здание видимо, glass глубина, desktop/mobile PASS, cross-browser Chrome/Edge/Firefox/Safari + iOS/Android `backdrop-filter -webkit @supports` PASS.
+
 ## v2.9.3 — Redesign admin login to match public portal (cinematic glass)
 - Фон синхронизирован: `src/hooks/useSiteBackground.ts` + `src/components/GlobalBackground.tsx` (shared) — `AdminLogin` теперь рендерит тот же `GlobalBackground` что `ScrollVideo` (`imageDay/Night` из `site_design_settings background_image_day/night` published, fallback `/supreme-court-day.jpg`, poll 30s) — `background image/position/atmosphere/color grading/overlay/brightness/responsive` едины, без белой пелены, живой насыщенный; при смене фона в CMS login меняется автоматически. `server/index.ts` seed `background_image_day/night`.
 - Layout cinematic split: `AdminLogin` `flex-col-reverse md:flex-row` — desktop split left branding `55%` right login `45%` glass-premium `440px` `30px` blur 32, tablet adaptive, mobile single column priority login form (order reverse), same global background, no overflow.

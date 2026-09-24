@@ -31,17 +31,17 @@ export const AdminButton: React.FC<AdminButtonProps> = ({
 
   const variantClasses = {
     primary:
-      'bg-gradient-to-r from-[#ca8a04] to-[#eab308] text-slate-950 font-semibold shadow-md shadow-amber-500/20 hover:brightness-110 active:scale-[0.98] border border-amber-300/40',
+      'glass text-[var(--court-navy)] font-semibold border border-[rgba(212,164,45,0.38)] shadow-[var(--glass-shadow)] hover:brightness-110 active:scale-[0.98]',
     secondary:
-      'bg-slate-800/80 text-white font-medium hover:bg-slate-700 active:scale-[0.98] border border-white/10 shadow-sm',
+      'glass text-theme-text font-medium border border-[var(--glass-border)] shadow-[var(--glass-shadow)] hover:bg-[var(--glass-surface-hover)] active:scale-[0.98]',
     digital:
-      'bg-gradient-to-r from-sky-600 to-cyan-500 text-white font-semibold shadow-md shadow-cyan-500/20 hover:brightness-110 active:scale-[0.98] border border-cyan-300/30',
+      'glass text-[var(--court-navy)] font-semibold border border-[rgba(56,189,248,0.30)] shadow-[var(--glass-shadow)] hover:brightness-110 active:scale-[0.98]',
     outline:
-      'bg-transparent text-slate-200 border border-slate-700 hover:border-amber-400/50 hover:bg-slate-800/40 active:scale-[0.98]',
+      'glass text-theme-text border border-[var(--glass-border)] hover:border-[var(--court-gold)]/50 hover:bg-[var(--glass-surface-hover)] active:scale-[0.98]',
     ghost:
-      'bg-transparent text-slate-300 hover:bg-slate-800/50 hover:text-white active:scale-[0.98]',
+      'glass text-theme-textMuted border border-[var(--glass-border-subtle)] hover:text-theme-text hover:bg-[var(--glass-surface-hover)] active:scale-[0.98]',
     danger:
-      'bg-red-600/90 text-white font-semibold hover:bg-red-500 active:scale-[0.98] border border-red-400/30 shadow-md shadow-red-500/20',
+      'glass text-white font-semibold border border-red-400/30 shadow-[var(--glass-shadow)] hover:bg-red-500/10 active:scale-[0.98]',
   }[variant];
 
   return (

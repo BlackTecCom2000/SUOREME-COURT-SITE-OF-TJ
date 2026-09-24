@@ -39,7 +39,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
     <section
       id="information"
       aria-label={t('nav.acts')}
-      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
+      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
       <DigitalDataRain density="sparse" speed="medium" opacity={0.2} colorTheme="gold" />
 

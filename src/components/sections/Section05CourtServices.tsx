@@ -86,7 +86,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
     <section
       id="services"
       aria-label={t('nav.eservices')}
-      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
+      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
       <DigitalDataRain density="sparse" speed="medium" opacity={0.2} colorTheme="cyan" />
 

@@ -12,7 +12,7 @@ export const Section04ThemisScales: React.FC = () => {
     <section
       id="justice-age"
       aria-label={t('nav.justiceAge')}
-      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden"
     >
       <DigitalDataRain density="medium" speed="slow" opacity={0.3} colorTheme="gold" />
 

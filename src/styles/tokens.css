@@ -37,21 +37,32 @@
      CLEAN semantics kept: low white haze so architectural background
      stays visible; values match MASTER_TASK spec, dark theme overrides
      in index.css keep density for admin continuity. */
-  --glass-surface: rgba(255, 255, 255, 0.14);
-  --glass-surface-hover: rgba(255, 255, 255, 0.19);
-  --glass-surface-active: rgba(255, 255, 255, 0.23);
-  --glass-surface-strong: rgba(255, 255, 255, 0.18);
+  --glass-opacity: 0.14;
+  --glass-opacity-hover: 0.19;
+  --glass-opacity-active: 0.23;
+  --glass-opacity-strong: 0.18;
+  --glass-surface: rgba(255, 255, 255, var(--glass-opacity));
+  --glass-surface-hover: rgba(255, 255, 255, var(--glass-opacity-hover));
+  --glass-surface-active: rgba(255, 255, 255, var(--glass-opacity-active));
+  --glass-surface-strong: rgba(255, 255, 255, var(--glass-opacity-strong));
   --glass-surface-dark: rgba(5, 15, 30, 0.28);
   --glass-surface-subtle: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.22);
+  --glass-border-opacity: 0.22;
+  --glass-border-opacity-hover: 0.34;
+  --glass-border: rgba(255, 255, 255, var(--glass-border-opacity));
   --glass-border-subtle: rgba(255, 255, 255, 0.14);
-  --glass-border-hover: rgba(255, 255, 255, 0.34);
+  --glass-border-hover: rgba(255, 255, 255, var(--glass-border-opacity-hover));
   --glass-border-active: rgba(212, 164, 45, 0.60);
   --glass-blur: 24px;
   --glass-blur-premium: 32px;
   --glass-blur-ultra: 40px;
   --glass-saturation: 160%;
   --glass-saturation-premium: 160%;
+  --bg-overlay-opacity: 0.12;
+  --bg-blur: 0px;
+  --bg-saturation: 100%;
+  --bg-brightness: 100%;
+  --bg-contrast: 100%;
   --glass-radius-xs: 12px;
   --glass-radius-sm: 16px;
   --glass-radius-md: 20px;

@@ -20,7 +20,7 @@ export const Section07JudicialActs: React.FC<Section07JudicialActsProps> = ({
     <section
       id="acts"
       aria-label={t('nav.acts')}
-      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
       <DigitalDataRain density="medium" speed="medium" opacity={0.25} colorTheme="gold" />
 

@@ -17,7 +17,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
     <section
       id="contacts"
       aria-label={t('nav.contacts')}
-      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
+      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
       <DigitalDataRain density="sparse" speed="slow" opacity={0.2} colorTheme="gold" />
 

@@ -51,13 +51,25 @@ export const SiteBuilder: React.FC = () => {
     apiFetch('/api/admin/site-versions').then(r=> r.ok?r.json():[]).then(setVersions).catch(()=>{});
   };
   useEffect(load, []);
-  useEffect(()=>{ // live apply design tokens to preview (global)
+  useEffect(()=>{ // live preview — every change immediately visible, separate bg vs glass
     const root=document.documentElement;
-    if(design.glass_intensity) root.style.setProperty('--glass-surface', `rgba(255,255,255,${design.glass_intensity})`);
-    if(design.glass_blur) root.style.setProperty('--glass-blur', `${design.glass_blur}px`);
-    if(design.glass_border) root.style.setProperty('--glass-border', `rgba(255,255,255,${design.glass_border})`);
-    if(design.glass_radius) root.style.setProperty('--glass-radius-card', `${design.glass_radius}px`);
-    if(design.gold_accent) root.style.setProperty('--court-gold', design.gold_accent);
+    const set = (k:string, v:string) => root.style.setProperty(k, v);
+    if(design.glass_intensity || design.glass_opacity) set('--glass-opacity', design.glass_opacity || design.glass_intensity);
+    if(design.glass_blur) set('--glass-blur', `${design.glass_blur}px`);
+    if(design.glass_saturation) set('--glass-saturation', `${design.glass_saturation}%`);
+    if(design.glass_border || design.glass_border_opacity) set('--glass-border-opacity', design.glass_border_opacity || design.glass_border);
+    if(design.glass_highlight) set('--glass-highlight', `inset 0 1px 0 rgba(255,255,255,${design.glass_highlight})`);
+    if(design.glass_shadow) set('--glass-shadow', `0 12px 40px rgba(0,0,0,${design.glass_shadow})`);
+    if(design.glass_radius) { set('--glass-radius-card', `${design.glass_radius}px`); set('--glass-radius-panel', `${design.glass_radius}px`); set('--glass-radius', `${design.glass_radius}px`); }
+    if(design.bg_overlay_opacity) set('--bg-overlay-opacity', design.bg_overlay_opacity);
+    if(design.bg_blur !== undefined) set('--bg-blur', `${design.bg_blur}px`);
+    if(design.bg_saturation) set('--bg-saturation', `${design.bg_saturation}%`);
+    if(design.bg_brightness) set('--bg-brightness', `${design.bg_brightness}%`);
+    if(design.bg_contrast) set('--bg-contrast', `${design.bg_contrast}%`);
+    if(design.background_image) set('--bg-image', `url(${design.background_image})`);
+    if(design.gold_accent) set('--court-gold', design.gold_accent);
+    // keep legacy vars synced
+    if(design.glass_intensity) set('--glass-surface', `rgba(255,255,255,${design.glass_intensity})`);
   }, [design]);
 
   const sel = sections.find(s=> s.id===selected) || null;
@@ -113,23 +125,87 @@ export const SiteBuilder: React.FC = () => {
               ))}
             </div>
           </AdminCard>
-          <AdminCard title="Глобальные настройки" subtitle="Glass intensity, blur, border, radius, shadow, gold, background, typography, animation">
-            <div className="space-y-2">
-              {[
-                {k:'glass_intensity', label:'Glass intensity (0.05-0.30)'},
-                {k:'glass_blur', label:'Blur (12-40)'},
-                {k:'glass_border', label:'Border (0.10-0.50)'},
-                {k:'glass_radius', label:'Radius (12-30)'},
-                {k:'gold_accent', label:'Gold accent (hex)'},
-              ].map(f=> (
-                <div key={f.k} className="flex items-center gap-2">
-                  <span className="font-mono text-[11px] text-slate-400 w-32">{f.label}</span>
-                  <AdminInput value={design[f.k]||''} onChange={e=> setDesign({...design, [f.k]: e.target.value})} className="flex-1" />
-                  <AdminButton size="sm" onClick={async()=>{ await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:f.k, value: design[f.k]||''})}); alert('Draft saved');}}>Сохранить</AdminButton>
+          <AdminCard title="Background & Glass — Global" subtitle="Настройки → Дизайн → Background & Glass — управляет Public + Admin + Login + Footer + Mobile">
+            <div className="space-y-4">
+              {/* Background */}
+              <div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--court-gold)] mb-2">Background</div>
+                <div className="space-y-2">
+                  {[
+                    {k:'background_image', label:'Image (/supreme-court-day.jpg)'},
+                    {k:'background_position', label:'Position (center/top)'},
+                    {k:'background_size', label:'Size (cover/contain)'},
+                  ].map(f=> (
+                    <div key={f.k} className="flex items-center gap-2">
+                      <span className="font-mono text-[11px] text-slate-400 w-36 truncate">{f.label}</span>
+                      <AdminInput value={design[f.k]||''} onChange={e=> setDesign({...design, [f.k]: e.target.value})} className="flex-1" placeholder={f.k.includes('image')?'/supreme-court-day.jpg':'center'} />
+                      <AdminButton size="sm" onClick={async()=>{ await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:f.k, value: design[f.k]||''})}); alert('Draft saved');}}>Сохр.</AdminButton>
+                    </div>
+                  ))}
                 </div>
-              ))}
-              <div className="flex gap-2 pt-2">
-                <AdminSelect value={design.preset||'premium'} onChange={e=> setDesign({...design, preset:(e.target as HTMLSelectElement).value})} options={[{value:'premium',label:'Liquid Glass Premium'},{value:'ultra',label:'Ultra'},{value:'light',label:'Official Light'},{value:'dark',label:'Official Dark'}]} />
+              </div>
+              {/* Atmosphere */}
+              <div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--court-gold)] mb-2">Atmosphere — White Overlay (слабый, здание видно)</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    {k:'bg_overlay_opacity', label:'White Overlay 0.00-0.30', min:0, max:0.3, step:0.01},
+                    {k:'bg_blur', label:'Background Blur 0-20px', min:0, max:20, step:1},
+                    {k:'bg_saturation', label:'Background Sat 80-140%', min:80, max:140, step:1},
+                    {k:'bg_brightness', label:'Brightness 80-120%', min:80, max:120, step:1},
+                    {k:'bg_contrast', label:'Contrast 80-120%', min:80, max:120, step:1},
+                  ].map(f=> (
+                    <div key={f.k} className="flex flex-col gap-1">
+                      <span className="font-mono text-[10px] text-slate-400">{f.label}</span>
+                      <div className="flex items-center gap-1">
+                        <input type="range" min={f.min} max={f.max} step={f.step} value={parseFloat(design[f.k])|| (f.k==='bg_overlay_opacity'?0.12: f.k==='bg_blur'?0:100)} onChange={e=> setDesign({...design, [f.k]: e.target.value})} className="flex-1" />
+                        <span className="font-mono text-[10px] text-slate-300 w-10">{design[f.k]||'-'}</span>
+                        <AdminButton size="sm" onClick={async()=>{ await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:f.k, value: design[f.k]||''})});}}>OK</AdminButton>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Glass */}
+              <div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--court-gold)] mb-2">Glass — отдельный от background</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    {k:'glass_opacity', label:'Glass Opacity 0.05-0.30'},
+                    {k:'glass_blur', label:'Glass Blur 12-40'},
+                    {k:'glass_saturation', label:'Glass Saturation 120-180%'},
+                    {k:'glass_border_opacity', label:'Border 0.10-0.50'},
+                    {k:'glass_shadow', label:'Shadow 0.06-0.30'},
+                    {k:'glass_highlight', label:'Highlight 0.20-0.60'},
+                    {k:'glass_radius', label:'Radius 12-30'},
+                  ].map(f=> (
+                    <div key={f.k} className="flex items-center gap-1">
+                      <span className="font-mono text-[10px] text-slate-400 w-24 truncate">{f.label}</span>
+                      <AdminInput value={design[f.k]||''} onChange={e=> setDesign({...design, [f.k]: e.target.value})} className="flex-1" />
+                      <AdminButton size="sm" onClick={async()=>{ await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:f.k, value: design[f.k]||''})});}}>OK</AdminButton>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Presets */}
+              <div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--court-gold)] mb-2">Presets</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    {id:'premium', label:'Premium', vals:{glass_opacity:'0.14', glass_blur:'24', glass_saturation:'160', glass_border_opacity:'0.22', glass_shadow:'0.12', glass_highlight:'0.42', bg_overlay_opacity:'0.12', bg_blur:'0'}},
+                    {id:'ultra', label:'Ultra', vals:{glass_opacity:'0.18', glass_blur:'32', glass_saturation:'170', glass_border_opacity:'0.28', glass_shadow:'0.18', glass_highlight:'0.50', bg_overlay_opacity:'0.08', bg_blur:'2'}},
+                    {id:'clear', label:'Clear Glass', vals:{glass_opacity:'0.08', glass_blur:'12', glass_saturation:'140', glass_border_opacity:'0.14', glass_shadow:'0.06', glass_highlight:'0.30', bg_overlay_opacity:'0.05', bg_blur:'0'}},
+                    {id:'soft', label:'Soft Glass', vals:{glass_opacity:'0.10', glass_blur:'18', glass_saturation:'150', glass_border_opacity:'0.18', glass_shadow:'0.08', glass_highlight:'0.35', bg_overlay_opacity:'0.10', bg_blur:'1'}},
+                  ].map(p=> (
+                    <button key={p.id} onClick={()=> setDesign({...design, ...p.vals, preset:p.id})} className={`p-2 rounded-xl border text-xs font-mono ${design.preset===p.id?'bg-amber-500/20 border-amber-500/30 text-amber-300':'border-white/10 text-slate-400 hover:text-white'}`}>{p.label}</button>
+                  ))}
+                </div>
+                <div className="flex gap-2 mt-2">
+                  <AdminButton size="sm" onClick={async()=>{ for(const [k,v] of Object.entries(design)) if(k!=='preset') await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:k, value: String(v)})}); alert('Preset preview — Save as preset / Reset below');}}>Apply</AdminButton>
+                  <AdminButton size="sm" variant="ghost" onClick={()=> alert('Preview — уже видно в центре Live Preview')}>Preview</AdminButton>
+                  <AdminButton size="sm" variant="ghost" onClick={async()=>{ const name=prompt('Save as preset name:'); if(name) await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:`preset_${name}`, value: JSON.stringify(design)})});}}>Save as preset</AdminButton>
+                  <AdminButton size="sm" variant="ghost" onClick={()=> { setDesign({}); document.documentElement.removeAttribute('style'); alert('Reset — обновите страницу');}}>Reset</AdminButton>
+                </div>
               </div>
             </div>
           </AdminCard>

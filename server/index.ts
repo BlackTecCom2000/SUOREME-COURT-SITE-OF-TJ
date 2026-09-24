@@ -188,6 +188,15 @@ try {
     try {
       db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('background_image_day','/supreme-court-day.jpg','/supreme-court-day.jpg');
       db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('background_image_night','/supreme-court-night.jpg','/supreme-court-night.jpg');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('background_position','center','center');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('background_size','cover','cover');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('bg_overlay_opacity','0.12','0.12');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('bg_blur','0','0');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('bg_saturation','100','100');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('bg_brightness','100','100');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('bg_contrast','100','100');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('glass_saturation','160','160');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('glass_highlight','0.42','0.42');
     } catch {}
   } catch (e) { console.error('site cms migration failed', e); }
 

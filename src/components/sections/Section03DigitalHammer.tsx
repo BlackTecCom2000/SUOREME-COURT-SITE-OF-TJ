@@ -18,7 +18,7 @@ export const Section03DigitalHammer: React.FC<Section03DigitalHammerProps> = ({
     <section
       id="digital-justice"
       aria-label={t('nav.digitalJustice')}
-      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30"
+      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden"
     >
       <DigitalDataRain density="medium" speed="medium" opacity={0.3} colorTheme="cyan" />
 

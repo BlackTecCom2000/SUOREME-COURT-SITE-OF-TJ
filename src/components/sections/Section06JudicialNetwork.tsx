@@ -36,7 +36,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
     <section
       id="courts"
       aria-label={t('nav.courts')}
-      className="relative py-10 lg:py-16 overflow-hidden text-theme-text select-none border-t border-theme-border/30"
+      className="relative py-10 lg:py-16 overflow-hidden text-theme-text select-none"
     >
       <DigitalDataRain density="sparse" speed="slow" opacity={0.2} colorTheme="cyan" />
 

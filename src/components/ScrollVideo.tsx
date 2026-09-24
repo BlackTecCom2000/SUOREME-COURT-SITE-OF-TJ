@@ -61,13 +61,14 @@ export const ScrollVideo: React.FC = () => {
       aria-hidden="true"
       className="fixed inset-0 -z-10 bg-[var(--bg-primary)] pointer-events-none select-none overflow-hidden transition-colors duration-700"
     >
-      {/* 1. Ultra-High Resolution Supreme Court Building Architecture (Continuous Cross-fade) */}
       <div
         ref={parallaxRef}
         className="absolute inset-0 w-full h-full transform-gpu"
-        style={{ transform: 'scale(1) translateY(-0px)' }}
+        style={{
+          transform: 'scale(1) translateY(-0px)',
+          filter: `blur(var(--bg-blur, 0px)) saturate(var(--bg-saturation, 100%)) brightness(var(--bg-brightness, 100%)) contrast(var(--bg-contrast, 100%))`,
+        }}
       >
-        {/* Day background — synced via GlobalBackground system, no white overlay */}
         <img
           src={imageDay}
           alt="Бинои Суди Олии Ҷумҳурии Тоҷикистон (Рӯз)"
@@ -76,7 +77,6 @@ export const ScrollVideo: React.FC = () => {
             !isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
         />
-        {/* Night background */}
         <img
           src={imageNight}
           alt="Бинои Суди Олии Ҷумҳурии Тоҷикистон (Шаб)"
@@ -86,36 +86,25 @@ export const ScrollVideo: React.FC = () => {
           }`}
         />
       </div>
-
-      {/* 2. Extremely subtle atmospheric color correction only — no white overlay */}
+      {/* Atmospheric White Overlay — configurable, weak, building and sky remain visible */}
       <div
-        className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ${
-          isDark
-            ? 'opacity-40'
-            : 'opacity-15'
-        }`}
-        style={{
-          background: isDark
-            ? 'radial-gradient(ellipse at 50% 0%, rgba(223,190,126,0.08) 0%, transparent 55%)'
-            : 'radial-gradient(ellipse at 50% 0%, rgba(184,138,36,0.04) 0%, transparent 60%)',
-        }}
-      />
-
-      {/* 3. Natural background — no milky layer, depth via image only */}
-      <div
-        ref={overlayRef}
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundColor: isDark ? 'rgba(5, 8, 15, 0.12)' : 'rgba(0, 0, 0, 0)',
+          background: `rgba(255,255,255, var(--bg-overlay-opacity, 0.12))`,
+          backdropFilter: `blur(calc(var(--bg-blur, 0px) * 0.5))`,
+          WebkitBackdropFilter: `blur(calc(var(--bg-blur, 0px) * 0.5))`,
         }}
       />
-
-      {/* 4. Very subtle vignette — no white overlay */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-20"
+        className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ${isDark ? 'opacity-20' : 'opacity-10'}`}
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 65%, rgba(0,0,0,0.14) 100%)',
+          background: isDark ? 'radial-gradient(ellipse at 50% 0%, rgba(223,190,126,0.06) 0%, transparent 55%)' : 'radial-gradient(ellipse at 50% 0%, rgba(184,138,36,0.02) 0%, transparent 60%)',
         }}
+      />
+      <div
+        ref={overlayRef}
+        className="absolute inset-0 pointer-events-none opacity-10"
+        style={{ background: 'radial-gradient(ellipse at center, transparent 70%, rgba(0,0,0,0.08) 100%)' }}
       />
     </div>
   );
