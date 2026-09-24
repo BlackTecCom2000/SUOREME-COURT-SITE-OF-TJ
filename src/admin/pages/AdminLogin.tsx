@@ -38,8 +38,8 @@ export const AdminLogin: React.FC = () => {
   return (
     <div className="min-h-screen w-screen bg-transparent text-theme-text flex flex-col-reverse md:flex-row overflow-hidden select-none relative">
       <GlobalBackground />
-      {/* LEFT — GlassBrandPanel — same light glass as public site */}
-      <div className="relative w-full md:w-[55%] min-h-[360px] md:min-h-screen glass !rounded-none border-b md:border-b-0 md:border-r border-[var(--glass-border)] flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden">
+      {/* LEFT — branding panel — NO backdrop-filter here, only glass on inner emblem card */}
+      <div className="relative w-full md:w-[55%] min-h-[360px] md:min-h-screen bg-transparent border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden">
         {/* Subtle Background Circuit Mesh */}
         <div
           className="absolute inset-0 pointer-events-none opacity-20"

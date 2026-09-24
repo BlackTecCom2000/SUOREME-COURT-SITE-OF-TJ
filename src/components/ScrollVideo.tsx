@@ -86,13 +86,11 @@ export const ScrollVideo: React.FC = () => {
           }`}
         />
       </div>
-      {/* Atmospheric White Overlay — configurable, weak, building and sky remain visible */}
+      {/* Atmospheric White Overlay — configurable, weak, building and sky remain visible — NO backdrop-filter here */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `rgba(255,255,255, var(--bg-overlay-opacity, 0.12))`,
-          backdropFilter: `blur(calc(var(--bg-blur, 0px) * 0.5))`,
-          WebkitBackdropFilter: `blur(calc(var(--bg-blur, 0px) * 0.5))`,
         }}
       />
       <div

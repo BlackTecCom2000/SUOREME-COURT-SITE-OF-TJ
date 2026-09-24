@@ -2,6 +2,14 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.9.5 — Final global Liquid Glass fix Public+Admin+Login (one background + one glass)
+- Архитектура: `ONE_GLOBAL_BACKGROUND` (`GlobalBackground` `image` → `Atmospheric White Overlay` `var(--bg-overlay-opacity 0.12) var(--bg-blur 0)` → `Page Content` → `Glass Components`) + `ONE_GLOBAL_GLASS_SYSTEM` (`--glass-opacity/blur/saturation/border/shadow/highlight/radius`) — `backdrop-filter` только на `GlassCard/Button/Input/Modal/Navigation/Panel`, удален с `body/main/layout/half-page` и `left/right split` login (критичный фикс вертикального разрыва).
+- Public: белые линии `border-t theme-border/30` 13 секций удалены, все `hero/information/document/news/action/court/regional/service/footer/tabs/filters/search/dropdowns/modals/login/admin/mobile` на едином `GlassSurface` `0.14/24/0.22/24/0.12`, нижние карточки `glass-strong 0.18` + `inner highlight` `soft shadow` `deep navy text` без opaque, фон `supreme-court-day.jpg` насыщенный голубой, здание видно.
+- Admin: `AdminShell bg-theme-bg`, `Sidebar GlassNavigation`, `Topbar GlassSurface`, `Dashboard GlassCard` с `same transparency 0.18` чуть плотнее для читаемости, `high contrast text`, `GlassNavigation` sidebar, `same tokens` — не отдельный черный сайт, не белый.
+- Login: `left/right layout` без `backdrop-filter`, единый фон `GlobalBackground` непрерывно без вертикального split, `login card` `glass-premium 0.18 blur 32` medium читаемый, `glass inputs` + `gold button`, `flex-col-reverse` mobile priority login.
+- Sync: `Background Image/Overlay/Blur/Saturation/Brightness/Contrast` + `Glass Opacity/Blur/Saturation/Border/Shadow/Highlight/Radius` — управляется `Admin → System Settings → Design → Liquid Glass` с Live Preview (изменение мгновенно) Desktop/Tablet/Mobile, global sync Public+Admin+Login+Mobile+Footer.
+- QA: один фон/цвета/стекло, нет глобального blur, нет вертикального split, нет пелены/opaque, все glass, нижние карточки видны, login/sidebar читаемы, Chrome/Edge/Firefox/Safari/iOS/Android `@supports` fallback, mobile `44px`, `tsc 0` `build 7.04s`, `health 200` `vite 200`.
+
 ## v2.9.4 — Finalize Global Liquid Glass + managed atmosphere
 - Белые линии-разрывы удалены: `border-t border-theme-border/30` из 13 секций (`Section*`) — случайные разрывы интерфейса убраны, функциональные разделители сохранены.
 - Global Liquid Glass для ВСЕХ кнопок/карточек: `btn-primary/gold/secondary/ghost/btn-outline` → `glass` `0.14-0.23` `blur 24` `border 0.22` `radius 24` `shadow 0.12` `highlight 0.42` с `backdrop-filter`/`-webkit-` + `@supports` fallback; `AdminButton` → `glass` с gold/cyan акцентами; `content-card` уже glass.

@@ -40,13 +40,11 @@ export const GlobalBackground: React.FC = () => {
         <img src={imageDay} alt="" loading="eager" className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${!isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'}`} />
         <img src={imageNight} alt="" loading="eager" className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'}`} />
       </div>
-      {/* Atmospheric White Overlay — configurable, weak, building and sky remain visible */}
+      {/* Atmospheric White Overlay — configurable, weak, building and sky remain visible — NO backdrop-filter here (only on GlassCard etc.) */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `rgba(255,255,255, var(--bg-overlay-opacity, 0.12))`,
-          backdropFilter: `blur(calc(var(--bg-blur, 0px) * 0.5))`,
-          WebkitBackdropFilter: `blur(calc(var(--bg-blur, 0px) * 0.5))`,
         }}
       />
       <div className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ${isDark ? 'opacity-20' : 'opacity-10'}`} style={{ background: isDark ? 'radial-gradient(ellipse at 50% 0%, rgba(223,190,126,0.06) 0%, transparent 55%)' : 'radial-gradient(ellipse at 50% 0%, rgba(184,138,36,0.02) 0%, transparent 60%)' }} />

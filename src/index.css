@@ -424,6 +424,11 @@ html.is-morphing-theme ::view-transition-new(root) {
     -webkit-backdrop-filter: blur(24px) saturate(150%);
     box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
+  /* Admin — same Global Glass, slightly denser (0.18 vs 0.14) for readability, no separate dark theme */
+  .admin-content .glass,
+  .admin-shell .glass {
+    --glass-opacity: 0.18;
+  }
   .glass-admin-strong {
     background: rgba(5, 15, 30, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.12);
