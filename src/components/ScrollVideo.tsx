@@ -33,13 +33,11 @@ export const ScrollVideo: React.FC = () => {
         parallaxRef.current.style.transform = `scale(${scale.toFixed(4)}) translateY(-${ty.toFixed(1)}px)`;
       }
       const dark = darkRef.current;
-      const a = dark
-        ? Math.min(0.92, 0.5 + Math.max(0, (p - 0.15) * 0.55))
-        : Math.min(0.96, 0.75 + Math.max(0, (p - 0.15) * 0.25));
+      // Natural background: no white overlay — keep building vibrant, sky blue intact
       if (overlayRef.current) {
         overlayRef.current.style.backgroundColor = dark
-          ? `rgba(5, 8, 15, ${a.toFixed(2)})`
-          : `rgba(246, 248, 251, ${a.toFixed(2)})`;
+          ? `rgba(5, 8, 15, ${Math.min(0.35, 0.12 + p * 0.15).toFixed(2)})`
+          : `rgba(0, 0, 0, 0)`;
       }
     };
 
@@ -87,31 +85,35 @@ export const ScrollVideo: React.FC = () => {
         />
       </div>
 
-      {/* 2. Ambient Volumetric Lighting Glow on Supreme Court Facade */}
+      {/* 2. Extremely subtle atmospheric color correction only — no white overlay */}
       <div
         className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ${
           isDark
-            ? 'bg-radial-gradient from-[#dfbe7e]/12 via-transparent to-black/85 opacity-90'
-            : 'bg-radial-gradient from-[#b88a24]/8 via-transparent to-white/70 opacity-80'
+            ? 'opacity-40'
+            : 'opacity-15'
         }`}
-      />
-
-      {/* 3. Deepening Atmospheric Overlay for Absolute Editorial & Card Legibility */}
-      <div
-        ref={overlayRef}
-        className="absolute inset-0"
         style={{
-          backgroundColor: isDark ? 'rgba(5, 8, 15, 0.50)' : 'rgba(246, 248, 251, 0.75)',
+          background: isDark
+            ? 'radial-gradient(ellipse at 50% 0%, rgba(223,190,126,0.08) 0%, transparent 55%)'
+            : 'radial-gradient(ellipse at 50% 0%, rgba(184,138,36,0.04) 0%, transparent 60%)',
         }}
       />
 
-      {/* 4. Peripheral Vignette & Contrast Framing */}
+      {/* 3. Natural background — no milky layer, depth via image only */}
       <div
-        className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ${
-          isDark
-            ? 'bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.92)_100%)] opacity-100'
-            : 'bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(15,23,42,0.18)_100%)] opacity-70'
-        }`}
+        ref={overlayRef}
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundColor: isDark ? 'rgba(5, 8, 15, 0.12)' : 'rgba(0, 0, 0, 0)',
+        }}
+      />
+
+      {/* 4. Very subtle vignette — no white overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-20"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 65%, rgba(0,0,0,0.14) 100%)',
+        }}
       />
     </div>
   );

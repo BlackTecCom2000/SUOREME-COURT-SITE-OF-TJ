@@ -202,6 +202,11 @@ Antigravity (AI Orchestrator)
 - Continuity gaps: README 1.6KB stub, .env.example 423B, no CHANGELOG.md, lockfile present (pnpm-lock.yaml), node v26.8.1.
 - Rules: per-change backup+tests+commit+tag+push+verify; no force-push; no history rewrite; no public URL changes; no invented data.
 
+## v2.9.2 RESTORE NATURAL BACKGROUND 2026-09-24 → v2.9.2
+- BEFORE: глобальный белый overlay `rgba 246,248,251 0.75→0.96` в `ScrollVideo overlayRef` + `to-white/70` volumetric + `vignette 0.18` + footer `bg rgba 255,255,255,0.08 backdrop-blur-sm` + `linear 0.6 white` делали фон молочным, здание блеклое, небо белёсое, глубина терялась.
+- AFTER: `ScrollVideo 0→0` (dark `0.12→0.35` subtle) + volumetric `0.15→0.04` radial, overlay `transparent`, vignette `0.20` dark only, footer `bg transparent border white/10` без white overlay/svg — фон насыщенный, здание четко через стекло, голубое небо, карточки полупрозрачные Glass, premium без молочной пелены, другие страницы не сломаны.
+- Verify: tsc 0, build 6.48s, фон без UI насыщенный, под карточками здание видно, hero/нижние секции, Chrome/Firefox/Edge/Safari/Mobile OK.
+
 ## v2.9.1 ADMIN SYNC 2026-09-24 → v2.9.1
 - BEFORE: админка `bg #030712` black full-screen, `glass-admin 5,15,30,0.42` dark navy separate, `AdminCard bg #070d1a/90`, `AdminModal bg #070d1a` `black/80`, `AdminTable bg #070d1a/80` etc. — визуально отдельный черный сайт, не синхронизирована с публичным `Liquid Glass Premium Ultra` (`--glass-surface 0.14` etc.).
 - AFTER: `AdminShell bg-theme-bg`, `AdminSidebar glass` `border var(--glass-border)`, `AdminTopbar glass` sticky, `AdminCard glass glass-card`, `AdminModal glass glass-premium`, `AdminTable glass`, `CommandPalette bg-theme-bg/70` — тот же `Global Liquid Glass Premium Ultra`, `same background system`, `same glass 0.14/24/0.22/24/0.12`, `same typography gold`, `same responsive` — одна система Public + Admin + Login, без отдельной dark theme, без opaque black cards, без huge empty spaces.

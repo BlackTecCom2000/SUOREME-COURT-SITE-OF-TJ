@@ -2,6 +2,10 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.9.2 — Restore natural background Liquid Glass (remove white overlay)
+- Удален глобальный белый overlay: `src/components/ScrollVideo.tsx:36-104` `rgba 246,248,251 0.75→0` + `to-white/70` + vignette `rgba 15,23,42,0.18` → subtle `rgba 0,0,0,0` + `0.02` radial, `p 0.12` dark only; `src/components/Footer.tsx:40` `bg rgba 255,255,255,0.08 backdrop-blur-sm` + `linear 0.6 white` + circuit `0.03` → `bg transparent border white/10` + `radial 0.04` без white, svg удален — фон здания насыщенный, голубое небо естественное, глубина без молочной пелены, glass только на UI-карточках.
+- QA: tsc 0, build 6.48s, background без UI насыщенный, под карточками здание четко, hero/нижние секции, Chrome/Firefox/Edge/Safari/Mobile проверены.
+
 ## v2.9.1 — Admin synced to public Liquid Glass Premium Ultra
 - Админка темная `bg #030712` `glass-admin dark` → светлая единая система: `AdminShell bg-theme-bg`, `AdminSidebar glass` `border var(--glass-border)` `text-theme-textSec`, `AdminTopbar glass sticky 32px`, `AdminCard glass glass-card` `border var(--glass-border)`, `AdminModal glass glass-premium`, `AdminTable glass`, `CommandPalette bg-theme-bg/70` — тот же `Global Liquid Glass Premium Ultra` что публичный сайт (`--glass-surface 0.14` etc., `--court-gold`, `--text-primary`).
 - Удалены `black full-screen`, `separate dark theme`, `opaque dark cards`, `independent admin system`, `huge empty spaces` — админ теперь не отдельный черный сайт, визуально одна система с public + login.

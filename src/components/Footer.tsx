@@ -43,19 +43,15 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
 
   return (
     <>
-      <footer className="relative z-20 mt-auto overflow-hidden select-none bg-[rgba(255,255,255,0.08)] backdrop-blur-sm border-t border-white/20">
-        {/* Background continuity — soft light architectural, very low opacity */}
+      <footer className="relative z-20 mt-auto overflow-hidden select-none bg-transparent border-t border-white/10">
+        {/* Background — no white overlay, natural building shows through */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-[0.04]"
+          className="absolute inset-0 pointer-events-none opacity-[0.02]"
           style={{
-            backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.6) 0%, transparent 50%, rgba(223,190,126,0.06) 100%), radial-gradient(ellipse at 50% 0%, rgba(223,190,126,0.08) 0%, transparent 60%)`,
+            backgroundImage: `radial-gradient(ellipse at 50% 0%, rgba(223,190,126,0.04) 0%, transparent 60%)`,
           }}
           aria-hidden="true"
         />
-        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.03]" viewBox="0 0 1200 400" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0 120 H400 L440 160 H700" fill="none" stroke="#b88a24" strokeWidth="1" />
-          <path d="M0 280 H350 L390 240 H900" fill="none" stroke="#64748b" strokeWidth="0.8" />
-        </svg>
 
         {/* Glass layer — light continuance, not dark */}
         <div className="relative">
