@@ -77,40 +77,42 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
           {/* LEFT: Institutional Authority & Direct Primary CTA */}
           <div className="lg:col-span-6 flex flex-col justify-center">
             
-            <Reveal delay={120}>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-theme-gold/30 bg-theme-gold/10 text-theme-gold font-mono text-xs mb-4">
-                <Sparkles size={13} />
-                <span>
-                  {language === 'tj' ? 'НИЗОМИ «СУДИ ЭЛЕКТРОНӢ»' : language === 'en' ? 'E-JUSTICE ECOSYSTEM' : 'СИСТЕМА «ЭЛЕКТРОННЫЙ СУД»'}
-                </span>
-              </div>
-            </Reveal>
-
-            <div className="text-3xl font-medium uppercase leading-[1.06] tracking-tight text-theme-text drop-shadow-sm sm:text-5xl md:text-6xl">
-              <Reveal delay={0} priority={true}>
-                <div>
-                  {t('hero.line1')}{' '}
-                  <span className="normal-case italic font-light text-theme-gold">
-                    {t('hero.line1Italic')}
+            <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-9 mb-6">
+              <Reveal delay={120}>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-theme-gold/30 bg-theme-gold/10 text-theme-gold font-mono text-xs mb-4">
+                  <Sparkles size={13} />
+                  <span>
+                    {language === 'tj' ? 'НИЗОМИ «СУДИ ЭЛЕКТРОНӢ»' : language === 'en' ? 'E-JUSTICE ECOSYSTEM' : 'СИСТЕМА «ЭЛЕКТРОННЫЙ СУД»'}
                   </span>
                 </div>
               </Reveal>
-              <Reveal delay={150} priority={true}>
-                <div className="text-theme-text">
-                  {t('hero.line2')}
-                </div>
+
+              <div className="public-section-title text-3xl font-medium leading-[1.08] tracking-tight text-theme-text drop-shadow-sm sm:text-5xl md:text-6xl">
+                <Reveal delay={0} priority={true}>
+                  <div>
+                    {t('hero.line1')}{' '}
+                    <span className="italic font-light text-theme-gold">
+                      {t('hero.line1Italic')}
+                    </span>
+                  </div>
+                </Reveal>
+                <Reveal delay={150} priority={true}>
+                  <div className="text-theme-text">
+                    {t('hero.line2')}
+                  </div>
+                </Reveal>
+              </div>
+
+              <Reveal delay={300}>
+                <p className="mt-5 text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-lg">
+                  {language === 'tj'
+                    ? 'Муҳити ягонаи рақамӣ барои пешниҳод, баррасӣ ва пайгирии парвандаҳои судӣ дар тамоми Ҷумҳурии Тоҷикистон.'
+                    : language === 'en'
+                    ? 'Unified national digital justice platform for electronic filing, automated judicial routing, and online trial management.'
+                    : 'Единая цифровая среда для подачи, рассмотрения и процессуального сопровождения судебных дел в Республике Таджикистан.'}
+                </p>
               </Reveal>
             </div>
-
-            <Reveal delay={300}>
-              <p className="mt-5 text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-lg">
-                {language === 'tj'
-                  ? 'Муҳити ягонаи рақамӣ барои пешниҳод, баррасӣ ва пайгирии парвандаҳои судӣ дар тамоми Ҷумҳурии Тоҷикистон.'
-                  : language === 'en'
-                  ? 'Unified national digital justice platform for electronic filing, automated judicial routing, and online trial management.'
-                  : 'Единая цифровая среда для подачи, рассмотрения и процессуального сопровождения судебных дел в Республике Таджикистан.'}
-              </p>
-            </Reveal>
 
             {/* CTAs */}
             <Reveal delay={380}>
@@ -165,7 +167,7 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
                   <span className="text-xs text-theme-textMuted uppercase block">
                     {language === 'tj' ? 'Маҷлисҳо' : language === 'en' ? 'Hearings' : 'Заседания'}
                   </span>
-                  <span className="text-lg font-bold text-emerald-400" aria-live="polite">
+                  <span className="text-lg font-bold text-emerald-700 dark:text-emerald-400" aria-live="polite">
                     {liveStats ? liveStats.hearings : '…'}
                   </span>
                 </div>

@@ -20,7 +20,7 @@ export const AdminSelect = forwardRef<HTMLSelectElement, AdminSelectProps>(
     return (
       <div className="w-full flex flex-col gap-1.5 text-left">
         {label && (
-          <label htmlFor={selectId} className="font-mono text-xs font-medium uppercase tracking-wider text-slate-400">
+          <label htmlFor={selectId} className="font-sans text-xs font-bold uppercase tracking-wider text-black dark:text-white">
             {label}
           </label>
         )}
@@ -30,8 +30,8 @@ export const AdminSelect = forwardRef<HTMLSelectElement, AdminSelectProps>(
             id={selectId}
             className={`
               w-full h-11 px-4 pr-10 rounded-xl font-sans text-sm appearance-none
-              bg-slate-900/90 text-white
-              border border-slate-700/80 transition-all duration-200
+              bg-white dark:bg-slate-900/90 text-black dark:text-white
+              border border-slate-300 dark:border-slate-700/80 transition-all duration-200
               focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50
               ${error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/30' : ''}
               ${className}
@@ -39,12 +39,12 @@ export const AdminSelect = forwardRef<HTMLSelectElement, AdminSelectProps>(
             {...props}
           >
             {options.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-slate-900 text-white py-1">
+              <option key={opt.value} value={opt.value} className="bg-white dark:bg-slate-900 text-black dark:text-white py-1">
                 {opt.label}
               </option>
             ))}
           </select>
-          <div className="absolute right-3.5 flex items-center justify-center text-slate-400 pointer-events-none">
+          <div className="absolute right-3.5 flex items-center justify-center text-slate-700 dark:text-slate-300 pointer-events-none">
             <ChevronDown size={16} />
           </div>
         </div>

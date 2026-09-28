@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { ScrollVideo } from '../components/ScrollVideo';
 import { Section01Hero } from '../components/sections/Section01Hero';
 import { QuickActionsGrid } from '../components/digital-court/QuickActionsGrid';
 import { CaseSearchEngine, CaseRecord } from '../components/digital-court/CaseSearchEngine';
@@ -78,8 +77,6 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      <ScrollVideo />
-
       {/* Section 01: Judicial Information & Bank of Acts [ 001 / 007 ] (swapped with hero) */}
       <Section06JudicialInformation
         onOpenActs={() => handleOpenSectionModal('acts')}

@@ -71,9 +71,9 @@ export const Section08ElectronicCourt: React.FC<Section08ElectronicCourtProps> =
       </Reveal>
 
       {/* Section Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-        <div className="max-w-3xl">
-          <div className="text-4xl sm:text-5xl md:text-6xl font-medium uppercase leading-[1.08] tracking-tight text-theme-text drop-shadow-sm">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 lg:mb-12">
+        <div className="max-w-[780px] min-w-0">
+          <div className="max-w-[760px] text-4xl sm:text-5xl lg:text-6xl font-medium uppercase leading-[0.98] tracking-tight text-theme-text drop-shadow-sm">
             <Reveal delay={150}>
               <div>
                 {t('eservices.title1')}{' '}
@@ -91,8 +91,8 @@ export const Section08ElectronicCourt: React.FC<Section08ElectronicCourtProps> =
         </div>
 
         <Reveal delay={350}>
-          <div className="max-w-md">
-            <p className="text-sm text-theme-textSec leading-relaxed">
+          <div className="max-w-lg glass glass-panel p-4 sm:p-5">
+            <p className="text-sm text-theme-text leading-relaxed">
               {t('eservices.description')}
             </p>
           </div>
@@ -111,10 +111,10 @@ export const Section08ElectronicCourt: React.FC<Section08ElectronicCourtProps> =
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="p-2.5 rounded-xl bg-theme-bg/60 border border-theme-border">
+                    <div className="p-2.5 glass glass-chip">
                       <Icon size={22} className={item.colorClass} />
                     </div>
-                    <span className="font-mono text-[10px] px-2.5 py-1 rounded-full border border-theme-border bg-theme-bg/40 text-theme-textMuted uppercase tracking-wider">
+                    <span className="font-mono text-[10px] px-2.5 py-1 rounded-full glass glass-chip text-theme-textMuted uppercase tracking-wider">
                       {t(item.badgeKey)}
                     </span>
                   </div>

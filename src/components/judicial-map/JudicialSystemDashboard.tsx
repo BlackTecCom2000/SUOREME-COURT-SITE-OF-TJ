@@ -75,9 +75,9 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
 
 
   return (
-    <div className="judmap relative w-full overflow-hidden rounded-[18px] border border-[var(--jm-border)]">
+    <div className="judmap relative w-full overflow-hidden rounded-[18px] border border-[var(--glass-border)]">
       {/* Background: base + soft radial glow + faint grid */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ backgroundColor: 'var(--jm-bg)' }} />
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ backgroundColor: 'transparent' }} />
       <div
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
@@ -98,7 +98,7 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
         }}
       />
 
-      <div className="relative w-full max-w-[1500px] mx-auto px-6 sm:px-10 py-7 sm:py-9 flex flex-col gap-6 sm:gap-7">
+      <div className="relative w-full max-w-[1500px] mx-auto px-4 sm:px-8 py-6 sm:py-8 flex flex-col gap-5 sm:gap-6">
         <JudiciaryHeader
           searchQuery={searchQuery}
           onSearchChange={onSearchChange}

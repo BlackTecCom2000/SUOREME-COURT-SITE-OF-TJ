@@ -7,28 +7,46 @@ export const GlobalBackground: React.FC = () => {
   const { imageDay, imageNight } = useSiteBackground();
   const parallaxRef = useRef<HTMLDivElement>(null);
   const maxScrollRef = useRef(1);
-  const rafRef = useRef(0);
+  const frameRef = useRef(0);
+  const targetScrollRef = useRef(0);
+  const currentScrollRef = useRef(0);
 
   useEffect(() => {
     const updateMax = () => { maxScrollRef.current = Math.max(1, document.documentElement.scrollHeight - window.innerHeight); };
     updateMax();
     const apply = () => {
-      rafRef.current = 0;
-      const y = window.scrollY;
-      const p = Math.min(Math.max(y / maxScrollRef.current, 0), 1);
-      const scale = 1 + Math.min(p * 0.08, 0.08);
-      const ty = Math.min(y * 0.04, 60);
-      if (parallaxRef.current) parallaxRef.current.style.transform = `scale(${scale.toFixed(4)}) translateY(-${ty.toFixed(1)}px)`;
+      frameRef.current = 0;
+      const current = currentScrollRef.current;
+      const target = targetScrollRef.current;
+      const next = current + (target - current) * 0.085;
+      currentScrollRef.current = Math.abs(target - next) < 0.1 ? target : next;
+
+      // The zoom eases toward a limit instead of stopping abruptly at the page end.
+      const progress = Math.max(0, currentScrollRef.current / maxScrollRef.current);
+      const zoom = 1 + 0.11 * (1 - Math.exp(-progress * 1.35));
+      const translate = 54 * (1 - Math.exp(-progress * 1.1));
+      if (parallaxRef.current) {
+        parallaxRef.current.style.transform = `scale(${zoom.toFixed(5)}) translate3d(0, -${translate.toFixed(2)}px, 0)`;
+      }
+
+      if (Math.abs(target - currentScrollRef.current) > 0.1) {
+        frameRef.current = requestAnimationFrame(apply);
+      }
     };
-    const onScroll = () => { if (!rafRef.current) rafRef.current = requestAnimationFrame(apply); };
+    const schedule = () => {
+      targetScrollRef.current = Math.max(0, window.scrollY);
+      if (!frameRef.current) frameRef.current = requestAnimationFrame(apply);
+    };
+    const onScroll = () => schedule();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateMax);
-    apply();
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', updateMax); if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+    const onResize = () => { updateMax(); schedule(); };
+    window.addEventListener('resize', onResize);
+    schedule();
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onResize); if (frameRef.current) cancelAnimationFrame(frameRef.current); };
   }, []);
 
   return (
-    <div aria-hidden="true" className="fixed inset-0 -z-10 bg-[var(--bg-primary)] pointer-events-none select-none overflow-hidden">
+    <div aria-hidden="true" className="fixed inset-0 z-0 bg-[var(--bg-primary)] pointer-events-none select-none overflow-hidden">
       <div
         ref={parallaxRef}
         className="absolute inset-0 w-full h-full transform-gpu"

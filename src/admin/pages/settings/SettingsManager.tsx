@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Settings,
   Shield,
@@ -9,6 +10,7 @@ import {
   Sparkles,
   CheckCircle2,
   Lock,
+  Layers,
 } from 'lucide-react';
 import { AdminCard } from '../../components/ui/AdminCard';
 import { AdminButton } from '../../components/ui/AdminButton';
@@ -18,6 +20,7 @@ import { AdminTabs } from '../../components/ui/AdminTabs';
 import { apiFetch } from '../../context/adminHttp';
 
 export const SettingsManager: React.FC = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('general');
   const [isSaved, setIsSaved] = useState(false);
   const [aiSettings, setAiSettings] = useState({
@@ -90,6 +93,7 @@ export const SettingsManager: React.FC = () => {
 
   const tabs = [
     { id: 'general', label: 'Основные', icon: <Settings size={14} /> },
+    { id: 'slider3d', label: '3D Слайдер', icon: <Layers size={14} /> },
     { id: 'contacts', label: 'Контакты и приемная', icon: <Phone size={14} /> },
     { id: 'seo', label: 'SEO и Мета', icon: <Search size={14} /> },
     { id: 'security', label: 'Безопасность', icon: <Shield size={14} /> },
@@ -157,6 +161,37 @@ export const SettingsManager: React.FC = () => {
                   { value: 'en', label: 'English' },
                 ]}
               />
+            </div>
+          </AdminCard>
+        </div>
+      )}
+
+      {activeTab === 'slider3d' && (
+        <div className="space-y-5 animate-fadeIn">
+          <AdminCard title="Управление 3D-слайдером главной страницы">
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 via-slate-900 to-slate-950 border border-amber-500/30 space-y-4">
+              <div className="flex items-start gap-4">
+                <div className="p-3.5 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/40 shrink-0">
+                  <Layers size={28} />
+                </div>
+                <div>
+                  <h3 className="font-serif font-bold text-lg text-white">Интерактивный 3D Слайдер (Карусель)</h3>
+                  <p className="font-sans text-xs text-slate-300 mt-1 leading-relaxed">
+                    Для детальной настройки 3D-геометрии (перспективы, угла наклона, масштабов), автопрокрутки, редактирования слайдов и живого предпросмотра в реальном времени перейдите в специализированный раздел управления.
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-slate-800/80 flex flex-wrap items-center gap-3">
+                <AdminButton
+                  variant="primary"
+                  size="md"
+                  leftIcon={<Sparkles size={16} />}
+                  onClick={() => navigate('/admin/slider-3d')}
+                >
+                  Перейти в полный редактор 3D-слайдера
+                </AdminButton>
+              </div>
             </div>
           </AdminCard>
         </div>

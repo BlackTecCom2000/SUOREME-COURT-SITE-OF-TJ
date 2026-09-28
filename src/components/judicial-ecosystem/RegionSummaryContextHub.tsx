@@ -43,23 +43,23 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
       `}
     >
       {/* 1. Top Breadcrumb & Close */}
-      <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-700/50">
-        <div className="flex items-center gap-2 font-mono text-xs text-slate-400">
-          <span className="text-amber-400 font-semibold">
+      <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-theme-border">
+        <div className="flex items-center gap-2 font-mono text-xs text-theme-textMuted">
+          <span className="text-theme-gold font-semibold">
             {language === 'tj' ? 'Судҳои ҶТ' : language === 'en' ? 'Courts of RT' : 'Суды Республики'}
           </span>
-          <ChevronRight size={13} className="text-slate-500" />
+          <ChevronRight size={13} className="text-theme-textMuted" />
           <span style={{ color: cluster.colorHex }} className="font-bold uppercase">
             {regionName}
           </span>
-          <span className="text-slate-400 font-mono text-[11px]">({total} органов)</span>
+          <span className="text-theme-textMuted font-mono text-[11px]">({total} органов)</span>
         </div>
 
         <button
           type="button"
           onClick={onClose}
           aria-label="Закрыть сводку региона"
-          className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-text hover:bg-theme-bg transition-colors"
         >
           <X size={18} />
         </button>
@@ -73,11 +73,11 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
               className="w-3 h-3 rounded-full shadow-sm"
               style={{ backgroundColor: cluster.colorHex }}
             />
-            <span className="font-mono text-xs font-bold uppercase tracking-wider text-slate-300">
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-theme-textSec">
               Региональная судебная юрисдикция
             </span>
           </div>
-          <h3 className="font-serif font-bold text-2xl text-white tracking-wide">
+          <h3 className="font-serif font-bold text-2xl text-theme-text tracking-wide">
             {cluster.nameRu}
           </h3>
         </div>
@@ -86,7 +86,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
           <button
             type="button"
             onClick={() => onSelectCourt(regionalCourt)}
-            className="px-4 py-2 rounded-xl border border-amber-400/40 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 font-mono text-xs font-semibold flex items-center gap-2 transition-all"
+            className="px-4 py-2 rounded-xl border border-theme-gold/40 bg-theme-gold/15 text-theme-gold hover:bg-theme-gold/25 font-mono text-xs font-semibold flex items-center gap-2 transition-all"
           >
             <span>Карточка областного суда</span>
             <ChevronRight size={14} />
@@ -96,42 +96,42 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
 
       {/* 3. Regional Metrics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 font-mono text-xs">
-        <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
+        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-slate-400 uppercase block">Всего органов</span>
-            <span className="text-lg font-bold text-white">{total}</span>
+            <span className="text-[10px] text-theme-textMuted uppercase block">Всего органов</span>
+            <span className="text-lg font-bold text-theme-text">{total}</span>
           </div>
-          <Landmark size={18} className="text-amber-400" />
+          <Landmark size={18} className="text-theme-gold" />
         </div>
 
-        <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
+        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-slate-400 uppercase block">Городских судов</span>
-            <span className="text-lg font-bold text-white">{cities}</span>
+            <span className="text-[10px] text-theme-textMuted uppercase block">Городских судов</span>
+            <span className="text-lg font-bold text-theme-text">{cities}</span>
           </div>
-          <Building2 size={18} className="text-cyan-400" />
+          <Building2 size={18} className="text-cyan-500" />
         </div>
 
-        <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
+        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-slate-400 uppercase block">Районных судов</span>
-            <span className="text-lg font-bold text-white">{districts}</span>
+            <span className="text-[10px] text-theme-textMuted uppercase block">Районных судов</span>
+            <span className="text-lg font-bold text-theme-text">{districts}</span>
           </div>
-          <MapPin size={18} className="text-emerald-400" />
+          <MapPin size={18} className="text-emerald-500" />
         </div>
 
-        <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
+        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-slate-400 uppercase block">Гарнизон</span>
-            <span className="text-lg font-bold text-white">{military || 1}</span>
+            <span className="text-[10px] text-theme-textMuted uppercase block">Гарнизон</span>
+            <span className="text-lg font-bold text-theme-text">{military || 1}</span>
           </div>
-          <Shield size={18} className="text-violet-400" />
+          <Shield size={18} className="text-violet-500" />
         </div>
       </div>
 
       {/* 4. Quick Court Selector Chips in this Region */}
       <div>
-        <span className="font-mono text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2.5">
+        <span className="font-mono text-xs font-bold uppercase tracking-wider text-theme-textSec block mb-2.5">
           Суды в составе региона ({cluster.courts.length}):
         </span>
         <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto pr-1">
@@ -139,7 +139,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
             <button
               key={court.id}
               onClick={() => onSelectCourt(court)}
-              className="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900/80 hover:border-amber-400 hover:text-white text-slate-300 font-serif text-xs transition-all text-left"
+              className="px-3 py-1.5 rounded-lg border border-theme-border bg-theme-bg/80 hover:border-theme-gold hover:text-theme-gold text-theme-textSec font-serif text-xs transition-all text-left"
             >
               {getCourtName(court, language)}
             </button>

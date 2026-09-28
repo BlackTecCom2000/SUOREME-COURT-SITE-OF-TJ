@@ -24,31 +24,31 @@ export const AdminButton: React.FC<AdminButtonProps> = ({
   ...props
 }) => {
   const sizeClasses = {
-    sm: 'h-8 px-3 text-xs gap-1.5 rounded-lg',
-    md: 'h-10 px-4 text-sm gap-2 rounded-xl',
+    sm: 'h-11 px-3 text-xs gap-1.5 rounded-lg',
+    md: 'h-11 px-4 text-sm gap-2 rounded-xl',
     lg: 'h-12 px-6 text-base gap-2.5 rounded-xl',
   }[size];
 
   const variantClasses = {
     primary:
-      'glass text-[var(--court-navy)] font-semibold border border-[rgba(212,164,45,0.38)] shadow-[var(--glass-shadow)] hover:brightness-110 active:scale-[0.98]',
+      'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold shadow-md hover:from-amber-400 hover:to-amber-500 border border-amber-400/60 active:scale-[0.98]',
     secondary:
-      'glass text-theme-text font-medium border border-[var(--glass-border)] shadow-[var(--glass-shadow)] hover:bg-[var(--glass-surface-hover)] active:scale-[0.98]',
+      'bg-white/90 dark:bg-slate-800/90 text-slate-900 dark:text-white font-medium border border-slate-300 dark:border-slate-700 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98]',
     digital:
-      'glass text-[var(--court-navy)] font-semibold border border-[rgba(56,189,248,0.30)] shadow-[var(--glass-shadow)] hover:brightness-110 active:scale-[0.98]',
+      'bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold shadow-md hover:from-sky-400 hover:to-blue-500 border border-sky-400/50 active:scale-[0.98]',
     outline:
-      'glass text-theme-text border border-[var(--glass-border)] hover:border-[var(--court-gold)]/50 hover:bg-[var(--glass-surface-hover)] active:scale-[0.98]',
+      'bg-transparent text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800/80 active:scale-[0.98]',
     ghost:
-      'glass text-theme-textMuted border border-[var(--glass-border-subtle)] hover:text-theme-text hover:bg-[var(--glass-surface-hover)] active:scale-[0.98]',
+      'bg-transparent text-slate-600 dark:text-slate-400 border border-transparent hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/70 active:scale-[0.98]',
     danger:
-      'glass text-white font-semibold border border-red-400/30 shadow-[var(--glass-shadow)] hover:bg-red-500/10 active:scale-[0.98]',
+      'bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold border border-rose-300 dark:border-rose-500/30 hover:bg-rose-500/20 active:scale-[0.98]',
   }[variant];
 
   return (
     <button
       disabled={disabled || isLoading}
       className={`
-        inline-flex items-center justify-center font-sans transition-all duration-200 select-none
+        inline-flex items-center justify-center whitespace-nowrap font-sans transition-all duration-200 select-none
         focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/70
         disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed
         ${sizeClasses}

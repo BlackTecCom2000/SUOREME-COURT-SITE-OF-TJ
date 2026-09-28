@@ -56,7 +56,7 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
   const fitScale = viewport === 'desktop' || stageW <= 0 ? 1 : Math.min(1, (stageW - 4) / MODE_W);
 
   const BrowserChrome = ({ compact = false }: { compact?: boolean }) => (
-    <div className="flex items-center gap-2 px-3 bg-theme-surface/90 backdrop-blur-md border-b border-theme-border/60 shrink-0" style={{ height: CHROME_H }}>
+    <div className="glass-navigation flex items-center gap-2 px-3 border-b border-theme-border/60 shrink-0 !rounded-none" style={{ height: CHROME_H }}>
       {!compact && (
         <span className="flex items-center gap-1.5 shrink-0">
           <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
@@ -79,7 +79,7 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
   const isDark = theme === 'dark';
 
   const renderToolbar = () => (
-    <div className="flex items-center justify-between p-3 border-b border-theme-border/50 bg-theme-surface/80 backdrop-blur-md sticky top-0 z-50">
+    <div className="glass-navigation flex items-center justify-between p-3 border-b border-theme-border/50 sticky top-0 z-50 !rounded-none">
       <div className="flex items-center gap-2">
         <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest font-bold px-2">
           LIVE PREVIEW

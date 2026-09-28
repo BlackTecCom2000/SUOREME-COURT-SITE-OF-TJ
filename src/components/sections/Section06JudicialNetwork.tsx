@@ -40,49 +40,46 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
     >
       <DigitalDataRain density="sparse" speed="slow" opacity={0.2} colorTheme="cyan" />
 
-      {/* 1. Header — compact, часть glass системы */}
-      <div className="relative flex flex-col gap-4 px-5 sm:px-8 md:px-12 mb-4">
+      {/* 1. Header — with Liquid Glass UI Pod */}
+      <div className="relative px-5 sm:px-8 md:px-12 mb-6">
         <Reveal delay={100}>
-          <div className="flex items-center justify-between font-mono text-theme-text max-w-xs sm:max-w-none text-xs">
-            <div className="flex items-center gap-3">
-              <span className="tracking-widest text-theme-gold font-semibold">( F )</span>
-              <span className="text-theme-textMuted">[ 006 / 010 ]</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-2" />
-              <span className="font-mono text-[10px] text-theme-textMuted uppercase tracking-widest hidden sm:inline">
-                {t('network.badge')}
-              </span>
+          <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-5xl">
+            <div className="flex items-center justify-between font-mono text-theme-text max-w-xs sm:max-w-none text-xs mb-4">
+              <div className="flex items-center gap-3">
+                <span className="tracking-widest text-theme-gold font-semibold">( F )</span>
+                <span className="text-theme-textMuted">[ 006 / 010 ]</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-2" />
+                <span className="font-mono text-[10px] text-theme-textMuted uppercase tracking-widest hidden sm:inline">
+                  {t('network.badge')}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsImmersiveOpen(true)}
+                aria-label={t('network.fullscreenBtn')}
+                className="flex items-center gap-1.5 font-mono text-xs text-theme-gold hover:text-theme-text px-3.5 py-1.5 rounded-full glass border-theme-gold/40 hover:border-theme-gold transition-all"
+              >
+                <Maximize2 size={13} />
+                <span className="hidden sm:inline">
+                  {t('network.fullscreenBtn')}
+                </span>
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setIsImmersiveOpen(true)}
-              aria-label={t('network.fullscreenBtn')}
-              className="flex items-center gap-1.5 font-mono text-xs text-theme-gold hover:text-theme-text px-3.5 py-1.5 rounded-full glass border-theme-gold/40 hover:border-theme-gold transition-all"
-            >
-              <Maximize2 size={13} />
-              <span className="hidden sm:inline">
-                {t('network.fullscreenBtn')}
-              </span>
-            </button>
+            <div className="public-section-title max-w-4xl text-4xl sm:text-5xl md:text-6xl font-medium leading-[1.08] tracking-tight text-theme-text drop-shadow-sm">
+              <div>
+                {t('network.title1')}{' '}
+                <span className="italic font-light text-theme-gold">
+                  {t('network.title1Italic')}
+                </span>
+              </div>
+              <div className="text-theme-text">
+                {t('network.title2')}
+              </div>
+            </div>
           </div>
         </Reveal>
-
-        {/* Section Headline */}
-        <div className="max-w-4xl text-4xl sm:text-5xl md:text-6xl font-medium uppercase leading-[1.05] tracking-tight text-theme-text drop-shadow-sm">
-          <Reveal delay={180}>
-            <div>
-              {t('network.title1')}{' '}
-              <span className="normal-case italic font-light text-theme-gold">
-                {t('network.title1Italic')}
-              </span>
-            </div>
-          </Reveal>
-          <Reveal delay={260}>
-            <div className="text-theme-text">
-              {t('network.title2')}
-            </div>
-          </Reveal>
-        </div>
       </div>
 
       {/* 2. Search — заметный, glass, live update без перезагрузки */}

@@ -47,10 +47,10 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
     >
       <DigitalDataRain density="medium" speed="slow" opacity={0.25} colorTheme="gold" />
 
-      {/* Top Indicator */}
+      {/* Section Header with Liquid Glass UI Pod */}
       <Reveal delay={100}>
-        <div className="flex items-center justify-between font-mono text-theme-textSec max-w-xs sm:max-w-none text-xs mb-8">
-          <div className="flex items-center gap-3">
+        <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-12">
+          <div className="flex items-center gap-3 font-mono text-theme-textSec text-xs mb-4">
             <span className="tracking-widest text-theme-gold font-semibold">( J )</span>
             <span className="text-theme-textMuted">[ 010 / 010 ]</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-2" />
@@ -58,37 +58,24 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
               {t('contacts.badge')}
             </span>
           </div>
+
+          <div className="public-section-title text-4xl sm:text-5xl md:text-6xl font-medium leading-[1.08] tracking-tight text-theme-text drop-shadow-sm mb-4">
+            <div>
+              {t('contacts.title1')}{' '}
+              <span className="italic font-light text-theme-gold">
+                {t('contacts.title1Italic')}
+              </span>
+            </div>
+            <div className="text-theme-text">
+              {t('contacts.title2')}
+            </div>
+          </div>
+
+          <p className="text-sm text-theme-textSec leading-relaxed max-w-2xl">
+            {t('contacts.description')}
+          </p>
         </div>
       </Reveal>
-
-      {/* Section Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-        <div className="max-w-3xl">
-          <div className="text-4xl sm:text-5xl md:text-6xl font-medium uppercase leading-[1.08] tracking-tight text-theme-text drop-shadow-sm">
-            <Reveal delay={150}>
-              <div>
-                {t('contacts.title1')}{' '}
-                <span className="normal-case italic font-light text-theme-gold">
-                  {t('contacts.title1Italic')}
-                </span>
-              </div>
-            </Reveal>
-            <Reveal delay={250}>
-              <div className="text-theme-text">
-                {t('contacts.title2')}
-              </div>
-            </Reveal>
-          </div>
-        </div>
-
-        <Reveal delay={350}>
-          <div className="max-w-md">
-            <p className="text-sm text-theme-textSec leading-relaxed">
-              {t('contacts.description')}
-            </p>
-          </div>
-        </Reveal>
-      </div>
 
       {/* 2-Column Split: Central Apparatus Contacts & Press News */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">

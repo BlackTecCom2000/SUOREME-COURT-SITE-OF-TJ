@@ -79,11 +79,11 @@ export const JusticeStoryTimeline: React.FC<JusticeStoryTimelineProps> = ({
                 }
               }}
               className={`
-                relative p-3 rounded-xl border text-left transition-all duration-300 group
+                relative p-3 rounded-xl glass glass-card border text-left transition-all duration-300 group
                 ${
                   isActive
                     ? 'border-theme-gold bg-theme-gold/15 shadow-[0_0_15px_rgba(223,190,126,0.3)] scale-102'
-                    : 'border-theme-border bg-theme-surface/80 hover:border-theme-gold/60 hover:bg-theme-surface'
+                    : 'border-theme-border hover:border-theme-gold/60 hover:bg-[var(--glass-surface-hover)]'
                 }
               `}
             >

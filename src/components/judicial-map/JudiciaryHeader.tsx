@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { LayoutGrid, Maximize2, RotateCcw, ArrowUp } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { SearchControl } from './SearchControl';
@@ -47,16 +47,16 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
-      <div className="flex items-center gap-3 sm:gap-4">
+      <div className="liquid-glass-title-pod px-6 py-4 sm:px-8 sm:py-5 flex items-center gap-3 sm:gap-5 shadow-lg">
         <img
           src={`/emblems/emblem-${language}.png`}
           alt=""
           aria-hidden="true"
-          className="w-11 h-11 sm:w-14 sm:h-14 object-contain drop-shadow-[0_0_14px_rgba(232,199,106,0.45)]"
+          className="w-11 h-11 sm:w-14 sm:h-14 object-contain drop-shadow-[0_0_14px_rgba(232,199,106,0.45)] shrink-0"
           loading="lazy"
         />
-        <div className="text-center">
-          <h2 className="font-bold text-xl sm:text-2xl tracking-[0.08em] uppercase text-white leading-tight">
+        <div className="text-left sm:text-center">
+          <h2 className="font-bold text-xl sm:text-2xl tracking-[0.08em] uppercase text-[var(--jm-text)] leading-tight drop-shadow-sm">
             {title}
           </h2>
           <div className="font-semibold text-xs sm:text-sm tracking-[0.08em] uppercase text-[var(--jm-gold)] leading-tight">

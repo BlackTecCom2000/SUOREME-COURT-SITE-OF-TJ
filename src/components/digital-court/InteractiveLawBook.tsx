@@ -53,7 +53,7 @@ export const InteractiveLawBook: React.FC<{ books?: ShowcaseBook[] }> = ({ books
 
   return (
     <Reveal delay={100}>
-      <div className="relative overflow-hidden rounded-2xl border border-theme-border bg-theme-bg p-6 shadow-theme-card">
+      <div className="relative overflow-hidden glass glass-panel leglib-showcase-shell p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-1">
           <BookOpen size={14} className="text-theme-gold" />
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-theme-gold">

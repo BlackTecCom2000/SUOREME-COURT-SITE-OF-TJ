@@ -57,12 +57,12 @@ export const JusticeStoryNavigator: React.FC<JusticeStoryNavigatorProps> = ({
             aria-selected={isActive}
             onClick={() => onSelectStage(st.id)}
             className={`
-              relative w-full p-4 rounded-xl text-left border transition-all duration-300
+              relative w-full p-4 rounded-xl glass glass-card text-left border transition-all duration-300
               flex items-center justify-between group
               ${
                 isActive
                   ? 'border-theme-gold bg-theme-gold/15 text-theme-text shadow-[0_0_20px_rgba(223,190,126,0.3)] scale-102'
-                  : 'border-theme-border bg-theme-surface/80 text-theme-textSec hover:border-theme-gold/60 hover:bg-theme-surface hover:text-theme-text'
+                  : 'border-theme-border text-theme-textSec hover:border-theme-gold/60 hover:bg-[var(--glass-surface-hover)] hover:text-theme-text'
               }
             `}
           >

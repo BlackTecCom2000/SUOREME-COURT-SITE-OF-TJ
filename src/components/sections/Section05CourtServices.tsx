@@ -46,7 +46,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
       descKey: 'eservices.service1Desc',
       badgeKey: 'eservices.service1Badge',
       icon: Send,
-      colorClass: 'text-cyan-400',
+      colorClass: 'text-cyan-600 dark:text-cyan-400',
     },
     {
       id: 'hearings',
@@ -62,7 +62,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
       descKey: 'eservices.service3Desc',
       badgeKey: 'eservices.service3Badge',
       icon: Calculator,
-      colorClass: 'text-emerald-400',
+      colorClass: 'text-emerald-600 dark:text-emerald-400',
     },
     {
       id: 'docs',
@@ -70,7 +70,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
       descKey: 'eservices.service4Desc',
       badgeKey: 'eservices.service4Badge',
       icon: FileDown,
-      colorClass: 'text-violet-400',
+      colorClass: 'text-violet-600 dark:text-violet-400',
     },
     {
       id: 'legislation-library',
@@ -92,36 +92,31 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
 
       <div className="site-container relative z-10 space-y-8">
         {/* Section Header Indicator */}
-        <Reveal delay={50}>
-          <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
-            <span className="tracking-widest text-theme-gold font-semibold">( 05 )</span>
-            <span className="text-theme-textMuted">[ 005 / 007 ]</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-1" />
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
-              {t('eservices.badge')}
-            </span>
+        {/* Section Header with Liquid Glass UI Pod */}
+        <Reveal delay={100}>
+          <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-12">
+            <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
+              <span className="tracking-widest text-theme-gold font-semibold">( 05 )</span>
+              <span className="text-theme-textMuted">[ 005 / 007 ]</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-1" />
+              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+                {t('eservices.badge')}
+              </span>
+            </div>
+
+            <h2 className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 drop-shadow-sm text-theme-text">
+              {t('eservices.title1')}{' '}
+              <span className="italic font-light text-theme-gold">
+                {t('eservices.title1Italic')}
+              </span>{' '}
+              {t('eservices.title2')}
+            </h2>
+
+            <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-2xl">
+              {t('eservices.description')}
+            </p>
           </div>
         </Reveal>
-
-        {/* Section Title */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-          <div className="max-w-3xl">
-            <Reveal delay={150}>
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase mb-4">
-                {t('eservices.title1')}{' '}
-                <span className="italic font-light text-theme-gold">
-                  {t('eservices.title1Italic')}
-                </span>{' '}
-                {t('eservices.title2')}
-              </h2>
-            </Reveal>
-            <Reveal delay={250}>
-              <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal">
-                {t('eservices.description')}
-              </p>
-            </Reveal>
-          </div>
-        </div>
 
         {/* 5 Primary Interactive Service Portals */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-12">
@@ -201,7 +196,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                     />
 
                     {calculatedDuty !== null && (
-                      <div className="font-mono text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-3.5 py-2.5 rounded-xl flex items-center justify-between">
+                      <div className="font-mono text-xs text-emerald-800 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-3.5 py-2.5 rounded-xl flex items-center justify-between">
                         <span>{language === 'en' ? 'State Duty Amount:' : language === 'tj' ? 'Маблағи боҷ:' : 'Размер пошлины:'}</span>
                         <span className="font-bold text-sm">{calculatedDuty} TJS</span>
                       </div>

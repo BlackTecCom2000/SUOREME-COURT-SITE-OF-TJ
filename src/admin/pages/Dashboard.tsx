@@ -92,14 +92,14 @@ export const Dashboard: React.FC = () => {
         />
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 font-mono text-xs text-amber-400 uppercase tracking-wider mb-2 font-semibold">
+            <div className="flex items-center gap-2 font-mono text-xs text-amber-500 dark:text-amber-400 uppercase tracking-wider mb-2 font-semibold">
               <ShieldCheck size={16} />
               <span>Единая система администрирования портала</span>
             </div>
-            <h2 className="font-serif font-bold text-2xl sm:text-3xl text-white">
+            <h2 className="font-serif font-bold text-2xl sm:text-3xl text-black dark:text-white">
               Добро пожаловать, {user?.name || 'Администратор'}
             </h2>
-            <p className="font-sans text-sm text-slate-300 mt-2 leading-relaxed">
+            <p className="font-sans text-sm text-black dark:text-white mt-2 leading-relaxed">
               Центр управления цифровой информацией, судебными актами, региональной сетью и электронными обращениями Верховного суда Республики Таджикистан.
             </p>
           </div>
@@ -147,13 +147,13 @@ export const Dashboard: React.FC = () => {
             </div>
 
             <div className="mt-4">
-              <div className="font-mono text-3xl font-bold text-white tracking-tight">
+              <div className="font-mono text-3xl font-bold text-black dark:text-white tracking-tight">
                 {stat.value}
               </div>
-              <div className="font-serif font-bold text-sm text-slate-200 mt-1">
+              <div className="font-serif font-bold text-sm text-black dark:text-white mt-1">
                 {stat.title}
               </div>
-              <div className="font-mono text-[11px] text-slate-400 mt-1 truncate">
+              <div className="font-mono text-[11px] text-black dark:text-white mt-1 truncate">
                 {stat.subtitle}
               </div>
             </div>
@@ -173,38 +173,38 @@ export const Dashboard: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <button
                 onClick={() => navigate('/admin/news/new')}
-                className="p-4 rounded-xl glass border border-white/10 hover:border-amber-400/40 hover:bg-white/5 transition-all text-left group"
+                className="p-4 rounded-xl border border-slate-200 dark:border-white/10 hover:border-amber-400/40 hover:bg-slate-50 dark:hover:bg-white/5 transition-all text-left group"
               >
-                <Newspaper size={20} className="text-amber-400 mb-2 group-hover:scale-110 transition-transform" />
-                <span className="font-serif font-semibold text-xs text-white block">Новость</span>
-                <span className="font-mono text-[10px] text-slate-400 block mt-0.5">Пресс-релиз</span>
+                <Newspaper size={20} className="text-amber-500 dark:text-amber-400 mb-2 group-hover:scale-110 transition-transform" />
+                <span className="font-serif font-semibold text-xs text-black dark:text-white block">Новость</span>
+                <span className="font-mono text-[10px] text-black dark:text-white block mt-0.5">Пресс-релиз</span>
               </button>
 
               <button
                 onClick={() => navigate('/admin/acts?action=new')}
-                className="p-4 rounded-xl glass border border-white/10 hover:border-sky-400/40 hover:bg-white/5 transition-all text-left group"
+                className="p-4 rounded-xl border border-slate-200 dark:border-white/10 hover:border-sky-400/40 hover:bg-slate-50 dark:hover:bg-white/5 transition-all text-left group"
               >
-                <Gavel size={20} className="text-sky-400 mb-2 group-hover:scale-110 transition-transform" />
-                <span className="font-serif font-semibold text-xs text-white block">Судебный акт</span>
-                <span className="font-mono text-[10px] text-slate-400 block mt-0.5">PDF решение</span>
+                <Gavel size={20} className="text-sky-500 dark:text-sky-400 mb-2 group-hover:scale-110 transition-transform" />
+                <span className="font-serif font-semibold text-xs text-black dark:text-white block">Судебный акт</span>
+                <span className="font-mono text-[10px] text-black dark:text-white block mt-0.5">PDF решение</span>
               </button>
 
               <button
                 onClick={() => navigate('/admin/courts?action=new')}
-                className="p-4 rounded-xl glass border border-white/10 hover:border-emerald-400/40 hover:bg-white/5 transition-all text-left group"
+                className="p-4 rounded-xl border border-slate-200 dark:border-white/10 hover:border-emerald-400/40 hover:bg-slate-50 dark:hover:bg-white/5 transition-all text-left group"
               >
-                <Landmark size={20} className="text-emerald-400 mb-2 group-hover:scale-110 transition-transform" />
-                <span className="font-serif font-semibold text-xs text-white block">Суд РТ</span>
-                <span className="font-mono text-[10px] text-slate-400 block mt-0.5">Филиал / данные</span>
+                <Landmark size={20} className="text-emerald-500 dark:text-emerald-400 mb-2 group-hover:scale-110 transition-transform" />
+                <span className="font-serif font-semibold text-xs text-black dark:text-white block">Суд РТ</span>
+                <span className="font-mono text-[10px] text-black dark:text-white block mt-0.5">Филиал / данные</span>
               </button>
 
               <button
                 onClick={() => navigate('/admin/media')}
-                className="p-4 rounded-xl glass border border-white/10 hover:border-cyan-400/40 hover:bg-white/5 transition-all text-left group"
+                className="p-4 rounded-xl border border-slate-200 dark:border-white/10 hover:border-cyan-400/40 hover:bg-slate-50 dark:hover:bg-white/5 transition-all text-left group"
               >
-                <PlusCircle size={20} className="text-cyan-400 mb-2 group-hover:scale-110 transition-transform" />
-                <span className="font-serif font-semibold text-xs text-white block">Медиа файл</span>
-                <span className="font-mono text-[10px] text-slate-400 block mt-0.5">Фото / Документ</span>
+                <PlusCircle size={20} className="text-cyan-500 dark:text-cyan-400 mb-2 group-hover:scale-110 transition-transform" />
+                <span className="font-serif font-semibold text-xs text-black dark:text-white block">Медиа файл</span>
+                <span className="font-mono text-[10px] text-black dark:text-white block mt-0.5">Фото / Документ</span>
               </button>
             </div>
           </AdminCard>
@@ -233,21 +233,21 @@ export const Dashboard: React.FC = () => {
                   >
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-serif font-bold text-sm text-white">{app.full_name}</span>
+                        <span className="font-serif font-bold text-sm text-black dark:text-white">{app.full_name}</span>
                         <AdminBadge variant="new">NEW</AdminBadge>
                       </div>
-                      <p className="font-sans text-xs text-slate-400 truncate max-w-md mt-0.5">
+                      <p className="font-sans text-xs text-black dark:text-white truncate max-w-md mt-0.5">
                         {app.subject || 'Электронное обращение без темы'}
                       </p>
                     </div>
-                    <span className="font-mono text-[11px] text-slate-500 whitespace-nowrap">
+                    <span className="font-mono text-[11px] text-black dark:text-white whitespace-nowrap">
                       {new Date(app.created_at).toLocaleDateString()}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="py-8 text-center text-slate-500 font-mono text-xs">
+              <div className="py-8 text-center text-black dark:text-white font-mono text-xs">
                 <CheckCircle2 size={24} className="mx-auto mb-1 text-emerald-400/60" />
                 Нет необработанных обращений
               </div>
@@ -276,17 +276,17 @@ export const Dashboard: React.FC = () => {
                 data.activity.slice(0, 6).map((log: any) => (
                   <div
                     key={log.id}
-                    className="flex items-start gap-2.5 text-xs p-2 rounded-lg glass border border-white/10"
+                    className="flex items-start gap-2.5 text-xs p-2 rounded-lg glass border border-slate-200 dark:border-white/10"
                   >
-                    <Activity size={14} className="text-amber-400 mt-0.5 shrink-0" />
+                    <Activity size={14} className="text-amber-500 dark:text-amber-400 mt-0.5 shrink-0" />
                     <div className="flex-1 overflow-hidden">
-                      <p className="text-slate-200 font-medium truncate">
-                        <span className="text-amber-300 uppercase font-mono text-[10px]">
+                      <p className="text-black dark:text-white font-medium truncate">
+                        <span className="text-amber-600 dark:text-amber-300 uppercase font-mono text-[10px]">
                           {log.action}
                         </span>{' '}
                         {log.object_title || log.object_type}
                       </p>
-                      <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 mt-0.5">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-black dark:text-white mt-0.5">
                         <span>{log.user_name || 'System Admin'}</span>
                         <span>{new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                       </div>
@@ -294,7 +294,7 @@ export const Dashboard: React.FC = () => {
                   </div>
                 ))
               ) : (
-                <div className="py-6 text-center text-slate-500 font-mono text-xs">
+                <div className="py-6 text-center text-black dark:text-white font-mono text-xs">
                   Журнал действий пуст
                 </div>
               )}
@@ -303,23 +303,23 @@ export const Dashboard: React.FC = () => {
 
           {/* System Telemetry Specs */}
           <AdminCard title="Состояние платформы" subtitle="Технические параметры узла">
-            <div className="space-y-2.5 font-mono text-xs text-slate-400 pt-1">
-              <div className="flex items-center justify-between py-1 border-b border-slate-800/60">
+            <div className="space-y-2.5 font-mono text-xs text-black dark:text-white font-medium pt-1">
+              <div className="flex items-center justify-between py-1 border-b border-slate-200 dark:border-slate-800/60">
                 <span>База данных:</span>
-                <span className="text-emerald-400 font-bold">SQLite 3 (WAL Mode)</span>
+                <span className="text-emerald-500 dark:text-emerald-400 font-bold">SQLite 3 (WAL Mode)</span>
               </div>
-              <div className="flex items-center justify-between py-1 border-b border-slate-800/60">
+              <div className="flex items-center justify-between py-1 border-b border-slate-200 dark:border-slate-800/60">
                 <span>Шифрование сессий:</span>
-                <span className="text-cyan-400 font-bold">HS256 JWT (8h)</span>
+                <span className="text-cyan-600 dark:text-cyan-400 font-bold">HS256 JWT (8h)</span>
               </div>
-              <div className="flex items-center justify-between py-1 border-b border-slate-800/60">
+              <div className="flex items-center justify-between py-1 border-b border-slate-200 dark:border-slate-800/60">
                 <span>Автопланировщик:</span>
-                <span className="text-amber-400 font-bold">Cron (60s tick)</span>
+                <span className="text-amber-600 dark:text-amber-400 font-bold">Cron (60s tick)</span>
               </div>
               <div className="flex items-center justify-between py-1">
                 <span>Статус узла:</span>
-                <span className="flex items-center gap-1.5 text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="flex items-center gap-1.5 text-emerald-500 dark:text-emerald-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
                   {data ? 'ONLINE (/api/health OK)' : '…'}
                 </span>
               </div>

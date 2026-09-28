@@ -37,21 +37,23 @@ export const Section03DigitalHammer: React.FC<Section03DigitalHammerProps> = ({
         {/* 2-Column Asymmetric Layout: Left Text, Right Interactive Hammer */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6 flex flex-col justify-center">
-            <Reveal delay={150}>
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase mb-6">
-                {t('digitalJustice.title1')}{' '}
-                <span className="italic font-light text-theme-gold">
-                  {t('digitalJustice.title1Italic')}
-                </span>{' '}
-                {t('digitalJustice.title2')}
-              </h2>
-            </Reveal>
+            <div className="liquid-glass-title-pod p-6 sm:p-8 mb-8">
+              <Reveal delay={150}>
+                <h2 className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 drop-shadow-sm text-theme-text">
+                  {t('digitalJustice.title1')}{' '}
+                  <span className="italic font-light text-theme-gold">
+                    {t('digitalJustice.title1Italic')}
+                  </span>{' '}
+                  {t('digitalJustice.title2')}
+                </h2>
+              </Reveal>
 
-            <Reveal delay={250}>
-              <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal mb-8 max-w-xl">
-                {t('digitalJustice.description')}
-              </p>
-            </Reveal>
+              <Reveal delay={250}>
+                <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal">
+                  {t('digitalJustice.description')}
+                </p>
+              </Reveal>
+            </div>
 
             {/* 3 Pillars of Digital Legal Integrity */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">

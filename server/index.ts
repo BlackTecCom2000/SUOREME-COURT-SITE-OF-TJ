@@ -200,6 +200,105 @@ try {
     } catch {}
   } catch (e) { console.error('site cms migration failed', e); }
 
+  // 3D Slider slides & configuration setup
+  try {
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS slider_3d_slides (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title_tj TEXT NOT NULL,
+        title_ru TEXT NOT NULL,
+        title_en TEXT,
+        summary_tj TEXT,
+        summary_ru TEXT,
+        summary_en TEXT,
+        category_tj TEXT,
+        category_ru TEXT,
+        category_en TEXT,
+        image_url TEXT NOT NULL,
+        link_url TEXT,
+        date_text TEXT,
+        sort_order INTEGER DEFAULT 0,
+        is_active INTEGER DEFAULT 1,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    const sc = db.prepare('SELECT count(*) as c FROM slider_3d_slides').get() as any;
+    if (sc.c === 0) {
+      console.log('Seeding initial 3D slider slides...');
+      const insSlide = db.prepare(`
+        INSERT INTO slider_3d_slides (
+          title_tj, title_ru, title_en, summary_tj, summary_ru, summary_en,
+          category_tj, category_ru, category_en, image_url, link_url, date_text, sort_order, is_active
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      insSlide.run(
+        'Тартиби қабули муроҷиатҳои шаҳрвандон дар шакли электронӣ тавассути сомонаи суд.тҷ',
+        'Порядок приёма обращений граждан в электронной форме через единый портал sud.tj',
+        'Procedure for Receiving Citizen Appeals Electronically via sud.tj Portal',
+        'Суди Олии Ҷумҳурии Тоҷикистон дастури навро оид ба пешниҳоди аризаҳои электронӣ ва бақайдгирии фаврӣ нашр намуд.',
+        'Верховный суд Республики Таджикистан опубликовал обновленный регламент подачи электронных исковых заявлений.',
+        'The Supreme Court published updated guidelines on electronic court claim submissions and instant digital registration.',
+        'СУДИ ЭЛЕКТРОНӢ',
+        'ЭЛЕКТРОННЫЙ СУД',
+        'E-JUSTICE',
+        '/supreme-court-night.jpg',
+        '/appeals',
+        '18.08.2026',
+        1,
+        1
+      );
+      insSlide.run(
+        'Ҷаласаи Пленуми Суди Олии Ҷумҳурии Тоҷикистон оид ба ҷамъбасти амалияи судӣ',
+        'Заседание Пленума Верховного суда Республики Таджикистан по обобщению судебной практики',
+        'Plenum Session of the Supreme Court on Summary of Judicial Practice',
+        'Дар ҷаласа натиҷаҳои ҷамъбасти амалияи судӣ оид ба татбиқи меъёрҳои қонунгузории оилавӣ ва манзилӣ баррасӣ гардиданд.',
+        'Рассмотрены итоги обобщения судебной практики по применению норм семейного и жилищного законодательства.',
+        'The session reviewed the consolidation of judicial practice regarding family and housing legislation standards.',
+        'ПЛЕНУМИ СУДИ ОЛӢ',
+        'ПЛЕНУМ ВЕРХОВНОГО СУДА',
+        'SUPREME COURT PLENUM',
+        '/supreme-court-day.jpg',
+        '/acts',
+        '15.08.2026',
+        2,
+        1
+      );
+      insSlide.run(
+        'Баррасии масъалаҳои дастрасии шахсони дорои маъюбият ба адолати судӣ ва инфрасохтори рақамӣ',
+        'Обеспечение доступности правосудия для лиц с инвалидностью и цифровая инфраструктура',
+        'Ensuring Equal Access to Justice for Persons with Disabilities and Digital Infrastructure',
+        'Ҷорӣ намудани воситаҳои рақамӣ ва интерфейсҳои мутобиқшуда дар биноҳои судҳо ва сомонаҳои расмӣ баррасӣ шуд.',
+        'Внедрение цифровых инструментов и адаптивных интерфейсов в зданиях судов и на веб-порталах республики.',
+        'Implementation of accessible digital portals and assistive judicial technologies across court branches.',
+        'ДАСТРАСИИ СУДӢ',
+        'ДОСТУПНОСТЬ ПРАВОСУДИЯ',
+        'ACCESS TO JUSTICE',
+        '/themis-background.jpg',
+        '/news',
+        '14.08.2026',
+        3,
+        1
+      );
+      insSlide.run(
+        'Нашри шумораи нави нашрияи расмии Суди Олии ҶТ таҳти унвони «Мизони Қонун»',
+        'Выпуск официального издания Верховного суда «Мизони Қонун»',
+        'Release of Supreme Court Official Journal "Mizoni Qonun"',
+        'Дар нашри нав мақолаҳои таҳлилии судяҳо, шарҳҳои амалияи кассатсионӣ ва тавсияҳои методӣ нашр гардиданд.',
+        'Опубликованы аналитические статьи судей, обзоры кассационной практики и методические рекомендации.',
+        'Published analytical judicial articles, cassation reviews, and methodical recommendations for legal practice.',
+        'МАТБУОТИ СУДӢ',
+        'СУДЕБНАЯ ПЕЧАТЬ',
+        'JUDICIAL PRESS',
+        '/themis-light-background.jpg',
+        '/news',
+        '10.08.2026',
+        4,
+        1
+      );
+    }
+  } catch (e) { console.error('slider_3d migration failed', e); }
+
 const seedDutyData = () => {
   const catCount = db.prepare('SELECT count(*) as c FROM duty_categories').get() as any;
   if (catCount.c === 0) {
@@ -1409,6 +1508,326 @@ app.post('/api/admin/site-versions/:id/rollback', auth, requirePerm('content.pub
   }catch(e){ return res.status(400).json({error:'Invalid snapshot'}); }
   db.prepare('INSERT INTO site_versions(snapshot_data, author_id, author_name, commit_message, type) VALUES(?,?,?,?,?)').run(ver.snapshot_data, req.user!.id, req.user!.name||req.user!.email, `Rollback to #${ver.id}`, 'rollback');
   audit(req.user!.id,'rollback','site_builder',Number(req.params.id)); res.json({ok:true});
+});
+
+// ──────────────────────────────────────────────────────────────
+// 3D SLIDER (PUBLIC & ADMIN ENDPOINTS)
+// ──────────────────────────────────────────────────────────────
+const DEFAULT_SLIDER_3D_CONFIG = {
+  sourceMode: 'hybrid',
+  maxSlides: 10,
+  autoplay: true,
+  interval: 6,
+  pauseOnHover: true,
+  tiltEnabled: true,
+  dragEnabled: true,
+  infiniteLoop: true,
+  showBadge: true,
+  badgeTextTj: 'ХАБАРҲОИ АСОСӢ // 3D КАРУСЕЛ',
+  badgeTextRu: 'ГЛАВНЫЕ НОВОСТИ // 3D СЛАЙДЕР',
+  badgeTextEn: 'FEATURED NEWS // 3D SLIDER',
+  showCounter: true,
+  showPlayPause: true,
+  showArrows: true,
+  showDots: true,
+  showReadMore: true,
+  readMoreTextTj: 'Муфассал хондан',
+  readMoreTextRu: 'Читать подробнее',
+  readMoreTextEn: 'Read Full Story',
+  showAllNews: true,
+  allNewsTextTj: 'Ҳамаи хабарҳо',
+  allNewsTextRu: 'Все новости',
+  allNewsTextEn: 'All News',
+  perspective: 1200,
+  stageHeight: 400,
+  cardWidth: 660,
+  cardHeight: 370,
+  cardRadius: 24,
+  sideOffsetX: 280,
+  sideOffsetZ: -120,
+  sideRotateY: 18,
+  sideScale: 0.85,
+  sideOpacity: 0.45,
+  cardTheme: 'glass',
+  activeBorderColor: '#dfbe7e',
+  glowIntensity: 'medium',
+  glowColor: 'rgba(223, 190, 126, 0.6)',
+  imageOverlayOpacity: 60,
+  bgBlur: 16,
+  containerBackground: 'glass',
+};
+
+function getSlider3DConfig(): any {
+  try {
+    const row = db.prepare('SELECT value FROM settings WHERE key="slider_3d_config"').get() as any;
+    if (row && row.value) {
+      return { ...DEFAULT_SLIDER_3D_CONFIG, ...JSON.parse(row.value) };
+    }
+  } catch (e) {}
+  return { ...DEFAULT_SLIDER_3D_CONFIG };
+}
+
+function mapDbSlideToFrontend(r: any) {
+  return {
+    id: r.id,
+    titleTj: r.title_tj || '',
+    titleRu: r.title_ru || '',
+    titleEn: r.title_en || r.title_ru || '',
+    summaryTj: r.summary_tj || '',
+    summaryRu: r.summary_ru || '',
+    summaryEn: r.summary_en || r.summary_ru || '',
+    categoryTj: r.category_tj || 'ХАБАРҲОИ СУДИ ОЛӢ',
+    categoryRu: r.category_ru || 'НОВОСТИ ВЕРХОВНОГО СУДА',
+    categoryEn: r.category_en || 'SUPREME COURT NEWS',
+    imageUrl: r.image_url || '/supreme-court-night.jpg',
+    linkUrl: r.link_url || undefined,
+    dateText: r.date_text || '2026',
+    sortOrder: Number(r.sort_order ?? 0),
+    isActive: r.is_active === 1 || r.is_active === true,
+  };
+}
+
+function mapNewsItemToSlide(item: any) {
+  return {
+    id: 'news-' + item.id,
+    titleTj: item.title_tj || item.title_ru || '',
+    titleRu: item.title_ru || '',
+    titleEn: item.title_en || item.title_ru || '',
+    summaryTj: item.excerpt_tj || item.body_tj || item.excerpt_ru || item.body_ru || '',
+    summaryRu: item.excerpt_ru || item.body_ru || '',
+    summaryEn: item.excerpt_en || item.body_en || item.excerpt_ru || '',
+    categoryTj: item.category || 'ХАБАРҲОИ СУДИ ОЛӢ',
+    categoryRu: item.category || 'НОВОСТИ ВЕРХОВНОГО СУДА',
+    categoryEn: item.category || 'SUPREME COURT NEWS',
+    imageUrl: item.cover_image ? `/uploads/${item.cover_image}` : '/supreme-court-night.jpg',
+    linkUrl: item.slug ? `/news/${item.slug}` : undefined,
+    dateText: item.published_at ? new Date(item.published_at).toLocaleDateString() : '2026',
+    sortOrder: 0,
+    isActive: true,
+  };
+}
+
+// Public API
+app.get('/api/slider-3d', cache(15), (req, res) => {
+  const config = getSlider3DConfig();
+  const region = (req.query.region as string) || '';
+  const maxSlides = Math.max(1, Math.min(30, Number(config.maxSlides) || 10));
+
+  let slides: any[] = [];
+
+  if (config.sourceMode === 'custom') {
+    const rows = db.prepare('SELECT * FROM slider_3d_slides WHERE is_active=1 ORDER BY sort_order ASC, id ASC LIMIT ?').all(maxSlides) as any[];
+    slides = rows.map(mapDbSlideToFrontend);
+  } else if (config.sourceMode === 'news') {
+    let sql = "SELECT * FROM content WHERE type='news' AND status='published' AND deleted_at IS NULL";
+    const params: any[] = [];
+    if (region) { sql += ' AND region=?'; params.push(region); }
+    sql += ' ORDER BY published_at DESC LIMIT ?';
+    params.push(maxSlides);
+    const rows = db.prepare(sql).all(...params) as any[];
+    slides = rows.map(mapNewsItemToSlide);
+  } else if (config.sourceMode === 'featured') {
+    let sql = "SELECT * FROM content WHERE type='news' AND status='published' AND deleted_at IS NULL";
+    const params: any[] = [];
+    if (region) { sql += ' AND region=?'; params.push(region); }
+    sql += ' ORDER BY CASE WHEN featured=1 THEN 0 ELSE 1 END, published_at DESC LIMIT ?';
+    params.push(maxSlides);
+    const rows = db.prepare(sql).all(...params) as any[];
+    slides = rows.map(mapNewsItemToSlide);
+  } else {
+    // Hybrid: custom slides first, then latest news up to maxSlides
+    const customRows = db.prepare('SELECT * FROM slider_3d_slides WHERE is_active=1 ORDER BY sort_order ASC, id ASC LIMIT ?').all(maxSlides) as any[];
+    slides = customRows.map(mapDbSlideToFrontend);
+    if (slides.length < maxSlides) {
+      const remaining = maxSlides - slides.length;
+      let sql = "SELECT * FROM content WHERE type='news' AND status='published' AND deleted_at IS NULL";
+      const params: any[] = [];
+      if (region) { sql += ' AND region=?'; params.push(region); }
+      sql += ' ORDER BY published_at DESC LIMIT ?';
+      params.push(remaining);
+      const newsRows = db.prepare(sql).all(...params) as any[];
+      slides = slides.concat(newsRows.map(mapNewsItemToSlide));
+    }
+  }
+
+  if (slides.length === 0) {
+    const fallbackRows = db.prepare('SELECT * FROM slider_3d_slides ORDER BY sort_order ASC, id ASC').all() as any[];
+    slides = fallbackRows.map(mapDbSlideToFrontend);
+  }
+
+  res.json({ config, slides });
+});
+
+// Admin API
+app.get('/api/admin/slider-3d', auth, (req: Auth, res) => {
+  if (denyScoped(req, res)) return;
+  const config = getSlider3DConfig();
+  const slides = (db.prepare('SELECT * FROM slider_3d_slides ORDER BY sort_order ASC, id ASC').all() as any[]).map(mapDbSlideToFrontend);
+  const recentNews = db.prepare("SELECT id, slug, title_ru, title_tj, title_en, excerpt_ru, excerpt_tj, excerpt_en, cover_image, category, published_at FROM content WHERE type='news' AND status='published' AND deleted_at IS NULL ORDER BY published_at DESC LIMIT 20").all();
+  res.json({ config, slides, recentNews });
+});
+
+app.post('/api/admin/slider-3d/config', auth, requirePerm('settings.manage'), (req: Auth, res) => {
+  if (denyScoped(req, res)) return;
+  const config = req.body || {};
+  db.prepare('INSERT INTO settings("key", "value") VALUES("slider_3d_config", ?) ON CONFLICT("key") DO UPDATE SET "value"=excluded."value"').run(JSON.stringify(config));
+  audit(req.user!.id, 'update', 'slider_3d_config', 0);
+  res.json({ ok: true, config });
+});
+
+app.post('/api/admin/slider-3d/slides', auth, requirePerm('content.edit'), (req: Auth, res) => {
+  if (denyScoped(req, res)) return;
+  const p = z.object({
+    titleTj: z.string().min(1),
+    titleRu: z.string().min(1),
+    titleEn: z.string().optional(),
+    summaryTj: z.string().optional(),
+    summaryRu: z.string().optional(),
+    summaryEn: z.string().optional(),
+    categoryTj: z.string().optional(),
+    categoryRu: z.string().optional(),
+    categoryEn: z.string().optional(),
+    imageUrl: z.string().min(1),
+    linkUrl: z.string().optional().nullable(),
+    dateText: z.string().optional(),
+    sortOrder: z.number().optional(),
+    isActive: z.union([z.boolean(), z.number()]).optional(),
+  }).safeParse(req.body);
+
+  if (!p.success) return res.status(400).json({ error: 'Invalid slide data', details: p.error.flatten() });
+  const d = p.data;
+  const r = db.prepare(`
+    INSERT INTO slider_3d_slides (
+      title_tj, title_ru, title_en, summary_tj, summary_ru, summary_en,
+      category_tj, category_ru, category_en, image_url, link_url, date_text, sort_order, is_active
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    d.titleTj,
+    d.titleRu,
+    d.titleEn || null,
+    d.summaryTj || '',
+    d.summaryRu || '',
+    d.summaryEn || null,
+    d.categoryTj || 'ХАБАРҲОИ СУДИ ОЛӢ',
+    d.categoryRu || 'НОВОСТИ ВЕРХОВНОГО СУДА',
+    d.categoryEn || 'SUPREME COURT NEWS',
+    d.imageUrl,
+    d.linkUrl || null,
+    d.dateText || new Date().toLocaleDateString(),
+    d.sortOrder ?? 99,
+    d.isActive ? 1 : 0
+  );
+
+  audit(req.user!.id, 'create', 'slider_3d_slide', Number(r.lastInsertRowid));
+  res.status(201).json({ id: r.lastInsertRowid, ok: true });
+});
+
+app.put('/api/admin/slider-3d/slides/:id', auth, requirePerm('content.edit'), (req: Auth, res) => {
+  if (denyScoped(req, res)) return;
+  const cur = db.prepare('SELECT * FROM slider_3d_slides WHERE id=?').get(req.params.id) as any;
+  if (!cur) return res.status(404).json({ error: 'Slide not found' });
+
+  const p = z.object({
+    titleTj: z.string().optional(),
+    titleRu: z.string().optional(),
+    titleEn: z.string().optional(),
+    summaryTj: z.string().optional(),
+    summaryRu: z.string().optional(),
+    summaryEn: z.string().optional(),
+    categoryTj: z.string().optional(),
+    categoryRu: z.string().optional(),
+    categoryEn: z.string().optional(),
+    imageUrl: z.string().optional(),
+    linkUrl: z.string().optional().nullable(),
+    dateText: z.string().optional(),
+    sortOrder: z.number().optional(),
+    isActive: z.union([z.boolean(), z.number()]).optional(),
+  }).safeParse(req.body);
+
+  if (!p.success) return res.status(400).json({ error: 'Invalid update', details: p.error.flatten() });
+  const d = p.data;
+
+  db.prepare(`
+    UPDATE slider_3d_slides SET
+      title_tj = COALESCE(?, title_tj),
+      title_ru = COALESCE(?, title_ru),
+      title_en = COALESCE(?, title_en),
+      summary_tj = COALESCE(?, summary_tj),
+      summary_ru = COALESCE(?, summary_ru),
+      summary_en = COALESCE(?, summary_en),
+      category_tj = COALESCE(?, category_tj),
+      category_ru = COALESCE(?, category_ru),
+      category_en = COALESCE(?, category_en),
+      image_url = COALESCE(?, image_url),
+      link_url = ?,
+      date_text = COALESCE(?, date_text),
+      sort_order = COALESCE(?, sort_order),
+      is_active = COALESCE(?, is_active),
+      updated_at = datetime("now")
+    WHERE id=?
+  `).run(
+    d.titleTj ?? null,
+    d.titleRu ?? null,
+    d.titleEn ?? null,
+    d.summaryTj ?? null,
+    d.summaryRu ?? null,
+    d.summaryEn ?? null,
+    d.categoryTj ?? null,
+    d.categoryRu ?? null,
+    d.categoryEn ?? null,
+    d.imageUrl ?? null,
+    d.linkUrl !== undefined ? d.linkUrl : cur.link_url,
+    d.dateText ?? null,
+    d.sortOrder ?? null,
+    d.isActive !== undefined ? (d.isActive ? 1 : 0) : cur.is_active,
+    req.params.id
+  );
+
+  audit(req.user!.id, 'update', 'slider_3d_slide', Number(req.params.id));
+  res.json({ ok: true });
+});
+
+app.delete('/api/admin/slider-3d/slides/:id', auth, requirePerm('content.edit'), (req: Auth, res) => {
+  if (denyScoped(req, res)) return;
+  const cur = db.prepare('SELECT * FROM slider_3d_slides WHERE id=?').get(req.params.id) as any;
+  if (!cur) return res.status(404).json({ error: 'Slide not found' });
+
+  db.prepare('DELETE FROM slider_3d_slides WHERE id=?').run(req.params.id);
+  audit(req.user!.id, 'delete', 'slider_3d_slide', Number(req.params.id));
+  res.json({ ok: true });
+});
+
+app.post('/api/admin/slider-3d/slides/reorder', auth, requirePerm('content.edit'), (req: Auth, res) => {
+  if (denyScoped(req, res)) return;
+  const p = z.object({ order: z.array(z.union([z.number(), z.string()])) }).safeParse(req.body);
+  if (!p.success) return res.status(400).json({ error: 'Invalid order list' });
+
+  const upd = db.prepare('UPDATE slider_3d_slides SET sort_order=? WHERE id=?');
+  p.data.order.forEach((id, idx) => {
+    upd.run(idx + 1, Number(id));
+  });
+
+  audit(req.user!.id, 'reorder', 'slider_3d_slides', 0);
+  res.json({ ok: true });
+});
+
+app.post('/api/admin/slider-3d/reset', auth, requirePerm('settings.manage'), (req: Auth, res) => {
+  if (denyScoped(req, res)) return;
+  db.prepare('DELETE FROM settings WHERE key="slider_3d_config"').run();
+  db.exec('DELETE FROM slider_3d_slides');
+  const insSlide = db.prepare(`
+    INSERT INTO slider_3d_slides (
+      title_tj, title_ru, title_en, summary_tj, summary_ru, summary_en,
+      category_tj, category_ru, category_en, image_url, link_url, date_text, sort_order, is_active
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+  insSlide.run('Тартиби қабули муроҷиатҳои шаҳрвандон дар шакли электронӣ тавассути сомонаи суд.тҷ', 'Порядок приёма обращений граждан в электронной форме через единый портал sud.tj', 'Procedure for Receiving Citizen Appeals Electronically via sud.tj Portal', 'Суди Олии Ҷумҳурии Тоҷикистон дастури навро оид ба пешниҳоди аризаҳои электронӣ ва бақайдгирии фаврӣ нашр намуд.', 'Верховный суд Республики Таджикистан опубликовал обновленный регламент подачи электронных исковых заявлений.', 'The Supreme Court published updated guidelines on electronic court claim submissions and instant digital registration.', 'СУДИ ЭЛЕКТРОНӢ', 'ЭЛЕКТРОННЫЙ СУД', 'E-JUSTICE', '/supreme-court-night.jpg', '/appeals', '18.08.2026', 1, 1);
+  insSlide.run('Ҷаласаи Пленуми Суди Олии Ҷумҳурии Тоҷикистон оид ба ҷамъбасти амалияи судӣ', 'Заседание Пленума Верховного суда Республики Таджикистан по обобщению судебной практики', 'Plenum Session of the Supreme Court on Summary of Judicial Practice', 'Дар ҷаласа натиҷаҳои ҷамъбасти амалияи судӣ оид ба татбиқи меъёрҳои қонунгузории оилавӣ ва манзилӣ баррасӣ гардиданд.', 'Рассмотрены итоги обобщения судебной практики по применению норм семейного и жилищного законодательства.', 'The session reviewed the consolidation of judicial practice regarding family and housing legislation standards.', 'ПЛЕНУМИ СУДИ ОЛӢ', 'ПЛЕНУМ ВЕРХОВНОГО СУДА', 'SUPREME COURT PLENUM', '/supreme-court-day.jpg', '/acts', '15.08.2026', 2, 1);
+  insSlide.run('Баррасии масъалаҳои дастрасии шахсони дорои маъюбият ба адолати судӣ ва инфрасохтори рақамӣ', 'Обеспечение доступности правосудия для лиц с инвалидностью и цифровая инфраструктура', 'Ensuring Equal Access to Justice for Persons with Disabilities and Digital Infrastructure', 'Ҷорӣ намудани воситаҳои рақамӣ ва интерфейсҳои мутобиқшуда дар биноҳои судҳо ва сомонаҳои расмӣ баррасӣ шуд.', 'Внедрение цифровых инструментов и адаптивных интерфейсов в зданиях судов и на веб-порталах республики.', 'Implementation of accessible digital portals and assistive judicial technologies across court branches.', 'ДАСТРАСИИ СУДӢ', 'ДОСТУПНОСТЬ ПРАВОСУДИЯ', 'ACCESS TO JUSTICE', '/themis-background.jpg', '/news', '14.08.2026', 3, 1);
+  insSlide.run('Нашри шумораи нави нашрияи расмии Суди Олии ҶТ таҳти унвони «Мизони Қонун»', 'Выпуск официального издания Верховного суда «Мизони Қонун»', 'Release of Supreme Court Official Journal "Mizoni Qonun"', 'Дар нашри нав мақолаҳои таҳлилии судяҳо, шарҳҳои амалияи кассатсионӣ ва тавсияҳои методӣ нашр гардиданд.', 'Опубликованы аналитические статьи судей, обзоры кассационной практики и методические рекомендации.', 'Published analytical judicial articles, cassation reviews, and methodical recommendations for legal practice.', 'МАТБУОТИ СУДӢ', 'СУДЕБНАЯ ПЕЧАТЬ', 'JUDICIAL PRESS', '/themis-light-background.jpg', '/news', '10.08.2026', 4, 1);
+
+  audit(req.user!.id, 'reset', 'slider_3d_all', 0);
+  res.json({ ok: true, config: DEFAULT_SLIDER_3D_CONFIG });
 });
 
 // SSR and Static Frontend

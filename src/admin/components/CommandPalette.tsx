@@ -177,7 +177,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
     .filter((g) => g.items.length > 0);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 p-4 bg-theme-bg/70 backdrop-blur-md animate-fadeIn select-none">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 p-4 bg-black/35 animate-fadeIn select-none">
       <div className="relative w-full max-w-xl glass glass-premium overflow-hidden flex flex-col">
         {/* Search Header — same as public */}
         <div className="flex items-center px-4 py-3.5 border-b border-[var(--glass-border)] gap-3">

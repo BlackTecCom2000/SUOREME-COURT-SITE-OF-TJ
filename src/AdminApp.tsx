@@ -19,6 +19,7 @@ import { JudicialSystemVisualEditor } from './admin/pages/content/JudicialSystem
 import { AiDashboard } from './admin/pages/AiDashboard';
 import { UsefulSitesManager } from './admin/pages/useful/UsefulSitesManager';
 import { SiteBuilder } from './admin/pages/siteBuilder/SiteBuilder';
+import { Slider3DManager } from './admin/pages/slider/Slider3DManager';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 
@@ -83,6 +84,7 @@ const AdminRoutes: React.FC = () => {
           <Route path="duty" element={<DutyAdminManager />} />
           <Route path="useful" element={<UsefulSitesManager />} />
           <Route path="site-builder" element={<SiteBuilder />} />
+          <Route path="slider-3d" element={<Slider3DManager />} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Routes>

@@ -9,6 +9,7 @@ const AILegalAssistantModal = React.lazy(() => import('./digital-court/AILegalAs
 const NewFilingModal = React.lazy(() => import('./digital-court/NewFilingModal').then(m => ({ default: m.NewFilingModal })));
 const GlobalSearchModal = React.lazy(() => import('./GlobalSearchModal').then(m => ({ default: m.GlobalSearchModal })));
 import { CourtNodeData } from '../data/sudTjData';
+import { GlobalBackground } from './GlobalBackground';
 
 export const Layout: React.FC = () => {
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ export const Layout: React.FC = () => {
         isHighContrast ? 'contrast-125 brightness-110' : ''
       }`}
     >
+      <GlobalBackground />
       {!isStandalone && (
         <Navbar
           isHighContrast={isHighContrast}
@@ -75,7 +77,7 @@ export const Layout: React.FC = () => {
         />
       )}
 
-      <main className="relative z-10 flex flex-col space-y-0 min-h-screen">
+      <main className="public-readable relative z-10 flex flex-col space-y-0 min-h-screen">
         <Outlet 
           context={{ 
             handleOpenSectionModal,

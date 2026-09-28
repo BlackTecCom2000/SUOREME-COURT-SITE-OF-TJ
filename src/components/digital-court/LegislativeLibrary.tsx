@@ -61,40 +61,40 @@ export const LegislativeLibrary: React.FC = () => {
       id="legislative-library"
       aria-label={t('leglib.badge')}
       ref={rootRef}
-      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden border-t border-theme-border/30 select-none"
+      className="relative py-14 lg:py-24 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
       <DigitalDataRain density="sparse" speed="medium" opacity={0.18} colorTheme="gold" />
 
       <div className="site-container relative z-10 space-y-8">
-        <Reveal delay={50}>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-theme-gold/30 bg-theme-gold/10 text-theme-gold font-mono text-[11px] font-bold uppercase tracking-wider">
-            <LibraryBig size={13} />
-            <span>{t('leglib.badge')}</span>
-          </div>
-        </Reveal>
+        {/* Section Header with Liquid Glass UI Pod */}
+        <Reveal delay={100}>
+          <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-theme-gold/30 bg-theme-gold/10 text-theme-gold font-mono text-[11px] font-bold uppercase tracking-wider mb-4">
+              <LibraryBig size={13} />
+              <span>{t('leglib.badge')}</span>
+            </div>
 
-        <div className="max-w-4xl">
-          <h2
-            ref={titleRef}
-            className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase mb-4"
-          >
-            {t('leglib.title1')}{' '}
-            <span className="italic font-light text-theme-gold">{t('leglib.title1Italic')}</span>{' '}
-            {t('leglib.title2')}
-          </h2>
-          <Reveal delay={150}>
+            <h2
+              ref={titleRef}
+              className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium leading-[1.05] tracking-tight mb-4 text-theme-text drop-shadow-sm"
+            >
+              {t('leglib.title1')}{' '}
+              <span className="italic font-light text-theme-gold">{t('leglib.title1Italic')}</span>{' '}
+              {t('leglib.title2')}
+            </h2>
+
             <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-2xl">
               {t('leglib.description')}
             </p>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
 
         <InteractiveLawBook books={showcaseBooks} />
 
         <Reveal delay={200}>
           <Link
             to="/library"
-            className="group inline-flex items-center gap-3 px-6 py-4 rounded-2xl border border-theme-gold/50 bg-theme-gold/10 hover:bg-theme-gold/20 transition-colors"
+            className="group inline-flex items-center gap-3 glass glass-card px-5 py-4 border-theme-gold/50 hover:bg-[var(--glass-surface-hover)] transition-colors"
           >
             <LibraryBig size={20} className="text-theme-gold" />
             <span className="text-left">

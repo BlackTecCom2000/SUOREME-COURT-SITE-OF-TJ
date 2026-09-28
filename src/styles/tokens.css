@@ -37,28 +37,28 @@
      CLEAN semantics kept: low white haze so architectural background
      stays visible; values match MASTER_TASK spec, dark theme overrides
      in index.css keep density for admin continuity. */
-  --glass-opacity: 0.14;
-  --glass-opacity-hover: 0.19;
-  --glass-opacity-active: 0.23;
-  --glass-opacity-strong: 0.18;
+   --glass-opacity: 0.85;
+   --glass-opacity-hover: 0.92;
+   --glass-opacity-active: 0.96;
+   --glass-opacity-strong: 0.92;
   --glass-surface: rgba(255, 255, 255, var(--glass-opacity));
   --glass-surface-hover: rgba(255, 255, 255, var(--glass-opacity-hover));
   --glass-surface-active: rgba(255, 255, 255, var(--glass-opacity-active));
   --glass-surface-strong: rgba(255, 255, 255, var(--glass-opacity-strong));
-  --glass-surface-dark: rgba(5, 15, 30, 0.28);
-  --glass-surface-subtle: rgba(255, 255, 255, 0.08);
+  --glass-surface-dark: rgba(5, 15, 30, 0.88);
+  --glass-surface-subtle: rgba(255, 255, 255, 0.80);
   --glass-border-opacity: 0.22;
   --glass-border-opacity-hover: 0.34;
   --glass-border: rgba(255, 255, 255, var(--glass-border-opacity));
   --glass-border-subtle: rgba(255, 255, 255, 0.14);
   --glass-border-hover: rgba(255, 255, 255, var(--glass-border-opacity-hover));
   --glass-border-active: rgba(212, 164, 45, 0.60);
-  --glass-blur: 24px;
-  --glass-blur-premium: 32px;
-  --glass-blur-ultra: 40px;
-  --glass-saturation: 160%;
-  --glass-saturation-premium: 160%;
-  --bg-overlay-opacity: 0.12;
+   --glass-blur: 16px;
+   --glass-blur-premium: 20px;
+   --glass-blur-ultra: 24px;
+   --glass-saturation: 130%;
+   --glass-saturation-premium: 130%;
+  --bg-overlay-opacity: 0.15;
   --bg-blur: 0px;
   --bg-saturation: 100%;
   --bg-brightness: 100%;
@@ -71,11 +71,11 @@
   --glass-radius-large: 30px;
   --glass-radius-xl: 30px;
   --glass-radius-small: 16px;
-  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-  --glass-shadow-hover: 0 18px 55px rgba(0, 0, 0, 0.18);
-  --glass-shadow-floating: 0 25px 80px rgba(0, 0, 0, 0.22);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.42);
-  --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+   --glass-shadow: inset 2px -2px 1px -1px rgba(255, 255, 255, 0.42), inset -2px 2px 1px -1px rgba(255, 255, 255, 0.42), inset 0 0 2px rgba(0, 0, 0, 0.34), 0 4px 14px rgba(0, 0, 0, 0.2);
+   --glass-shadow-hover: inset 2px -2px 1px -1px rgba(255, 255, 255, 0.56), inset -2px 2px 1px -1px rgba(255, 255, 255, 0.56), inset 0 0 2px rgba(0, 0, 0, 0.38), 0 7px 18px rgba(0, 0, 0, 0.24);
+   --glass-shadow-floating: inset 2px -2px 1px -1px rgba(255, 255, 255, 0.5), inset -2px 2px 1px -1px rgba(255, 255, 255, 0.5), inset 0 0 2px rgba(0, 0, 0, 0.4), 0 12px 30px rgba(0, 0, 0, 0.24);
+   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+   --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
   --court-gold: #d4a42d;
   --court-navy: #050f1e;
   --status-success: #10b981;

@@ -31,25 +31,24 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
   };
 
   return (
-    <header className="admin-topbar sticky top-0 px-4 sm:px-6 glass flex items-center justify-between gap-4 z-30 select-none !rounded-none border-b"
-      style={{ borderColor: 'var(--glass-border)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', background: 'var(--glass-surface)' } as React.CSSProperties}>
+    <header className="admin-topbar sticky top-0 px-4 sm:px-6 glass-navigation flex items-center justify-between gap-4 z-30 select-none !rounded-none border-b">
       {/* Left: Mobile Menu Trigger & Breadcrumb Title */}
       <div className="flex items-center gap-3 overflow-hidden text-left min-w-0 flex-1">
         <button
           onClick={onOpenMobileMenu}
-          className="md:hidden p-2 rounded-lg text-theme-textMuted hover:text-theme-text hover:bg-[var(--glass-surface-hover)] border border-transparent hover:border-[var(--glass-border-hover)]"
+          className="md:hidden p-2 rounded-lg text-black dark:text-white hover:bg-slate-200/60 dark:hover:bg-[var(--glass-surface-hover)] border border-transparent"
           aria-label="Открыть меню"
         >
           <Menu size={20} />
         </button>
 
         <div className="admin-topbar-titles flex flex-col">
-          <div className="admin-topbar-crumbs flex items-center gap-2 text-xs font-mono text-theme-textMuted">
+          <div className="admin-topbar-crumbs flex items-center gap-2 text-xs font-mono text-black dark:text-white font-medium">
             <span>SUD.TJ</span>
             <span>/</span>
-            <span className="text-[var(--court-gold)] uppercase">CONTROL CENTER</span>
+            <span className="text-amber-700 dark:text-[var(--court-gold)] font-bold uppercase">CONTROL CENTER</span>
           </div>
-          <h1 className="font-serif font-bold text-base sm:text-lg text-theme-text leading-tight truncate">
+          <h1 className="font-serif font-bold text-base sm:text-lg text-black dark:text-white leading-tight truncate">
             {getPageTitle(location.pathname)}
           </h1>
         </div>
@@ -60,11 +59,11 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
         {/* Command Palette Trigger */}
         <button
           onClick={onOpenCommandPalette}
-          className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-xl glass border border-[var(--glass-border)] text-theme-textMuted hover:text-theme-text hover:border-[var(--court-gold)]/40 transition-all text-xs font-mono"
+          className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-[var(--glass-border)] bg-white/90 dark:bg-slate-900/70 text-black dark:text-white hover:border-amber-500 transition-all text-xs font-mono shadow-sm"
         >
-          <Search size={14} className="text-[var(--court-gold)]" />
+          <Search size={14} className="text-amber-600 dark:text-[var(--court-gold)]" />
           <span>Быстрый поиск / команды</span>
-          <kbd className="px-1.5 py-0.5 rounded glass border border-[var(--glass-border)] text-[10px] text-theme-textMuted">
+          <kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-[10px] text-black dark:text-white font-bold">
             Ctrl + K
           </kbd>
         </button>
@@ -72,7 +71,7 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
         {/* Mobile Search Icon Button */}
         <button
           onClick={onOpenCommandPalette}
-          className="sm:hidden p-2 rounded-xl glass border border-[var(--glass-border)] text-theme-textMuted hover:text-theme-text"
+          className="sm:hidden p-2 rounded-xl border border-slate-300 dark:border-[var(--glass-border)] bg-white/90 dark:bg-slate-900/70 text-black dark:text-white"
           aria-label="Поиск"
         >
           <Search size={18} />

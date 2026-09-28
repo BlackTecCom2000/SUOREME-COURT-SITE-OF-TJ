@@ -2,6 +2,12 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Play, Pause, Calendar, ArrowUpRight, Sparkles } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useTheme } from '../../context/ThemeContext';
+import {
+  Slider3DConfig,
+  Slider3DSlide,
+  DEFAULT_SLIDER_3D_CONFIG,
+  DEFAULT_SLIDER_3D_SLIDES,
+} from '../../types/slider3d';
 
 export interface NewsSlideItem {
   id: string;
@@ -20,73 +26,19 @@ export interface NewsSlideItem {
   slug?: string;
 }
 
-interface Judicial3DNewsSliderProps {
+export interface Judicial3DNewsSliderProps {
   onOpenNewsItem?: (item: any) => void;
   onOpenAllNews?: () => void;
   region?: string;
   categoryTj?: string;
   categoryRu?: string;
   categoryEn?: string;
+  // Optional configuration overrides for admin preview or customized embedding
+  configOverride?: Partial<Slider3DConfig>;
+  slidesOverride?: Slider3DSlide[];
+  previewLanguage?: 'tj' | 'ru' | 'en';
+  previewDark?: boolean;
 }
-
-const DEFAULT_SLIDES: NewsSlideItem[] = [
-  {
-    id: 'news-1',
-    titleTj: 'Тартиби қабули муроҷиатҳои шаҳрвандон дар шакли электронӣ тавассути сомонаи суд.тҷ',
-    titleRu: 'Порядок приёма обращений граждан в электронной форме через единый портал sud.tj',
-    titleEn: 'Procedure for Receiving Citizen Appeals Electronically via sud.tj Portal',
-    summaryTj: 'Суди Олии Ҷумҳурии Тоҷикистон дастури навро оид ба пешниҳоди аризаҳои электронӣ ва бақайдгирии фаврӣ нашр намуд.',
-    summaryRu: 'Верховный суд Республики Таджикистан опубликовал обновленный регламент подачи электронных исковых заявлений.',
-    summaryEn: 'The Supreme Court published updated guidelines on electronic court claim submissions and instant digital registration.',
-    date: '18.08.2026',
-    categoryTj: 'СУДИ ЭЛЕКТРОНӢ',
-    categoryRu: 'ЭЛЕКТРОННЫЙ СУД',
-    categoryEn: 'E-JUSTICE',
-    image: '/supreme-court-night.jpg',
-  },
-  {
-    id: 'news-2',
-    titleTj: 'Ҷаласаи Пленуми Суди Олии Ҷумҳурии Тоҷикистон оид ба ҷамъбасти амалияи судӣ',
-    titleRu: 'Заседание Пленума Верховного суда Республики Таджикистан по обобщению судебной практики',
-    titleEn: 'Plenum Session of the Supreme Court on Summary of Judicial Practice',
-    summaryTj: 'Дар ҷаласа натиҷаҳои ҷамъбасти амалияи судӣ оид ба татбиқи меъёрҳои қонунгузории оилавӣ ва манзилӣ баррасӣ гардиданд.',
-    summaryRu: 'Рассмотрены итоги обобщения судебной практики по применению норм семейного и жилищного законодательства.',
-    summaryEn: 'The session reviewed the consolidation of judicial practice regarding family and housing legislation standards.',
-    date: '15.08.2026',
-    categoryTj: 'ПЛЕНУМИ СУДИ ОЛӢ',
-    categoryRu: 'ПЛЕНУМ ВЕРХОВНОГО СУДА',
-    categoryEn: 'SUPREME COURT PLENUM',
-    image: '/supreme-court-day.jpg',
-  },
-  {
-    id: 'news-3',
-    titleTj: 'Баррасии масъалаҳои дастрасии шахсони дорои маъюбият ба адолати судӣ ва инфрасохтори рақамӣ',
-    titleRu: 'Обеспечение доступности правосудия для лиц с инвалидностью и цифровая инфраструктура',
-    titleEn: 'Ensuring Equal Access to Justice for Persons with Disabilities and Digital Infrastructure',
-    summaryTj: 'Ҷорӣ намудани воситаҳои рақамӣ ва интерфейсҳои мутобиқшуда дар биноҳои судҳо ва сомонаҳои расмӣ баррасӣ шуд.',
-    summaryRu: 'Внедрение цифровых инструментов и адаптивных интерфейсов в зданиях судов и на веб-порталах республики.',
-    summaryEn: 'Implementation of accessible digital portals and assistive judicial technologies across court branches.',
-    date: '14.08.2026',
-    categoryTj: 'ДАСТРАСИИ СУДӢ',
-    categoryRu: 'ДОСТУПНОСТЬ ПРАВОСУДИЯ',
-    categoryEn: 'ACCESS TO JUSTICE',
-    image: '/themis-background.jpg',
-  },
-  {
-    id: 'news-4',
-    titleTj: 'Нашри шумораи нави нашрияи расмии Суди Олии ҶТ таҳти унвони «Мизони Қонун»',
-    titleRu: 'Выпуск официального издания Верховного суда «Мизони Қонун»',
-    titleEn: 'Release of Supreme Court Official Journal "Mizoni Qonun"',
-    summaryTj: 'Дар нашри нав мақолаҳои таҳлилии судяҳо, шарҳҳои амалияи кассатсионӣ ва тавсияҳои методӣ нашр гардиданд.',
-    summaryRu: 'Опубликованы аналитические статьи судей, обзоры кассационной практики и методические рекомендации.',
-    summaryEn: 'Published analytical judicial articles, cassation reviews, and methodical recommendations for legal practice.',
-    date: '10.08.2026',
-    categoryTj: 'МАТБУОТИ СУДӢ',
-    categoryRu: 'СУДЕБНАЯ ПЕЧАТЬ',
-    categoryEn: 'JUDICIAL PRESS',
-    image: '/themis-light-background.jpg',
-  }
-];
 
 export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
   onOpenNewsItem,
@@ -95,66 +47,144 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
   categoryTj,
   categoryRu,
   categoryEn,
+  configOverride,
+  slidesOverride,
+  previewLanguage,
+  previewDark,
 }) => {
-  const { language } = useLanguage();
-  const { isDark } = useTheme();
-  const [slides, setSlides] = useState<NewsSlideItem[]>(DEFAULT_SLIDES);
+  const { language: ctxLanguage } = useLanguage();
+  const { isDark: ctxDark } = useTheme();
+
+  const language = previewLanguage || ctxLanguage || 'tj';
+  const isDark = previewDark !== undefined ? previewDark : ctxDark;
+
+  const [config, setConfig] = useState<Slider3DConfig>({
+    ...DEFAULT_SLIDER_3D_CONFIG,
+    ...configOverride,
+  });
+
+  const [slides, setSlides] = useState<NewsSlideItem[]>(() => {
+    const initial = slidesOverride || DEFAULT_SLIDER_3D_SLIDES;
+    return initial.map((s) => ({
+      id: String(s.id),
+      titleTj: s.titleTj,
+      titleRu: s.titleRu,
+      titleEn: s.titleEn || s.titleRu,
+      summaryTj: s.summaryTj,
+      summaryRu: s.summaryRu,
+      summaryEn: s.summaryEn || s.summaryRu,
+      categoryTj: s.categoryTj || 'ХАБАРҲОИ СУДИ ОЛӢ',
+      categoryRu: s.categoryRu || 'НОВОСТИ ВЕРХОВНОГО СУДА',
+      categoryEn: s.categoryEn || 'SUPREME COURT NEWS',
+      date: s.dateText || '2026',
+      image: s.imageUrl,
+      url: s.linkUrl,
+    }));
+  });
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
   const [tiltOffset, setTiltOffset] = useState({ x: 0, y: 0 });
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  // 1. Fetch dynamic news from API if available (optionally filtered by region)
+  // Sync config override changes
   useEffect(() => {
+    if (configOverride) {
+      setConfig((prev) => ({ ...prev, ...configOverride }));
+    }
+  }, [configOverride]);
+
+  // Sync slides override changes
+  useEffect(() => {
+    if (slidesOverride) {
+      setSlides(
+        slidesOverride.map((s) => ({
+          id: String(s.id),
+          titleTj: s.titleTj,
+          titleRu: s.titleRu,
+          titleEn: s.titleEn || s.titleRu,
+          summaryTj: s.summaryTj,
+          summaryRu: s.summaryRu,
+          summaryEn: s.summaryEn || s.summaryRu,
+          categoryTj: s.categoryTj || 'ХАБАРҲОИ СУДИ ОЛӢ',
+          categoryRu: s.categoryRu || 'НОВОСТИ ВЕРХОВНОГО СУДА',
+          categoryEn: s.categoryEn || 'SUPREME COURT NEWS',
+          date: s.dateText || '2026',
+          image: s.imageUrl,
+          url: s.linkUrl,
+        }))
+      );
+    }
+  }, [slidesOverride]);
+
+  // Fetch dynamic data from API if no overrides provided
+  useEffect(() => {
+    if (slidesOverride || configOverride) return;
+
     let isMounted = true;
-    fetch(region ? `/api/news?region=${encodeURIComponent(region)}` : '/api/news')
-      .then((res) => (res.ok ? res.json() : []))
+    const url = region
+      ? `/api/slider-3d?region=${encodeURIComponent(region)}`
+      : '/api/slider-3d';
+
+    fetch(url)
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (isMounted && Array.isArray(data) && data.length > 0) {
-          const mapped: NewsSlideItem[] = data.map((item, idx) => ({
-            id: item.id.toString(),
+        if (!isMounted || !data) return;
+
+        if (data.config) {
+          setConfig((prev) => ({ ...prev, ...data.config }));
+        }
+
+        if (Array.isArray(data.slides) && data.slides.length > 0) {
+          const mapped: NewsSlideItem[] = data.slides.map((item: any) => ({
+            id: String(item.id),
+            titleTj: item.titleTj || item.title_tj || '',
+            titleRu: item.titleRu || item.title_ru || '',
+            titleEn: item.titleEn || item.title_en || item.titleRu || item.title_ru || '',
+            summaryTj: item.summaryTj || item.summary_tj || '',
+            summaryRu: item.summaryRu || item.summary_ru || '',
+            summaryEn: item.summaryEn || item.summary_en || item.summaryRu || item.summary_ru || '',
+            categoryTj: item.categoryTj || item.category_tj || categoryTj || 'ХАБАРҲОИ СУДИ ОЛӢ',
+            categoryRu: item.categoryRu || item.category_ru || categoryRu || 'НОВОСТИ ВЕРХОВНОГО СУДА',
+            categoryEn: item.categoryEn || item.category_en || categoryEn || 'SUPREME COURT NEWS',
+            date: item.dateText || item.date_text || '2026',
+            image: item.imageUrl || item.image_url || '/supreme-court-night.jpg',
+            url: item.linkUrl || item.link_url || undefined,
             slug: item.slug,
-            url: item.slug ? `/news/${item.slug}` : undefined,
-            titleRu: item.title_ru || item.title || '',
-            titleTj: item.title_tj || item.title_ru || item.title || '',
-            titleEn: item.title_en || item.title_ru || item.title || '',
-            summaryRu: item.body_ru || item.excerpt_ru || '',
-            summaryTj: item.body_tj || item.excerpt_tj || item.body_ru || '',
-            summaryEn: item.body_en || item.excerpt_en || item.body_ru || '',
-            date: item.published_at ? new Date(item.published_at).toLocaleDateString() : '2026',
-            categoryRu: categoryRu || 'НОВОСТИ ВЕРХОВНОГО СУДА',
-            categoryTj: categoryTj || 'ХАБАРҲОИ СУДИ ОЛӢ',
-            categoryEn: categoryEn || 'SUPREME COURT NEWS',
-            image: item.cover_image ? `/uploads/${item.cover_image}` : DEFAULT_SLIDES[idx % DEFAULT_SLIDES.length].image,
           }));
           setSlides(mapped);
         }
       })
       .catch(() => {});
+
     return () => {
       isMounted = false;
     };
-  }, [region, categoryRu, categoryTj, categoryEn]);
+  }, [region, categoryRu, categoryTj, categoryEn, slidesOverride, configOverride]);
 
   const total = slides.length;
 
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % total);
+    setCurrentIndex((prev) => (prev + 1) % (total || 1));
   }, [total]);
 
   const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
+    setCurrentIndex((prev) => (prev - 1 + (total || 1)) % (total || 1));
   }, [total]);
 
   // Autoplay timer
   useEffect(() => {
-    if (!isPlaying || isDragging || total <= 1) return;
-    const interval = setInterval(nextSlide, 6000);
+    if (!config.autoplay || !isPlaying || isDragging || total <= 1 || (config.pauseOnHover && isHovered)) {
+      return;
+    }
+    const intervalSec = Math.max(2, config.interval || 6);
+    const interval = setInterval(nextSlide, intervalSec * 1000);
     return () => clearInterval(interval);
-  }, [isPlaying, isDragging, total, nextSlide]);
+  }, [isPlaying, isDragging, total, nextSlide, config.autoplay, config.interval, config.pauseOnHover, isHovered]);
 
   // Keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -166,23 +196,24 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
       nextSlide();
     } else if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onOpenNewsItem?.(slides[currentIndex]);
+      if (slides[currentIndex]) onOpenNewsItem?.(slides[currentIndex]);
     }
   };
 
   // Mouse drag & touch swipe
   const handlePointerDown = (e: React.PointerEvent) => {
+    if (!config.dragEnabled) return;
     setIsDragging(true);
     setDragStartX(e.clientX);
     setDragDistance(0);
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (isDragging) {
+    if (isDragging && config.dragEnabled) {
       setDragDistance(e.clientX - dragStartX);
     }
     // Subtle parallax tilt on hover
-    if (sliderRef.current) {
+    if (config.tiltEnabled && sliderRef.current) {
       const rect = sliderRef.current.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -192,15 +223,111 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
 
   const handlePointerUp = () => {
     if (isDragging) {
-      if (dragDistance > 50) {
+      if (dragDistance > 45) {
         prevSlide();
-      } else if (dragDistance < -50) {
+      } else if (dragDistance < -45) {
         nextSlide();
       }
       setIsDragging(false);
       setDragDistance(0);
     }
   };
+
+// Helper to convert ALL-CAPS titles into comfortable readable sentence case
+const toReadableTitle = (text: string): string => {
+  if (!text) return '';
+  const trimmed = text.trim();
+  const letters = trimmed.replace(/[^a-zA-Zа-яёА-ЯЁҷҶӣӢӯӮғҒҳҲқҚ]/g, '');
+  if (letters.length > 5) {
+    const upperCount = (letters.match(/[A-ZА-ЯЁҶӢӮҒҲҚ]/g) || []).length;
+    if (upperCount / letters.length > 0.6) {
+      const words = trimmed.split(/\s+/);
+      const abbreviations = new Set(['ҷт', 'смм', 'идм', 'рф', 'мвд', 'вкд', 'вс', 'суд.тҷ', 'sud.tj', '3d', '№1', '№2', '№3', 'ссб']);
+      const formatted = words.map((w, idx) => {
+        const clean = w.toLowerCase().replace(/[^a-zA-Zа-яёА-ЯЁҷҶӣӢӯӮғҒҳҲқҚ]/g, '');
+        if (abbreviations.has(clean)) {
+          return w.toUpperCase();
+        }
+        const lower = w.toLowerCase();
+        if (idx === 0 || /^["'«“]/.test(w)) {
+          return lower.replace(/^([^a-zA-Zа-яёА-ЯЁҷҶӣӢӯӮғҒҳҲқҚ]*)([a-zA-Zа-яёА-ЯЁҷҶӣӢӯӮғҒҳҲқҚ])/, (_, prefix, first) => {
+            return prefix + first.toUpperCase();
+          });
+        }
+        return lower;
+      });
+      return formatted.join(' ');
+    }
+  }
+  return trimmed;
+};
+
+  // Header badge text
+  const badgeText =
+    language === 'tj'
+      ? config.badgeTextTj || 'Хабарҳои асосӣ // 3D Карусел'
+      : language === 'en'
+      ? config.badgeTextEn || 'Featured News // 3D Slider'
+      : config.badgeTextRu || 'Главные новости // 3D Слайдер';
+
+  // Read more text
+  const readMoreText =
+    language === 'tj'
+      ? config.readMoreTextTj || 'Муфассал хондан'
+      : language === 'en'
+      ? config.readMoreTextEn || 'Read Full Story'
+      : config.readMoreTextRu || 'Читать подробнее';
+
+  // All news text
+  const allNewsText =
+    language === 'tj'
+      ? config.allNewsTextTj || 'Ҳамаи хабарҳо'
+      : language === 'en'
+      ? config.allNewsTextEn || 'All News'
+      : config.allNewsTextRu || 'Все новости';
+
+  // Card theme helper
+  const getCardThemeClasses = (_isCenter: boolean = false) => {
+    switch (config.cardTheme) {
+      case 'dark':
+        return isDark ? 'bg-slate-950/95 border-slate-800' : 'bg-slate-900 text-white border-slate-700';
+      case 'solid':
+        return isDark ? 'bg-[#060c18] border-[#1e293b]' : 'bg-[#0f172a] text-white border-[#334155]';
+      case 'gold_bordered':
+        return isDark ? 'bg-[#070b14]/90 border-[#dfbe7e]/50' : 'bg-[#181308]/90 text-white border-[#dfbe7e]/70';
+      case 'cyber':
+        return isDark ? 'bg-[#040d1a]/90 border-cyan-500/50' : 'bg-[#081528]/90 text-white border-cyan-400/60';
+      case 'glass':
+      default:
+        return isDark ? 'bg-[#040813]/90 backdrop-blur-md' : 'bg-[var(--glass-surface-strong)] glass backdrop-blur-md';
+    }
+  };
+
+  // Active Glow Styles
+  const getActiveGlowStyle = () => {
+    const borderColor = config.activeBorderColor || '#dfbe7e';
+    const glowColor = config.glowColor || 'rgba(223, 190, 126, 0.6)';
+
+    let boxShadow = '0 10px 25px rgba(0,0,0,0.5)';
+    if (config.glowIntensity === 'soft') {
+      boxShadow = `0 12px 30px rgba(0,0,0,0.6), 0 0 16px ${glowColor}`;
+    } else if (config.glowIntensity === 'medium') {
+      boxShadow = `0 18px 45px rgba(0,0,0,0.7), 0 0 28px ${glowColor}`;
+    } else if (config.glowIntensity === 'strong') {
+      boxShadow = `0 24px 60px rgba(0,0,0,0.85), 0 0 40px ${glowColor}, 0 0 10px ${borderColor}`;
+    }
+
+    return {
+      borderColor,
+      boxShadow,
+    };
+  };
+
+  const stageHeightPx = config.stageHeight || 400;
+  const cardWidthPx = config.cardWidth || 660;
+  const cardHeightPx = config.cardHeight || 370;
+  const cardRadiusPx = config.cardRadius || 24;
+  const perspectivePx = config.perspective || 1200;
 
   return (
     <div
@@ -212,60 +339,75 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-      onPointerLeave={() => {
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
         handlePointerUp();
         setTiltOffset({ x: 0, y: 0 });
       }}
       className="relative w-full overflow-hidden select-none py-4 outline-none focus-visible:ring-1 focus-visible:ring-theme-gold rounded-3xl"
-      style={{ perspective: '1200px' }}
+      style={{ perspective: `${perspectivePx}px` }}
     >
       {/* Top Header Control Bar */}
       <div className="flex items-center justify-between mb-4 px-2">
-        <div className="flex items-center gap-2 font-mono text-xs text-theme-gold">
-          <Sparkles size={14} />
-          <span className="font-bold uppercase tracking-wider">
-            {language === 'tj' ? 'ХАБАРҲОИ АСОСӢ // 3D КАРУСЕЛ' : language === 'en' ? 'FEATURED NEWS // 3D SLIDER' : 'ГЛАВНЫЕ НОВОСТИ // 3D СЛАЙДЕР'}
-          </span>
-        </div>
+        {config.showBadge ? (
+          <div className="flex items-center gap-2 font-mono text-xs text-theme-gold">
+            <Sparkles size={14} />
+            <span className="font-bold uppercase tracking-wider">{badgeText}</span>
+          </div>
+        ) : (
+          <div />
+        )}
 
         <div className="flex items-center gap-2">
           {/* Pagination Counter */}
-          <span className="font-mono text-xs text-theme-textMuted mr-2">
-            {String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
-          </span>
+          {config.showCounter && (
+            <span className="font-mono text-xs text-slate-300 bg-slate-900/60 px-2.5 py-1 rounded-full border border-white/10 mr-1 shadow-sm">
+              {String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+            </span>
+          )}
 
           {/* Autoplay Pause/Play */}
-          <button
-            type="button"
-            onClick={() => setIsPlaying(!isPlaying)}
-            aria-label={isPlaying ? 'Pause autoplay' : 'Start autoplay'}
-            className="btn-icon w-8 h-8 rounded-full"
-          >
-            {isPlaying ? <Pause size={13} /> : <Play size={13} />}
-          </button>
+          {config.showPlayPause && (
+            <button
+              type="button"
+              onClick={() => setIsPlaying(!isPlaying)}
+              aria-label={isPlaying ? 'Pause autoplay' : 'Start autoplay'}
+              className="btn-icon w-8 h-8 rounded-full"
+            >
+              {isPlaying ? <Pause size={13} /> : <Play size={13} />}
+            </button>
+          )}
 
           {/* Prev / Next Buttons */}
-          <button
-            type="button"
-            onClick={prevSlide}
-            aria-label="Previous News"
-            className="btn-icon w-8 h-8 rounded-full"
-          >
-            <ChevronLeft size={15} />
-          </button>
-          <button
-            type="button"
-            onClick={nextSlide}
-            aria-label="Next News"
-            className="btn-icon w-8 h-8 rounded-full"
-          >
-            <ChevronRight size={15} />
-          </button>
+          {config.showArrows && (
+            <>
+              <button
+                type="button"
+                onClick={prevSlide}
+                aria-label="Previous News"
+                className="btn-icon w-8 h-8 rounded-full"
+              >
+                <ChevronLeft size={15} />
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                aria-label="Next News"
+                className="btn-icon w-8 h-8 rounded-full"
+              >
+                <ChevronRight size={15} />
+              </button>
+            </>
+          )}
         </div>
       </div>
 
       {/* 3D Visual Carousel Stage */}
-      <div className="relative w-full h-[360px] sm:h-[400px] flex items-center justify-center">
+      <div
+        className="relative w-full flex items-center justify-center"
+        style={{ height: `${stageHeightPx}px` }}
+      >
         {slides.map((item, idx) => {
           let diff = (idx - currentIndex + total) % total;
           if (diff > total / 2) diff -= total;
@@ -277,13 +419,19 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
 
           if (!isVisible) return null;
 
-          // CSS 3D Transformation variables
+          // 3D Transformations based on config
           let translateX = 0;
           let translateZ = 0;
           let rotateY = 0;
           let scale = 1;
           let opacity = 1;
           let zIndex = 20;
+
+          const sideOffsetX = config.sideOffsetX ?? 280;
+          const sideOffsetZ = config.sideOffsetZ ?? -120;
+          const sideRotateY = config.sideRotateY ?? 18;
+          const sideScale = config.sideScale ?? 0.88;
+          const sideOpacity = config.sideOpacity ?? 0.70;
 
           if (isCenter) {
             translateX = dragDistance * 0.4;
@@ -293,28 +441,31 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
             opacity = 1;
             zIndex = 30;
           } else if (isLeft) {
-            translateX = -280 + dragDistance * 0.2;
-            translateZ = -120;
-            rotateY = 18;
-            scale = 0.85;
-            opacity = 0.45;
+            translateX = -sideOffsetX + dragDistance * 0.2;
+            translateZ = sideOffsetZ;
+            rotateY = sideRotateY;
+            scale = sideScale;
+            opacity = sideOpacity;
             zIndex = 10;
           } else if (isRight) {
-            translateX = 280 + dragDistance * 0.2;
-            translateZ = -120;
-            rotateY = -18;
-            scale = 0.85;
-            opacity = 0.45;
+            translateX = sideOffsetX + dragDistance * 0.2;
+            translateZ = sideOffsetZ;
+            rotateY = -sideRotateY;
+            scale = sideScale;
+            opacity = sideOpacity;
             zIndex = 10;
           }
 
-          const title = language === 'en' ? (item.titleEn || item.titleRu) : language === 'tj' ? item.titleTj : item.titleRu;
+          const rawTitle = language === 'en' ? (item.titleEn || item.titleRu) : language === 'tj' ? item.titleTj : item.titleRu;
+          const title = toReadableTitle(rawTitle);
           const summary = language === 'en' ? (item.summaryEn || item.summaryRu) : language === 'tj' ? item.summaryTj : item.summaryRu;
           const category = language === 'en' ? (item.categoryEn || item.categoryRu) : language === 'tj' ? item.categoryTj : item.categoryRu;
 
+          const activeStyle = isCenter ? getActiveGlowStyle() : {};
+
           return (
             <div
-              key={item.id}
+              key={item.id || `slide-${idx}`}
               onClick={() => {
                 if (isCenter) {
                   onOpenNewsItem?.(item);
@@ -325,71 +476,75 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
                 }
               }}
               className={`
-                absolute w-[92%] sm:w-[580px] lg:w-[660px] h-[330px] sm:h-[370px] rounded-3xl overflow-hidden cursor-pointer
+                absolute w-[92%] overflow-hidden cursor-pointer
                 border transition-all duration-500 ease-out will-change-transform group
-                ${
-                  isCenter
-                    ? 'border-[#dfbe7e]/80 shadow-[0_15px_40px_rgba(0,0,0,0.7)]'
-                    : 'border-white/10 hover:border-white/30'
-                }
-                ${isDark ? 'bg-[#040813]' : 'bg-[var(--glass-surface-strong)] glass'}
+                ${!isCenter ? 'border-white/10 hover:border-white/30' : ''}
+                ${getCardThemeClasses(isCenter)}
               `}
               style={{
-                transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) rotateX(${isCenter ? tiltOffset.y * 0.5 : 0}deg) scale(${scale})`,
+                maxWidth: `${cardWidthPx}px`,
+                height: `${cardHeightPx}px`,
+                borderRadius: `${cardRadiusPx}px`,
+                transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) rotateX(${isCenter && config.tiltEnabled ? tiltOffset.y * 0.5 : 0}deg) scale(${scale})`,
                 opacity,
                 zIndex,
                 transformStyle: 'preserve-3d',
+                ...activeStyle,
               }}
             >
-              {/* Background Image with Cinematic Overlay */}
+              {/* Background Image with Overlay */}
               <div className="absolute inset-0 w-full h-full overflow-hidden">
                 <img
                   src={item.image}
                   alt={title}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-60"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  style={{ opacity: `${(100 - (config.imageOverlayOpacity ?? 40)) / 100}` }}
                 />
+                {/* Contrast protection scrim for text readability */}
                 <div
-                  className={`absolute inset-0 transition-opacity duration-500 ${
-                    isDark
-                      ? 'bg-gradient-to-t from-[#02050e] via-[#02050e]/80 to-transparent'
-                      : 'bg-gradient-to-t from-[#f8fafc] via-[#f8fafc]/85 to-transparent'
-                  }`}
+                  className="absolute inset-0 bg-gradient-to-t from-[#020612] via-[#020612]/80 to-transparent transition-opacity duration-500"
+                  style={{
+                    opacity: `${Math.max(0.7, (config.imageOverlayOpacity ?? 60) / 100)}`,
+                  }}
                 />
+                <div className="absolute inset-x-0 bottom-0 h-4/5 bg-gradient-to-t from-black/95 via-black/75 to-transparent pointer-events-none" />
               </div>
 
               {/* Slide Content Layer */}
-              <div className="relative z-10 w-full h-full p-6 sm:p-8 flex flex-col justify-end text-left">
-                <div className="flex items-center gap-2 mb-2 font-mono text-[10px]">
-                  <span className="px-2.5 py-0.5 rounded-full bg-theme-gold/20 text-theme-gold border border-theme-gold/40 font-bold uppercase tracking-wider">
+              <div className="relative z-10 w-full h-full p-6 sm:p-8 flex flex-col justify-end text-left slide-dark-scrim">
+                <div className="flex items-center gap-2 mb-2 font-mono text-[10px] sm:text-xs">
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold uppercase tracking-wider shadow-sm">
                     {category}
                   </span>
-                  <span className="flex items-center gap-1 text-theme-textMuted">
+                  <span className="flex items-center gap-1 text-slate-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
                     <Calendar size={11} /> {item.date}
                   </span>
                 </div>
 
-                <h3 className="font-serif font-bold text-base sm:text-xl md:text-2xl text-theme-text group-hover:text-theme-gold transition-colors line-clamp-2 leading-snug drop-shadow-sm mb-2">
+                <h3 className="font-serif font-bold text-base sm:text-xl md:text-2xl text-white group-hover:text-amber-300 transition-colors line-clamp-3 leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] mb-2">
                   {title}
                 </h3>
 
-                <p className="font-sans text-xs sm:text-sm text-theme-textSec line-clamp-2 leading-relaxed mb-4">
+                <p className="font-sans text-xs sm:text-sm text-slate-200/90 line-clamp-2 leading-relaxed mb-4 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
                   {summary}
                 </p>
 
                 {isCenter && (
                   <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onOpenNewsItem?.(item);
-                      }}
-                      className="btn-primary text-xs !py-1.5 !px-4"
-                    >
-                      <span>{language === 'tj' ? 'Муфассал хондан' : language === 'en' ? 'Read Full Story' : 'Читать подробнее'}</span>
-                      <ArrowUpRight size={13} />
-                    </button>
-                    {onOpenAllNews && (
+                    {config.showReadMore && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onOpenNewsItem?.(item);
+                        }}
+                        className="btn-primary text-xs !py-1.5 !px-4"
+                      >
+                        <span>{readMoreText}</span>
+                        <ArrowUpRight size={13} />
+                      </button>
+                    )}
+                    {config.showAllNews && onOpenAllNews && (
                       <button
                         type="button"
                         onClick={(e) => {
@@ -398,7 +553,7 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
                         }}
                         className="btn-ghost text-xs font-mono"
                       >
-                        <span>{language === 'tj' ? 'Ҳамаи хабарҳо' : language === 'en' ? 'All News' : 'Все новости'}</span>
+                        <span>{allNewsText}</span>
                       </button>
                     )}
                   </div>
@@ -410,21 +565,23 @@ export const Judicial3DNewsSlider: React.FC<Judicial3DNewsSliderProps> = ({
       </div>
 
       {/* Bottom Dots Indicator */}
-      <div className="flex items-center justify-center gap-1.5 mt-3">
-        {slides.map((_, dotIdx) => (
-          <button
-            key={`dot-${dotIdx}`}
-            type="button"
-            onClick={() => setCurrentIndex(dotIdx)}
-            aria-label={`Go to slide ${dotIdx + 1}`}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              currentIndex === dotIdx
-                ? 'w-7 bg-theme-gold shadow-[0_0_8px_rgba(223,190,126,0.6)]'
-                : 'w-2 bg-theme-border hover:bg-theme-gold/50'
-            }`}
-          />
-        ))}
-      </div>
+      {config.showDots && (
+        <div className="flex items-center justify-center gap-1.5 mt-3">
+          {slides.map((_, dotIdx) => (
+            <button
+              key={`dot-${dotIdx}`}
+              type="button"
+              onClick={() => setCurrentIndex(dotIdx)}
+              aria-label={`Go to slide ${dotIdx + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                currentIndex === dotIdx
+                  ? 'w-7 bg-theme-gold shadow-[0_0_8px_rgba(223,190,126,0.6)]'
+                  : 'w-2 bg-theme-border hover:bg-theme-gold/50'
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

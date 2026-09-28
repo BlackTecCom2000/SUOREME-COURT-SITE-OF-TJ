@@ -190,10 +190,10 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
 
   const getStatusColor = (status: CaseRecord['status']) => {
     switch (status) {
-      case 'registered': return 'bg-sky-500/10 text-sky-400 border-sky-500/30';
-      case 'assigned': return 'bg-amber-500/10 text-amber-400 border-amber-500/30';
-      case 'hearing_scheduled': return 'bg-purple-500/10 text-purple-400 border-purple-500/30 animate-pulse';
-      case 'decision_rendered': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
+      case 'registered': return 'bg-sky-500/15 text-sky-800 dark:text-sky-300 border-sky-500/30 font-semibold';
+      case 'assigned': return 'bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-500/30 font-semibold';
+      case 'hearing_scheduled': return 'bg-purple-500/15 text-purple-800 dark:text-purple-300 border-purple-500/30 animate-pulse font-semibold';
+      case 'decision_rendered': return 'bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-500/30 font-semibold';
       default: return 'bg-theme-bg text-theme-textMuted border-theme-border';
     }
   };

@@ -276,7 +276,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="site-container px-4 sm:px-6 md:px-8 pt-3 sm:pt-4 flex items-center justify-between">
         
         {/* Top Left: Emblem, Title & Quick Controls */}
-        <div className="pointer-events-auto flex items-center gap-3 glass glass-card p-1.5 sm:p-2">
+        <div className="navbar-brand-shell pointer-events-auto flex min-w-0 max-w-[calc(100vw-122px)] items-center gap-2 glass glass-card p-1.5 sm:gap-3 sm:p-2">
           <a
             href="#hero"
             className="flex items-center gap-3 px-2 py-1 rounded-xl hover:bg-white/10 transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-gold group"
@@ -288,7 +288,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="w-full h-full object-contain rounded-full drop-shadow-sm"
               />
             </div>
-            <div className="w-[140px] sm:w-[210px] md:w-[230px] flex flex-col justify-center overflow-hidden">
+            <div className="w-[92px] sm:w-[210px] md:w-[230px] flex min-w-0 flex-col justify-center overflow-hidden">
               <div className="font-serif text-xs sm:text-sm font-bold text-theme-text leading-tight group-hover:text-theme-gold transition-colors truncate">
                 {t('nav.title')}
               </div>
@@ -340,7 +340,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={toggleTheme}
-            className="p-1.5 rounded-xl border border-theme-border hover:border-theme-borderHover hover:text-theme-text transition-colors bg-theme-bg/60 text-theme-textSec flex items-center justify-center shadow-xs"
+            className="hidden sm:flex p-1.5 rounded-xl border border-theme-border hover:border-theme-borderHover hover:text-theme-text transition-colors bg-theme-bg/60 text-theme-textSec items-center justify-center shadow-xs"
             title={isDark ? t('nav.themeLight') : t('nav.themeDark')}
             aria-label={isDark ? t('nav.themeLight') : t('nav.themeDark')}
           >
@@ -355,7 +355,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={onToggleContrast}
-            className={`p-1.5 rounded-xl border transition-colors flex items-center gap-1 shadow-xs ${
+            className={`hidden sm:flex p-1.5 rounded-xl border transition-colors items-center gap-1 shadow-xs ${
               isHighContrast
                 ? 'border-yellow-400 text-yellow-400 bg-black/60'
                 : 'border-theme-border hover:border-theme-borderHover hover:text-theme-text bg-theme-bg/60 text-theme-textSec'

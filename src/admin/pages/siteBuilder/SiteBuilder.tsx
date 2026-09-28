@@ -7,6 +7,7 @@ import { AdminCard } from '../../components/ui/AdminCard';
 import { AdminButton } from '../../components/ui/AdminButton';
 import { AdminInput } from '../../components/ui/AdminInput';
 import { AdminSelect } from '../../components/ui/AdminSelect';
+import { LiquidGlassKit } from '../../components/ui/LiquidGlassKit';
 import { apiFetch } from '../../context/adminHttp';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 
@@ -59,7 +60,7 @@ export const SiteBuilder: React.FC = () => {
     if(design.glass_saturation) set('--glass-saturation', `${design.glass_saturation}%`);
     if(design.glass_border || design.glass_border_opacity) set('--glass-border-opacity', design.glass_border_opacity || design.glass_border);
     if(design.glass_highlight) set('--glass-highlight', `inset 0 1px 0 rgba(255,255,255,${design.glass_highlight})`);
-    if(design.glass_shadow) set('--glass-shadow', `0 12px 40px rgba(0,0,0,${design.glass_shadow})`);
+    if(design.glass_shadow) set('--glass-shadow', `inset 2px -2px 1px -1px rgba(255,255,255,0.42), inset -2px 2px 1px -1px rgba(255,255,255,0.42), inset 0 0 2px rgba(0,0,0,0.34), 0 4px 14px rgba(0,0,0,${design.glass_shadow})`);
     if(design.glass_radius) { set('--glass-radius-card', `${design.glass_radius}px`); set('--glass-radius-panel', `${design.glass_radius}px`); set('--glass-radius', `${design.glass_radius}px`); }
     if(design.bg_overlay_opacity) set('--bg-overlay-opacity', design.bg_overlay_opacity);
     if(design.bg_blur !== undefined) set('--bg-blur', `${design.bg_blur}px`);
@@ -97,6 +98,9 @@ export const SiteBuilder: React.FC = () => {
     setMessage(''); load(); alert('Опубликовано. Публичный сайт получает published config.');
   };
   const rollback = async (id:number) => { if(!confirm(`Rollback to #${id}?`)) return; await apiFetch(`/api/admin/site-versions/${id}/rollback`, { method:'POST' }); load(); };
+  const saveDesignValue = async (key: string, value: string) => {
+    await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({ key, value }) });
+  };
 
   const widthMap = { desktop:'100%', tablet:'820px', mobile:'390px' } as const;
 
@@ -112,9 +116,9 @@ export const SiteBuilder: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-12 gap-4">
+      <div className="grid grid-cols-12 items-start gap-4">
         {/* Left — Components */}
-        <div className="col-span-12 lg:col-span-3 space-y-3">
+        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-4">
           <AdminCard title="Компоненты" subtitle="Перетащите или нажмите +">
             <div className="grid grid-cols-3 gap-2">
               {palette.map(p=> (
@@ -125,6 +129,11 @@ export const SiteBuilder: React.FC = () => {
               ))}
             </div>
           </AdminCard>
+          <LiquidGlassKit
+            design={design}
+            onChange={(key, value) => setDesign(current => ({ ...current, [key]: value }))}
+            onSave={saveDesignValue}
+          />
           <AdminCard title="Background & Glass — Global" subtitle="Настройки → Дизайн → Background & Glass — управляет Public + Admin + Login + Footer + Mobile">
             <div className="space-y-4">
               {/* Background */}
@@ -136,8 +145,8 @@ export const SiteBuilder: React.FC = () => {
                     {k:'background_position', label:'Position (center/top)'},
                     {k:'background_size', label:'Size (cover/contain)'},
                   ].map(f=> (
-                    <div key={f.k} className="flex items-center gap-2">
-                      <span className="font-mono text-[11px] text-slate-400 w-36 truncate">{f.label}</span>
+                    <div key={f.k} className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)_auto] items-center gap-2">
+                      <span className="min-w-0 truncate font-mono text-[11px] text-theme-textSec">{f.label}</span>
                       <AdminInput value={design[f.k]||''} onChange={e=> setDesign({...design, [f.k]: e.target.value})} className="flex-1" placeholder={f.k.includes('image')?'/supreme-court-day.jpg':'center'} />
                       <AdminButton size="sm" onClick={async()=>{ await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:f.k, value: design[f.k]||''})}); alert('Draft saved');}}>Сохр.</AdminButton>
                     </div>
@@ -147,7 +156,7 @@ export const SiteBuilder: React.FC = () => {
               {/* Atmosphere */}
               <div>
                 <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--court-gold)] mb-2">Atmosphere — White Overlay (слабый, здание видно)</div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
                   {[
                     {k:'bg_overlay_opacity', label:'White Overlay 0.00-0.30', min:0, max:0.3, step:0.01},
                     {k:'bg_blur', label:'Background Blur 0-20px', min:0, max:20, step:1},
@@ -155,11 +164,11 @@ export const SiteBuilder: React.FC = () => {
                     {k:'bg_brightness', label:'Brightness 80-120%', min:80, max:120, step:1},
                     {k:'bg_contrast', label:'Contrast 80-120%', min:80, max:120, step:1},
                   ].map(f=> (
-                    <div key={f.k} className="flex flex-col gap-1">
-                      <span className="font-mono text-[10px] text-slate-400">{f.label}</span>
-                      <div className="flex items-center gap-1">
+                    <div key={f.k} className="flex min-w-0 flex-col gap-1">
+                      <span className="truncate font-mono text-[10px] text-theme-textSec">{f.label}</span>
+                      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_2.5rem_auto] items-center gap-1">
                         <input type="range" min={f.min} max={f.max} step={f.step} value={parseFloat(design[f.k])|| (f.k==='bg_overlay_opacity'?0.12: f.k==='bg_blur'?0:100)} onChange={e=> setDesign({...design, [f.k]: e.target.value})} className="flex-1" />
-                        <span className="font-mono text-[10px] text-slate-300 w-10">{design[f.k]||'-'}</span>
+                        <span className="w-10 text-right font-mono text-[10px] text-theme-text">{design[f.k]||'-'}</span>
                         <AdminButton size="sm" onClick={async()=>{ await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:f.k, value: design[f.k]||''})});}}>OK</AdminButton>
                       </div>
                     </div>
@@ -169,18 +178,18 @@ export const SiteBuilder: React.FC = () => {
               {/* Glass */}
               <div>
                 <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--court-gold)] mb-2">Glass — отдельный от background</div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
                   {[
                     {k:'glass_opacity', label:'Glass Opacity 0.05-0.30'},
-                    {k:'glass_blur', label:'Glass Blur 12-40'},
+                    {k:'glass_blur', label:'Glass Blur 0-40'},
                     {k:'glass_saturation', label:'Glass Saturation 120-180%'},
                     {k:'glass_border_opacity', label:'Border 0.10-0.50'},
                     {k:'glass_shadow', label:'Shadow 0.06-0.30'},
                     {k:'glass_highlight', label:'Highlight 0.20-0.60'},
                     {k:'glass_radius', label:'Radius 12-30'},
                   ].map(f=> (
-                    <div key={f.k} className="flex items-center gap-1">
-                      <span className="font-mono text-[10px] text-slate-400 w-24 truncate">{f.label}</span>
+                    <div key={f.k} className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_auto] items-center gap-1">
+                      <span className="min-w-0 truncate font-mono text-[10px] text-theme-textSec">{f.label}</span>
                       <AdminInput value={design[f.k]||''} onChange={e=> setDesign({...design, [f.k]: e.target.value})} className="flex-1" />
                       <AdminButton size="sm" onClick={async()=>{ await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:f.k, value: design[f.k]||''})});}}>OK</AdminButton>
                     </div>
@@ -192,10 +201,10 @@ export const SiteBuilder: React.FC = () => {
                 <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--court-gold)] mb-2">Presets</div>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    {id:'premium', label:'Premium', vals:{glass_opacity:'0.14', glass_blur:'24', glass_saturation:'160', glass_border_opacity:'0.22', glass_shadow:'0.12', glass_highlight:'0.42', bg_overlay_opacity:'0.12', bg_blur:'0'}},
-                    {id:'ultra', label:'Ultra', vals:{glass_opacity:'0.18', glass_blur:'32', glass_saturation:'170', glass_border_opacity:'0.28', glass_shadow:'0.18', glass_highlight:'0.50', bg_overlay_opacity:'0.08', bg_blur:'2'}},
-                    {id:'clear', label:'Clear Glass', vals:{glass_opacity:'0.08', glass_blur:'12', glass_saturation:'140', glass_border_opacity:'0.14', glass_shadow:'0.06', glass_highlight:'0.30', bg_overlay_opacity:'0.05', bg_blur:'0'}},
-                    {id:'soft', label:'Soft Glass', vals:{glass_opacity:'0.10', glass_blur:'18', glass_saturation:'150', glass_border_opacity:'0.18', glass_shadow:'0.08', glass_highlight:'0.35', bg_overlay_opacity:'0.10', bg_blur:'1'}},
+                    {id:'premium', label:'Premium', vals:{glass_opacity:'0.08', glass_blur:'2', glass_saturation:'120', glass_border_opacity:'0.22', glass_shadow:'0.12', glass_highlight:'0.28', bg_overlay_opacity:'0.12', bg_blur:'0'}},
+                    {id:'ultra', label:'Ultra', vals:{glass_opacity:'0.12', glass_blur:'2', glass_saturation:'125', glass_border_opacity:'0.28', glass_shadow:'0.18', glass_highlight:'0.34', bg_overlay_opacity:'0.08', bg_blur:'1'}},
+                    {id:'clear', label:'Clear Glass', vals:{glass_opacity:'0.05', glass_blur:'2', glass_saturation:'115', glass_border_opacity:'0.14', glass_shadow:'0.06', glass_highlight:'0.20', bg_overlay_opacity:'0.05', bg_blur:'0'}},
+                    {id:'soft', label:'Soft Glass', vals:{glass_opacity:'0.07', glass_blur:'2', glass_saturation:'120', glass_border_opacity:'0.18', glass_shadow:'0.08', glass_highlight:'0.24', bg_overlay_opacity:'0.10', bg_blur:'1'}},
                   ].map(p=> (
                     <button key={p.id} onClick={()=> setDesign({...design, ...p.vals, preset:p.id})} className={`p-2 rounded-xl border text-xs font-mono ${design.preset===p.id?'bg-amber-500/20 border-amber-500/30 text-amber-300':'border-white/10 text-slate-400 hover:text-white'}`}>{p.label}</button>
                   ))}
@@ -212,7 +221,7 @@ export const SiteBuilder: React.FC = () => {
         </div>
 
         {/* Center — Live Preview */}
-        <div className="col-span-12 lg:col-span-6">
+        <div className="col-span-12 min-w-0 lg:col-span-5">
           <AdminCard title={`Live Preview — ${previewMode} ${previewMode==='desktop'?'1920':previewMode==='tablet'?'1024':'390'}`} subtitle="Изменение текста/цвета/размера/порядка/видимости сразу отображается">
             <div className="flex justify-center bg-[#040813] p-3 rounded-xl overflow-auto">
               <div style={{ width: widthMap[previewMode], maxWidth:'100%', transform: previewMode==='mobile'?'scale(1)':'none', transition:'width 0.3s' }} className="space-y-3">
@@ -239,12 +248,12 @@ export const SiteBuilder: React.FC = () => {
                 {sections.length===0 && <div className="py-12 text-center font-mono text-xs text-slate-500">Нет секций — добавьте из Components слева.</div>}
               </div>
             </div>
-            <div className="flex gap-2 mt-3">
+            <div className="flex flex-wrap gap-2 mt-3">
               <AdminInput placeholder="Комментарий к версии" value={message} onChange={e=> setMessage(e.target.value)} className="flex-1" />
               <AdminButton onClick={saveDraft} leftIcon={<Save size={14}/>}>Сохранить черновик</AdminButton>
               <AdminButton variant="primary" onClick={publish} leftIcon={<Rocket size={14}/>}>Опубликовать</AdminButton>
             </div>
-            <div className="flex gap-2 mt-2">
+            <div className="flex flex-wrap gap-2 mt-2">
               <AdminButton size="sm" variant="ghost" onClick={()=> alert('Preview: открыт в новой вкладке /?preview=draft')}>Предпросмотр</AdminButton>
               <AdminButton size="sm" variant="ghost" onClick={()=> { if(!confirm('Отменить изменения?')) return; load(); }}>Отменить изменения</AdminButton>
             </div>
@@ -252,7 +261,7 @@ export const SiteBuilder: React.FC = () => {
         </div>
 
         {/* Right — Properties */}
-        <div className="col-span-12 lg:col-span-3 space-y-3">
+        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-3">
           <AdminCard title="Свойства секции" subtitle="content, layout, visibility, spacing, typography, background, glass, animation, links, responsive">
             {!sel ? <div className="py-8 text-center font-mono text-xs text-slate-500">Выберите секцию в центре.</div> : (
               <div className="space-y-3">

@@ -18,13 +18,13 @@ export const AdminEmptyState: React.FC<AdminEmptyStateProps> = ({
   onAction,
 }) => {
   return (
-    <div className="w-full flex flex-col items-center justify-center p-12 text-center rounded-2xl border border-dashed border-slate-800 bg-[#070d1a]/50">
-      <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-4 shadow-lg shadow-amber-500/5">
+    <div className="w-full flex flex-col items-center justify-center p-12 text-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 bg-slate-50/70 dark:bg-[#070d1a]/50">
+      <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-500 dark:text-amber-400 flex items-center justify-center mb-4 shadow-lg shadow-amber-500/5">
         {icon || <FolderOpen size={28} />}
       </div>
-      <h4 className="font-serif font-bold text-base text-white">{title}</h4>
+      <h4 className="font-serif font-bold text-base text-black dark:text-white">{title}</h4>
       {description && (
-        <p className="font-mono text-xs text-slate-400 max-w-sm mt-1 mb-4 leading-relaxed">
+        <p className="font-sans text-xs text-slate-800 dark:text-slate-300 max-w-sm mt-1 mb-4 leading-relaxed font-medium">
           {description}
         </p>
       )}

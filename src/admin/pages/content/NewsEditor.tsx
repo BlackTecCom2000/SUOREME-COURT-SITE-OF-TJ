@@ -765,7 +765,7 @@ export const NewsEditor: React.FC = () => {
       </div>
 
       {/* STICKY BOTTOM ACTION BAR */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 h-16 bg-[#040813]/95 backdrop-blur-xl border-t border-slate-800 px-6 flex items-center justify-between shadow-2xl">
+      <div className="fixed bottom-0 left-0 right-0 z-40 h-16 glass-navigation !rounded-none border-t px-6 flex items-center justify-between shadow-2xl">
         <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
           <Clock size={14} className="text-amber-400" />
           <span>Все изменения фиксируются в журнале ревизий</span>

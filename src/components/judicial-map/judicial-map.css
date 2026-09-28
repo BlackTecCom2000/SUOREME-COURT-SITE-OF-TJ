@@ -1,4 +1,4 @@
-﻿.judmap {
+.judmap {
   --jm-bg: #050B14;
   --jm-surface: #091321;
   --jm-surface-2: #0C1726;
@@ -11,28 +11,29 @@
   --jm-green: #20E6B5;
   --jm-purple: #A855F7;
 }
+:root:not(.dark) .judmap,
 [data-theme="light"] .judmap {
   --jm-bg: #EDF2F7;
   --jm-surface: #FFFFFF;
   --jm-surface-2: #F4F7FA;
-  --jm-border: rgba(11,27,46,0.14);
-  --jm-text: #0B1B2E;
-  --jm-text-2: #3D546C;
-  --jm-muted: #6B7F95;
+  --jm-border: rgba(11,27,46,0.22);
+  --jm-text: #000000;
+  --jm-text-2: #1e293b;
+  --jm-muted: #334155;
   --jm-gold: #9A6B12;
-  --jm-cyan: #0284C7;
+  --jm-cyan: #0369a1;
   --jm-green: #047857;
   --jm-purple: #7E22CE;
 }
 .judmap-panel {
-  background: rgba(8,18,32,0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--jm-border);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.20);
+  background: var(--glass-surface);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
 }
 [data-theme="light"] .judmap-panel {
-  background: rgba(255,255,255,0.82);
+  background: var(--glass-surface);
 }
 @keyframes jm-dash-flow {
   0% { stroke-dashoffset: 120; }
@@ -48,9 +49,11 @@
 }
 .jm-flow {
   animation: jm-dash-flow 9s linear infinite;
+  filter: drop-shadow(0 0 2px rgba(11, 27, 46, 0.58));
 }
 .jm-pulse-node {
   animation: jm-node-pulse 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 3px currentColor);
 }
 .jm-enter {
   animation: jm-fade-up 0.55s ease-out both;

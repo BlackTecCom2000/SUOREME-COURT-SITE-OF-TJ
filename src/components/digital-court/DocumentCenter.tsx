@@ -98,11 +98,11 @@ export const DocumentCenter: React.FC<DocumentCenterProps> = ({ isOpen, onClose 
   const getStatusBadge = (status: DigitalDocument['status'], d: DigitalDocument) => {
     const label = language === 'tj' ? d.statusTj : language === 'en' ? d.statusEn : d.statusRu;
     switch (status) {
-      case 'signed': return <span className="bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono">{label}</span>;
-      case 'accepted': return <span className="bg-sky-500/15 text-sky-400 border border-sky-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono">{label}</span>;
-      case 'draft': return <span className="bg-amber-500/15 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono">{label}</span>;
-      case 'rejected': return <span className="bg-rose-500/15 text-rose-400 border border-rose-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono">{label}</span>;
-      default: return <span className="bg-theme-bg text-theme-textMuted border border-theme-border px-2.5 py-0.5 rounded-full text-[10px] font-mono">{label}</span>;
+      case 'signed': return <span className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
+      case 'accepted': return <span className="bg-sky-500/15 text-sky-700 dark:text-sky-400 border border-sky-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
+      case 'draft': return <span className="bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
+      case 'rejected': return <span className="bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
+      default: return <span className="bg-theme-bg text-theme-textMuted border border-theme-border px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
     }
   };
 

@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { AdminSidebar } from './AdminSidebar';
 import { AdminTopbar } from './AdminTopbar';
 import { CommandPalette } from './CommandPalette';
+import { GlobalBackground } from '../../components/GlobalBackground';
 import './AdminShell.css';
 
 export const AdminShell: React.FC = () => {
@@ -20,7 +21,8 @@ export const AdminShell: React.FC = () => {
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="admin-shell bg-theme-bg text-theme-text font-sans">
+    <div className="admin-shell bg-transparent text-black dark:text-white font-sans">
+      <GlobalBackground />
       {/* 1. Desktop Sidebar */}
       <div className="admin-sidebar-slot">
         <AdminSidebar
@@ -33,7 +35,7 @@ export const AdminShell: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex" role="dialog" aria-modal="true" aria-label="Меню админки">
           <div
-            className="fixed inset-0 bg-theme-bg/70 backdrop-blur-md"
+            className="fixed inset-0 bg-black/35"
             onClick={() => setIsMobileMenuOpen(false)}
           />
           <div className="admin-drawer-panel relative z-10">
@@ -54,8 +56,8 @@ export const AdminShell: React.FC = () => {
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         />
 
-        {/* Dynamic Content Viewport — same background system as public site */}
-        <main className="admin-content p-4 sm:p-6 lg:p-8 bg-transparent relative">
+        {/* Dynamic Content Viewport — ambient shield for high contrast and readability */}
+        <main className="admin-content p-4 sm:p-6 lg:p-8 bg-slate-100/75 dark:bg-[#030712]/75 backdrop-blur-md relative">
           {/* Subtle Ambient — same as public DigitalDataRain, very low opacity */}
           <div
             className="absolute inset-0 pointer-events-none opacity-[0.02]"

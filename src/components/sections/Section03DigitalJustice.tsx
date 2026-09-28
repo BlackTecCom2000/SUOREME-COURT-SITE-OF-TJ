@@ -35,35 +35,31 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
 
       <div className="site-container relative z-10 space-y-6">
         
-        {/* Section Top Header Indicator */}
-        <Reveal delay={50}>
-          <div className="flex items-center justify-between font-mono text-xs text-theme-textSec mb-4">
-            <div className="flex items-center gap-3">
-              <span className="tracking-widest text-theme-gold font-semibold">( 03 )</span>
-              <span className="text-theme-textMuted">[ 003 / 007 ]</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-1" />
-              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
-                {language === 'tj' ? 'АДОЛАТИ РАҚАМӢ ВА САНАДҲОИ СУДӢ' : language === 'en' ? 'DIGITAL JUSTICE EXPERIENCE' : 'ЦИФРОВОЕ ПРАВОСУДИЕ'}
-              </span>
+        {/* Section Top Header Indicator & Title with Liquid Glass UI Pod */}
+        <Reveal delay={100}>
+          <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-10">
+            <div className="flex items-center justify-between font-mono text-xs text-theme-textSec mb-4">
+              <div className="flex items-center gap-3">
+                <span className="tracking-widest text-theme-gold font-semibold">( 03 )</span>
+                <span className="text-theme-textMuted">[ 003 / 007 ]</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-1" />
+                <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
+                  {language === 'tj' ? 'АДОЛАТИ РАҚАМӢ ВА САНАДҲОИ СУДӢ' : language === 'en' ? 'DIGITAL JUSTICE EXPERIENCE' : 'ЦИФРОВОЕ ПРАВОСУДИЕ'}
+                </span>
+              </div>
+              <div className="font-mono text-xs text-theme-gold hidden sm:flex items-center gap-1.5">
+                <ShieldCheck size={14} />
+                <span>SUD.TJ // 3D JUSTICE MATRIX</span>
+              </div>
             </div>
-            <div className="font-mono text-xs text-theme-gold hidden sm:flex items-center gap-1.5">
-              <ShieldCheck size={14} />
-              <span>SUD.TJ // 3D JUSTICE MATRIX</span>
-            </div>
-          </div>
-        </Reveal>
 
-        {/* Section Title */}
-        <div className="max-w-3xl mb-10">
-          <Reveal delay={120}>
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-sans font-semibold tracking-tight uppercase mb-3 text-theme-text">
-              {language === 'tj' ? 'АДОЛАТ АЗ ' : language === 'en' ? 'JUSTICE BEGINS WITH ' : 'ПРАВОСУДИЕ НАЧИНАЕТСЯ С '}
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-sans font-semibold leading-[1.05] tracking-tight mb-4 text-theme-text drop-shadow-sm">
+              {language === 'tj' ? 'Адолат аз ' : language === 'en' ? 'Justice begins with ' : 'Правосудие начинается с '}
               <span className="italic font-light text-theme-gold">
-                {language === 'tj' ? 'ҚОНУН' : language === 'en' ? 'THE LAW' : 'ЗАКОНА'}
+                {language === 'tj' ? 'қонун' : language === 'en' ? 'the law' : 'закона'}
               </span>
             </h2>
-          </Reveal>
-          <Reveal delay={200}>
+
             <p className="text-sm sm:text-base leading-relaxed text-theme-textSec max-w-2xl">
               {language === 'tj'
                 ? 'Се рамзи бунёдии адолати судӣ — беғаразӣ (Фемида), тавозуни манфиатҳо (Тарозу) ва қувваи қатъии санад (Гурзи судӣ) — дар низоми рақамии Тоҷикистон таҷассум ёфтаанд.'
@@ -71,8 +67,8 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
                 ? 'Three foundational pillars of justice — impartiality (Themis), balance (Scales), and finality of judgment (Gavel) — form the living interactive architecture of Tajikistan’s legal system.'
                 : 'Три фундаментальных символа правосудия — беспристрастность (Фемида), баланс интересов (Весы) и законная сила решения (Молот) — воплощены в цифровой экосистеме судебной власти.'}
             </p>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
 
         {/* Main 3-Column Unified Composition: LEFT CONTROLS ➔ CENTER 3D VIEWPORT ➔ RIGHT HISTORICAL CONTEXT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch mb-12">
@@ -107,7 +103,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
           </div>
 
           {/* CENTER: Dedicated 3D Viewport (60-75% visual prominence) */}
-          <div className="lg:col-span-6 flex flex-col items-center justify-center min-h-[380px] sm:min-h-[500px] lg:min-h-[560px] relative content-card overflow-hidden group">
+          <div className="lg:col-span-6 flex flex-col items-center justify-center min-h-[380px] sm:min-h-[500px] lg:min-h-[560px] relative glass glass-panel justice-viewport overflow-hidden group">
             
             {/* Ambient Background Glow Spot */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
@@ -126,7 +122,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
           {/* RIGHT: Historical & Constitutional Context Panel */}
           <div className="lg:col-span-3 flex flex-col justify-between gap-5">
             <Reveal delay={250}>
-              <div className="p-5 sm:content-card flex flex-col justify-between h-full">
+              <div className="p-5 sm:p-6 glass glass-panel flex flex-col justify-between h-full">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest font-bold">

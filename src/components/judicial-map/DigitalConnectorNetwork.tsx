@@ -38,11 +38,11 @@ export const DigitalConnectorNetwork: React.FC<DigitalConnectorNetworkProps> = (
                 d={`M600 42 V66 H${b.x} V132`}
                 fill="none"
                 stroke={color}
-                strokeWidth="2"
+                strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeDasharray="7 5"
-                opacity="0.75"
+                opacity="1"
                 className="jm-flow"
               />
               {/* Elbow junction squares */}
@@ -52,7 +52,7 @@ export const DigitalConnectorNetwork: React.FC<DigitalConnectorNetworkProps> = (
               <circle cx={(600 + b.x) / 2} cy={66} r="2.5" fill={color} className="jm-pulse-node" />
               {/* Endpoint node */}
               <rect x={b.x - 5} y={130} width="10" height="10" rx="2" fill={color} />
-              <circle cx={b.x} cy={135} r="9" fill="none" stroke={color} strokeWidth="1" opacity="0.45" className="jm-pulse-node" />
+              <circle cx={b.x} cy={135} r="9" fill="none" stroke={color} strokeWidth="1.5" opacity="0.85" className="jm-pulse-node" />
             </g>
           );
         })}
@@ -68,7 +68,7 @@ export const DigitalConnectorNetwork: React.FC<DigitalConnectorNetworkProps> = (
           const color = regionAccent(id);
           return (
             <g key={id} opacity={dim(id)} style={{ transition: 'opacity 0.3s ease' }}>
-              <line x1="200" y1={y} x2={i % 2 === 0 ? 150 : 250} y2={y} stroke={color} strokeWidth="1.5" strokeDasharray="5 4" opacity="0.7" className="jm-flow" />
+              <line x1="200" y1={y} x2={i % 2 === 0 ? 150 : 250} y2={y} stroke={color} strokeWidth="2.5" strokeDasharray="5 4" opacity="1" className="jm-flow" />
               <rect x={(i % 2 === 0 ? 150 : 250) - 4} y={y - 4} width="8" height="8" rx="1.5" fill={color} />
             </g>
           );

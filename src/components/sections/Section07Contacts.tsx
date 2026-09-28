@@ -22,37 +22,31 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
       <DigitalDataRain density="sparse" speed="slow" opacity={0.2} colorTheme="gold" />
 
       <div className="site-container relative z-10 space-y-8">
-        {/* Section Header Indicator */}
-        <Reveal delay={50}>
-          <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
-            <span className="tracking-widest text-theme-gold font-semibold">( 07 )</span>
-            <span className="text-theme-textMuted">[ 007 / 007 ]</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
-              {t('contacts.badge')}
-            </span>
+        {/* Section Header with Liquid Glass UI Pod */}
+        <Reveal delay={100}>
+          <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-12">
+            <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
+              <span className="tracking-widest text-theme-gold font-semibold">( 07 )</span>
+              <span className="text-theme-textMuted">[ 007 / 007 ]</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+                {t('contacts.badge')}
+              </span>
+            </div>
+
+            <h2 className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 drop-shadow-sm text-theme-text">
+              {t('contacts.title1')}{' '}
+              <span className="italic font-light text-theme-gold">
+                {t('contacts.title1Italic')}
+              </span>{' '}
+              {t('contacts.title2')}
+            </h2>
+
+            <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-2xl">
+              {t('contacts.description')}
+            </p>
           </div>
         </Reveal>
-
-        {/* Section Title */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-          <div className="max-w-3xl">
-            <Reveal delay={150}>
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase mb-4">
-                {t('contacts.title1')}{' '}
-                <span className="italic font-light text-theme-gold">
-                  {t('contacts.title1Italic')}
-                </span>{' '}
-                {t('contacts.title2')}
-              </h2>
-            </Reveal>
-            <Reveal delay={250}>
-              <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal">
-                {t('contacts.description')}
-              </p>
-            </Reveal>
-          </div>
-        </div>
 
         {/* 2-Column Split: Headquarters Contacts & Personal Reception Schedule */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
@@ -87,7 +81,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
-                        <Phone size={18} className="text-cyan-400 shrink-0 mt-0.5" />
+                        <Phone size={18} className="text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
                         <div>
                           <span className="text-[10px] text-theme-textMuted uppercase block">
                             {t('contacts.hotlineLabel')}
@@ -99,7 +93,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                       </div>
 
                       <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
-                        <Mail size={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                        <Mail size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                         <div>
                           <span className="text-[10px] text-theme-textMuted uppercase block">
                             {t('contacts.emailLabel')}

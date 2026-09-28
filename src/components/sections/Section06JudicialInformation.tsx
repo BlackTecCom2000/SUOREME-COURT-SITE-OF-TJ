@@ -44,37 +44,31 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
       <DigitalDataRain density="sparse" speed="medium" opacity={0.2} colorTheme="gold" />
 
       <div className="site-container relative z-10 space-y-16">
-        {/* Section Header Indicator */}
-        <Reveal delay={50}>
-          <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
-            <span className="tracking-widest text-theme-gold font-semibold">( 01 )</span>
-            <span className="text-theme-textMuted">[ 001 / 007 ]</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
-              {t('acts.badge')}
-            </span>
+        {/* Section Header with Liquid Glass UI Pod */}
+        <Reveal delay={100}>
+          <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-8">
+            <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
+              <span className="tracking-widest text-theme-gold font-semibold">( 01 )</span>
+              <span className="text-theme-textMuted">[ 001 / 007 ]</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+                {t('acts.badge')}
+              </span>
+            </div>
+
+            <h2 className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 drop-shadow-sm text-theme-text">
+              {t('acts.title1')}{' '}
+              <span className="italic font-light text-theme-gold">
+                {t('acts.title1Italic')}
+              </span>{' '}
+              {t('acts.title2')}
+            </h2>
+
+            <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-3xl">
+              {t('acts.description')}
+            </p>
           </div>
         </Reveal>
-
-        {/* Section Title */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
-          <div className="max-w-3xl">
-            <Reveal delay={150}>
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase mb-4">
-                {t('acts.title1')}{' '}
-                <span className="italic font-light text-theme-gold">
-                  {t('acts.title1Italic')}
-                </span>{' '}
-                {t('acts.title2')}
-              </h2>
-            </Reveal>
-            <Reveal delay={250}>
-              <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal">
-                {t('acts.description')}
-              </p>
-            </Reveal>
-          </div>
-        </div>
 
         {/* 🌟 FULL JUDICIAL PRESS & MEDIA PORTAL (3D NEWS SLIDER, REGIONAL NEWS & OFFICIAL ANNOUNCEMENTS) */}
         <Reveal delay={200}>

@@ -78,24 +78,24 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
       `}
     >
       {/* 1. TOP BREADCRUMB TRAIL & CLOSE BUTTON */}
-      <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-700/50">
-        <div className="flex items-center gap-2 font-mono text-xs text-slate-400 flex-wrap">
-          <span className="text-amber-400 font-semibold">
+      <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-theme-border">
+        <div className="flex items-center gap-2 font-mono text-xs text-theme-textMuted flex-wrap">
+          <span className="text-theme-gold font-semibold">
             {language === 'tj' ? 'Судҳои ҶТ' : language === 'en' ? 'Courts of RT' : 'Суды Республики'}
           </span>
-          <ChevronRight size={13} className="text-slate-500" />
+          <ChevronRight size={13} className="text-theme-textMuted" />
           <span style={{ color: regionColor }} className="font-bold uppercase">
             {regionName}
           </span>
-          <ChevronRight size={13} className="text-slate-500" />
-          <span className="text-white font-semibold truncate max-w-xs">{courtName}</span>
+          <ChevronRight size={13} className="text-theme-textMuted" />
+          <span className="text-theme-text font-semibold truncate max-w-xs">{courtName}</span>
         </div>
 
         <button
           type="button"
           onClick={onClose}
           aria-label="Закрыть карточку суда"
-          className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-text hover:bg-theme-bg transition-colors"
         >
           <X size={18} />
         </button>
@@ -116,17 +116,17 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
               {typeLabel}
             </span>
 
-            <span className="flex items-center gap-1.5 font-mono text-[11px] text-emerald-400 font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+            <span className="flex items-center gap-1.5 font-mono text-[11px] text-emerald-500 font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>ОНЛАЙН (100% ДОСТУПЕН)</span>
             </span>
 
-            <span className="font-mono text-[11px] text-slate-400">
-              ID: <strong className="text-slate-200">{court.id}</strong>
+            <span className="font-mono text-[11px] text-theme-textMuted">
+              ID: <strong className="text-theme-text">{court.id}</strong>
             </span>
           </div>
 
-          <h3 className="font-serif font-bold text-xl sm:text-2xl text-white tracking-wide leading-snug">
+          <h3 className="font-serif font-bold text-xl sm:text-2xl text-theme-text tracking-wide leading-snug">
             {courtName}
           </h3>
         </div>
@@ -136,7 +136,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
           <button
             type="button"
             onClick={() => setShowQr(!showQr)}
-            className="p-2.5 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-300 hover:text-amber-400 hover:border-amber-400/50 transition-all font-mono text-xs flex items-center gap-1.5"
+            className="p-2.5 rounded-xl border border-theme-border bg-theme-bg/80 text-theme-textSec hover:text-theme-gold hover:border-theme-gold/50 transition-all font-mono text-xs flex items-center gap-1.5"
             title={
               language === 'tj'
                 ? 'Пайванди сомонаи расмии суд'
@@ -163,49 +163,49 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
 
       {/* 3. Official site link panel (real QR arrives with the verification backend) */}
       {showQr && (
-        <div className="mb-6 p-4 rounded-xl border border-amber-400/40 bg-slate-950 flex flex-col sm:flex-row items-center gap-4 animate-fadeIn">
+        <div className="mb-6 p-4 rounded-xl border border-theme-gold/40 bg-theme-bg/90 flex flex-col sm:flex-row items-center gap-4 animate-fadeIn">
           <div className="shrink-0">
             <CourtQrCode value={portalUrl} size={84} />
           </div>
           <div>
-            <span className="font-mono text-xs font-bold text-amber-400 uppercase tracking-wider block">
+            <span className="font-mono text-xs font-bold text-theme-gold uppercase tracking-wider block">
               Официальный сайт суда
             </span>
-            <p className="font-sans text-xs text-slate-300 mt-1 leading-relaxed">
+            <p className="font-sans text-xs text-theme-textSec mt-1 leading-relaxed">
               Прямая ссылка на защищенный веб-портал {court.domain}. QR-проверка документов появится вместе с backend верификации.
             </p>
-            <span className="font-mono text-[11px] text-slate-400 mt-1 block">{portalUrl}</span>
+            <span className="font-mono text-[11px] text-theme-textMuted mt-1 block">{portalUrl}</span>
           </div>
         </div>
       )}
 
       {/* 4. CONTACTS & DETAILS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6 font-mono text-xs">
-        <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/60 flex items-start gap-2.5">
-          <MapPin size={16} className="text-amber-400 shrink-0 mt-0.5" />
+        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
+          <MapPin size={16} className="text-theme-gold shrink-0 mt-0.5" />
           <div className="overflow-hidden">
-            <span className="text-[10px] text-slate-400 uppercase block">Адрес канцелярии</span>
-            <span className="text-slate-200 font-sans text-xs font-medium block truncate mt-0.5">
+            <span className="text-[10px] text-theme-textMuted uppercase block">Адрес канцелярии</span>
+            <span className="text-theme-text font-sans text-xs font-medium block truncate mt-0.5">
               {courtAddress || 'г. Душанбе, Республика Таджикистан'}
             </span>
           </div>
         </div>
 
-        <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/60 flex items-start gap-2.5">
-          <Phone size={16} className="text-cyan-400 shrink-0 mt-0.5" />
+        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
+          <Phone size={16} className="text-cyan-500 shrink-0 mt-0.5" />
           <div className="overflow-hidden">
-            <span className="text-[10px] text-slate-400 uppercase block">Телефон приёмной</span>
-            <span className="text-slate-200 font-medium block truncate mt-0.5">
+            <span className="text-[10px] text-theme-textMuted uppercase block">Телефон приёмной</span>
+            <span className="text-theme-text font-medium block truncate mt-0.5">
               {court.phone || '+992 (37) 221-00-00'}
             </span>
           </div>
         </div>
 
-        <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/60 flex items-start gap-2.5">
-          <Mail size={16} className="text-emerald-400 shrink-0 mt-0.5" />
+        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
+          <Mail size={16} className="text-emerald-500 shrink-0 mt-0.5" />
           <div className="overflow-hidden">
-            <span className="text-[10px] text-slate-400 uppercase block">Электронная почта</span>
-            <span className="text-slate-200 font-medium block truncate mt-0.5">
+            <span className="text-[10px] text-theme-textMuted uppercase block">Электронная почта</span>
+            <span className="text-theme-text font-medium block truncate mt-0.5">
               {court.email || `info@${court.domain || 'sud.tj'}`}
             </span>
           </div>
@@ -214,14 +214,14 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
 
       {/* 5. LATEST COURT NEWS / PUBLICATION IF AVAILABLE */}
       {(court.latestNewsRu || court.latestNewsTj) && (
-        <div className="p-4 rounded-xl border border-slate-800 bg-[#091124] mb-6 flex items-start gap-3">
-          <Newspaper size={18} className="text-amber-400 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl border border-theme-border bg-theme-bg/70 mb-6 flex items-start gap-3">
+          <Newspaper size={18} className="text-theme-gold shrink-0 mt-0.5" />
           <div className="flex-1">
-            <div className="flex items-center justify-between text-[10px] font-mono text-amber-400 uppercase tracking-wider mb-1">
+            <div className="flex items-center justify-between text-[10px] font-mono text-theme-gold uppercase tracking-wider mb-1">
               <span>Последняя публикация суда</span>
-              <span className="text-slate-400">Сегодня</span>
+              <span className="text-theme-textMuted">Сегодня</span>
             </div>
-            <p className="font-serif font-semibold text-sm text-slate-100 leading-snug">
+            <p className="font-serif font-semibold text-sm text-theme-text leading-snug">
               {language === 'tj' ? court.latestNewsTj : court.latestNewsRu}
             </p>
           </div>
@@ -231,8 +231,8 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
       {/* 6. AVAILABLE PUBLIC DIGITAL SERVICES HUB (1-CLICK DIRECT LAUNCHERS) */}
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <CheckCircle2 size={15} className="text-amber-400" />
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-slate-300">
+          <CheckCircle2 size={15} className="text-theme-gold" />
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-theme-textSec">
             Электронные сервисы для данного суда
           </span>
         </div>
@@ -241,41 +241,41 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
           <button
             type="button"
             onClick={() => onOpenService?.('acts', court)}
-            className="p-3 rounded-xl border border-slate-800 bg-slate-900/80 hover:border-amber-400/60 hover:bg-[#0c1527] transition-all flex flex-col items-center text-center gap-1.5 text-slate-200 group"
+            className="p-3 rounded-xl border border-theme-border bg-theme-bg/80 hover:border-theme-gold hover:bg-theme-surfaceHover transition-all flex flex-col items-center text-center gap-1.5 text-theme-text group"
           >
-            <Gavel size={18} className="text-amber-400 group-hover:scale-110 transition-transform" />
+            <Gavel size={18} className="text-theme-gold group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Судебные акты</span>
-            <span className="text-[10px] text-slate-400">Банк решений</span>
+            <span className="text-[10px] text-theme-textMuted">Банк решений</span>
           </button>
 
           <button
             type="button"
             onClick={() => onOpenService?.('esud', court)}
-            className="p-3 rounded-xl border border-slate-800 bg-slate-900/80 hover:border-sky-400/60 hover:bg-[#0c1527] transition-all flex flex-col items-center text-center gap-1.5 text-slate-200 group"
+            className="p-3 rounded-xl border border-theme-border bg-theme-bg/80 hover:border-sky-400 hover:bg-theme-surfaceHover transition-all flex flex-col items-center text-center gap-1.5 text-theme-text group"
           >
-            <Laptop size={18} className="text-sky-400 group-hover:scale-110 transition-transform" />
+            <Laptop size={18} className="text-sky-500 group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Электронный суд</span>
-            <span className="text-[10px] text-slate-400">Подача документов</span>
+            <span className="text-[10px] text-theme-textMuted">Подача документов</span>
           </button>
 
           <button
             type="button"
             onClick={() => onOpenService?.('appeals', court)}
-            className="p-3 rounded-xl border border-slate-800 bg-slate-900/80 hover:border-emerald-400/60 hover:bg-[#0c1527] transition-all flex flex-col items-center text-center gap-1.5 text-slate-200 group"
+            className="p-3 rounded-xl border border-theme-border bg-theme-bg/80 hover:border-emerald-400 hover:bg-theme-surfaceHover transition-all flex flex-col items-center text-center gap-1.5 text-theme-text group"
           >
-            <Send size={18} className="text-emerald-400 group-hover:scale-110 transition-transform" />
+            <Send size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Обращение</span>
-            <span className="text-[10px] text-slate-400">Приемная граждан</span>
+            <span className="text-[10px] text-theme-textMuted">Приемная граждан</span>
           </button>
 
           <button
             type="button"
             onClick={() => onOpenService?.('duties', court)}
-            className="p-3 rounded-xl border border-slate-800 bg-slate-900/80 hover:border-violet-400/60 hover:bg-[#0c1527] transition-all flex flex-col items-center text-center gap-1.5 text-slate-200 group"
+            className="p-3 rounded-xl border border-theme-border bg-theme-bg/80 hover:border-violet-400 hover:bg-theme-surfaceHover transition-all flex flex-col items-center text-center gap-1.5 text-theme-text group"
           >
-            <Calculator size={18} className="text-violet-400 group-hover:scale-110 transition-transform" />
+            <Calculator size={18} className="text-violet-500 group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Госпошлина</span>
-            <span className="text-[10px] text-slate-400">Калькулятор тарифов</span>
+            <span className="text-[10px] text-theme-textMuted">Калькулятор тарифов</span>
           </button>
         </div>
       </div>

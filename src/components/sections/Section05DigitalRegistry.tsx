@@ -75,7 +75,7 @@ export const Section05DigitalRegistry: React.FC<Section05DigitalRegistryProps> =
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12 items-end">
           <div className="lg:col-span-8">
             <Reveal delay={150}>
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase">
+              <h2 className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase">
                 {t('registry.title1')}{' '}
                 <span className="italic font-light text-theme-gold">
                   {t('registry.title1Italic')}

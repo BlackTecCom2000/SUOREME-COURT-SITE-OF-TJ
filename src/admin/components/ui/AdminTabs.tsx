@@ -21,7 +21,7 @@ export const AdminTabs: React.FC<AdminTabsProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`flex items-center gap-1.5 p-1 rounded-xl bg-slate-900/90 border border-slate-800 overflow-x-auto ${className}`}>
+    <div className={`flex items-center gap-1.5 p-1 rounded-xl bg-white/85 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-sm backdrop-blur-md overflow-x-auto ${className}`}>
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
         return (
@@ -34,8 +34,8 @@ export const AdminTabs: React.FC<AdminTabsProps> = ({
               transition-all duration-200 select-none whitespace-nowrap
               ${
                 isActive
-                  ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                  ? 'bg-amber-400 text-black font-bold shadow-md'
+                  : 'text-black dark:text-white font-semibold hover:bg-slate-200/70 dark:hover:bg-slate-800/60'
               }
             `}
           >
@@ -45,7 +45,7 @@ export const AdminTabs: React.FC<AdminTabsProps> = ({
               <span
                 className={`
                   px-1.5 py-0.2 rounded-full text-[10px] font-bold
-                  ${isActive ? 'bg-slate-950 text-amber-300' : 'bg-slate-800 text-slate-400'}
+                  ${isActive ? 'bg-black text-amber-300' : 'bg-slate-200 dark:bg-slate-800 text-black dark:text-white'}
                 `}
               >
                 {tab.count}

@@ -21,35 +21,35 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
       titleKey: 'mission.civilName',
       descKey: 'mission.civilDesc',
       icon: Scale,
-      colorClass: 'text-cyan-400',
+      colorClass: 'text-cyan-600 dark:text-cyan-400',
     },
     {
       id: 'family',
       titleKey: 'mission.familyName',
       descKey: 'mission.familyDesc',
       icon: Users,
-      colorClass: 'text-amber-400',
+      colorClass: 'text-amber-600 dark:text-amber-400',
     },
     {
       id: 'criminal',
       titleKey: 'mission.criminalName',
       descKey: 'mission.criminalDesc',
       icon: Gavel,
-      colorClass: 'text-red-400',
+      colorClass: 'text-red-600 dark:text-red-400',
     },
     {
       id: 'admin',
       titleKey: 'mission.adminName',
       descKey: 'mission.adminDesc',
       icon: BookOpen,
-      colorClass: 'text-emerald-400',
+      colorClass: 'text-emerald-600 dark:text-emerald-400',
     },
     {
       id: 'military',
       titleKey: 'mission.militaryName',
       descKey: 'mission.militaryDesc',
       icon: Shield,
-      colorClass: 'text-violet-400',
+      colorClass: 'text-violet-600 dark:text-violet-400',
     },
   ];
 
@@ -63,26 +63,26 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
       <DigitalDataRain density="medium" speed="slow" opacity={0.25} colorTheme="mixed" />
 
       <div className="site-container relative z-10">
-        {/* Section Header */}
-        <Reveal delay={50}>
-          <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
-            <span className="tracking-widest text-theme-gold font-semibold">( 02 )</span>
-            <span className="text-theme-textMuted">[ 002 / 007 ]</span>
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
-              {t('mission.badge')}
-            </span>
-          </div>
-        </Reveal>
+        {/* Section Header with Liquid Glass UI Pod */}
+        <Reveal delay={100}>
+          <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-10">
+            <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
+              <span className="tracking-widest text-theme-gold font-semibold">( 02 )</span>
+              <span className="text-theme-textMuted">[ 002 / 007 ]</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-theme-gold animate-pulse ml-1" />
+              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
+                {t('mission.badge')}
+              </span>
+            </div>
 
-        {/* Section Title */}
-        <Reveal delay={150}>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase max-w-3xl mb-8">
-            {t('mission.title1')}{' '}
-            <span className="italic font-light text-theme-gold">
-              {t('mission.title1Italic')}
-            </span>{' '}
-            {t('mission.title2')}
-          </h2>
+            <h2 className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-2 text-theme-text drop-shadow-sm">
+              {t('mission.title1')}{' '}
+              <span className="italic font-light text-theme-gold">
+                {t('mission.title1Italic')}
+              </span>{' '}
+              {t('mission.title2')}
+            </h2>
+          </div>
         </Reveal>
 
         {/* Constitutional Quote Banner */}

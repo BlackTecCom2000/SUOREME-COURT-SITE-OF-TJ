@@ -12,7 +12,9 @@ export const ScrollVideo: React.FC = () => {
   const parallaxRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const maxScrollRef = useRef(1);
-  const rafRef = useRef(0);
+  const frameRef = useRef(0);
+  const targetScrollRef = useRef(0);
+  const currentScrollRef = useRef(0);
   const darkRef = useRef(isDark);
   darkRef.current = isDark;
 
@@ -26,33 +28,40 @@ export const ScrollVideo: React.FC = () => {
     updateMax();
 
     const apply = () => {
-      rafRef.current = 0;
-      const y = window.scrollY;
-      const p = Math.min(Math.max(y / maxScrollRef.current, 0), 1);
-      const scale = 1 + Math.min(p * 0.08, 0.08);
-      const ty = Math.min(y * 0.04, 60);
+        frameRef.current = 0;
+        const current = currentScrollRef.current;
+        const target = targetScrollRef.current;
+        const next = current + (target - current) * 0.085;
+        currentScrollRef.current = Math.abs(target - next) < 0.1 ? target : next;
+        const progress = Math.max(0, currentScrollRef.current / maxScrollRef.current);
+        const scale = 1 + 0.11 * (1 - Math.exp(-progress * 1.35));
+        const ty = 54 * (1 - Math.exp(-progress * 1.1));
       if (parallaxRef.current) {
-        parallaxRef.current.style.transform = `scale(${scale.toFixed(4)}) translateY(-${ty.toFixed(1)}px)`;
+          parallaxRef.current.style.transform = `scale(${scale.toFixed(5)}) translate3d(0, -${ty.toFixed(2)}px, 0)`;
       }
       const dark = darkRef.current;
       // Natural background: no white overlay — keep building vibrant, sky blue intact
       if (overlayRef.current) {
         overlayRef.current.style.backgroundColor = dark
-          ? `rgba(5, 8, 15, ${Math.min(0.35, 0.12 + p * 0.15).toFixed(2)})`
+          ? `rgba(5, 8, 15, ${Math.min(0.35, 0.12 + progress * 0.15).toFixed(2)})`
           : `rgba(0, 0, 0, 0)`;
       }
+      if (Math.abs(target - currentScrollRef.current) > 0.1) frameRef.current = requestAnimationFrame(apply);
     };
 
-    const onScroll = () => {
-      if (!rafRef.current) rafRef.current = requestAnimationFrame(apply);
+    const schedule = () => {
+      targetScrollRef.current = Math.max(0, window.scrollY);
+      if (!frameRef.current) frameRef.current = requestAnimationFrame(apply);
     };
+    const onScroll = () => schedule();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateMax);
-    apply();
+    const onResize = () => { updateMax(); schedule(); };
+    window.addEventListener('resize', onResize);
+    schedule();
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', updateMax);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('resize', onResize);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
   }, []);
 

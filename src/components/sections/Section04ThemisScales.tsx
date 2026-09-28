@@ -28,24 +28,22 @@ export const Section04ThemisScales: React.FC = () => {
           </div>
         </Reveal>
 
-        {/* Section Title & Description */}
-        <div className="max-w-3xl mb-12">
-          <Reveal delay={150}>
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight uppercase mb-6">
+        {/* Section Title & Description with Liquid Glass UI Pod */}
+        <Reveal delay={100}>
+          <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-12">
+            <h2 className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 drop-shadow-sm text-theme-text">
               {t('themisScales.title1')}{' '}
               <span className="italic font-light text-theme-gold">
                 {t('themisScales.title1Italic')}
               </span>{' '}
               {t('themisScales.title2')}
             </h2>
-          </Reveal>
 
-          <Reveal delay={250}>
-            <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal">
+            <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-2xl">
               {t('themisScales.description')}
             </p>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
 
         {/* 2 Major Symbolic Centerpieces: Digital Themis & Digital Scales */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">

@@ -3,57 +3,76 @@
 @tailwind utilities;
 
 @layer base {
-  /* LIGHT THEME (Crisp High-Contrast Ivory & Deep Navy) */
+  /* LIGHT THEME (Crisp High-Contrast Ivory & True Black Typography) */
   :root {
     --bg-primary: #f5f7fb;
-    --bg-secondary: rgba(255, 255, 255, 0.85);
-    --surface-card: rgba(255, 255, 255, 0.75);
-    --surface-card-hover: rgba(255, 255, 255, 0.90);
-    --text-primary: #06152b;
-    --text-secondary: #1e293b;
-    --text-muted: #475569;
-    --border-primary: rgba(6, 21, 43, 0.12);
-    --border-hover: rgba(184, 138, 36, 0.75);
-    --accent-gold: #b88a24;
-    --accent-gold-dark: #926c27;
+    --bg-secondary: #ffffff;
+    --surface-card: rgba(255, 255, 255, 0.88);
+    --surface-card-hover: rgba(255, 255, 255, 0.96);
+    --text-primary: #000000;
+    --text-secondary: #0f172a;
+    --text-muted: #334155;
+    --border-primary: rgba(15, 23, 42, 0.12);
+    --border-hover: rgba(154, 107, 18, 0.75);
+    --accent-gold: #9a6b12;
+    --accent-gold-dark: #7a550c;
     --accent-digital: #0284c7;
     --glow-gold: 0 0 30px rgba(184, 138, 36, 0.18);
-    --card-shadow: 0 10px 30px rgba(6, 21, 43, 0.06);
-    --video-overlay: rgba(245, 247, 251, 0.88);
-    --data-token-color: #1e293b;
-    --data-accent-color: #b88a24;
+    --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    --video-overlay: rgba(245, 247, 251, 0.92);
+    --data-token-color: #000000;
+    --data-accent-color: #9a6b12;
+    --court-navy: #000000;
+    --court-gold: #9a6b12;
+
+    /* Light Theme Liquid Glass Surfaces - guaranteed readable contrast */
+    --glass-surface: rgba(255, 255, 255, 0.86);
+    --glass-surface-strong: rgba(255, 255, 255, 0.94);
+    --glass-surface-hover: rgba(255, 255, 255, 0.97);
+    --glass-surface-active: #ffffff;
+    --glass-border: rgba(15, 23, 42, 0.12);
+    --glass-border-subtle: rgba(15, 23, 42, 0.08);
+    --glass-border-hover: rgba(154, 107, 18, 0.55);
+    --glass-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    --glass-shadow-hover: 0 14px 40px rgba(15, 23, 42, 0.10), inset 0 1px 0 #ffffff;
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.98);
+    --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
   }
 
-  /* DARK THEME ([data-theme="dark"]) */
+  /* DARK THEME ([data-theme="dark"] / .dark — Pure Crisp White Typography) */
   [data-theme="dark"] {
     --bg-primary: #05080f;
     --bg-secondary: #08111f;
-    --surface-card: rgba(8, 18, 32, 0.78);
-    --surface-card-hover: rgba(13, 27, 48, 0.90);
+    --surface-card: rgba(8, 18, 36, 0.88);
+    --surface-card-hover: rgba(13, 27, 52, 0.96);
     --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.78);
-    --text-muted: rgba(255, 255, 255, 0.52);
-    --border-primary: rgba(255, 255, 255, 0.12);
-    --border-hover: rgba(223, 190, 126, 0.55);
+    --text-secondary: #f1f5f9;
+    --text-muted: #cbd5e1;
+    --border-primary: rgba(255, 255, 255, 0.14);
+    --border-hover: rgba(223, 190, 126, 0.65);
     --accent-gold: #dfbe7e;
     --accent-gold-dark: #c5a059;
     --accent-digital: #38bdf8;
-    --glow-gold: 0 0 35px rgba(223, 190, 126, 0.18);
-    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    --video-overlay: rgba(5, 8, 15, 0.86);
+    --glow-gold: 0 0 35px rgba(223, 190, 126, 0.22);
+    --card-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
+    --video-overlay: rgba(5, 8, 15, 0.90);
     --data-token-color: #ffffff;
     --data-accent-color: #dfbe7e;
-    /* Clean glass on dark needs a touch more opacity to read, but still light */
-    --glass-surface: rgba(255, 255, 255, 0.08);
-    --glass-surface-strong: rgba(255, 255, 255, 0.12);
-    --glass-surface-hover: rgba(255, 255, 255, 0.14);
-    --glass-surface-active: rgba(255, 255, 255, 0.17);
-    --glass-border: rgba(255, 255, 255, 0.16);
-    --glass-border-subtle: rgba(255, 255, 255, 0.11);
-    --glass-border-hover: rgba(255, 255, 255, 0.24);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
-    --glass-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.34);
-    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    --court-navy: #ffffff;
+    --court-gold: #dfbe7e;
+
+    /* Dark Theme Liquid Glass Surfaces — deep rich contrast */
+    --glass-surface: rgba(7, 16, 32, 0.86);
+    --glass-surface-strong: rgba(10, 22, 44, 0.94);
+    --glass-surface-hover: rgba(14, 28, 56, 0.97);
+    --glass-surface-active: rgba(18, 34, 68, 0.99);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-border-subtle: rgba(255, 255, 255, 0.09);
+    --glass-border-hover: rgba(223, 190, 126, 0.50);
+    --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    --glass-shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   }
 
   /* Unified Supreme Court Container Max-Width */
@@ -285,6 +304,196 @@ html.is-morphing-theme ::view-transition-new(root) {
 
 
 @layer components {
+  .public-section-title {
+    max-width: min(100%, 820px);
+    line-height: 1.08;
+    text-wrap: balance;
+    overflow-wrap: normal;
+  }
+
+  /* ── Liquid Glass UI Title Backdrop Pod ── */
+  .liquid-glass-title-pod {
+    position: relative;
+    border-radius: var(--glass-radius-panel, 28px);
+    background: linear-gradient(135deg, rgba(8, 20, 42, 0.86) 0%, rgba(3, 9, 22, 0.78) 100%);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    box-shadow: 
+      inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -1px 1px 0 rgba(0, 0, 0, 0.45),
+      0 20px 45px -12px rgba(0, 0, 0, 0.38),
+      0 0 32px -4px rgba(223, 190, 126, 0.08);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+  }
+
+  .liquid-glass-title-pod::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, rgba(223, 190, 126, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  [data-theme="light"] .liquid-glass-title-pod {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(243, 247, 255, 0.80) 100%);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    color: #000000;
+    box-shadow: 
+      inset 0 1px 2px 0 rgba(255, 255, 255, 1),
+      0 16px 36px -10px rgba(15, 25, 50, 0.08),
+      0 0 24px -2px rgba(212, 164, 45, 0.12);
+  }
+
+  [data-theme="light"] .liquid-glass-title-pod::before {
+    background: radial-gradient(circle, rgba(212, 164, 45, 0.16) 0%, transparent 70%);
+  }
+
+  .public-readable {
+    --public-text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9), 0 2px 8px rgba(255, 255, 255, 0.4);
+  }
+
+  [data-theme="dark"] .public-readable {
+    --public-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 2px 10px rgba(0, 0, 0, 0.7);
+  }
+
+  .public-readable :is(h1, h2, h3, h4, h5, h6, p, span, a, button, label) {
+    text-shadow: var(--public-text-shadow);
+  }
+
+  /* ── Universal Public Site Text Readability & Contrast Engine ── */
+  :root:not(.dark) {
+    /* Guaranteed high contrast on any card/pod/panel in light mode */
+    .glass:not(.slide-dark-scrim *),
+    .content-card:not(.slide-dark-scrim *),
+    .liquid-glass-title-pod:not(.slide-dark-scrim *) {
+      color: #000000;
+    }
+
+    /* Elevate faded utilities on light surfaces to high-contrast dark tones */
+    .glass:not(.slide-dark-scrim) .text-slate-400,
+    .glass:not(.slide-dark-scrim) .text-slate-500,
+    .glass:not(.slide-dark-scrim) .text-gray-400,
+    .glass:not(.slide-dark-scrim) .text-gray-500,
+    .content-card:not(.slide-dark-scrim) .text-slate-400,
+    .content-card:not(.slide-dark-scrim) .text-slate-500,
+    .liquid-glass-title-pod .text-slate-400,
+    .liquid-glass-title-pod .text-slate-500 {
+      color: #334155;
+    }
+
+    .glass:not(.slide-dark-scrim) .text-slate-300,
+    .glass:not(.slide-dark-scrim) .text-slate-200,
+    .glass:not(.slide-dark-scrim) .text-gray-300,
+    .content-card:not(.slide-dark-scrim) .text-slate-300,
+    .content-card:not(.slide-dark-scrim) .text-slate-200,
+    .liquid-glass-title-pod .text-slate-300,
+    .liquid-glass-title-pod .text-slate-200 {
+      color: #0f172a;
+    }
+
+    .glass:not(.slide-dark-scrim):not(.bg-slate-900):not(.bg-slate-950) > .text-white,
+    .content-card:not(.slide-dark-scrim) > .text-white,
+    .liquid-glass-title-pod .text-white {
+      color: #000000;
+    }
+
+    .btn-primary, .btn-gold {
+      color: #000000 !important;
+      background: rgba(154, 107, 18, 0.18);
+      border-color: rgba(154, 107, 18, 0.45);
+    }
+    .btn-primary:hover, .btn-gold:hover {
+      color: #000000 !important;
+      background: rgba(154, 107, 18, 0.28);
+    }
+    .btn-secondary {
+      color: #000000 !important;
+    }
+    .btn-outline {
+      color: #000000 !important;
+      border-color: rgba(15, 23, 42, 0.22);
+    }
+  }
+
+  [data-theme="dark"], .dark {
+    /* Guaranteed high contrast on any card/pod/panel in dark mode */
+    .glass,
+    .content-card,
+    .liquid-glass-title-pod {
+      color: #ffffff;
+    }
+
+    /* Elevate faded utilities on dark surfaces to luminous crisp tones */
+    .glass .text-slate-400,
+    .glass .text-slate-500,
+    .glass .text-gray-400,
+    .glass .text-gray-500,
+    .content-card .text-slate-400,
+    .content-card .text-slate-500,
+    .liquid-glass-title-pod .text-slate-400,
+    .liquid-glass-title-pod .text-slate-500 {
+      color: #cbd5e1;
+    }
+
+    .glass .text-slate-300,
+    .glass .text-slate-200,
+    .glass .text-gray-300,
+    .content-card .text-slate-300,
+    .content-card .text-slate-200,
+    .liquid-glass-title-pod .text-slate-300,
+    .liquid-glass-title-pod .text-slate-200 {
+      color: #f1f5f9;
+    }
+
+    .glass .text-slate-600,
+    .glass .text-slate-700,
+    .glass .text-slate-800,
+    .glass .text-slate-900,
+    .content-card .text-slate-600,
+    .content-card .text-slate-700,
+    .content-card .text-slate-800,
+    .content-card .text-slate-900 {
+      color: #ffffff;
+    }
+
+    .btn-primary, .btn-gold {
+      color: #ffffff !important;
+      background: rgba(223, 190, 126, 0.22);
+      border-color: rgba(223, 190, 126, 0.50);
+    }
+    .btn-primary:hover, .btn-gold:hover {
+      color: #ffffff !important;
+      background: rgba(223, 190, 126, 0.32);
+    }
+    .btn-secondary {
+      color: #ffffff !important;
+    }
+    .btn-outline {
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+  }
+
+  .public-readable :is(h1, h2, h3, h4, h5, h6, p, span, a, button, label) {
+    text-shadow: var(--public-text-shadow);
+  }
+
+  @media (max-width: 640px) {
+    .public-section-title {
+      font-size: clamp(2rem, 10vw, 3rem);
+      line-height: 1;
+    }
+  }
+
   /* NOTE (v2.2.1): dead first definitions of .btn-primary/.btn-secondary/
      .btn-ghost/.btn-icon removed — the btn-base system below won the cascade,
      so effective visuals are unchanged. .btn-outline lives only here. */
@@ -357,6 +566,42 @@ html.is-morphing-theme ::view-transition-new(root) {
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
+  .glass-input {
+    position: relative;
+    display: block;
+    min-height: 44px;
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius-small);
+    color: var(--text-primary);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    box-shadow: var(--glass-highlight);
+  }
+  .glass-input:focus {
+    background: var(--glass-surface-hover);
+    border-color: var(--accent-gold);
+    outline: none;
+    box-shadow: var(--glass-highlight), 0 0 0 1px color-mix(in srgb, var(--accent-gold) 45%, transparent);
+  }
+  .glass-navigation {
+    position: relative;
+    background: var(--glass-surface-strong);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    box-shadow: var(--glass-shadow), var(--glass-highlight);
+  }
+  .glass-login-card {
+    background: rgba(8, 18, 32, 0.46);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28), var(--glass-highlight);
+  }
+  .justice-viewport {
+    background: rgba(7, 18, 31, 0.28);
+    border-color: rgba(255, 255, 255, 0.24);
+    box-shadow: var(--glass-shadow), var(--glass-highlight), inset 0 0 40px rgba(0, 0, 0, 0.12);
+  }
   /* Soft inner top highlight + edge reflection — ultra-subtle so background stays clean. */
   .glass::before,
   .content-card::before {
@@ -396,14 +641,14 @@ html.is-morphing-theme ::view-transition-new(root) {
   .glass-premium {
     border-radius: var(--glass-radius-panel);
     background: var(--glass-surface-strong);
-    backdrop-filter: blur(var(--glass-blur-premium)) saturate(var(--glass-saturation-premium));
-    -webkit-backdrop-filter: blur(var(--glass-blur-premium)) saturate(var(--glass-saturation-premium));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   }
   .glass-ultra {
     border-radius: var(--glass-radius-large);
     background: var(--glass-surface-strong);
-    backdrop-filter: blur(var(--glass-blur-ultra)) saturate(var(--glass-saturation-premium));
-    -webkit-backdrop-filter: blur(var(--glass-blur-ultra)) saturate(var(--glass-saturation-premium));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   }
   /* Gold selected/active state: border + glow, NEVER a solid fill. */
   .glass-active {
@@ -418,10 +663,10 @@ html.is-morphing-theme ::view-transition-new(root) {
   /* Admin density — same glass family but deep navy tint for functional continuity. */
   .glass-admin {
     position: relative;
-    background: rgba(5, 15, 30, 0.42);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    backdrop-filter: blur(24px) saturate(150%);
-    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
   /* Admin — same Global Glass, slightly denser (0.18 vs 0.14) for readability, no separate dark theme */
@@ -430,10 +675,10 @@ html.is-morphing-theme ::view-transition-new(root) {
     --glass-opacity: 0.18;
   }
   .glass-admin-strong {
-    background: rgba(5, 15, 30, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(32px) saturate(160%);
-    -webkit-backdrop-filter: blur(32px) saturate(160%);
+    background: var(--glass-surface-strong);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     box-shadow: var(--glass-shadow-floating), var(--glass-highlight);
   }
 }
@@ -480,8 +725,8 @@ html.is-morphing-theme ::view-transition-new(root) {
 /* Mobile: preserve transparency + hierarchy, even lighter to keep background clean. */
 @media (max-width: 768px) {
   .glass, .content-card, .glass-premium, .glass-ultra {
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     box-shadow: 0 6px 20px rgba(15, 30, 50, 0.05), var(--glass-highlight);
   }
 }

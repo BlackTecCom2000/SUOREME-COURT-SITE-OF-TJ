@@ -36,10 +36,10 @@ export const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-transparent text-theme-text flex flex-col-reverse md:flex-row overflow-hidden select-none relative">
+    <div className="min-h-[100dvh] w-full bg-transparent text-theme-text flex flex-col-reverse md:flex-row overflow-x-hidden select-none relative">
       <GlobalBackground />
       {/* LEFT — branding panel — NO backdrop-filter here, only glass on inner emblem card */}
-      <div className="relative w-full md:w-[55%] min-h-[360px] md:min-h-screen bg-transparent border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden">
+      <div className="relative w-full md:w-[55%] min-h-[340px] md:min-h-[100dvh] bg-transparent flex flex-col justify-between p-6 sm:p-10 lg:p-14 overflow-hidden">
         {/* Subtle Background Circuit Mesh */}
         <div
           className="absolute inset-0 pointer-events-none opacity-20"
@@ -92,9 +92,8 @@ export const AdminLogin: React.FC = () => {
       </div>
 
       {/* RIGHT — GlassAuthenticationPanel — same light glass, background synced */}
-      <div className="w-full md:w-[45%] flex items-center justify-center p-6 sm:p-10 lg:p-12 relative bg-transparent">
-        <div className="w-full max-w-[440px] glass glass-premium !rounded-[30px] p-8 text-left"
-          style={{ backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)' } as React.CSSProperties}>
+      <div className="w-full md:w-[45%] flex items-center justify-center p-5 sm:p-8 lg:p-12 relative bg-transparent">
+        <div className="w-full max-w-[440px] glass glass-panel glass-login-card p-6 sm:p-8 text-left">
           {/* Card Title — same header as public */}
           <div className="pb-5 mb-6 border-b border-[var(--glass-border)]">
             <div className="flex items-center gap-2 text-[var(--court-gold)] mb-1">

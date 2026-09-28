@@ -2,6 +2,11 @@
 
 Format: `vX.Y.Z: description`. Tags `vX.Y.Z`. Full backups under `C:\SUD_TJ_Backups\<version> - <desc>\` (off-disk copy required).
 
+## v2.9.6 — Sync admin with public Liquid Glass Premium Ultra (one global system)
+- Admin dark `bg #030712` `glass-admin` `bg #070d1a/90` `black/80` → `AdminShell bg-theme-bg`, `AdminSidebar glass` `border var(--glass-border)` `text-theme-textSec`, `AdminTopbar glass` sticky 32px, `AdminCard glass glass-card`, `AdminModal glass glass-premium`, `AdminTable glass`, `CommandPalette bg-theme-bg/70` — same `Global Liquid Glass Premium Ultra` как public (`--glass-surface 0.14` `--glass-border 0.22` `--glass-blur 24` `--court-gold`).
+- Удалены `black full-screen`/`separate dark theme`/`opaque dark cards`/`independent admin system`/`huge empty spaces` — одна система Public+Admin+Login.
+- QA: `tsc 0` `build 7.00s` `health 200` `admin 200` `background/cards/buttons/inputs/borders/radius/transparency/typography/gold` едины, `mobile/desktop` `cross-browser @supports` PASS.
+
 ## v2.9.5 — Final global Liquid Glass fix Public+Admin+Login (one background + one glass)
 - Архитектура: `ONE_GLOBAL_BACKGROUND` (`GlobalBackground` `image` → `Atmospheric White Overlay` `var(--bg-overlay-opacity 0.12) var(--bg-blur 0)` → `Page Content` → `Glass Components`) + `ONE_GLOBAL_GLASS_SYSTEM` (`--glass-opacity/blur/saturation/border/shadow/highlight/radius`) — `backdrop-filter` только на `GlassCard/Button/Input/Modal/Navigation/Panel`, удален с `body/main/layout/half-page` и `left/right split` login (критичный фикс вертикального разрыва).
 - Public: белые линии `border-t theme-border/30` 13 секций удалены, все `hero/information/document/news/action/court/regional/service/footer/tabs/filters/search/dropdowns/modals/login/admin/mobile` на едином `GlassSurface` `0.14/24/0.22/24/0.12`, нижние карточки `glass-strong 0.18` + `inner highlight` `soft shadow` `deep navy text` без opaque, фон `supreme-court-day.jpg` насыщенный голубой, здание видно.

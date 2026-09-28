@@ -80,7 +80,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
             <span className="font-mono text-base sm:text-lg font-bold px-3 py-1 rounded-xl bg-theme-bg border border-theme-border text-theme-gold">
               {caseData.caseNumber}
             </span>
-            <span className="font-mono text-xs px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+            <span className="font-mono text-xs px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 font-medium">
               {language === 'tj' ? caseData.statusTj : language === 'en' ? caseData.statusEn : caseData.statusRu}
             </span>
             <span className="font-mono text-xs text-theme-textMuted hidden sm:inline">
@@ -179,7 +179,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
                   <div className="relative">
                     <div className="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-theme-bg" />
                     <div className="flex items-center justify-between text-xs font-mono text-theme-textMuted mb-1">
-                      <span className="text-emerald-400 font-bold">12.02.2026 • 10:14</span>
+                      <span className="text-emerald-700 dark:text-emerald-400 font-bold">12.02.2026 • 10:14</span>
                       <span>E-FILING #74921</span>
                     </div>
                     <p className="text-xs text-theme-text font-medium">
@@ -191,7 +191,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
                   <div className="relative">
                     <div className="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-theme-bg" />
                     <div className="flex items-center justify-between text-xs font-mono text-theme-textMuted mb-1">
-                      <span className="text-emerald-400 font-bold">14.02.2026 • 16:30</span>
+                      <span className="text-emerald-700 dark:text-emerald-400 font-bold">14.02.2026 • 16:30</span>
                       <span>AUTO-ASSIGNMENT</span>
                     </div>
                     <p className="text-xs text-theme-text font-medium">
@@ -238,7 +238,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
                         <span>•</span>
                         <span>{doc.date}</span>
                         <span>•</span>
-                        <span className="text-emerald-400 flex items-center gap-1">
+                        <span className="text-emerald-700 dark:text-emerald-400 flex items-center gap-1 font-medium">
                           <Lock size={10} /> {doc.status}
                         </span>
                       </div>
@@ -294,7 +294,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
           {activeTab === 'parties' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 glass glass-card">
-                <span className="font-mono text-[10px] uppercase text-sky-400 font-bold block mb-1">
+                <span className="font-mono text-[10px] uppercase text-sky-700 dark:text-sky-400 font-bold block mb-1">
                   {language === 'tj' ? 'ДАЪВОГАР' : language === 'en' ? 'PLAINTIFF' : 'ИСТЕЦ'}
                 </span>
                 <h5 className="text-sm font-semibold text-theme-text">ООО «Сомон Строй»</h5>
@@ -302,7 +302,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
               </div>
 
               <div className="p-4 glass glass-card">
-                <span className="font-mono text-[10px] uppercase text-amber-400 font-bold block mb-1">
+                <span className="font-mono text-[10px] uppercase text-amber-700 dark:text-amber-400 font-bold block mb-1">
                   {language === 'tj' ? 'ҶАВОБГАР' : language === 'en' ? 'DEFENDANT' : 'ОТВЕТЧИК'}
                 </span>
                 <h5 className="text-sm font-semibold text-theme-text">ОАО «Таджикгидро»</h5>
@@ -315,7 +315,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
             <div className="p-6 glass glass-card font-mono text-xs text-theme-textSec space-y-2">
               <div className="flex items-center justify-between py-2 border-b border-theme-border/40">
                 <span className="text-theme-text">SHA-256 System Event Integrity Verification</span>
-                <span className="text-emerald-400 font-bold">100% VALID</span>
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold">100% VALID</span>
               </div>
               <div className="flex items-center justify-between py-2 border-b border-theme-border/40">
                 <span>Timestamp Authority (TSA): National Judicial PKI</span>
@@ -323,7 +323,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
               </div>
               <div className="flex items-center justify-between py-2">
                 <span>Payment State Duty: 80 TJS</span>
-                <span className="text-emerald-400">PAID & SETTLED</span>
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold">PAID & SETTLED</span>
               </div>
             </div>
           )}
