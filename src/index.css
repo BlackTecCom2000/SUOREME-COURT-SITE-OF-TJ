@@ -138,7 +138,9 @@
   }
 
   body {
-    font-family: 'Flexo Soft Medium', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
     background-color: var(--bg-primary);
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
@@ -146,10 +148,36 @@
     transition: background-color 0.4s ease, color 0.4s ease;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  /* Display headings: serif authority, tight tracking, balanced wrap.
+     The serif is limited to h1-h3. Cormorant has hairline strokes that stop
+     being legible below ~18px, so card and component titles (h4-h6) stay in
+     the UI face and only differ in weight and tracking. */
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
     text-wrap: balance;
   }
 
+  h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: var(--weight-semibold);
+    line-height: 1.35;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    text-wrap: balance;
+  }
+
+  h1 { font-size: var(--text-4xl); }
+  h2 { font-size: var(--text-3xl); }
+  h3 { font-size: var(--text-2xl); }
+  h4 { font-size: var(--text-lg); }
+  h5 { font-size: var(--text-md); }
+  h6 { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: var(--tracking-label); }
+
+  /* Long-form legal text stays in the UI face and stops at a readable measure. */
   p {
     text-wrap: pretty;
   }
@@ -784,8 +812,8 @@ html[data-a11y="true"] .content-card::before {
 .judicial-monument::after { content:''; position:absolute; inset:0; pointer-events:none; background: linear-gradient(90deg,rgba(2,6,11,.38),transparent 34%,transparent 72%,rgba(2,6,11,.24)), linear-gradient(0deg,rgba(2,6,11,.45),transparent 35%); }
 .judicial-monument__scan { position:absolute; z-index:2; inset:0; pointer-events:none; opacity:.6; background: repeating-linear-gradient(0deg,transparent 0 7px,rgba(87,203,255,.1) 8px,transparent 9px), linear-gradient(120deg,transparent 39%,rgba(58,189,248,.34) 50%,transparent 61%); mix-blend-mode:screen; transform: translateX(-110%); }
 .judicial-monument.is-revealed .judicial-monument__scan { animation: monumentScan 2.9s .25s ease-out both; }
-.judicial-monument__archive { position:absolute; z-index:3; inset:18px 18px auto; display:flex; justify-content:space-between; gap:12px; color:rgba(223,190,126,.72); font: 9px/1.3 ui-monospace,monospace; letter-spacing:.13em; }
-.judicial-monument__labels { position:absolute; z-index:3; inset:0; pointer-events:none; color:rgba(255,255,255,.76); font: 9px/1 ui-monospace,monospace; letter-spacing:.13em; }
+.judicial-monument__archive { position:absolute; z-index:3; inset:18px 18px auto; display:flex; justify-content:space-between; gap:12px; color:rgba(223,190,126,.72); font: 11px/1.3 ui-monospace,monospace; letter-spacing:.13em; }
+.judicial-monument__labels { position:absolute; z-index:3; inset:0; pointer-events:none; color:rgba(255,255,255,.76); font: 11px/1 ui-monospace,monospace; letter-spacing:.13em; }
 .judicial-monument__label { position:absolute; padding:7px 8px; border-left:1px solid rgba(223,190,126,.72); background:rgba(4,10,17,.42); backdrop-filter:blur(5px); }
 .judicial-monument__label--gavel { left:7%; bottom:18%; }.judicial-monument__label--themis { left:45%; top:32%; }.judicial-monument__label--scales { right:5%; bottom:26%; }
 .judicial-monument__impact { position:absolute; z-index:4; left:8%; bottom:13%; width:32%; height:33%; border:0; background:transparent; cursor:pointer; }
@@ -797,7 +825,7 @@ html[data-a11y="true"] .content-card::before {
 @media (max-width: 640px) { .judicial-monument,.judicial-monument__image{min-height:300px}.judicial-monument__archive{font-size:7px;inset:12px}.judicial-monument__label{font-size:7px;padding:5px}.judicial-monument__label--themis{left:43%;top:28%} }
 
 /* Accessible object-level interaction over the shared photorealistic installation. */
-.interactive-installation{position:relative;min-height:440px;overflow:hidden;border-radius:1rem;background:#03070c;border:1px solid var(--border-primary);isolation:isolate}.interactive-installation__asset{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:filter .7s ease,transform 1s ease}.interactive-installation__atmosphere{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(1,5,10,.5),transparent 45%,rgba(1,5,10,.27)),repeating-linear-gradient(0deg,transparent 0 8px,rgba(81,189,244,.05) 9px);z-index:1}.interactive-installation__metadata{position:absolute;z-index:3;inset:15px 16px auto;display:flex;justify-content:space-between;gap:8px;color:rgba(223,190,126,.74);font:8px ui-monospace,monospace;letter-spacing:.14em}.justice-hotspot{position:absolute;z-index:4;display:inline-flex;align-items:center;gap:6px;padding:6px 8px;color:#e9edf3;background:rgba(3,9,15,.56);border:1px solid rgba(223,190,126,.32);font:9px ui-monospace,monospace;letter-spacing:.12em;transition:.25s;backdrop-filter:blur(7px)}.justice-hotspot:hover,.justice-hotspot:focus-visible,.justice-hotspot.is-active{border-color:var(--accent-gold);color:var(--accent-gold);outline:none;box-shadow:0 0 24px rgba(223,190,126,.18)}.justice-hotspot--themis{left:43%;top:27%}.justice-hotspot--hammer{left:8%;bottom:22%}.justice-scales-control{position:absolute;z-index:4;right:5%;bottom:18%;display:flex;border:1px solid rgba(223,190,126,.28);background:rgba(3,9,15,.6);backdrop-filter:blur(7px)}.justice-scales-control button{display:flex;gap:4px;align-items:center;padding:7px 8px;border:0;border-right:1px solid rgba(223,190,126,.2);font:8px ui-monospace,monospace;letter-spacing:.1em;color:#e9edf3}.justice-scales-control button:last-child{border:0}.justice-scales-control button:hover,.justice-scales-control button:focus-visible{color:var(--accent-gold);outline:none;background:rgba(223,190,126,.1)}.justice-controller{position:absolute;z-index:4;left:16px;bottom:16px;display:flex;gap:4px}.justice-controller button{padding:6px 7px;background:rgba(3,9,15,.65);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.68);font:8px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em}.justice-controller button.is-active,.justice-controller button:focus-visible{color:var(--accent-gold);border-color:var(--accent-gold);outline:none}.justice-info{position:absolute;z-index:4;left:16px;bottom:54px;width:min(270px,58%);padding:11px;border-left:1px solid var(--accent-gold);background:rgba(3,9,15,.68);backdrop-filter:blur(9px);color:#fff}.justice-info__eyebrow{display:block;margin-bottom:5px;color:var(--accent-gold);font:8px ui-monospace,monospace;letter-spacing:.13em}.justice-info strong{display:block;font:600 13px ui-monospace,monospace;letter-spacing:.08em}.justice-info p{margin:5px 0 0;font-size:11px;line-height:1.4;color:rgba(255,255,255,.7)}.interactive-installation__hint{position:absolute;z-index:4;right:16px;top:45px;color:rgba(255,255,255,.55);font:8px ui-monospace,monospace}.active-hammer .interactive-installation__asset{filter:brightness(1.1) saturate(1.12)}.active-scales .interactive-installation__asset{filter:brightness(1.07) sepia(.08)}.has-decision .interactive-installation__atmosphere{animation:decisionFlash 1.2s ease-out}.has-decision .interactive-installation__asset{animation:decisionCamera .7s ease-out}@keyframes decisionFlash{0%{opacity:.1}35%{opacity:.9;background:radial-gradient(circle at 22% 72%,rgba(223,190,126,.5),transparent 28%)}100%{opacity:1}}@keyframes decisionCamera{0%,100%{transform:translateY(0)}45%{transform:translateY(7px)}}.judicial-decision-received{animation:networkReceive 2.2s ease-out}@keyframes networkReceive{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 1px rgba(56,189,248,.6),0 0 50px rgba(56,189,248,.22)}}@media(max-width:640px){.interactive-installation{min-height:360px}.interactive-installation__metadata{font-size:6px}.justice-hotspot span{display:none}.justice-hotspot--themis{left:44%;top:24%}.justice-scales-control{right:10px;bottom:15px}.justice-scales-control button{padding:6px;font-size:7px}.justice-info{bottom:49px;left:10px}.justice-controller{left:10px;bottom:10px}.interactive-installation__hint{display:none}}
+.interactive-installation{position:relative;min-height:440px;overflow:hidden;border-radius:1rem;background:#03070c;border:1px solid var(--border-primary);isolation:isolate}.interactive-installation__asset{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:filter .7s ease,transform 1s ease}.interactive-installation__atmosphere{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(1,5,10,.5),transparent 45%,rgba(1,5,10,.27)),repeating-linear-gradient(0deg,transparent 0 8px,rgba(81,189,244,.05) 9px);z-index:1}.interactive-installation__metadata{position:absolute;z-index:3;inset:15px 16px auto;display:flex;justify-content:space-between;gap:8px;color:rgba(223,190,126,.74);font: 600 11px/1.35 var(--font-mono);letter-spacing:.14em}.justice-hotspot{position:absolute;z-index:4;display:inline-flex;align-items:center;gap:6px;padding:6px 8px;color:#e9edf3;background:rgba(3,9,15,.56);border:1px solid rgba(223,190,126,.32);font: 600 11px/1.35 var(--font-mono);letter-spacing:.12em;transition:.25s;backdrop-filter:blur(7px)}.justice-hotspot:hover,.justice-hotspot:focus-visible,.justice-hotspot.is-active{border-color:var(--accent-gold);color:var(--accent-gold);outline:none;box-shadow:0 0 24px rgba(223,190,126,.18)}.justice-hotspot--themis{left:43%;top:27%}.justice-hotspot--hammer{left:8%;bottom:22%}.justice-scales-control{position:absolute;z-index:4;right:5%;bottom:18%;display:flex;border:1px solid rgba(223,190,126,.28);background:rgba(3,9,15,.6);backdrop-filter:blur(7px)}.justice-scales-control button{display:flex;gap:4px;align-items:center;padding:7px 8px;border:0;border-right:1px solid rgba(223,190,126,.2);font: 600 11px/1.35 var(--font-mono);letter-spacing:.1em;color:#e9edf3}.justice-scales-control button:last-child{border:0}.justice-scales-control button:hover,.justice-scales-control button:focus-visible{color:var(--accent-gold);outline:none;background:rgba(223,190,126,.1)}.justice-controller{position:absolute;z-index:4;left:16px;bottom:16px;display:flex;gap:4px}.justice-controller button{padding:6px 7px;background:rgba(3,9,15,.65);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.68);font: 600 11px/1.35 var(--font-mono);text-transform:uppercase;letter-spacing:.1em}.justice-controller button.is-active,.justice-controller button:focus-visible{color:var(--accent-gold);border-color:var(--accent-gold);outline:none}.justice-info{position:absolute;z-index:4;left:16px;bottom:54px;width:min(270px,58%);padding:11px;border-left:1px solid var(--accent-gold);background:rgba(3,9,15,.68);backdrop-filter:blur(9px);color:#fff}.justice-info__eyebrow{display:block;margin-bottom:5px;color:var(--accent-gold);font: 600 11px/1.35 var(--font-mono);letter-spacing:.13em}.justice-info strong{display:block;font:600 13px ui-monospace,monospace;letter-spacing:.08em}.justice-info p{margin:5px 0 0;font-size:11px;line-height:1.4;color:rgba(255,255,255,.7)}.interactive-installation__hint{position:absolute;z-index:4;right:16px;top:45px;color:rgba(255,255,255,.55);font: 11px ui-monospace,monospace}.active-hammer .interactive-installation__asset{filter:brightness(1.1) saturate(1.12)}.active-scales .interactive-installation__asset{filter:brightness(1.07) sepia(.08)}.has-decision .interactive-installation__atmosphere{animation:decisionFlash 1.2s ease-out}.has-decision .interactive-installation__asset{animation:decisionCamera .7s ease-out}@keyframes decisionFlash{0%{opacity:.1}35%{opacity:.9;background:radial-gradient(circle at 22% 72%,rgba(223,190,126,.5),transparent 28%)}100%{opacity:1}}@keyframes decisionCamera{0%,100%{transform:translateY(0)}45%{transform:translateY(7px)}}.judicial-decision-received{animation:networkReceive 2.2s ease-out}@keyframes networkReceive{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 1px rgba(56,189,248,.6),0 0 50px rgba(56,189,248,.22)}}@media(max-width:640px){.interactive-installation{min-height:360px}.interactive-installation__metadata{font-size:6px}.justice-hotspot span{display:none}.justice-hotspot--themis{left:44%;top:24%}.justice-scales-control{right:10px;bottom:15px}.justice-scales-control button{padding:6px;font-size:7px}.justice-info{bottom:49px;left:10px}.justice-controller{left:10px;bottom:10px}.interactive-installation__hint{display:none}}
 .network-zoom-controls{display:flex;overflow:hidden;border:1px solid var(--border-primary);border-radius:.65rem;background:var(--surface-card);backdrop-filter:blur(10px);box-shadow:var(--card-shadow)}.network-zoom-controls button{display:grid;place-items:center;width:30px;height:30px;border-right:1px solid var(--border-primary);color:var(--text-secondary);transition:.2s}.network-zoom-controls button:last-child{border:0}.network-zoom-controls button:hover,.network-zoom-controls button:focus-visible{color:var(--accent-gold);background:rgba(223,190,126,.1);outline:none}
 
 /* FUTURE JUDICIAL CONTROL CENTER - ADMIN TOKENS & UTILITIES */
