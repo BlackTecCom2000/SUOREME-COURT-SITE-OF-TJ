@@ -28,6 +28,13 @@ $pnpm = 'C:\Users\7ims (admin)\AppData\Roaming\npm\pnpm.cmd'
 function Say($m) { Write-Host "==> $m" }
 function Ok($m) { Write-Host "    [ok] $m" }
 function Die($m) { Write-Host "    [FAIL] $m"; exit 1 }
+# PowerShell 5.1 Set-Content -Encoding UTF8 emits a BOM. A BOM in package.json
+# makes Vite's PostCSS config loader fail with a JSON syntax error and kills the
+# dev server, so every write goes through this helper instead.
+function Write-Utf8NoBom {
+  param([string]$Path, [string]$Text)
+  [System.IO.File]::WriteAllText($Path, $Text, (New-Object System.Text.UTF8Encoding($false)))
+}
 
 # ---------------------------------------------------------------- preflight
 Say "preflight"
@@ -99,7 +106,7 @@ elseif ($Type -eq 'minor') {
 }
 if ($next -ne $Version) { Die "computed version $next != requested $Version (latest tag is v$current)" }
 $pkg.version = $Version
-$pkg | ConvertTo-Json -Depth 10 | Set-Content $pkgPath -Encoding UTF8
+Write-Utf8NoBom $pkgPath ($pkg | ConvertTo-Json -Depth 10)
 Ok "package.json $pkgCurrent -> $Version (series from v$current)"
 
 # ---------------------------------------------------------------- changelog
@@ -122,7 +129,7 @@ if ($idx -lt 0) {
 } else {
   $text = $text.Substring(0, $idx) + $entry + $text.Substring($idx)
 }
-Set-Content $changelog -Value $text -Encoding UTF8
+Write-Utf8NoBom $changelog $text
 Ok "CHANGELOG.md += v$Version"
 
 # ---------------------------------------------------------------- commit + tag

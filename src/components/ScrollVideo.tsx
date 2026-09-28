@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSiteBackground } from '../hooks/useSiteBackground';
+import { useSkyMasks } from '../hooks/useSkyMasks';
+import CloudSky from './CloudSky';
 
 export const ScrollVideo: React.FC = () => {
   const { isDark } = useTheme();
   const { imageDay, imageNight } = useSiteBackground();
-  // PERF: scroll writes bypass React state entirely — a single rAF-throttled
+  // PERF: scroll writes bypass React state entirely â€” a single rAF-throttled
   // handler writes transform/background directly to DOM nodes (zero re-renders,
   // no forced layout: scrollHeight is cached and refreshed on resize only).
   // No CSS transition on the parallax layer: it would fight per-frame updates.
@@ -40,7 +42,7 @@ export const ScrollVideo: React.FC = () => {
           parallaxRef.current.style.transform = `scale(${scale.toFixed(5)}) translate3d(0, -${ty.toFixed(2)}px, 0)`;
       }
       const dark = darkRef.current;
-      // Natural background: no white overlay — keep building vibrant, sky blue intact
+      // Natural background: no white overlay â€” keep building vibrant, sky blue intact
       if (overlayRef.current) {
         overlayRef.current.style.backgroundColor = dark
           ? `rgba(5, 8, 15, ${Math.min(0.35, 0.12 + progress * 0.15).toFixed(2)})`
@@ -65,37 +67,76 @@ export const ScrollVideo: React.FC = () => {
     };
   }, []);
 
+  // Same silhouette masks as GlobalBackground: the baked sky is cut away so the
+  // live WebGL clouds fill the space around the building.
+  const masks = useSkyMasks();
+  const photoStyle = (mask: string | null): React.CSSProperties => ({
+    filter: 'saturate(var(--bg-saturation, 100%)) brightness(var(--bg-brightness, 100%)) contrast(var(--bg-contrast, 100%))',
+    ...(mask
+      ? {
+          maskImage: `url(${mask})`,
+          WebkitMaskImage: `url(${mask})`,
+          maskSize: 'cover',
+          WebkitMaskSize: 'cover',
+          maskPosition: 'center',
+          WebkitMaskPosition: 'center',
+          maskRepeat: 'no-repeat',
+          WebkitMaskRepeat: 'no-repeat',
+        }
+      : {}),
+  });
+
   return (
     <div
       aria-hidden="true"
       className="fixed inset-0 -z-10 bg-[var(--bg-primary)] pointer-events-none select-none overflow-hidden transition-colors duration-700"
     >
+      {/* live sky + interactive clouds, under the photograph */}
+      <CloudSky
+        className="absolute inset-0 w-full h-full"
+        background={isDark ? '#050d1f' : '#2f6fb5'}
+        baseColor={isDark ? '#16233d' : '#b9d6f0'}
+        accentColor={isDark ? '#8fa3c4' : '#ffffff'}
+        density={62}
+        speed={34}
+        size={140}
+        clouds={{ softness: 170, shadow: isDark ? 40 : 78, cirrus: 60 }}
+        sun={{ x: 82, y: 94, glow: isDark ? 'rgba(148, 170, 210, 0.35)' : 'rgba(255, 246, 224, 0.95)' }}
+        pointer={{ parallax: 150, wind: 190, damping: 26 }}
+        resolutionScale={0.5}
+        opacity={isDark ? 0.95 : 1}
+      />
+
       <div
         ref={parallaxRef}
         className="absolute inset-0 w-full h-full transform-gpu"
         style={{
           transform: 'scale(1) translateY(-0px)',
-          filter: `blur(var(--bg-blur, 0px)) saturate(var(--bg-saturation, 100%)) brightness(var(--bg-brightness, 100%)) contrast(var(--bg-contrast, 100%))`,
+          filter: `blur(var(--bg-blur, 0px))`,
         }}
       >
         <img
           src={imageDay}
           alt="Бинои Суди Олии Ҷумҳурии Тоҷикистон (Рӯз)"
           loading="eager"
+          decoding="async"
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${
             !isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
+          style={photoStyle(masks.day)}
         />
         <img
           src={imageNight}
           alt="Бинои Суди Олии Ҷумҳурии Тоҷикистон (Шаб)"
           loading="eager"
+          decoding="async"
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${
             isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
+          style={photoStyle(masks.night)}
         />
       </div>
-      {/* Atmospheric White Overlay — configurable, weak, building and sky remain visible — NO backdrop-filter here */}
+      {/* Atmospheric White Overlay â€” configurable, weak, building and sky remain visible â€” NO backdrop-filter here */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -118,3 +159,4 @@ export const ScrollVideo: React.FC = () => {
 };
 
 export default ScrollVideo;
+

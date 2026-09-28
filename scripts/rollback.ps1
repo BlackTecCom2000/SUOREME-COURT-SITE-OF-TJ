@@ -26,6 +26,13 @@ $pnpm = 'C:\Users\7ims (admin)\AppData\Roaming\npm\pnpm.cmd'
 function Say($m) { Write-Host "==> $m" }
 function Ok($m) { Write-Host "    [ok] $m" }
 function Die($m) { Write-Host "    [FAIL] $m"; exit 1 }
+# PowerShell 5.1 Set-Content -Encoding UTF8 emits a BOM. A BOM in package.json
+# makes Vite's PostCSS config loader fail with a JSON syntax error and kills the
+# dev server, so every write goes through this helper instead.
+function Write-Utf8NoBom {
+  param([string]$Path, [string]$Text)
+  [System.IO.File]::WriteAllText($Path, $Text, (New-Object System.Text.UTF8Encoding($false)))
+}
 
 # ---------------------------------------------------------------- list
 if ($List) {
@@ -109,7 +116,7 @@ Say "publishing as $newTag"
 $pkgPath = Join-Path $root 'package.json'
 $pkg = Get-Content $pkgPath -Raw | ConvertFrom-Json
 $pkg.version = $NewVersion
-$pkg | ConvertTo-Json -Depth 10 | Set-Content $pkgPath -Encoding UTF8
+Write-Utf8NoBom $pkgPath ($pkg | ConvertTo-Json -Depth 10)
 
 $stamp = Get-Date -Format 'yyyy-MM-dd HH:mm'
 $entry = @"
@@ -125,7 +132,7 @@ $changelog = Join-Path $root 'CHANGELOG.md'
 $text = Get-Content $changelog -Raw
 $idx = $text.IndexOf("`n## ")
 if ($idx -lt 0) { $text = $entry + "`n" + $text } else { $text = $text.Substring(0, $idx) + $entry + $text.Substring($idx) }
-Set-Content $changelog -Value $text -Encoding UTF8
+Write-Utf8NoBom $changelog $text
 
 & git add -A -- . ':!data' | Out-Null
 & git commit -m "v${NewVersion}: rollback to $target - $Reason" | Out-Null

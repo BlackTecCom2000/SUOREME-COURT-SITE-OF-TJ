@@ -9,6 +9,12 @@ export default defineConfig({
     port: 5173,
     host: true,
     allowedHosts: true,
+    // The dev server must not watch build output or runtime data: running
+    // `build:client` while the dev server is up used to kill it with
+    // EBUSY on the locked .glb assets in dist/client.
+    watch: {
+      ignored: ['**/dist/**', '**/data/**', '**/backups/**', '**/.git/**'],
+    },
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8787',
