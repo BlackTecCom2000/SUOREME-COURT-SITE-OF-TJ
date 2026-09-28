@@ -98,11 +98,11 @@ export const DocumentCenter: React.FC<DocumentCenterProps> = ({ isOpen, onClose 
   const getStatusBadge = (status: DigitalDocument['status'], d: DigitalDocument) => {
     const label = language === 'tj' ? d.statusTj : language === 'en' ? d.statusEn : d.statusRu;
     switch (status) {
-      case 'signed': return <span className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
-      case 'accepted': return <span className="bg-sky-500/15 text-sky-700 dark:text-sky-400 border border-sky-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
-      case 'draft': return <span className="bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
-      case 'rejected': return <span className="bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
-      default: return <span className="bg-theme-bg text-theme-textMuted border border-theme-border px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium">{label}</span>;
+      case 'signed': return <span className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full text-2xs font-mono font-medium">{label}</span>;
+      case 'accepted': return <span className="bg-sky-500/15 text-sky-700 dark:text-sky-400 border border-sky-500/30 px-2.5 py-0.5 rounded-full text-2xs font-mono font-medium">{label}</span>;
+      case 'draft': return <span className="bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full text-2xs font-mono font-medium">{label}</span>;
+      case 'rejected': return <span className="bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30 px-2.5 py-0.5 rounded-full text-2xs font-mono font-medium">{label}</span>;
+      default: return <span className="bg-theme-bg text-theme-textMuted border border-theme-border px-2.5 py-0.5 rounded-full text-2xs font-mono font-medium">{label}</span>;
     }
   };
 
@@ -135,7 +135,7 @@ export const DocumentCenter: React.FC<DocumentCenterProps> = ({ isOpen, onClose 
                           ? 'Showcase: list is not tied to a user account'
                           : 'Витрина: список не привязан к учётной записи'
                     }
-                    className="align-middle ml-1 px-2 py-0.5 rounded-full border border-theme-gold/40 text-theme-gold font-mono text-[10px] uppercase tracking-widest"
+                    className="align-middle ml-1 px-2 py-0.5 rounded-full border border-theme-gold/40 text-theme-gold font-mono text-2xs uppercase tracking-widest"
                   >
                     Demo
                   </span>
@@ -186,7 +186,7 @@ export const DocumentCenter: React.FC<DocumentCenterProps> = ({ isOpen, onClose 
                   </div>
                   <div>
                     <h5 className="text-xs sm:text-sm font-medium text-theme-text">{doc.name}</h5>
-                    <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] text-theme-textMuted mt-0.5">
+                    <div className="flex flex-wrap items-center gap-2 font-mono text-2xs text-theme-textMuted mt-0.5">
                       <span>{doc.size}</span>
                       <span>•</span>
                       <span>{doc.uploadDate}</span>

@@ -29,7 +29,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
               <span className="tracking-widest text-theme-gold font-semibold">( 07 )</span>
               <span className="text-theme-textMuted">[ 007 / 007 ]</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
-              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+              <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
                 {t('contacts.badge')}
               </span>
             </div>
@@ -61,7 +61,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                       <MapPin size={16} />
                       <span>{t('contacts.headquarterTitle')}</span>
                     </span>
-                    <span className="font-mono text-[10px] text-theme-textMuted uppercase">
+                    <span className="font-mono text-2xs text-theme-textMuted uppercase">
                       {t('contacts.cityCountry')}
                     </span>
                   </div>
@@ -70,7 +70,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                     <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
                       <MapPin size={18} className="text-theme-gold shrink-0 mt-0.5" />
                       <div>
-                        <span className="text-[10px] text-theme-textMuted uppercase block">
+                        <span className="text-2xs text-theme-textMuted uppercase block">
                           {t('contacts.legalAddressLabel')}
                         </span>
                         <span className="text-theme-text font-sans text-sm font-medium mt-0.5 block">
@@ -83,7 +83,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                       <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
                         <Phone size={18} className="text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
                         <div>
-                          <span className="text-[10px] text-theme-textMuted uppercase block">
+                          <span className="text-2xs text-theme-textMuted uppercase block">
                             {t('contacts.hotlineLabel')}
                           </span>
                           <span className="text-theme-text font-medium mt-0.5 block">
@@ -95,7 +95,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                       <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
                         <Mail size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                         <div>
-                          <span className="text-[10px] text-theme-textMuted uppercase block">
+                          <span className="text-2xs text-theme-textMuted uppercase block">
                             {t('contacts.emailLabel')}
                           </span>
                           <span className="text-theme-text font-medium mt-0.5 block">
@@ -131,7 +131,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
 
                   <div className="space-y-3 font-mono text-xs text-theme-textSec mb-6">
                     <div className="p-3.5 rounded-xl bg-theme-bg/60 border border-theme-border">
-                      <div className="text-[10px] text-theme-textMuted uppercase mb-1">
+                      <div className="text-2xs text-theme-textMuted uppercase mb-1">
                         {language === 'en' ? 'Chief Justice' : language === 'tj' ? 'Раиси Суди Олии ҶТ' : 'Председатель Верховного суда'}
                       </div>
                       <div className="text-theme-text font-medium flex items-center justify-between">
@@ -141,7 +141,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                     </div>
 
                     <div className="p-3.5 rounded-xl bg-theme-bg/60 border border-theme-border">
-                      <div className="text-[10px] text-theme-textMuted uppercase mb-1">
+                      <div className="text-2xs text-theme-textMuted uppercase mb-1">
                         {language === 'en' ? 'Deputy Chairpersons' : language === 'tj' ? 'Муовинони Раиси Суди Олӣ' : 'Заместители Председателя'}
                       </div>
                       <div className="text-theme-text font-medium flex items-center justify-between">

@@ -22,7 +22,7 @@ export const Section04ThemisScales: React.FC = () => {
           <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
             <span className="tracking-widest text-theme-gold font-semibold">( D )</span>
             <span className="text-theme-textMuted">[ 004 / 010 ]</span>
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
+            <span className="text-2xs text-theme-textMuted tracking-wider uppercase">
               {t('themisScales.badge')}
             </span>
           </div>

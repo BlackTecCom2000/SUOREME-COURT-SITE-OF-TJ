@@ -298,7 +298,7 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 pt-3 pb-4">
                 {/* Category */}
                 <div>
-                  <label className="block font-mono text-[10px] uppercase text-theme-textMuted mb-1.5">
+                  <label className="block font-mono text-2xs uppercase text-theme-textMuted mb-1.5">
                     {language === 'tj' ? 'Категорияи парванда' : language === 'en' ? 'Category' : 'Категория дела'}
                   </label>
                   <select
@@ -317,7 +317,7 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
 
                 {/* Status */}
                 <div>
-                  <label className="block font-mono text-[10px] uppercase text-theme-textMuted mb-1.5">
+                  <label className="block font-mono text-2xs uppercase text-theme-textMuted mb-1.5">
                     {language === 'tj' ? 'Ҳолати мурофиа' : language === 'en' ? 'Status' : 'Статус производства'}
                   </label>
                   <select
@@ -390,10 +390,10 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
                     <span className="font-mono text-xs font-bold text-theme-text bg-theme-surface px-2.5 py-0.5 rounded-lg border border-theme-border">
                       {caseItem.caseNumber}
                     </span>
-                    <span className={`font-mono text-[10px] px-2 py-0.5 rounded-full border ${getStatusColor(caseItem.status)}`}>
+                    <span className={`font-mono text-2xs px-2 py-0.5 rounded-full border ${getStatusColor(caseItem.status)}`}>
                       {language === 'tj' ? caseItem.statusTj : language === 'en' ? caseItem.statusEn : caseItem.statusRu}
                     </span>
-                    <span className="font-mono text-[10px] text-theme-textMuted">
+                    <span className="font-mono text-2xs text-theme-textMuted">
                       {caseItem.registrationDate}
                     </span>
                   </div>
@@ -417,7 +417,7 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
                 <div className="shrink-0 flex items-center md:flex-col md:items-end justify-between border-t md:border-t-0 pt-3 md:pt-0 border-theme-border/40">
                   {caseItem.nextHearingDate && caseItem.nextHearingDate !== '—' && (
                     <div className="text-left md:text-right mb-1">
-                      <div className="font-mono text-[10px] text-theme-textMuted uppercase">
+                      <div className="font-mono text-2xs text-theme-textMuted uppercase">
                         {language === 'tj' ? 'Маҷлиси навбатӣ' : language === 'en' ? 'Next Session' : 'Следующее заседание'}
                       </div>
                       <div className="font-mono text-xs font-semibold text-theme-gold">

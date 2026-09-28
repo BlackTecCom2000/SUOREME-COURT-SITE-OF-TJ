@@ -56,7 +56,7 @@ export const JusticeStoryTimeline: React.FC<JusticeStoryTimelineProps> = ({
 
   return (
     <div className="w-full pt-6 border-t border-theme-border/60 select-none">
-      <div className="flex items-center justify-between font-mono text-[10px] text-theme-gold uppercase tracking-widest mb-4">
+      <div className="flex items-center justify-between font-mono text-2xs text-theme-gold uppercase tracking-widest mb-4">
         <span>[ {language === 'tj' ? 'МАСИРИ АДОЛАТИ СУДӢ' : language === 'en' ? 'THE PATH OF JUSTICE' : 'ПУТЬ ПРАВОСУДИЯ'} ]</span>
         <span className="text-theme-textMuted">01 ➔ 05</span>
       </div>
@@ -88,7 +88,7 @@ export const JusticeStoryTimeline: React.FC<JusticeStoryTimelineProps> = ({
               `}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-[9px] text-theme-gold font-bold">
+                <span className="font-mono text-2xs text-theme-gold font-bold">
                   {s.num}
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-theme-gold opacity-60 group-hover:opacity-100" />
@@ -97,7 +97,7 @@ export const JusticeStoryTimeline: React.FC<JusticeStoryTimelineProps> = ({
               <h5 className="font-serif font-bold text-xs text-theme-text leading-tight mb-0.5 truncate">
                 {s.label}
               </h5>
-              <span className="text-[10px] text-theme-textMuted font-mono block truncate">
+              <span className="text-2xs text-theme-textMuted font-mono block truncate">
                 {s.desc}
               </span>
             </button>

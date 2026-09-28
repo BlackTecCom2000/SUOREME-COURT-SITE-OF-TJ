@@ -50,7 +50,7 @@ export const SupremeCourtNode: React.FC<SupremeCourtNodeProps> = ({
 
       {/* Typography Hierarchy */}
       <div className="flex-1 min-w-0 text-left">
-        <div className="font-mono text-[9px] text-[#dfbe7e] font-bold tracking-widest uppercase mb-0.5 opacity-90">
+        <div className="font-mono text-2xs text-[#dfbe7e] font-bold tracking-widest uppercase mb-0.5 opacity-90">
           {t('network.supremeCourtNodeRole')}
         </div>
         <h3 className="font-serif font-bold text-[14px] sm:text-[15px] text-theme-text leading-tight tracking-wide line-clamp-2">
@@ -61,7 +61,7 @@ export const SupremeCourtNode: React.FC<SupremeCourtNodeProps> = ({
       {/* Authority Badge */}
       <div className="shrink-0 flex flex-col items-end justify-center pl-2 border-l border-theme-border/60">
         <span className="w-2 h-2 rounded-full bg-theme-gold animate-pulse shadow-[0_0_8px_#dfbe7e]" />
-        <span className="font-mono text-[8px] text-theme-textMuted uppercase mt-1">
+        <span className="font-mono text-2xs text-theme-textMuted uppercase mt-1">
           RT.00
         </span>
       </div>

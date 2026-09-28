@@ -22,14 +22,14 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
             Интерактивное превью в судебном дереве
           </span>
         </div>
-        <span className="font-mono text-[9px] text-slate-500 uppercase">
+        <span className="font-mono text-2xs text-slate-500 uppercase">
           LIVE MAP REF
         </span>
       </div>
 
       {/* Supreme Court Top Axis */}
       <div className="w-full flex justify-center mb-3">
-        <div className="px-3 py-1 rounded-lg border border-amber-400/40 bg-amber-500/10 text-amber-300 font-serif text-[10px] font-bold flex items-center gap-1.5 shadow-sm">
+        <div className="px-3 py-1 rounded-lg border border-amber-400/40 bg-amber-500/10 text-amber-300 font-serif text-2xs font-bold flex items-center gap-1.5 shadow-sm">
           <Landmark size={12} />
           СУДИ ОЛИИ ҶТ
         </div>
@@ -53,7 +53,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
             >
               {/* Region Pill */}
               <span
-                className="font-mono text-[8px] font-bold truncate max-w-full block"
+                className="font-mono text-2xs font-bold truncate max-w-full block"
                 style={{ color: cluster.colorHex }}
               >
                 {cluster.shortNameRu}
@@ -62,7 +62,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
               {/* Regional Court */}
               <div
                 className={`
-                  w-full mt-1.5 py-1 px-1 rounded text-[8px] font-medium truncate border
+                  w-full mt-1.5 py-1 px-1 rounded text-2xs font-medium truncate border
                   ${
                     isSelectedRegion && courtType === 'regional'
                       ? 'border-white bg-amber-400 text-slate-950 font-bold animate-pulse'
@@ -76,7 +76,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
               {/* District Node Preview */}
               <div
                 className={`
-                  w-full mt-1 py-1 px-1 rounded text-[8px] truncate border
+                  w-full mt-1 py-1 px-1 rounded text-2xs truncate border
                   ${
                     isSelectedRegion && courtType !== 'regional' && courtType !== 'military'
                       ? 'border-white bg-amber-400 text-slate-950 font-bold animate-pulse'

@@ -298,8 +298,8 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="font-mono text-[9px] text-amber-400 font-bold">{item.code}</span>
-                        <span className="text-[9px] font-mono text-slate-500 uppercase truncate">
+                        <span className="font-mono text-2xs text-amber-400 font-bold">{item.code}</span>
+                        <span className="text-2xs font-mono text-slate-500 uppercase truncate">
                           [{item.category}]
                         </span>
                       </div>
@@ -450,7 +450,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
             {/* Technical attributes: Category & Code */}
             <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800/80">
               <div className="space-y-1">
-                <label className="text-[10px] font-mono text-slate-500 uppercase block">Категория:</label>
+                <label className="text-2xs font-mono text-slate-500 uppercase block">Категория:</label>
                 <select
                   value={activeEntity.category}
                   onChange={(e) => updateField('category', e.target.value)}
@@ -465,7 +465,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] font-mono text-slate-500 uppercase block">Системный код:</label>
+                <label className="text-2xs font-mono text-slate-500 uppercase block">Системный код:</label>
                 <input
                   type="text"
                   value={activeEntity.code}
@@ -535,10 +535,10 @@ export const JudicialSystemVisualEditor: React.FC = () => {
             {/* Rendered Live Card Preview */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] text-amber-500 font-bold uppercase tracking-wider">
+                <span className="font-mono text-2xs text-amber-500 font-bold uppercase tracking-wider">
                   {activeEntity.code} // {activeEntity.category.toUpperCase()}
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-[9px] font-mono text-amber-400">
+                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-2xs font-mono text-amber-400">
                   {activeLang.toUpperCase()} PREVIEW
                 </span>
               </div>
@@ -553,7 +553,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
 
               {activeEntity.leaderTj && (
                 <div className={`p-3 rounded-xl border text-xs ${previewTheme === 'dark' ? 'bg-[#070e20] border-slate-800' : 'bg-white border-slate-200'}`}>
-                  <span className="text-[10px] font-mono text-slate-400 uppercase block">Руководитель:</span>
+                  <span className="text-2xs font-mono text-slate-400 uppercase block">Руководитель:</span>
                   <span className="font-serif font-bold mt-0.5 block">
                     {activeLang === 'tj' ? activeEntity.leaderTj : activeLang === 'en' ? activeEntity.leaderEn : activeEntity.leaderRu}
                   </span>
@@ -564,7 +564,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                 {activeLang === 'tj' ? activeEntity.descTj : activeLang === 'en' ? activeEntity.descEn : activeEntity.descRu}
               </p>
 
-              <div className="pt-2 border-t border-slate-800/50 flex items-center justify-between text-[10px] font-mono text-slate-500">
+              <div className="pt-2 border-t border-slate-800/50 flex items-center justify-between text-2xs font-mono text-slate-500">
                 <span>sud.tj // LIVE REPLICA</span>
                 <span className="text-emerald-400">✓ SYNCED</span>
               </div>

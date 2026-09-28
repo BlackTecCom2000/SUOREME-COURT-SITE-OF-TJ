@@ -43,7 +43,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
                 <span className="tracking-widest text-theme-gold font-semibold">( 03 )</span>
                 <span className="text-theme-textMuted">[ 003 / 007 ]</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-1" />
-                <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
+                <span className="text-2xs text-theme-textMuted tracking-wider uppercase">
                   {language === 'tj' ? 'АДОЛАТИ РАҚАМӢ ВА САНАДҲОИ СУДӢ' : language === 'en' ? 'DIGITAL JUSTICE EXPERIENCE' : 'ЦИФРОВОЕ ПРАВОСУДИЕ'}
                 </span>
               </div>
@@ -77,7 +77,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
           <div className="lg:col-span-3 flex flex-col justify-between gap-5">
             <Reveal delay={250}>
               <div className="p-4 glass glass-card">
-                <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest block font-bold mb-1">
+                <span className="font-mono text-2xs text-theme-gold uppercase tracking-widest block font-bold mb-1">
                   [ 01 / 03 SYMBOLS ]
                 </span>
                 <p className="text-xs text-theme-textSec leading-relaxed">
@@ -125,7 +125,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
               <div className="p-5 sm:p-6 glass glass-panel flex flex-col justify-between h-full">
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest font-bold">
+                    <span className="font-mono text-2xs text-theme-gold uppercase tracking-widest font-bold">
                       {activeStage === 'themis'
                         ? language === 'tj' ? 'ПРИНСИПИ БЕҒАРАЗӢ' : language === 'en' ? 'IMPARTIALITY' : 'БЕСПРИСТРАСТНОСТЬ'
                         : activeStage === 'scales'

@@ -573,7 +573,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-theme-textMuted hover:text-theme-gold"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-2xs font-mono text-theme-textMuted hover:text-theme-gold"
             >
               ✕
             </button>
@@ -651,7 +651,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
                       }`}>
                         <IconComp size={16} />
                       </div>
-                      <span className="font-mono text-[10px] text-theme-gold font-bold">
+                      <span className="font-mono text-2xs text-theme-gold font-bold">
                         {entity.code}
                       </span>
                     </div>
@@ -668,7 +668,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
                   </div>
 
                   {/* Metadata pill row */}
-                  <div className="pt-3 mt-2 border-t border-theme-border/50 flex items-center justify-between font-mono text-[10px]">
+                  <div className="pt-3 mt-2 border-t border-theme-border/50 flex items-center justify-between font-mono text-2xs">
                     <span className="text-theme-textMuted truncate max-w-[150px]">
                       {getLeader(entity) || (language === 'tj' ? 'Дастгоҳ' : 'Аппарат')}
                     </span>
@@ -709,7 +709,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
                   {selectedEntity.badges && selectedEntity.badges.length > 0 && (
                     <div className="flex items-center gap-1">
                       {selectedEntity.badges.map((b, i) => (
-                        <span key={i} className="px-2 py-0.5 rounded-full bg-theme-gold/15 border border-theme-gold/30 text-[9px] font-mono text-theme-gold">
+                        <span key={i} className="px-2 py-0.5 rounded-full bg-theme-gold/15 border border-theme-gold/30 text-2xs font-mono text-theme-gold">
                           {b}
                         </span>
                       ))}
@@ -729,7 +729,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
               {getLeader(selectedEntity) && (
                 <div className="p-3.5 glass glass-chip flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] font-mono text-theme-textMuted uppercase block">
+                    <span className="text-2xs font-mono text-theme-textMuted uppercase block">
                       {language === 'tj' ? 'Роҳбар / Раис:' : language === 'en' ? 'Presiding Officer / Head:' : 'Руководитель / Председатель:'}
                     </span>
                     <span className="font-serif font-bold text-sm text-theme-text mt-0.5 block">
@@ -750,7 +750,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
 
               {/* Full Description */}
               <div>
-                <span className="text-[10px] font-mono text-theme-textMuted uppercase tracking-wider block mb-1.5 font-semibold">
+                <span className="text-2xs font-mono text-theme-textMuted uppercase tracking-wider block mb-1.5 font-semibold">
                   {language === 'tj' ? 'ТАВСИФИ ФАЪОЛИЯТ ВА ВАКОЛАТҲО' : 'ОПИСАНИЕ И ПОЛНОМОЧИЯ'}
                 </span>
                 <p className="text-xs sm:text-sm text-theme-text leading-relaxed bg-theme-bg/40 p-4 rounded-2xl border border-theme-border/60">
@@ -761,7 +761,7 @@ export const SupremeCourtStructureHub: React.FC<SupremeCourtStructureHubProps> =
               {/* Key Duties / Functions list */}
               {selectedEntity.duties && selectedEntity.duties.length > 0 && (
                 <div>
-                  <span className="text-[10px] font-mono text-theme-textMuted uppercase tracking-wider block mb-2 font-semibold">
+                  <span className="text-2xs font-mono text-theme-textMuted uppercase tracking-wider block mb-2 font-semibold">
                     {language === 'tj' ? 'ВАЗИФАҲОИ АСОСӢ:' : 'ОСНОВНЫЕ ЗАДАЧИ:'}
                   </span>
                   <div className="space-y-1.5">

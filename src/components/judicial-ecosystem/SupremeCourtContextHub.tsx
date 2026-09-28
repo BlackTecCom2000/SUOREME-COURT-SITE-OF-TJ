@@ -58,7 +58,7 @@ export const SupremeCourtContextHub: React.FC<SupremeCourtContextHubProps> = ({
             <NationalEmblem size={44} />
           </div>
           <div>
-            <span className="font-mono text-[10px] font-bold text-theme-gold uppercase tracking-widest block">
+            <span className="font-mono text-2xs font-bold text-theme-gold uppercase tracking-widest block">
               КОНСТИТУЦИОННЫЙ ОРГАН СУДЕБНОЙ ВЛАСТИ
             </span>
             <h3 className="font-serif font-bold text-2xl text-theme-text tracking-wide leading-tight">
@@ -87,7 +87,7 @@ export const SupremeCourtContextHub: React.FC<SupremeCourtContextHubProps> = ({
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
           <MapPin size={16} className="text-theme-gold shrink-0 mt-0.5" />
           <div>
-            <span className="text-[10px] text-theme-textMuted uppercase block">Адрес здания</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Адрес здания</span>
             <span className="text-theme-text font-sans text-xs font-medium block mt-0.5">
               г. Душанбе, ул. Шевченко, 55
             </span>
@@ -97,7 +97,7 @@ export const SupremeCourtContextHub: React.FC<SupremeCourtContextHubProps> = ({
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
           <Phone size={16} className="text-cyan-500 shrink-0 mt-0.5" />
           <div>
-            <span className="text-[10px] text-theme-textMuted uppercase block">Горячая линия</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Горячая линия</span>
             <span className="text-theme-text font-medium block mt-0.5">+992 (37) 221-14-14</span>
           </div>
         </div>
@@ -105,7 +105,7 @@ export const SupremeCourtContextHub: React.FC<SupremeCourtContextHubProps> = ({
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
           <Mail size={16} className="text-emerald-500 shrink-0 mt-0.5" />
           <div>
-            <span className="text-[10px] text-theme-textMuted uppercase block">Канцелярия</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Канцелярия</span>
             <span className="text-theme-text font-medium block mt-0.5">info@sud.tj</span>
           </div>
         </div>
@@ -124,7 +124,7 @@ export const SupremeCourtContextHub: React.FC<SupremeCourtContextHubProps> = ({
           >
             <Send size={18} className="text-theme-gold group-hover:scale-110 transition-transform" />
             <span>Интернет-приёмная</span>
-            <span className="text-[10px] text-theme-textMuted font-normal">Подача электронных обращений</span>
+            <span className="text-2xs text-theme-textMuted font-normal">Подача электронных обращений</span>
           </button>
 
           <button
@@ -134,7 +134,7 @@ export const SupremeCourtContextHub: React.FC<SupremeCourtContextHubProps> = ({
           >
             <Gavel size={18} className="text-sky-500 group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Постановления Пленума</span>
-            <span className="text-[10px] text-theme-textMuted">Банк судебных актов</span>
+            <span className="text-2xs text-theme-textMuted">Банк судебных актов</span>
           </button>
 
           <button
@@ -144,7 +144,7 @@ export const SupremeCourtContextHub: React.FC<SupremeCourtContextHubProps> = ({
           >
             <Clock size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" />
             <span className="font-semibold">График приёма</span>
-            <span className="text-[10px] text-theme-textMuted">Часы приёма граждан</span>
+            <span className="text-2xs text-theme-textMuted">Часы приёма граждан</span>
           </button>
 
           <button
@@ -154,7 +154,7 @@ export const SupremeCourtContextHub: React.FC<SupremeCourtContextHubProps> = ({
           >
             <Landmark size={18} className="text-violet-500 group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Структура и коллегии</span>
-            <span className="text-[10px] text-theme-textMuted">Судебные составы</span>
+            <span className="text-2xs text-theme-textMuted">Судебные составы</span>
           </button>
         </div>
       </div>

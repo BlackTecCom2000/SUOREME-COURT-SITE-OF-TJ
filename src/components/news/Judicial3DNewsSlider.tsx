@@ -512,7 +512,7 @@ const toReadableTitle = (text: string): string => {
 
               {/* Slide Content Layer */}
               <div className="relative z-10 w-full h-full p-6 sm:p-8 flex flex-col justify-end text-left slide-dark-scrim">
-                <div className="flex items-center gap-2 mb-2 font-mono text-[10px] sm:text-xs">
+                <div className="flex items-center gap-2 mb-2 font-mono text-2xs sm:text-xs">
                   <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold uppercase tracking-wider shadow-sm">
                     {category}
                   </span>

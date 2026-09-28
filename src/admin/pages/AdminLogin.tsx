@@ -185,7 +185,7 @@ export const AdminLogin: React.FC = () => {
 
           {/* Institutional Compliance Notice */}
           <div className="mt-8 pt-4 border-t border-slate-800/80 text-center">
-            <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest block">
+            <span className="font-mono text-2xs text-slate-500 uppercase tracking-widest block">
               ОФИЦИАЛЬНАЯ ИНФОРМАЦИОННАЯ СИСТЕМА ВЕРХОВНОГО СУДА РТ
             </span>
           </div>

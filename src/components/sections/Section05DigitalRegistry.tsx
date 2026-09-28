@@ -65,7 +65,7 @@ export const Section05DigitalRegistry: React.FC<Section05DigitalRegistryProps> =
           <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
             <span className="tracking-widest text-theme-gold font-semibold">( E )</span>
             <span className="text-theme-textMuted">[ 005 / 010 ]</span>
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
+            <span className="text-2xs text-theme-textMuted tracking-wider uppercase">
               {t('registry.badge')}
             </span>
           </div>
@@ -110,7 +110,7 @@ export const Section05DigitalRegistry: React.FC<Section05DigitalRegistryProps> =
                     <div className="font-medium text-sm text-theme-text mt-3">
                       {t(item.labelKey)}
                     </div>
-                    <div className="font-mono text-[10px] text-theme-textMuted uppercase tracking-wider mt-1">
+                    <div className="font-mono text-2xs text-theme-textMuted uppercase tracking-wider mt-1">
                       {t(item.subKey)}
                     </div>
                   </div>

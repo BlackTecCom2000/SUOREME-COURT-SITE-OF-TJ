@@ -63,7 +63,7 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
         >
           <Search size={14} className="text-amber-600 dark:text-[var(--court-gold)]" />
           <span>Быстрый поиск / команды</span>
-          <kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-[10px] text-black dark:text-white font-bold">
+          <kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-2xs text-black dark:text-white font-bold">
             Ctrl + K
           </kbd>
         </button>

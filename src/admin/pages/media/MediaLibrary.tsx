@@ -121,7 +121,7 @@ export const MediaLibrary: React.FC = () => {
                 <p className="font-sans text-xs text-slate-200 truncate font-medium">
                   {item.original_name}
                 </p>
-                <div className="flex items-center justify-between font-mono text-[10px] text-slate-500 mt-1">
+                <div className="flex items-center justify-between font-mono text-2xs text-slate-500 mt-1">
                   <span>{(item.size / 1024).toFixed(1)} KB</span>
                   <span>{new Date(item.created_at).toLocaleDateString()}</span>
                 </div>

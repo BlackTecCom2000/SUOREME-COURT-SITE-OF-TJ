@@ -102,7 +102,7 @@ export const CourtSitePage: React.FC = () => {
                 <span className="tracking-widest text-theme-gold font-semibold">( {cfg.id.toUpperCase()} )</span>
                 <span className="text-theme-textMuted">[ SUD.TJ // COURTS ]</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
-                <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+                <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
                   {language === 'tj' ? 'СОМОНАИ СУД' : language === 'en' ? 'COURT WEBSITE' : 'САЙТ СУДА'}
                 </span>
               </div>
@@ -251,7 +251,7 @@ export const CourtSitePage: React.FC = () => {
                   <span className="p-3 rounded-full border border-theme-gold/50 bg-theme-gold/15 text-theme-gold group-hover:bg-theme-gold group-hover:text-black transition-colors">
                     <tile.icon size={26} />
                   </span>
-                  <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-theme-text leading-snug">
+                  <span className="font-mono text-2xs sm:text-[11px] font-bold uppercase tracking-wider text-theme-text leading-snug">
                     {language === 'en' ? tile.en : language === 'tj' ? tile.tj : tile.ru}
                   </span>
                 </a>
@@ -265,7 +265,7 @@ export const CourtSitePage: React.FC = () => {
                 <span className="p-3 rounded-full border border-theme-border text-theme-textSec group-hover:border-theme-gold group-hover:text-theme-gold transition-colors">
                   <Scale size={26} />
                 </span>
-                <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-theme-text leading-snug">
+                <span className="font-mono text-2xs sm:text-[11px] font-bold uppercase tracking-wider text-theme-text leading-snug">
                   {language === 'en' ? 'Case lists' : language === 'tj' ? 'Рӯйхати парвандаҳо' : 'Списки дел'}
                 </span>
               </a>

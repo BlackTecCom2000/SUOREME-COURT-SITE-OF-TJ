@@ -61,7 +61,7 @@ export const SettingsManager: React.FC = () => {
     <label className="flex items-center justify-between gap-3 p-3 rounded-lg bg-slate-900 border border-slate-800 cursor-pointer select-none">
       <span>
         <span className="block text-xs text-slate-200 font-medium">{title}</span>
-        <span className="block font-mono text-[10px] text-slate-500 mt-0.5">{desc}</span>
+        <span className="block font-mono text-2xs text-slate-500 mt-0.5">{desc}</span>
       </span>
       <input
         type="checkbox"
@@ -296,7 +296,7 @@ export const SettingsManager: React.FC = () => {
                   onChange={(e) => saveAiSetting('ai_max_length', e.target.value.replace(/[^0-9]/g, '').slice(0, 4) || '2000')}
                 />
               </div>
-              <p className="font-mono text-[10px] text-slate-500">
+              <p className="font-mono text-2xs text-slate-500">
                 Настройки применяются сразу. Отключенные функции возвращают 403 с пояснением.
               </p>
             </div>

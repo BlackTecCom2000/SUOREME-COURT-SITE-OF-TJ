@@ -69,11 +69,11 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
             <div className="flex items-center gap-2">
               <span
                 style={{ backgroundColor: `${regionColor}20`, borderColor: `${regionColor}60`, color: regionColor }}
-                className="font-mono text-[10px] px-2.5 py-1 rounded-full border uppercase tracking-wider"
+                className="font-mono text-2xs px-2.5 py-1 rounded-full border uppercase tracking-wider"
               >
                 {regionName}
               </span>
-              <span className="font-mono text-[10px] text-theme-textMuted uppercase">
+              <span className="font-mono text-2xs text-theme-textMuted uppercase">
                 {court.type === 'military'
                   ? (language === 'en' ? 'Military Court' : language === 'tj' ? 'Суди ҳарбӣ' : 'Военный суд')
                   : (language === 'en' ? 'Judicial Body' : language === 'tj' ? 'Мақоми судӣ' : 'Судебный орган')}
@@ -115,7 +115,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
             className="w-full flex items-center justify-between p-4 glass glass-chip hover:border-theme-borderHover transition-all group mb-6"
           >
             <div className="flex flex-col">
-              <span className="text-[10px] font-mono text-theme-textMuted uppercase tracking-wider">
+              <span className="text-2xs font-mono text-theme-textMuted uppercase tracking-wider">
                 {t('network.drawerSubdomain')}
               </span>
               <span className="text-sm font-mono font-medium text-theme-text group-hover:text-theme-gold transition-colors">
@@ -133,7 +133,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
             <div className="p-3.5 glass glass-chip flex items-start gap-3">
               <MapPin size={16} className="text-theme-gold shrink-0 mt-0.5" />
               <div>
-                <span className="text-[10px] text-theme-textMuted uppercase block">
+                <span className="text-2xs text-theme-textMuted uppercase block">
                   {t('network.drawerAddress')}
                 </span>
                 <span className="text-theme-textSec leading-relaxed block mt-0.5 font-sans text-xs">
@@ -146,7 +146,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
               <div className="p-3.5 glass glass-chip flex items-start gap-2.5">
                 <Phone size={15} className="text-cyan-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[10px] text-theme-textMuted uppercase block">
+                  <span className="text-2xs text-theme-textMuted uppercase block">
                     {t('network.drawerRegistry')}
                   </span>
                   <span className="text-theme-text font-medium">{court.phone}</span>
@@ -156,7 +156,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
               <div className="p-3.5 glass glass-chip flex items-start gap-2.5">
                 <Mail size={15} className="text-emerald-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[10px] text-theme-textMuted uppercase block">
+                  <span className="text-2xs text-theme-textMuted uppercase block">
                     {t('network.drawerEmail')}
                   </span>
                   <span className="text-theme-text truncate block max-w-[140px]">{court.email}</span>
@@ -191,7 +191,7 @@ export const CourtDetailsDrawer: React.FC<CourtDetailsDrawerProps> = ({
           {/* Latest News / Announcements for this court */}
           {(court.latestNewsRu || court.latestNewsTj) && (
             <div className="p-4 glass glass-chip mb-6">
-              <div className="flex items-center gap-2 font-mono text-[10px] text-theme-gold uppercase tracking-wider mb-2">
+              <div className="flex items-center gap-2 font-mono text-2xs text-theme-gold uppercase tracking-wider mb-2">
                 <Newspaper size={12} />
                 <span>{t('network.drawerLatestNews')}</span>
               </div>

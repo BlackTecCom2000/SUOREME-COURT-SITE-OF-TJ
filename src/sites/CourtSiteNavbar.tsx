@@ -106,7 +106,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
               <div className="font-serif text-xs sm:text-sm font-bold text-theme-text leading-tight truncate">
                 {pickTri(config.shortName, language)}
               </div>
-              <div className="font-mono text-[9px] text-theme-textMuted leading-none mt-0.5 truncate">
+              <div className="font-mono text-2xs text-theme-textMuted leading-none mt-0.5 truncate">
                 {language === 'en' ? 'COURTS OF THE REPUBLIC OF TAJIKISTAN' : language === 'tj' ? 'СУДҲОИ ҶУМҲУРИИ ТОҶИКИСТОН' : 'СУДЫ РЕСПУБЛИКИ ТАДЖИКИСТАН'}
               </div>
             </div>
@@ -126,7 +126,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
                   key={l}
                   type="button"
                   onClick={() => setLanguage(l)}
-                  className={'relative px-2 py-0.5 rounded-lg text-[10px] font-mono font-medium transition-colors z-10 ' + (isActive ? 'text-black font-bold' : 'text-theme-textMuted hover:text-theme-text')}
+                  className={'relative px-2 py-0.5 rounded-lg text-2xs font-mono font-medium transition-colors z-10 ' + (isActive ? 'text-black font-bold' : 'text-theme-textMuted hover:text-theme-text')}
                 >
                   {isActive && (
                     <motion.div
@@ -193,7 +193,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
               <span className="hidden lg:inline">{language === 'tj' ? 'Админ' : language === 'en' ? 'Admin' : 'Админ'}</span>
             </a>
             <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 z-50">
-              <div className="bg-gray-900 border border-gray-700 text-white text-[10px] font-mono py-1 px-2 rounded-lg shadow-lg whitespace-nowrap">
+              <div className="bg-gray-900 border border-gray-700 text-white text-2xs font-mono py-1 px-2 rounded-lg shadow-lg whitespace-nowrap">
                 {language === 'tj' ? 'Админкаи суд' : language === 'en' ? 'Court admin' : 'Админка суда'}
               </div>
             </div>
@@ -243,7 +243,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
                                   <div className="text-xs font-serif font-bold text-theme-text group-hover:text-theme-gold transition-colors truncate">
                                     {language === 'en' ? item.titleEn : language === 'tj' ? item.titleTj : item.titleRu}
                                   </div>
-                                  <div className="text-[10px] font-mono text-theme-textMuted leading-tight truncate">
+                                  <div className="text-2xs font-mono text-theme-textMuted leading-tight truncate">
                                     {language === 'en' ? item.descEn : language === 'tj' ? item.descTj : item.descRu}
                                   </div>
                                 </div>

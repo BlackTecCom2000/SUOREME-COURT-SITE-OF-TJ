@@ -46,7 +46,7 @@ export const RegionalStats: React.FC<RegionalStatsProps> = ({
           <span className="block font-mono text-lg sm:text-xl font-bold text-[var(--jm-text)] leading-none">
             <SlidingNumber value={cities} />
           </span>
-          <span className="block font-mono text-[9px] sm:text-[10px] text-[var(--jm-muted)] leading-tight mt-1 truncate">
+          <span className="block font-mono text-2xs sm:text-2xs text-[var(--jm-muted)] leading-tight mt-1 truncate">
             {cityLabel}
           </span>
         </span>
@@ -62,7 +62,7 @@ export const RegionalStats: React.FC<RegionalStatsProps> = ({
           <span className="block font-mono text-lg sm:text-xl font-bold text-[var(--jm-text)] leading-none">
             <SlidingNumber value={districts} />
           </span>
-          <span className="block font-mono text-[9px] sm:text-[10px] text-[var(--jm-muted)] leading-tight mt-1 truncate">
+          <span className="block font-mono text-2xs sm:text-2xs text-[var(--jm-muted)] leading-tight mt-1 truncate">
             {districtLabel}
           </span>
         </span>

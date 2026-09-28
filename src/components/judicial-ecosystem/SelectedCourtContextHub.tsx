@@ -106,7 +106,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
         <div>
           <div className="flex items-center gap-2.5 mb-1.5 flex-wrap">
             <span
-              className="font-mono text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border"
+              className="font-mono text-2xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border"
               style={{
                 backgroundColor: `${regionColor}18`,
                 borderColor: `${regionColor}60`,
@@ -184,7 +184,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
           <MapPin size={16} className="text-theme-gold shrink-0 mt-0.5" />
           <div className="overflow-hidden">
-            <span className="text-[10px] text-theme-textMuted uppercase block">Адрес канцелярии</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Адрес канцелярии</span>
             <span className="text-theme-text font-sans text-xs font-medium block truncate mt-0.5">
               {courtAddress || 'г. Душанбе, Республика Таджикистан'}
             </span>
@@ -194,7 +194,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
           <Phone size={16} className="text-cyan-500 shrink-0 mt-0.5" />
           <div className="overflow-hidden">
-            <span className="text-[10px] text-theme-textMuted uppercase block">Телефон приёмной</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Телефон приёмной</span>
             <span className="text-theme-text font-medium block truncate mt-0.5">
               {court.phone || '+992 (37) 221-00-00'}
             </span>
@@ -204,7 +204,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
           <Mail size={16} className="text-emerald-500 shrink-0 mt-0.5" />
           <div className="overflow-hidden">
-            <span className="text-[10px] text-theme-textMuted uppercase block">Электронная почта</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Электронная почта</span>
             <span className="text-theme-text font-medium block truncate mt-0.5">
               {court.email || `info@${court.domain || 'sud.tj'}`}
             </span>
@@ -217,7 +217,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
         <div className="p-4 rounded-xl border border-theme-border bg-theme-bg/70 mb-6 flex items-start gap-3">
           <Newspaper size={18} className="text-theme-gold shrink-0 mt-0.5" />
           <div className="flex-1">
-            <div className="flex items-center justify-between text-[10px] font-mono text-theme-gold uppercase tracking-wider mb-1">
+            <div className="flex items-center justify-between text-2xs font-mono text-theme-gold uppercase tracking-wider mb-1">
               <span>Последняя публикация суда</span>
               <span className="text-theme-textMuted">Сегодня</span>
             </div>
@@ -245,7 +245,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
           >
             <Gavel size={18} className="text-theme-gold group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Судебные акты</span>
-            <span className="text-[10px] text-theme-textMuted">Банк решений</span>
+            <span className="text-2xs text-theme-textMuted">Банк решений</span>
           </button>
 
           <button
@@ -255,7 +255,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
           >
             <Laptop size={18} className="text-sky-500 group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Электронный суд</span>
-            <span className="text-[10px] text-theme-textMuted">Подача документов</span>
+            <span className="text-2xs text-theme-textMuted">Подача документов</span>
           </button>
 
           <button
@@ -265,7 +265,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
           >
             <Send size={18} className="text-emerald-500 group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Обращение</span>
-            <span className="text-[10px] text-theme-textMuted">Приемная граждан</span>
+            <span className="text-2xs text-theme-textMuted">Приемная граждан</span>
           </button>
 
           <button
@@ -275,7 +275,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
           >
             <Calculator size={18} className="text-violet-500 group-hover:scale-110 transition-transform" />
             <span className="font-semibold">Госпошлина</span>
-            <span className="text-[10px] text-theme-textMuted">Калькулятор тарифов</span>
+            <span className="text-2xs text-theme-textMuted">Калькулятор тарифов</span>
           </button>
         </div>
       </div>

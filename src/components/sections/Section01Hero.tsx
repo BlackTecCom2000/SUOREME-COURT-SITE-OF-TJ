@@ -54,7 +54,7 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
               <span className="tracking-widest text-theme-gold font-semibold">( 06 )</span>
               <span className="text-theme-textMuted">[ 006 / 007 ]</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
-              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+              <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
                 {language === 'tj' ? 'ПЛАТФОРМАИ РАҚАМИИ АДОЛАТИ СУДӢ' : language === 'en' ? 'DIGITAL JUSTICE PLATFORM' : 'ЦИФРОВАЯ СУДЕБНАЯ ПЛАТФОРМА'}
               </span>
             </div>

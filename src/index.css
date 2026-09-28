@@ -37,6 +37,27 @@
     --glass-shadow-hover: 0 14px 40px rgba(15, 23, 42, 0.10), inset 0 1px 0 #ffffff;
     --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.98);
     --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+
+    /* Focus ring offset must match the surface it sits on, otherwise the
+       default white halo inverts the indicator on dark glass. */
+    --ring-offset: var(--bg-primary);
+
+    /* Gold action button. On a light glass surface the label must be dark gold,
+       not the theme's generic text colour, or it drops below 4.5:1. */
+    --btn-gold-bg: color-mix(in srgb, var(--gold-500) 20%, transparent);
+    --btn-gold-bg-hover: color-mix(in srgb, var(--gold-500) 30%, transparent);
+    --btn-gold-bg-active: color-mix(in srgb, var(--gold-600) 34%, transparent);
+    --btn-gold-border: color-mix(in srgb, var(--gold-600) 46%, transparent);
+    --btn-gold-border-hover: color-mix(in srgb, var(--gold-600) 70%, transparent);
+    --btn-gold-fg: var(--gold-800);
+    --btn-gold-fg-hover: var(--gold-900);
+
+    /* Tinted glass for the login card and the justice viewport. These used to
+       be hard-coded, which meant they ignored the theme and the CMS. */
+    --glass-surface-tint: rgba(8, 18, 32, 0.46);
+    --glass-border-tint: rgba(255, 255, 255, 0.22);
+    --glass-surface-scene: rgba(7, 18, 31, 0.28);
+    --glass-border-scene: rgba(255, 255, 255, 0.24);
   }
 
   /* DARK THEME ([data-theme="dark"] / .dark — Pure Crisp White Typography) */
@@ -73,6 +94,23 @@
     --glass-shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.20);
     --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.15);
     --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+    --ring-offset: var(--bg-primary);
+
+    /* Dark surfaces invert the gold button: light gold label on a gold-tinted
+       glass, because a dark label disappears against the night sky. */
+    --btn-gold-bg: color-mix(in srgb, var(--gold-300) 20%, transparent);
+    --btn-gold-bg-hover: color-mix(in srgb, var(--gold-300) 30%, transparent);
+    --btn-gold-bg-active: color-mix(in srgb, var(--gold-200) 34%, transparent);
+    --btn-gold-border: color-mix(in srgb, var(--gold-300) 50%, transparent);
+    --btn-gold-border-hover: color-mix(in srgb, var(--gold-200) 74%, transparent);
+    --btn-gold-fg: var(--gold-100);
+    --btn-gold-fg-hover: #ffffff;
+
+    --glass-surface-tint: rgba(8, 18, 32, 0.46);
+    --glass-border-tint: rgba(255, 255, 255, 0.22);
+    --glass-surface-scene: rgba(7, 18, 31, 0.28);
+    --glass-border-scene: rgba(255, 255, 255, 0.24);
   }
 
   /* Unified Supreme Court Container Max-Width */
@@ -378,11 +416,11 @@ html.is-morphing-theme ::view-transition-new(root) {
     box-shadow: 
       inset 0 1px 2px 0 rgba(255, 255, 255, 1),
       0 16px 36px -10px rgba(15, 25, 50, 0.08),
-      0 0 24px -2px rgba(212, 164, 45, 0.12);
+      0 0 24px -2px color-mix(in srgb, var(--gold-500) 12%, transparent);
   }
 
   [data-theme="light"] .liquid-glass-title-pod::before {
-    background: radial-gradient(circle, rgba(212, 164, 45, 0.16) 0%, transparent 70%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--gold-500) 16%, transparent) 0%, transparent 70%);
   }
 
   .public-readable {
@@ -594,10 +632,19 @@ html.is-morphing-theme ::view-transition-new(root) {
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
+  /* Inputs: 44px minimum, full-width safe padding so text never sits under
+     the browser's autofill/clear affordance. Focus uses :focus-visible so a
+     mouse click does not leave a ring, and the ring is a real 2px outline
+     rather than a 1px colour-mix shadow that vanished on light glass. */
   .glass-input {
     position: relative;
     display: block;
+    width: 100%;
     min-height: 44px;
+    padding: 10px 14px;
+    font-family: var(--font-sans);
+    font-size: var(--text-md);
+    line-height: 1.4;
     background: var(--glass-surface);
     border: 1px solid var(--glass-border);
     border-radius: var(--glass-radius-small);
@@ -605,12 +652,39 @@ html.is-morphing-theme ::view-transition-new(root) {
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     box-shadow: var(--glass-highlight);
+    transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+  .glass-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.75;
+  }
+  .glass-input:hover:not(:disabled):not(:focus) {
+    border-color: var(--glass-border-hover);
   }
   .glass-input:focus {
     background: var(--glass-surface-hover);
     border-color: var(--accent-gold);
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+    box-shadow: var(--glass-highlight);
+  }
+  .glass-input:focus:not(:focus-visible) {
     outline: none;
     box-shadow: var(--glass-highlight), 0 0 0 1px color-mix(in srgb, var(--accent-gold) 45%, transparent);
+  }
+  .glass-input:disabled,
+  .glass-input[readonly] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: var(--glass-surface-subtle);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass-input[aria-invalid="true"] {
+    border-color: var(--status-error);
+  }
+  .glass-input[aria-invalid="true"]:focus-visible {
+    outline-color: var(--status-error);
   }
   .glass-navigation {
     position: relative;
@@ -621,13 +695,13 @@ html.is-morphing-theme ::view-transition-new(root) {
     box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
   .glass-login-card {
-    background: rgba(8, 18, 32, 0.46);
-    border-color: rgba(255, 255, 255, 0.22);
+    background: var(--glass-surface-tint);
+    border-color: var(--glass-border-tint);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28), var(--glass-highlight);
   }
   .justice-viewport {
-    background: rgba(7, 18, 31, 0.28);
-    border-color: rgba(255, 255, 255, 0.24);
+    background: var(--glass-surface-scene);
+    border-color: var(--glass-border-scene);
     box-shadow: var(--glass-shadow), var(--glass-highlight), inset 0 0 40px rgba(0, 0, 0, 0.12);
   }
   /* Soft inner top highlight + edge reflection — ultra-subtle so background stays clean. */
@@ -875,61 +949,76 @@ html[data-a11y="true"] .content-card::before {
 
 /* ─── Global Button Utilities ─────────────────────────────────── */
 @layer components {
+  /* One button base for the whole platform: 16px label, 44px touch target,
+     a focus ring that keeps its offset on any surface, and a real disabled
+     state. Variants below only change colour and elevation. */
   .btn-base {
     @apply inline-flex items-center justify-center gap-2 font-medium
-           rounded-xl px-5 py-2.5 text-sm
+           rounded-xl px-5 text-md
            transition-all duration-200 ease-out
-           cursor-pointer select-none
-           outline-none;
+           cursor-pointer select-none;
+    min-height: 44px;
+    line-height: 1.25;
+    text-align: center;
   }
   .btn-base:focus-visible {
-    @apply ring-2 ring-offset-1;
-    ring-color: var(--accent-gold);
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--ring-offset), var(--glass-shadow), var(--glass-highlight);
+  }
+  /* Pointer users must not get a ring; keyboard users always do. */
+  .btn-base:focus:not(:focus-visible) {
+    outline: none;
   }
   .btn-base:disabled,
-  .btn-base[disabled] {
-    @apply opacity-50 cursor-not-allowed pointer-events-none;
+  .btn-base[disabled],
+  .btn-base[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    filter: saturate(0.6);
   }
 
-  /* All buttons — Global Liquid Glass, not flat/opaque — same tokens as cards */
+  /* Primary / gold - tinted glass, never a flat fill, so the live sky stays
+     visible through it. Colours come from theme-scoped tokens so the label
+     stays above 4.5:1 in light, dark and accessibility modes. */
   .btn-primary,
   .btn-gold {
     @apply btn-base glass;
-    background: rgba(212, 164, 45, 0.16);
-    border: 1px solid rgba(212, 164, 45, 0.38);
-    color: var(--court-navy);
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    background: var(--btn-gold-bg);
+    border: 1px solid var(--btn-gold-border);
+    color: var(--btn-gold-fg);
+    font-weight: var(--weight-semibold);
     box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
-  .btn-primary:hover,
-  .btn-gold:hover {
-    background: rgba(212, 164, 45, 0.22);
-    border-color: rgba(212, 164, 45, 0.55);
+  .btn-primary:hover:not(:disabled),
+  .btn-gold:hover:not(:disabled) {
+    background: var(--btn-gold-bg-hover);
+    border-color: var(--btn-gold-border-hover);
+    color: var(--btn-gold-fg-hover);
     box-shadow: var(--glass-shadow-hover), var(--glass-highlight);
     transform: translateY(-1px);
   }
-  .btn-primary:active,
-  .btn-gold:active {
+  .btn-primary:active:not(:disabled),
+  .btn-gold:active:not(:disabled) {
     transform: scale(0.97) translateY(0);
-    background: rgba(212, 164, 45, 0.26);
+    background: var(--btn-gold-bg-active);
   }
   .btn-secondary {
     @apply btn-base glass;
     color: var(--text-primary);
     background: var(--glass-surface);
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
-  .btn-secondary:hover {
+  .btn-secondary:hover:not(:disabled) {
     background: var(--glass-surface-hover);
     border-color: var(--glass-border-hover);
     box-shadow: var(--glass-shadow-hover), var(--glass-highlight);
     transform: translateY(-1px);
   }
-  .btn-secondary:active {
+  .btn-secondary:active:not(:disabled) {
     transform: scale(0.97) translateY(0);
     background: var(--glass-surface-active);
   }
@@ -938,11 +1027,9 @@ html[data-a11y="true"] .content-card::before {
     color: var(--text-muted);
     background: var(--glass-surface);
     border: 1px solid var(--glass-border-subtle);
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-    box-shadow: var(--glass-shadow), var(--glass-highlight);
+    box-shadow: var(--glass-highlight);
   }
-  .btn-ghost:hover {
+  .btn-ghost:hover:not(:disabled) {
     color: var(--text-primary);
     background: var(--glass-surface-hover);
     border-color: var(--glass-border-hover);
@@ -950,6 +1037,37 @@ html[data-a11y="true"] .content-card::before {
   .btn-ghost:active {
     transform: scale(0.97);
     background: var(--glass-surface-active);
+  }
+
+  /* ─── Shared text utilities ──────────────────────────────────────
+     Replaces the ad-hoc "8px ui-monospace uppercase" pattern that appeared
+     across the 3D installation, map and table meta. One role, one size. */
+  .u-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-weight: var(--weight-semibold);
+    line-height: 1.35;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--accent-gold);
+  }
+  .u-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    font-weight: var(--weight-medium);
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+  /* Long-form legal copy: readable measure, comfortable leading. */
+  .u-prose {
+    max-width: var(--measure-prose);
+    font-size: var(--text-md);
+    line-height: var(--leading-body);
+    color: var(--text-secondary);
+  }
+  .u-prose p + p {
+    margin-top: 0.9em;
   }
 
   /* Useful-sites running ticker (footer marquee) */

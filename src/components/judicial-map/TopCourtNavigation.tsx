@@ -67,7 +67,7 @@ export const TopCourtNavigation: React.FC<TopCourtNavigationProps> = ({
         <span className="font-bold text-[13px] sm:text-sm tracking-[0.06em] uppercase text-[var(--jm-text)] leading-snug">
           {strings.constitutional.title}
         </span>
-        <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--jm-muted)] group-hover:text-[var(--jm-cyan)] transition-colors leading-snug">
+        <span className="font-mono text-2xs tracking-[0.08em] uppercase text-[var(--jm-muted)] group-hover:text-[var(--jm-cyan)] transition-colors leading-snug">
           {strings.constitutional.sub}
         </span>
         <ExternalLink size={11} className="absolute top-2.5 right-2.5 text-[var(--jm-muted)] group-hover:text-[var(--jm-cyan)] transition-colors" />
@@ -92,7 +92,7 @@ export const TopCourtNavigation: React.FC<TopCourtNavigationProps> = ({
         <span className="font-bold text-[15px] sm:text-base tracking-[0.08em] uppercase text-white leading-snug">
           {strings.supreme.title}
         </span>
-        <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-[var(--jm-gold)] leading-snug">
+        <span className="font-mono text-2xs tracking-[0.14em] uppercase text-[var(--jm-gold)] leading-snug">
           {strings.supreme.sub}
         </span>
       </button>
@@ -110,7 +110,7 @@ export const TopCourtNavigation: React.FC<TopCourtNavigationProps> = ({
         <span className="font-bold text-[13px] sm:text-sm tracking-[0.06em] uppercase text-[var(--jm-text)] leading-snug">
           {strings.economic.title}
         </span>
-        <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--jm-muted)] group-hover:text-[#38BDF8] transition-colors leading-snug">
+        <span className="font-mono text-2xs tracking-[0.08em] uppercase text-[var(--jm-muted)] group-hover:text-[#38BDF8] transition-colors leading-snug">
           {strings.economic.sub}
         </span>
         <ExternalLink size={11} className="absolute top-2.5 right-2.5 text-[var(--jm-muted)] group-hover:text-[#38BDF8] transition-colors" />

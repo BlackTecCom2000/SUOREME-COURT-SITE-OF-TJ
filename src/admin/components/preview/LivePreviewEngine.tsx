@@ -64,12 +64,12 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/70" />
         </span>
       )}
-      <span className="flex-1 flex items-center justify-center gap-1.5 min-w-0 rounded-lg bg-theme-bg/70 border border-theme-border/40 px-3 py-1 font-mono text-[10px] sm:text-[11px] text-theme-textSec truncate">
+      <span className="flex-1 flex items-center justify-center gap-1.5 min-w-0 rounded-lg bg-theme-bg/70 border border-theme-border/40 px-3 py-1 font-mono text-2xs sm:text-[11px] text-theme-textSec truncate">
         <Lock size={10} className="text-emerald-400 shrink-0" />
         <span className="truncate">{previewUrl}</span>
       </span>
       {!compact && (
-        <span className="font-mono text-[10px] uppercase tracking-widest text-theme-gold shrink-0 hidden sm:inline">
+        <span className="font-mono text-2xs uppercase tracking-widest text-theme-gold shrink-0 hidden sm:inline">
           {viewport}
         </span>
       )}
@@ -81,7 +81,7 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
   const renderToolbar = () => (
     <div className="glass-navigation flex items-center justify-between p-3 border-b border-theme-border/50 sticky top-0 z-50 !rounded-none">
       <div className="flex items-center gap-2">
-        <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest font-bold px-2">
+        <span className="font-mono text-2xs text-theme-gold uppercase tracking-widest font-bold px-2">
           LIVE PREVIEW
         </span>
         <div className="h-4 w-px bg-theme-border mx-2" />
@@ -122,7 +122,7 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
                 className={`p-1.5 rounded-md transition-colors flex items-center gap-1 ${placement === pt.id ? 'bg-theme-surface text-theme-gold shadow-sm' : 'text-theme-textSec hover:text-theme-text'}`}
               >
                 {pt.icon}
-                <span className="text-[10px] font-bold uppercase hidden 2xl:block">
+                <span className="text-2xs font-bold uppercase hidden 2xl:block">
                   {language === 'tj' ? pt.tj : language === 'en' ? pt.en : pt.ru}
                 </span>
               </button>
@@ -138,7 +138,7 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
             <button
               key={lang}
               onClick={() => setLanguage(lang)}
-              className={`relative px-2 py-1 rounded-md text-[10px] font-bold uppercase transition-colors z-10 ${
+              className={`relative px-2 py-1 rounded-md text-2xs font-bold uppercase transition-colors z-10 ${
                 language === lang ? 'text-theme-gold' : 'text-theme-textSec hover:text-theme-text'
               }`}
             >
@@ -173,7 +173,7 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
             title="Compare with Published Version"
           >
             <ArrowLeftRight size={16} />
-            <span className="text-[10px] font-bold uppercase hidden xl:block">Compare</span>
+            <span className="text-2xs font-bold uppercase hidden xl:block">Compare</span>
           </button>
         )}
 
@@ -206,7 +206,7 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
           <div className="relative z-10 flex w-full gap-4">
             {/* Published Version */}
             <div className="flex-1 border border-theme-border/50 rounded-xl overflow-hidden flex flex-col shadow-xl min-w-0">
-              <div className="bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-widest text-center py-1 border-b border-red-500/20">
+              <div className="bg-red-500/10 text-red-500 text-2xs font-bold uppercase tracking-widest text-center py-1 border-b border-red-500/20">
                 Published Version
               </div>
               <div className="h-[560px] overflow-y-auto">
@@ -215,7 +215,7 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
             </div>
             {/* Current Draft */}
             <div className="flex-1 border border-theme-gold/50 rounded-xl overflow-hidden flex flex-col shadow-xl shadow-theme-gold/5 min-w-0">
-              <div className="bg-theme-gold/10 text-theme-gold text-[10px] font-bold uppercase tracking-widest text-center py-1 border-b border-theme-gold/20">
+              <div className="bg-theme-gold/10 text-theme-gold text-2xs font-bold uppercase tracking-widest text-center py-1 border-b border-theme-gold/20">
                 Current Draft
               </div>
               <div className="h-[560px] overflow-y-auto">

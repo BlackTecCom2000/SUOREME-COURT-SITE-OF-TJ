@@ -44,7 +44,7 @@ export const AdminTabs: React.FC<AdminTabsProps> = ({
             {tab.count !== undefined && (
               <span
                 className={`
-                  px-1.5 py-0.2 rounded-full text-[10px] font-bold
+                  px-1.5 py-0.2 rounded-full text-2xs font-bold
                   ${isActive ? 'bg-black text-amber-300' : 'bg-slate-200 dark:bg-slate-800 text-black dark:text-white'}
                 `}
               >

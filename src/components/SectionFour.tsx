@@ -114,7 +114,7 @@ export const SectionFour: React.FC<SectionFourProps> = ({
                   onClick={onOpenNews}
                   className="p-4 rounded-xl bg-black/40 border border-white/10 hover:border-white/30 transition-all cursor-pointer group"
                 >
-                  <div className="flex items-center justify-between font-mono text-[10px] text-white/50 mb-2">
+                  <div className="flex items-center justify-between font-mono text-2xs text-white/50 mb-2">
                     <span className="flex items-center gap-1.5 text-white/80">
                       <Newspaper size={12} />
                       <span>МАТБУОТ</span>

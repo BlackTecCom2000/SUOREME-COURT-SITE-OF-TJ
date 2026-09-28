@@ -153,7 +153,7 @@ export const QuickActionsGrid: React.FC<QuickActionsGridProps> = ({ onAction }) 
                     <div className="p-2.5 rounded-xl bg-theme-bg border border-theme-border/80 text-theme-text group-hover:scale-110 transition-transform">
                       <Icon size={20} className={action.color} />
                     </div>
-                    <span className="font-mono text-[9px] px-2 py-0.5 rounded-full border border-theme-border bg-theme-bg/60 text-theme-textMuted uppercase tracking-wider">
+                    <span className="font-mono text-2xs px-2 py-0.5 rounded-full border border-theme-border bg-theme-bg/60 text-theme-textMuted uppercase tracking-wider">
                       {action.badge}
                     </span>
                   </div>

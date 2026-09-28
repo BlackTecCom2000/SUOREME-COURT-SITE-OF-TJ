@@ -81,60 +81,60 @@ export const SectionThree: React.FC<SectionThreeProps> = ({
               onClick={onOpenCourts}
               className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer group"
             >
-              <div className="text-[10px] text-white/50 mb-1 flex items-center justify-between">
+              <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>01 // DUSHANBE</span>
                 <Globe size={11} className="group-hover:text-white transition-colors" />
               </div>
               <div className="font-semibold text-white">6 {lang === 'ru' ? 'судов' : 'суд'}</div>
-              <div className="text-[10px] text-white/60 font-sans mt-0.5">dushanbe.sud.tj</div>
+              <div className="text-2xs text-white/60 font-sans mt-0.5">dushanbe.sud.tj</div>
             </div>
 
             <div
               onClick={onOpenCourts}
               className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer group"
             >
-              <div className="text-[10px] text-white/50 mb-1 flex items-center justify-between">
+              <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>02 // RRP</span>
                 <Globe size={11} className="group-hover:text-white transition-colors" />
               </div>
               <div className="font-semibold text-white">13 {lang === 'ru' ? 'судов' : 'суд'}</div>
-              <div className="text-[10px] text-white/60 font-sans mt-0.5">НТҶ / Районы РП</div>
+              <div className="text-2xs text-white/60 font-sans mt-0.5">НТҶ / Районы РП</div>
             </div>
 
             <div
               onClick={onOpenCourts}
               className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer group"
             >
-              <div className="text-[10px] text-white/50 mb-1 flex items-center justify-between">
+              <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>03 // SUGD</span>
                 <Globe size={11} className="group-hover:text-white transition-colors" />
               </div>
               <div className="font-semibold text-white">20 {lang === 'ru' ? 'судов' : 'суд'}</div>
-              <div className="text-[10px] text-white/60 font-sans mt-0.5">sugd.sud.tj</div>
+              <div className="text-2xs text-white/60 font-sans mt-0.5">sugd.sud.tj</div>
             </div>
 
             <div
               onClick={onOpenCourts}
               className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer group"
             >
-              <div className="text-[10px] text-white/50 mb-1 flex items-center justify-between">
+              <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>04 // KHATLON</span>
                 <Globe size={11} className="group-hover:text-white transition-colors" />
               </div>
               <div className="font-semibold text-white">25 {lang === 'ru' ? 'судов' : 'суд'}</div>
-              <div className="text-[10px] text-white/60 font-sans mt-0.5">khatlon.sud.tj</div>
+              <div className="text-2xs text-white/60 font-sans mt-0.5">khatlon.sud.tj</div>
             </div>
 
             <div
               onClick={onOpenCourts}
               className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer col-span-2 sm:col-span-1 group"
             >
-              <div className="text-[10px] text-white/50 mb-1 flex items-center justify-between">
+              <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>05 // GBAO</span>
                 <Globe size={11} className="group-hover:text-white transition-colors" />
               </div>
               <div className="font-semibold text-white">10 {lang === 'ru' ? 'судов' : 'суд'}</div>
-              <div className="text-[10px] text-white/60 font-sans mt-0.5">vmkb.sud.tj</div>
+              <div className="text-2xs text-white/60 font-sans mt-0.5">vmkb.sud.tj</div>
             </div>
           </div>
         </Reveal>

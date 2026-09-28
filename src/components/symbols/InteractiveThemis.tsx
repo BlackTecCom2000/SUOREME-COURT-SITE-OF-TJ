@@ -150,7 +150,7 @@ export const InteractiveThemis: React.FC<InteractiveThemisProps> = ({
         `}
       >
         {isInsightMode ? <Sparkles size={13} className="text-[#dfbe7e] animate-spin" /> : <Eye size={13} />}
-        <span className="font-mono text-[10px] tracking-widest uppercase font-semibold">
+        <span className="font-mono text-2xs tracking-widest uppercase font-semibold">
           {isInsightMode
             ? language === 'tj'
               ? 'РЕҶАИ БЕҒАРАЗӢ ФАЪОЛ'

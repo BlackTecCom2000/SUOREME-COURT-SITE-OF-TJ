@@ -31,7 +31,7 @@ export const JudicialActPreview: React.FC<JudicialActPreviewProps> = ({
             <FileText size={15} />
           </div>
           <div>
-            <span className="font-mono text-[9px] text-theme-gold uppercase tracking-widest block font-bold">
+            <span className="font-mono text-2xs text-theme-gold uppercase tracking-widest block font-bold">
               {language === 'tj' ? 'САНАДИ СУДӢ / НАМУНА' : language === 'en' ? 'JUDICIAL ACT / SAMPLE' : 'СУДЕБНЫЙ АКТ / ОБРАЗЕЦ'}
             </span>
             <span className="font-mono text-[11px] text-theme-text font-semibold block">
@@ -40,7 +40,7 @@ export const JudicialActPreview: React.FC<JudicialActPreviewProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+        <div className="flex items-center gap-1 text-2xs font-mono text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
           <CheckCircle2 size={11} />
           <span>{language === 'tj' ? 'ЭЪТИБОР ПАЙДО КАРД' : language === 'en' ? 'IN FORCE' : 'ВСТУПИЛО В СИЛУ'}</span>
         </div>

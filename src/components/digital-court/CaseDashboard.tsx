@@ -42,7 +42,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
                       ? 'Demo data: personal workspace unlocks after sign-in'
                       : 'Демо-данные: личный кабинет станет доступен после входа'
                 }
-                className="align-middle ml-1 px-2 py-0.5 rounded-full border border-theme-gold/40 text-theme-gold font-mono text-[10px] uppercase tracking-widest"
+                className="align-middle ml-1 px-2 py-0.5 rounded-full border border-theme-gold/40 text-theme-gold font-mono text-2xs uppercase tracking-widest"
               >
                 Demo
               </span>
@@ -75,7 +75,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
                     <span className="font-mono text-sm font-bold text-theme-text bg-theme-bg px-3 py-1 rounded-xl border border-theme-border">
                       {caseItem.caseNumber}
                     </span>
-                    <span className="font-mono text-[10px] uppercase px-2.5 py-1 rounded-full bg-theme-gold/15 text-theme-gold border border-theme-gold/30">
+                    <span className="font-mono text-2xs uppercase px-2.5 py-1 rounded-full bg-theme-gold/15 text-theme-gold border border-theme-gold/30">
                       {language === 'tj' ? caseItem.categoryTj : language === 'en' ? caseItem.categoryEn : caseItem.categoryRu}
                     </span>
                   </div>
@@ -95,7 +95,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
 
                 {/* Micro Timeline in Card */}
                 <div className="rounded-2xl bg-theme-bg/60 border border-theme-border/60 p-4 mb-6">
-                  <div className="text-[10px] font-mono uppercase text-theme-textMuted mb-3 flex items-center justify-between">
+                  <div className="text-2xs font-mono uppercase text-theme-textMuted mb-3 flex items-center justify-between">
                     <span>{language === 'tj' ? 'ТАЪРИХИ РАВАНД' : language === 'en' ? 'CASE PROGRESS' : 'ХОД ДЕЛА'}</span>
                     <span className="text-theme-gold">
                       {language === 'tj' ? 'ҚАДАМИ 3 АЗ 4 • ДЕМО' : language === 'en' ? 'STEP 3 OF 4 • DEMO' : 'ШАГ 3 ИЗ 4 • ДЕМО'}
@@ -107,7 +107,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
                       <CheckCircle2 size={15} className="text-emerald-400 shrink-0" />
                       <div className="flex-1 flex items-center justify-between">
                         <span className="text-theme-textSec">{language === 'tj' ? 'Ариза пешниҳод шуд' : language === 'en' ? 'Claim Filed' : 'Подано в электронном виде'}</span>
-                        <span className="font-mono text-[10px] text-theme-textMuted">{caseItem.registrationDate}</span>
+                        <span className="font-mono text-2xs text-theme-textMuted">{caseItem.registrationDate}</span>
                       </div>
                     </div>
 
@@ -115,7 +115,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
                       <CheckCircle2 size={15} className="text-emerald-400 shrink-0" />
                       <div className="flex-1 flex items-center justify-between">
                         <span className="text-theme-textSec">{language === 'tj' ? 'Бақайдгирӣ ва судя' : language === 'en' ? 'Registered & Assigned' : 'Зарегистрировано, назначен судья'}</span>
-                        <span className="font-mono text-[10px] text-theme-textMuted">{caseItem.registrationDate}</span>
+                        <span className="font-mono text-2xs text-theme-textMuted">{caseItem.registrationDate}</span>
                       </div>
                     </div>
 
@@ -123,7 +123,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
                       <CircleDot size={15} className="text-theme-gold animate-pulse shrink-0" />
                       <div className="flex-1 flex items-center justify-between">
                         <span className="text-theme-gold font-medium">{language === 'tj' ? 'Маҷлиси судӣ таъин гардид' : language === 'en' ? 'Hearing Scheduled' : 'Назначено судебное заседание'}</span>
-                        <span className="font-mono text-[10px] text-theme-gold font-bold">{caseItem.nextHearingDate}</span>
+                        <span className="font-mono text-2xs text-theme-gold font-bold">{caseItem.nextHearingDate}</span>
                       </div>
                     </div>
                   </div>
@@ -133,7 +133,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
               {/* Bottom Next Action & Details */}
               <div className="pt-4 border-t border-theme-border/40 flex items-center justify-between">
                 <div>
-                  <span className="font-mono text-[10px] text-theme-textMuted uppercase block">
+                  <span className="font-mono text-2xs text-theme-textMuted uppercase block">
                     {language === 'tj' ? 'Амали навбатӣ' : language === 'en' ? 'Next Procedural Action' : 'Следующее действие'}
                   </span>
                   <span className="text-xs font-semibold text-theme-text flex items-center gap-1.5 mt-0.5">

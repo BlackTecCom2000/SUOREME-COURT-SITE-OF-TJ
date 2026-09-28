@@ -188,19 +188,19 @@ export const GlobalSearchModal: React.FC<{ isOpen: boolean; onClose: () => void 
           </button>
           {showFilters && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 py-2">
-              <label className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+              <label className="flex flex-col gap-1 font-mono text-2xs uppercase tracking-wider text-theme-textMuted">
                 {L('Аз сана', 'С даты', 'From')}
                 <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="h-9 px-2 rounded-lg bg-theme-bg border border-theme-border text-theme-text text-xs font-sans focus:outline-none focus:border-theme-gold" />
               </label>
-              <label className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+              <label className="flex flex-col gap-1 font-mono text-2xs uppercase tracking-wider text-theme-textMuted">
                 {L('То сана', 'По дату', 'To')}
                 <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="h-9 px-2 rounded-lg bg-theme-bg border border-theme-border text-theme-text text-xs font-sans focus:outline-none focus:border-theme-gold" />
               </label>
-              <label className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+              <label className="flex flex-col gap-1 font-mono text-2xs uppercase tracking-wider text-theme-textMuted">
                 {L('Категория', 'Категория', 'Category')}
                 <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="…" className="h-9 px-2 rounded-lg bg-theme-bg border border-theme-border text-theme-text text-xs font-sans placeholder:text-theme-textMuted focus:outline-none focus:border-theme-gold" />
               </label>
-              <label className="flex flex-col gap-1 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+              <label className="flex flex-col gap-1 font-mono text-2xs uppercase tracking-wider text-theme-textMuted">
                 {L('Суд', 'Суд', 'Court')}
                 <input value={court} onChange={(e) => setCourt(e.target.value)} placeholder="…" className="h-9 px-2 rounded-lg bg-theme-bg border border-theme-border text-theme-text text-xs font-sans placeholder:text-theme-textMuted focus:outline-none focus:border-theme-gold" />
               </label>
@@ -238,7 +238,7 @@ export const GlobalSearchModal: React.FC<{ isOpen: boolean; onClose: () => void 
                         language
                       )}
                     </span>
-                    <span className="block mt-0.5 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+                    <span className="block mt-0.5 font-mono text-2xs uppercase tracking-wider text-theme-textMuted">
                       {it.kind === 'content' ? it.type : it.kind}
                       {it.doc_number ? ` · №${it.doc_number}` : ''}
                       {it.badge ? ` · ${it.badge}` : ''}

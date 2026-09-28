@@ -123,7 +123,7 @@ export const SiteBuilder: React.FC = () => {
             <div className="grid grid-cols-3 gap-2">
               {palette.map(p=> (
                 <button key={p.key} onClick={()=> add(p.key)} className="p-3 rounded-xl glass border border-white/10 hover:border-[var(--court-gold)]/30 flex flex-col items-center gap-1 text-xs text-slate-300 hover:text-white transition-colors">
-                  <span className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center font-mono text-[10px]">{p.icon}</span>
+                  <span className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center font-mono text-2xs">{p.icon}</span>
                   <span className="text-[11px] leading-tight text-center">{p.label}</span>
                 </button>
               ))}
@@ -165,10 +165,10 @@ export const SiteBuilder: React.FC = () => {
                     {k:'bg_contrast', label:'Contrast 80-120%', min:80, max:120, step:1},
                   ].map(f=> (
                     <div key={f.k} className="flex min-w-0 flex-col gap-1">
-                      <span className="truncate font-mono text-[10px] text-theme-textSec">{f.label}</span>
+                      <span className="truncate font-mono text-2xs text-theme-textSec">{f.label}</span>
                       <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_2.5rem_auto] items-center gap-1">
                         <input type="range" min={f.min} max={f.max} step={f.step} value={parseFloat(design[f.k])|| (f.k==='bg_overlay_opacity'?0.12: f.k==='bg_blur'?0:100)} onChange={e=> setDesign({...design, [f.k]: e.target.value})} className="flex-1" />
-                        <span className="w-10 text-right font-mono text-[10px] text-theme-text">{design[f.k]||'-'}</span>
+                        <span className="w-10 text-right font-mono text-2xs text-theme-text">{design[f.k]||'-'}</span>
                         <AdminButton size="sm" onClick={async()=>{ await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:f.k, value: design[f.k]||''})});}}>OK</AdminButton>
                       </div>
                     </div>
@@ -189,7 +189,7 @@ export const SiteBuilder: React.FC = () => {
                     {k:'glass_radius', label:'Radius 12-30'},
                   ].map(f=> (
                     <div key={f.k} className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_auto] items-center gap-1">
-                      <span className="min-w-0 truncate font-mono text-[10px] text-theme-textSec">{f.label}</span>
+                      <span className="min-w-0 truncate font-mono text-2xs text-theme-textSec">{f.label}</span>
                       <AdminInput value={design[f.k]||''} onChange={e=> setDesign({...design, [f.k]: e.target.value})} className="flex-1" />
                       <AdminButton size="sm" onClick={async()=>{ await apiFetch('/api/admin/design-settings', { method:'POST', body: JSON.stringify({key:f.k, value: design[f.k]||''})});}}>OK</AdminButton>
                     </div>
@@ -282,7 +282,7 @@ export const SiteBuilder: React.FC = () => {
                 <div key={v.id} className="p-2 rounded-lg border border-white/10 flex items-center justify-between gap-2">
                   <div>
                     <div className="font-mono text-xs text-white">#{v.id} {v.commit_message} <span className="text-slate-500">({v.type})</span></div>
-                    <div className="font-mono text-[10px] text-slate-500">{v.author_name} • {new Date(v.created_at).toLocaleString()}</div>
+                    <div className="font-mono text-2xs text-slate-500">{v.author_name} • {new Date(v.created_at).toLocaleString()}</div>
                   </div>
                   <AdminButton size="sm" variant="ghost" onClick={()=> rollback(v.id)} leftIcon={<RotateCcw size={12}/>}>Rollback</AdminButton>
                 </div>

@@ -54,7 +54,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
             <span className="tracking-widest text-theme-gold font-semibold">( J )</span>
             <span className="text-theme-textMuted">[ 010 / 010 ]</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-2" />
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+            <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
               {t('contacts.badge')}
             </span>
           </div>
@@ -89,7 +89,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                   <span className="font-mono text-xs text-theme-gold uppercase tracking-wider">
                     {t('contacts.headquarterTitle')}
                   </span>
-                  <span className="font-mono text-[10px] text-theme-textMuted uppercase">
+                  <span className="font-mono text-2xs text-theme-textMuted uppercase">
                     {t('contacts.cityCountry')}
                   </span>
                 </div>
@@ -98,7 +98,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                   <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
                     <MapPin size={18} className="text-theme-gold shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-[10px] text-theme-textMuted uppercase block">
+                      <span className="text-2xs text-theme-textMuted uppercase block">
                         {t('contacts.legalAddressLabel')}
                       </span>
                       <span className="text-theme-text font-sans text-sm font-medium mt-0.5 block">
@@ -111,7 +111,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                     <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
                       <Phone size={18} className="text-cyan-400 shrink-0 mt-0.5" />
                       <div>
-                        <span className="text-[10px] text-theme-textMuted uppercase block">
+                        <span className="text-2xs text-theme-textMuted uppercase block">
                           {t('contacts.hotlineLabel')}
                         </span>
                         <span className="text-theme-text font-medium mt-0.5 block">
@@ -123,7 +123,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                     <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
                       <Mail size={18} className="text-emerald-400 shrink-0 mt-0.5" />
                       <div>
-                        <span className="text-[10px] text-theme-textMuted uppercase block">
+                        <span className="text-2xs text-theme-textMuted uppercase block">
                           {t('contacts.emailLabel')}
                         </span>
                         <span className="text-theme-text font-medium mt-0.5 block">
@@ -161,7 +161,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                   <button
                     type="button"
                     onClick={onOpenNews}
-                    className="font-mono text-[10px] text-theme-textMuted hover:text-theme-text flex items-center gap-1 transition-colors"
+                    className="font-mono text-2xs text-theme-textMuted hover:text-theme-text flex items-center gap-1 transition-colors"
                   >
                     <span>{t('contacts.pressAll')}</span>
                     <ArrowUpRight size={12} />
@@ -180,7 +180,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                         onClick={onOpenNews}
                         className="group p-4 rounded-xl bg-theme-bg/60 border border-theme-border hover:border-theme-gold transition-all cursor-pointer shadow-xs"
                       >
-                        <div className="flex items-center justify-between text-[10px] font-mono text-theme-textMuted mb-1">
+                        <div className="flex items-center justify-between text-2xs font-mono text-theme-textMuted mb-1">
                           <span>{new Date(item.published_at).toLocaleDateString()}</span>
                           <span className="text-theme-gold">МАТБУОТ</span>
                         </div>

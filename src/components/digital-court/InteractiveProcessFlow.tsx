@@ -141,7 +141,7 @@ export const InteractiveProcessFlow: React.FC = () => {
                 ? 'Conceptual demo, not a live system'
                 : 'Концептуальное демо, а не действующая система'
             }
-            className="px-2 py-0.5 rounded-full border border-theme-gold/40 text-theme-gold text-[10px] uppercase tracking-wider"
+            className="px-2 py-0.5 rounded-full border border-theme-gold/40 text-theme-gold text-2xs uppercase tracking-wider"
           >
             Demo
           </span>
@@ -181,10 +181,10 @@ export const InteractiveProcessFlow: React.FC = () => {
                   <Icon size={16} className={isActive ? 'text-black' : ''} />
                 )}
               </div>
-              <span className="font-mono text-[10px] font-bold tracking-wider">
+              <span className="font-mono text-2xs font-bold tracking-wider">
                 {step.stepNum}
               </span>
-              <span className={`text-[9px] truncate max-w-full hidden md:block mt-0.5 ${isActive ? 'text-black font-semibold' : 'text-theme-textMuted'}`}>
+              <span className={`text-2xs truncate max-w-full hidden md:block mt-0.5 ${isActive ? 'text-black font-semibold' : 'text-theme-textMuted'}`}>
                 {step.titleKey.split(' ')[0]}
               </span>
 
@@ -227,7 +227,7 @@ export const InteractiveProcessFlow: React.FC = () => {
             </div>
             
             <div className="shrink-0">
-              <span className="inline-flex items-center gap-1 font-mono text-[10px] px-2.5 py-1 rounded-full border border-theme-border bg-theme-surface text-theme-textMuted">
+              <span className="inline-flex items-center gap-1 font-mono text-2xs px-2.5 py-1 rounded-full border border-theme-border bg-theme-surface text-theme-textMuted">
                 <Lock size={10} className="text-theme-gold" />
                 <span>{steps[activeStep].techDetail}</span>
               </span>

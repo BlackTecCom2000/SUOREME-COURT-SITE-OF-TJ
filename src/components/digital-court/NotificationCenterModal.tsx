@@ -91,11 +91,11 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
   const getPriorityBadge = (p: CourtNotification['priority']) => {
     switch (p) {
       case 'critical':
-        return <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-rose-500/15 text-rose-400 border border-rose-500/30">CRITICAL</span>;
+        return <span className="px-2 py-0.5 rounded-full text-2xs font-mono font-bold bg-rose-500/15 text-rose-400 border border-rose-500/30">CRITICAL</span>;
       case 'important':
-        return <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30">IMPORTANT</span>;
+        return <span className="px-2 py-0.5 rounded-full text-2xs font-mono font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30">IMPORTANT</span>;
       default:
-        return <span className="px-2 py-0.5 rounded-full text-[9px] font-mono text-sky-400 bg-sky-500/15 border border-sky-500/30">NORMAL</span>;
+        return <span className="px-2 py-0.5 rounded-full text-2xs font-mono text-sky-400 bg-sky-500/15 border border-sky-500/30">NORMAL</span>;
     }
   };
 
@@ -184,12 +184,12 @@ export const NotificationCenterModal: React.FC<NotificationCenterModalProps> = (
                   <div className="flex items-center gap-2">
                     {getPriorityBadge(item.priority)}
                     {item.caseNumber && (
-                      <span className="font-mono text-[10px] bg-theme-bg px-2 py-0.5 rounded border border-theme-border text-theme-text">
+                      <span className="font-mono text-2xs bg-theme-bg px-2 py-0.5 rounded border border-theme-border text-theme-text">
                         {item.caseNumber}
                       </span>
                     )}
                   </div>
-                  <span className="font-mono text-[10px] text-theme-textMuted">{item.timestamp}</span>
+                  <span className="font-mono text-2xs text-theme-textMuted">{item.timestamp}</span>
                 </div>
 
                 <h4 className="text-sm font-semibold text-theme-text mb-1">

@@ -512,7 +512,7 @@ export const NewsEditor: React.FC = () => {
                   </span>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] text-slate-400">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-2xs text-slate-400">
                 {(['tj', 'ru', 'en'] as const).map((l) => {
                   const filled = ['title', 'excerpt', 'body'].filter((f) => String((formData as any)[f + '_' + l] || '').trim()).length;
                   const aiN = ['title', 'excerpt', 'body'].filter((f) => (aiMeta[f + '_' + l]?.s === 'ai')).length;

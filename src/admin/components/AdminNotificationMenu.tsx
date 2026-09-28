@@ -76,7 +76,7 @@ export const AdminNotificationMenu: React.FC = () => {
       >
         <Bell size={18} />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 text-slate-950 text-[10px] font-mono font-bold flex items-center justify-center shadow-md animate-pulse">
+          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 text-slate-950 text-2xs font-mono font-bold flex items-center justify-center shadow-md animate-pulse">
             {unreadCount}
           </span>
         )}
@@ -88,7 +88,7 @@ export const AdminNotificationMenu: React.FC = () => {
             <span className="font-mono text-xs font-bold text-slate-300 uppercase tracking-wider">
               Системные события
             </span>
-            <span className="text-[10px] font-mono text-amber-400">
+            <span className="text-2xs font-mono text-amber-400">
               {unreadCount} новых
             </span>
           </div>
@@ -120,7 +120,7 @@ export const AdminNotificationMenu: React.FC = () => {
                   </span>
                   <div className="flex-1">
                     <p className="text-xs font-medium text-slate-200 leading-snug">{n.title}</p>
-                    <span className="text-[10px] font-mono text-slate-500">{n.time}</span>
+                    <span className="text-2xs font-mono text-slate-500">{n.time}</span>
                   </div>
                 </div>
               ))

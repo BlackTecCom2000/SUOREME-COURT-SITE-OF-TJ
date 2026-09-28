@@ -95,9 +95,9 @@ export const UsefulSitesManager: React.FC = () => {
               <img src={it.image || `https://www.google.com/s2/favicons?domain=${(() => { try { return new URL(it.url).hostname } catch { return 'example.com' } })()}&sz=32`} alt="" className="w-6 h-6 rounded object-contain bg-white/10" loading="lazy" />
               <div className="flex-1 min-w-0">
                 <div className="text-xs text-white truncate">{it.label_ru} <span className="text-slate-500">• {it.url}</span></div>
-                <div className="text-[10px] font-mono text-slate-500 truncate">{it.label_tj} / {it.label_en}</div>
+                <div className="text-2xs font-mono text-slate-500 truncate">{it.label_tj} / {it.label_en}</div>
               </div>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono border ${it.status==='published'?'bg-emerald-500/20 text-emerald-300 border-emerald-500/30':'bg-amber-500/20 text-amber-300 border-amber-500/30'}`}>{it.status}</span>
+              <span className={`px-2 py-0.5 rounded-full text-2xs font-mono border ${it.status==='published'?'bg-emerald-500/20 text-emerald-300 border-emerald-500/30':'bg-amber-500/20 text-amber-300 border-amber-500/30'}`}>{it.status}</span>
               <AdminButton size="sm" variant="ghost" onClick={()=> setEditing(editing===it.id?null:it.id)}>{editing===it.id?'Закрыть':' Edit'}</AdminButton>
               <AdminButton size="sm" variant="ghost" onClick={()=> dup(it.id)}><Copy size={12}/></AdminButton>
               <button onClick={()=> update(it.id, {status: it.status==='published'?'draft':'published'})} className="p-1.5 rounded-lg border border-white/10 text-slate-400 hover:text-white" title="активировать/деактивировать">{it.status==='published'?<EyeOff size={14}/>:<Eye size={14}/>}</button>

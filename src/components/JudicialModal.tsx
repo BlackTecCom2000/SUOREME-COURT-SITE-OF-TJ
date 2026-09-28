@@ -296,11 +296,11 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
             <div className="w-2.5 h-2.5 rounded-full bg-theme-gold" />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-mono text-[10px] text-theme-textMuted uppercase tracking-widest block">
+                <span className="font-mono text-2xs text-theme-textMuted uppercase tracking-widest block">
                   {language === 'en' ? 'SUD.TJ SYSTEM' : language === 'tj' ? 'Низоми иттилоотии sud.tj' : 'Информационная система sud.tj'}
                 </span>
                 {courtContext && (
-                  <span className="font-mono text-[10px] text-amber-400 font-bold px-2 py-0.2 rounded bg-amber-500/10 border border-amber-400/30 uppercase truncate max-w-xs">
+                  <span className="font-mono text-2xs text-amber-400 font-bold px-2 py-0.2 rounded bg-amber-500/10 border border-amber-400/30 uppercase truncate max-w-xs">
                     {courtContext.nameRu}
                   </span>
                 )}
@@ -575,11 +575,11 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   <div className="space-y-2 text-xs">
                     <div className="p-2 glass glass-chip flex items-center justify-between">
                       <span className="font-mono text-theme-text">№ 1-2026 // Оид ба мурофиаи рақамӣ</span>
-                      <span className="font-mono text-[10px] text-theme-gold">02.2026</span>
+                      <span className="font-mono text-2xs text-theme-gold">02.2026</span>
                     </div>
                     <div className="p-2 glass glass-chip flex items-center justify-between">
                       <span className="font-mono text-theme-text">№ 4-2025 // Оид ба баҳсҳои молумулкӣ</span>
-                      <span className="font-mono text-[10px] text-theme-gold">12.2025</span>
+                      <span className="font-mono text-2xs text-theme-gold">12.2025</span>
                     </div>
                   </div>
                 </div>
@@ -603,7 +603,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   <span className="font-mono text-xs text-theme-gold uppercase tracking-widest font-bold">
                     [ СХЕМАИ ИЕРАРХИЯИ ДАСТГОҲ ВА ҲАЙАТҲО // BLUEPRINT ]
                   </span>
-                  <span className="font-mono text-[10px] text-theme-textMuted uppercase">
+                  <span className="font-mono text-2xs text-theme-textMuted uppercase">
                     СУДИ ОЛИИ ҶУМҲУРИИ ТОҶИКИСТОН
                   </span>
                 </div>
@@ -649,7 +649,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
 
                 {/* Level 3: 5 Judicial Collegiums */}
                 <div className="pt-2 border-t border-theme-border/60">
-                  <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest block mb-2 text-center">ҲАЙАТҲОИ СУДИИ СУДИ ОЛӢ</span>
+                  <span className="font-mono text-2xs text-theme-gold uppercase tracking-widest block mb-2 text-center">ҲАЙАТҲОИ СУДИИ СУДИ ОЛӢ</span>
                   <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-center text-xs">
                     <button
                       type="button"
@@ -710,8 +710,8 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
 
                 {/* Level 5: Collegium Secretariats */}
                 <div className="pt-2 border-t border-theme-border/60">
-                  <span className="font-mono text-[10px] text-theme-textMuted uppercase tracking-widest block mb-2 text-center">КОТИБОТҲОИ КОЛЛЕГИЯҲО</span>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-center text-[10px] font-mono text-theme-textMuted">
+                  <span className="font-mono text-2xs text-theme-textMuted uppercase tracking-widest block mb-2 text-center">КОТИБОТҲОИ КОЛЛЕГИЯҲО</span>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-center text-2xs font-mono text-theme-textMuted">
                     <div className="p-1.5 rounded-lg bg-theme-bg/40 border border-theme-border/40">Котиботи Раиси Суди Олӣ</div>
                     <div className="p-1.5 rounded-lg bg-theme-bg/40 border border-theme-border/40">Котиботи коллегияи ҷиноятӣ</div>
                     <div className="p-1.5 rounded-lg bg-theme-bg/40 border border-theme-border/40">Котиботи коллегияи маъмурӣ</div>
@@ -747,7 +747,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 ].map((col, idx) => (
                   <div key={idx} className="p-4 rounded-2xl bg-theme-surface border border-theme-border hover:border-theme-gold/40 transition-colors">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-mono text-[10px] text-theme-gold">{col.code}</span>
+                      <span className="font-mono text-2xs text-theme-gold">{col.code}</span>
                       <Shield size={14} className="text-theme-gold" />
                     </div>
                     <h4 className="font-serif font-bold text-sm text-theme-text mb-1">{col.name}</h4>
@@ -903,7 +903,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
               <div className="border border-theme-border rounded-2xl overflow-hidden bg-theme-surface shadow-xs overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse font-sans min-w-[600px]">
                   <thead>
-                    <tr className="border-b border-theme-border bg-theme-bg/80 font-mono text-[10px] text-theme-textMuted uppercase tracking-wider">
+                    <tr className="border-b border-theme-border bg-theme-bg/80 font-mono text-2xs text-theme-textMuted uppercase tracking-wider">
                       <th className="p-3.5">МАНСАБИ ШАХСЕ, КИ ШАҲРВАНДОНРО ҚАБУЛ МЕНАМОЯД</th>
                       <th className="p-3.5">НОМУ НАСАБИ ШАХСИ МАНСАБДОР</th>
                       <th className="p-3.5 text-center">РӮЗҲОИ ҚАБУЛ</th>
@@ -1051,7 +1051,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 font-mono text-[10px] text-theme-textMuted mb-1">
+                      <div className="flex items-center justify-between gap-2 font-mono text-2xs text-theme-textMuted mb-1">
                         <span className="uppercase tracking-wider text-theme-gold">
                           {language === 'en' ? act.typeEn : language === 'tj' ? act.typeTj : act.typeRu}
                         </span>
@@ -1137,7 +1137,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                         {language === 'en' ? (court.nameEn || court.nameRu) : language === 'tj' ? court.nameTj : court.nameRu}
                       </h4>
                     </div>
-                    <div className="mt-3 pt-2 border-t border-theme-border font-mono text-[10px] text-theme-textMuted group-hover:text-theme-gold flex items-center justify-between gap-2">
+                    <div className="mt-3 pt-2 border-t border-theme-border font-mono text-2xs text-theme-textMuted group-hover:text-theme-gold flex items-center justify-between gap-2">
                       <span>{court.domain}</span>
                       {hasCourtSite(court.domain.split('.')[0]) && (
                         <a
@@ -1315,7 +1315,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all flex flex-col justify-between shadow-xs"
                   >
                     <div>
-                      <div className="flex items-center justify-between font-mono text-[10px] text-theme-textMuted mb-2">
+                      <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-2">
                         <span className="flex items-center gap-1.5 text-theme-gold">
                           <Newspaper size={12} />
                           <span>МАТБУОТ</span>
@@ -1366,7 +1366,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     key={item.id}
                     className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all shadow-xs"
                   >
-                    <div className="flex items-center justify-between font-mono text-[10px] text-theme-textMuted mb-2">
+                    <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-2">
                       <span className="flex items-center gap-1.5 text-theme-gold">
                         <Megaphone size={12} />
                         <span>{language === 'en' ? 'NOTICE' : language === 'tj' ? 'ЭЪЛОН' : 'ОБЪЯВЛЕНИЕ'}</span>
@@ -1416,7 +1416,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     key={item.id}
                     className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all shadow-xs"
                   >
-                    <div className="flex items-center justify-between font-mono text-[10px] text-theme-textMuted mb-2">
+                    <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-2">
                       <span className="flex items-center gap-1.5 text-theme-gold">
                         <Briefcase size={12} />
                         <span>{language === 'en' ? 'VACANCY' : language === 'tj' ? 'ҶОЙИ КОРӢ' : 'ВАКАНСИЯ'}</span>
@@ -1509,7 +1509,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all flex flex-col justify-between shadow-xs"
                   >
                     <div>
-                      <div className="flex items-center justify-between font-mono text-[10px] text-theme-textMuted mb-2">
+                      <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-2">
                         <span className="flex items-center gap-1.5 text-theme-gold">
                           <Library size={12} />
                           <span>{language === 'en' ? 'JOURNAL' : language === 'tj' ? 'НАШРИЯ' : 'ЖУРНАЛ'}</span>
@@ -1645,7 +1645,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all flex flex-col justify-between shadow-xs"
                   >
                     <div>
-                      <div className="flex items-center justify-between font-mono text-[10px] text-theme-textMuted mb-1.5">
+                      <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-1.5">
                         <span className="text-theme-gold">{doc.category}</span>
                         <span>DOCX</span>
                       </div>

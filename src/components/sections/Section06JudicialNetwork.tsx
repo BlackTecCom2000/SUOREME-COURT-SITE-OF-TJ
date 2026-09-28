@@ -49,7 +49,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
                 <span className="tracking-widest text-theme-gold font-semibold">( F )</span>
                 <span className="text-theme-textMuted">[ 006 / 010 ]</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-2" />
-                <span className="font-mono text-[10px] text-theme-textMuted uppercase tracking-widest hidden sm:inline">
+                <span className="font-mono text-2xs text-theme-textMuted uppercase tracking-widest hidden sm:inline">
                   {t('network.badge')}
                 </span>
               </div>
@@ -104,7 +104,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-[10px] text-theme-textMuted hover:text-theme-text"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-2xs text-theme-textMuted hover:text-theme-text"
                 >
                   ESC
                 </button>
@@ -132,7 +132,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
                   aria-pressed={typeFilter === opt.id}
                   onClick={() => setTypeFilter(opt.id as typeof typeFilter)}
                   className={
-                    'px-2.5 py-1 rounded-full border font-mono text-[10px] uppercase tracking-wider transition-colors ' +
+                    'px-2.5 py-1 rounded-full border font-mono text-2xs uppercase tracking-wider transition-colors ' +
                     (typeFilter === opt.id
                       ? 'border-theme-gold bg-theme-gold/15 text-theme-gold'
                       : 'border-theme-border text-theme-textMuted hover:border-theme-borderHover hover:text-theme-text')
@@ -160,7 +160,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
               />
 
             {/* Floating Quick Legend in Canvas Bottom Left */}
-            <div className="absolute left-4 bottom-4 z-20 hidden md:flex items-center gap-3 glass glass-chip px-3.5 py-2 font-mono text-[10px] text-theme-textSec">
+            <div className="absolute left-4 bottom-4 z-20 hidden md:flex items-center gap-3 glass glass-chip px-3.5 py-2 font-mono text-2xs text-theme-textSec">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-[#dfbe7e] shadow-[0_0_8px_rgba(223,190,126,0.8)]" />
                 <span>{t('network.legendSupreme')}</span>
@@ -180,7 +180,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
             </div>
 
             {/* Hint in Canvas Bottom Right */}
-            <div className="absolute right-4 bottom-4 z-20 font-mono text-[10px] text-theme-textMuted glass glass-chip px-3 py-1.5 hidden sm:block">
+            <div className="absolute right-4 bottom-4 z-20 font-mono text-2xs text-theme-textMuted glass glass-chip px-3 py-1.5 hidden sm:block">
               {t('network.legendHint')}
             </div>
           </div>

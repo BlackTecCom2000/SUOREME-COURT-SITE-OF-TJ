@@ -107,7 +107,7 @@ export const PreviewComponentMapper: React.FC<PreviewComponentMapperProps> = ({ 
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
             </div>
             <div className="relative p-5 sm:p-6 flex flex-col justify-end text-left -mt-24">
-              <div className="flex items-center gap-2 mb-2 font-mono text-[10px]">
+              <div className="flex items-center gap-2 mb-2 font-mono text-2xs">
                 <span className="px-2.5 py-0.5 rounded-full bg-theme-gold/20 text-theme-gold border border-theme-gold/40 font-bold uppercase tracking-wider">
                   {badgeLabel}
                 </span>
@@ -153,7 +153,7 @@ export const PreviewComponentMapper: React.FC<PreviewComponentMapperProps> = ({ 
       return (
         <div className="max-w-xl mx-auto px-4 pt-8">
           <div className="p-4 rounded-xl bg-theme-surface border border-theme-gold/60 shadow-sm">
-            <div className="flex items-center justify-between font-mono text-[10px] text-theme-textMuted mb-2">
+            <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-2">
               <span className="flex items-center gap-1.5 text-theme-gold">
                 <BadgeIcon size={12} />
                 <span>{badgeLabel}</span>

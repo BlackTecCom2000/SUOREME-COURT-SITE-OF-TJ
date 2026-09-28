@@ -62,7 +62,7 @@ export const ImmersivePresentationModal: React.FC<ImmersivePresentationModalProp
         <div className="flex items-center gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] text-theme-gold uppercase tracking-widest">
+              <span className="font-mono text-2xs text-theme-gold uppercase tracking-widest">
                 [ 4K IMMERSIVE VIEW ]
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />

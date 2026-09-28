@@ -96,3 +96,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.10.1 - Design foundation - one type system, one palette, readable label sizes
 - Released: 2026-09-28 17:55
+
+## v2.10.2 - Component foundation - token-driven buttons and inputs, real focus rings, 11px label floor, Vite watch fix
+- Released: 2026-09-28 18:12

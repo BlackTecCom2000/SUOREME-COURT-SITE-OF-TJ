@@ -102,7 +102,7 @@ const SiteTabs: React.FC<{
         {tab.icon}
         <span>{tab.label}</span>
         {typeof tab.count === 'number' && (
-          <span className={'px-1.5 rounded-full text-[10px] ' + (activeTab === tab.id ? 'bg-black/20' : 'bg-theme-bg text-theme-textMuted')}>
+          <span className={'px-1.5 rounded-full text-2xs ' + (activeTab === tab.id ? 'bg-black/20' : 'bg-theme-bg text-theme-textMuted')}>
             {tab.count}
           </span>
         )}

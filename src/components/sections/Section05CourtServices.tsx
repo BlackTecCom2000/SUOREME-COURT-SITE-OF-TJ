@@ -99,7 +99,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
               <span className="tracking-widest text-theme-gold font-semibold">( 05 )</span>
               <span className="text-theme-textMuted">[ 005 / 007 ]</span>
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-1" />
-              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+              <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
                 {t('eservices.badge')}
               </span>
             </div>
@@ -138,7 +138,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                       <div className="p-2 rounded-lg bg-theme-bg/60 border border-theme-border">
                         <Icon size={20} className={item.colorClass} />
                       </div>
-                      <span className="font-mono text-[9px] px-2 py-0.5 rounded-full border border-theme-border bg-theme-bg/40 text-theme-textMuted uppercase tracking-wider">
+                      <span className="font-mono text-2xs px-2 py-0.5 rounded-full border border-theme-border bg-theme-bg/40 text-theme-textMuted uppercase tracking-wider">
                         {t(item.badgeKey)}
                       </span>
                     </div>
@@ -152,7 +152,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                     </p>
                   </div>
 
-                  <div className="mt-4 pt-2 border-t border-theme-border flex items-center justify-between font-mono text-[10px] text-theme-textMuted group-hover:text-theme-text transition-colors">
+                  <div className="mt-4 pt-2 border-t border-theme-border flex items-center justify-between font-mono text-2xs text-theme-textMuted group-hover:text-theme-text transition-colors">
                     <span className="text-theme-gold flex items-center gap-1">
                       <ShieldCheck size={12} />
                       <span>SUD.TJ</span>
@@ -222,7 +222,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                       <Send size={16} />
                       <span>{t('appeals.receptionTitle')}</span>
                     </div>
-                    <span className="font-mono text-[10px] text-emerald-400 border border-emerald-400/30 bg-emerald-500/10 px-2.5 py-0.5 rounded-full uppercase">
+                    <span className="font-mono text-2xs text-emerald-400 border border-emerald-400/30 bg-emerald-500/10 px-2.5 py-0.5 rounded-full uppercase">
                       {t('appeals.receptionGuarantee')}
                     </span>
                   </div>
@@ -233,7 +233,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                     <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/50 text-xs">
-                      <div className="font-mono text-[10px] text-theme-textMuted uppercase mb-1">
+                      <div className="font-mono text-2xs text-theme-textMuted uppercase mb-1">
                         {t('appeals.receptionPersonal')}
                       </div>
                       <div className="font-mono text-xs text-theme-text">
@@ -242,7 +242,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                     </div>
 
                     <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/50 text-xs">
-                      <div className="font-mono text-[10px] text-theme-textMuted uppercase mb-1">
+                      <div className="font-mono text-2xs text-theme-textMuted uppercase mb-1">
                         {t('appeals.receptionNotice')}
                       </div>
                       <div className="font-mono text-xs text-emerald-400 flex items-center gap-1">

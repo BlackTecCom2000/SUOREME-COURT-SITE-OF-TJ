@@ -51,7 +51,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
               <span className="tracking-widest text-theme-gold font-semibold">( 01 )</span>
               <span className="text-theme-textMuted">[ 001 / 007 ]</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
-              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+              <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
                 {t('acts.badge')}
               </span>
             </div>
@@ -97,7 +97,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
                       className="group p-4 glass glass-chip hover:border-theme-gold transition-all duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     >
                       <div>
-                        <div className="flex items-center gap-2 text-[10px] font-mono text-theme-textMuted mb-1">
+                        <div className="flex items-center gap-2 text-2xs font-mono text-theme-textMuted mb-1">
                           <span className="text-theme-gold font-semibold uppercase">{act.id}</span>
                           <span>•</span>
                           <span>{act.date}</span>
@@ -107,7 +107,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
                         </h4>
                       </div>
 
-                      <div className="flex items-center gap-2 font-mono text-[10px] shrink-0">
+                      <div className="flex items-center gap-2 font-mono text-2xs shrink-0">
                         <span className="inline-flex items-center gap-1 text-emerald-400 bg-emerald-950/30 px-2 py-0.5 rounded border border-emerald-500/20">
                           <CheckCircle2 size={11} />
                           <span>{t('acts.inForce')}</span>
@@ -159,7 +159,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
                       onClick={onOpenNews}
                       className="group p-4 glass glass-chip hover:border-theme-gold transition-all duration-200 cursor-pointer"
                     >
-                      <div className="flex items-center justify-between font-mono text-[10px] text-theme-textMuted mb-1.5">
+                      <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-1.5">
                         <span className="text-theme-gold font-semibold">ПРЕСС-ЦЕНТР</span>
                         <span>{new Date(item.published_at).toLocaleDateString()}</span>
                       </div>

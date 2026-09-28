@@ -43,12 +43,12 @@ export const CourtQrCode: React.FC<CourtQrCodeProps> = ({
       style={{ width: size + 16, minHeight: size + 16 }}
     >
       <Globe size={Math.max(20, Math.round(size / 3))} aria-hidden="true" />
-      <span className="font-mono text-[10px] leading-tight break-all text-center px-1">{host}</span>
-      <span className="inline-flex items-center gap-1 font-mono text-[10px] font-bold uppercase text-theme-gold">
+      <span className="font-mono text-2xs leading-tight break-all text-center px-1">{host}</span>
+      <span className="inline-flex items-center gap-1 font-mono text-2xs font-bold uppercase text-theme-gold">
         <ExternalLink size={11} aria-hidden="true" />
         {open}
       </span>
-      <span className="font-mono text-[9px] uppercase tracking-wider text-theme-textMuted">{soon}</span>
+      <span className="font-mono text-2xs uppercase tracking-wider text-theme-textMuted">{soon}</span>
     </a>
   );
 };

@@ -34,7 +34,7 @@ export const AdminBadge: React.FC<AdminBadgeProps> = ({
   }[variant];
 
   const sizeStyles = {
-    sm: 'text-[10px] px-2 py-0.5 font-mono uppercase tracking-wider',
+    sm: 'text-2xs px-2 py-0.5 font-mono uppercase tracking-wider',
     md: 'text-xs px-2.5 py-1 font-mono uppercase tracking-wider',
   }[size];
 

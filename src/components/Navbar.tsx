@@ -292,7 +292,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="font-serif text-xs sm:text-sm font-bold text-theme-text leading-tight group-hover:text-theme-gold transition-colors truncate">
                 {t('nav.title')}
               </div>
-              <div className="font-mono text-[9px] text-theme-textMuted leading-none mt-0.5 truncate">
+              <div className="font-mono text-2xs text-theme-textMuted leading-none mt-0.5 truncate">
                 {t('nav.subtitle')}
               </div>
             </div>
@@ -313,7 +313,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={l}
                   type="button"
                   onClick={() => setLanguage(l)}
-                  className={`relative px-2 py-0.5 rounded-lg text-[10px] font-mono font-medium transition-colors z-10 ${
+                  className={`relative px-2 py-0.5 rounded-lg text-2xs font-mono font-medium transition-colors z-10 ${
                     isActive
                       ? 'text-black font-bold'
                       : 'text-theme-textMuted hover:text-theme-text'
@@ -407,7 +407,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
             {/* Custom Tooltip (hover + keyboard focus) */}
             <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 z-50">
-              <div className="bg-gray-900 border border-gray-700 text-white text-[10px] font-mono py-1 px-2 rounded-lg shadow-lg whitespace-nowrap">
+              <div className="bg-gray-900 border border-gray-700 text-white text-2xs font-mono py-1 px-2 rounded-lg shadow-lg whitespace-nowrap">
                 {language === 'tj' ? 'Панели идоракунӣ' : language === 'en' ? 'Admin Panel' : 'Админ-панель'}
               </div>
             </div>
@@ -466,7 +466,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                 <div className="text-xs font-serif font-bold text-theme-text group-hover:text-theme-gold transition-colors truncate">
                                   {title}
                                 </div>
-                                <div className="text-[10px] font-mono text-theme-textMuted leading-tight truncate">
+                                <div className="text-2xs font-mono text-theme-textMuted leading-tight truncate">
                                   {desc}
                                 </div>
                               </div>
@@ -718,7 +718,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Portal Links */}
             <div>
-              <span className="font-mono text-[10px] text-theme-textMuted uppercase tracking-widest block mb-2 px-1">
+              <span className="font-mono text-2xs text-theme-textMuted uppercase tracking-widest block mb-2 px-1">
                 {language === 'tj' ? 'Бахшҳои асосии сомона' : language === 'en' ? 'Portal Navigation' : 'Навигация'}
               </span>
               <ul className="flex flex-col gap-1.5 list-none p-0 m-0">
@@ -758,7 +758,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <FileText size={14} />
               <span>{language === 'tj' ? 'Пешниҳоди ҳуҷҷат' : language === 'en' ? 'File Document' : 'Подать документ'}</span>
             </button>
-            <div className="flex items-center justify-between text-[10px] font-mono text-theme-textMuted pt-1">
+            <div className="flex items-center justify-between text-2xs font-mono text-theme-textMuted pt-1">
               <span>SUD.TJ // DIGITAL JUSTICE</span>
               <span>© 2026</span>
             </div>

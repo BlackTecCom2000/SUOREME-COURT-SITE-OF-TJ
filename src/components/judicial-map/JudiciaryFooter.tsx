@@ -35,7 +35,7 @@ export const JudiciaryFooter: React.FC = () => {
           {courtName}
         </span>
       </div>
-      <div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] text-[var(--jm-muted)]">
+      <div className="flex items-center gap-2 font-mono text-2xs tracking-[0.2em] text-[var(--jm-muted)]">
         {principles.map((p, i) => (
           <React.Fragment key={p}>
             {i > 0 && <span aria-hidden="true">•</span>}
@@ -43,7 +43,7 @@ export const JudiciaryFooter: React.FC = () => {
           </React.Fragment>
         ))}
       </div>
-      <div className="font-mono text-[10px] tracking-[0.18em] text-[var(--jm-muted)]">{tagline}</div>
+      <div className="font-mono text-2xs tracking-[0.18em] text-[var(--jm-muted)]">{tagline}</div>
     </footer>
   );
 };

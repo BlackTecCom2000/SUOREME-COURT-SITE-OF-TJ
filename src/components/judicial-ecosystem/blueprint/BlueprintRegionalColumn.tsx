@@ -192,7 +192,7 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
         <div className="w-full h-px bg-white/10 my-2" aria-hidden="true" />
 
         {/* Compact statistics — subtle glass, no inner heavy borders */}
-        <div className="w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-xl glass border border-white/10 font-mono text-[10px] text-theme-textMuted">
+        <div className="w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-xl glass border border-white/10 font-mono text-2xs text-theme-textMuted">
           <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cluster.colorHex }} aria-hidden="true" /> 1 {language === 'tj' ? 'вилоятӣ' : language === 'en' ? 'regional' : 'областной'}</span>
           <span className="opacity-30">•</span>
           <span>{cityCount} {language === 'tj' ? 'шаҳрӣ' : language === 'en' ? 'city' : 'городских'}</span>
@@ -229,7 +229,7 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
           <button
             type="button"
             onClick={() => setExpanded(!expanded)}
-            className="mt-2 w-full py-1.5 rounded-xl glass border border-white/10 hover:border-[var(--court-gold)]/40 text-[10px] font-mono uppercase tracking-wider text-theme-textMuted hover:text-theme-text transition-colors flex items-center justify-center gap-1.5 min-h-[32px]"
+            className="mt-2 w-full py-1.5 rounded-xl glass border border-white/10 hover:border-[var(--court-gold)]/40 text-2xs font-mono uppercase tracking-wider text-theme-textMuted hover:text-theme-text transition-colors flex items-center justify-center gap-1.5 min-h-[32px]"
             aria-expanded={expanded}
           >
             <ChevronDown size={12} className={`transition-transform ${expanded ? 'rotate-180' : ''}`} />
@@ -264,7 +264,7 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
               aria-hidden="true"
             />
             <MapPin size={10} className="shrink-0 opacity-50" aria-hidden="true" />
-            <span className="font-mono font-medium tracking-wider text-[10px] uppercase truncate text-theme-text">
+            <span className="font-mono font-medium tracking-wider text-2xs uppercase truncate text-theme-text">
               {language === 'tj' ? militaryCourt.nameTj : militaryCourt.nameRu}
             </span>
           </div>

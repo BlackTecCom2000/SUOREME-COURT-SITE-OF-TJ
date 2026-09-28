@@ -63,7 +63,7 @@ export const Section08ElectronicCourt: React.FC<Section08ElectronicCourtProps> =
             <span className="tracking-widest text-theme-gold font-semibold">( H )</span>
             <span className="text-theme-textMuted">[ 008 / 010 ]</span>
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-2" />
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+            <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
               {t('eservices.badge')}
             </span>
           </div>
@@ -114,7 +114,7 @@ export const Section08ElectronicCourt: React.FC<Section08ElectronicCourtProps> =
                     <div className="p-2.5 glass glass-chip">
                       <Icon size={22} className={item.colorClass} />
                     </div>
-                    <span className="font-mono text-[10px] px-2.5 py-1 rounded-full glass glass-chip text-theme-textMuted uppercase tracking-wider">
+                    <span className="font-mono text-2xs px-2.5 py-1 rounded-full glass glass-chip text-theme-textMuted uppercase tracking-wider">
                       {t(item.badgeKey)}
                     </span>
                   </div>

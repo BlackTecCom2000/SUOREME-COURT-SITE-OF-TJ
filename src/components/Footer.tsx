@@ -66,7 +66,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
               >
                 <ExternalLink size={15} className="text-theme-gold shrink-0 mt-0.5" />
                 <span>
-                  <span className="block text-[10px] uppercase tracking-widest text-theme-gold mb-1 font-semibold">
+                  <span className="block text-2xs uppercase tracking-widest text-theme-gold mb-1 font-semibold">
                     {language === 'en' ? 'President message' : language === 'tj' ? 'Паёми президент' : 'Послание президента'}
                   </span>
                   <span className="font-sans text-sm text-theme-text group-hover:text-theme-gold leading-snug">{pickLink(PRESIDENT_MESSAGE)}</span>
@@ -78,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
               {/* 1 — СУДИ ОЛИИ — GlassNavigationColumn */}
               <nav aria-label={language === 'en' ? 'Supreme Court' : 'СУДИ ОЛИИ'} className="glass glass-card p-5">
-                <div className="text-[10px] uppercase tracking-widest text-theme-gold mb-3 font-mono font-bold">СУДИ ОЛИИ</div>
+                <div className="text-2xs uppercase tracking-widest text-theme-gold mb-3 font-mono font-bold">СУДИ ОЛИИ</div>
                 <ul className="space-y-1" role="list">
                   {courtNav.map((l) => (
                     <li key={l.to}>
@@ -104,7 +104,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
 
               {/* 2 — СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ — Courts directory GlassList, single source */}
               <section aria-label="СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ" className="glass glass-card p-5">
-                <div className="text-[10px] uppercase tracking-widest text-theme-gold mb-3 font-mono font-bold">СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ</div>
+                <div className="text-2xs uppercase tracking-widest text-theme-gold mb-3 font-mono font-bold">СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ</div>
                 <div className="max-h-[260px] overflow-y-auto pr-1 space-y-1 custom-scrollbar">
                   {REGIONAL_CLUSTERS.map((rc) => (
                     <div key={rc.id}>
@@ -126,7 +126,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                               </a>
                             </li>
                           ))}
-                          {rc.courts.length > 8 && <li className="text-[10px] text-theme-textMuted">+{rc.courts.length - 8} {language === 'en' ? 'more' : 'еще'}</li>}
+                          {rc.courts.length > 8 && <li className="text-2xs text-theme-textMuted">+{rc.courts.length - 8} {language === 'en' ? 'more' : 'еще'}</li>}
                         </ul>
                       )}
                     </div>
@@ -136,7 +136,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
 
               {/* 3 — Interactive Tajikistan map — Liquid Glass map interface */}
               <section aria-label="Карта" className="glass glass-card p-5 flex flex-col">
-                <div className="text-[10px] uppercase tracking-widest text-theme-gold mb-3 font-mono flex items-center gap-2 font-bold">
+                <div className="text-2xs uppercase tracking-widest text-theme-gold mb-3 font-mono flex items-center gap-2 font-bold">
                   <Map size={12} /> {language === 'en' ? 'Judicial Map' : language === 'tj' ? 'Харита' : 'Карта'}
                 </div>
                 <div className="relative flex-1 min-h-[180px] rounded-[20px] overflow-hidden border border-theme-border bg-theme-bg/60 backdrop-blur-md flex items-center justify-center p-4">
@@ -161,7 +161,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                       );
                     })}
                   </svg>
-                  <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[9px] font-mono text-theme-textMuted">
+                  <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-2xs font-mono text-theme-textMuted">
                     <span>{language === 'en' ? 'Select region' : language === 'tj' ? 'Минтақаро интихоб кунед' : 'Выберите регион'}</span>
                     <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-theme-gold animate-pulse" /> LIVE</span>
                   </div>
@@ -169,40 +169,40 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 {/* Accessible alternative list for keyboard/screen reader */}
                 <nav aria-label="Regions" className="mt-3 flex flex-wrap gap-1.5">
                   {REGIONAL_CLUSTERS.map((rc) => (
-                    <button key={`foot-map-${rc.id}`} type="button" onClick={() => setSelectedRegion(rc.id)} className={`px-2.5 py-1 rounded-full text-[10px] font-mono border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold text-black font-semibold border-theme-gold' : 'border-theme-border text-theme-textSec hover:text-theme-text hover:border-theme-gold/40 hover:bg-theme-bg/60'}`}>{rc.shortNameRu}</button>
+                    <button key={`foot-map-${rc.id}`} type="button" onClick={() => setSelectedRegion(rc.id)} className={`px-2.5 py-1 rounded-full text-2xs font-mono border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold text-black font-semibold border-theme-gold' : 'border-theme-border text-theme-textSec hover:text-theme-text hover:border-theme-gold/40 hover:bg-theme-bg/60'}`}>{rc.shortNameRu}</button>
                   ))}
                 </nav>
               </section>
 
               {/* 4 — ТАМОС — GlassContactPanel, real contacts */}
               <section aria-label="ТАМОС" className="glass glass-card p-5">
-                <div className="text-[10px] uppercase tracking-widest text-theme-gold mb-3 font-mono font-bold">ТАМОС</div>
+                <div className="text-2xs uppercase tracking-widest text-theme-gold mb-3 font-mono font-bold">ТАМОС</div>
                 <address className="not-italic space-y-3 text-sm">
                   <div className="flex gap-3 p-3 rounded-xl glass border border-theme-border">
                     <MapPin size={16} className="text-theme-gold shrink-0 mt-0.5" />
                     <div className="text-theme-textSec leading-snug text-xs">
-                      <span className="block text-[10px] uppercase text-theme-textMuted mb-1">{t('contacts.legalAddressLabel')}</span>
+                      <span className="block text-2xs uppercase text-theme-textMuted mb-1">{t('contacts.legalAddressLabel')}</span>
                       {t('contacts.legalAddressValue')}
                     </div>
                   </div>
                   <a href="mailto:info@sud.tj" className="flex gap-3 p-3 rounded-xl glass border border-theme-border hover:border-theme-gold/40 transition-colors group">
                     <Mail size={16} className="text-emerald-500 shrink-0 mt-0.5" />
                     <div>
-                      <span className="block text-[10px] uppercase text-theme-textMuted">E-mail</span>
+                      <span className="block text-2xs uppercase text-theme-textMuted">E-mail</span>
                       <span className="text-theme-text group-hover:text-theme-gold text-xs font-medium">info@sud.tj</span>
                     </div>
                   </a>
                   <a href="tel:+992372331415" className="flex gap-3 p-3 rounded-xl glass border border-theme-border hover:border-theme-gold/40 transition-colors group">
                     <Phone size={16} className="text-cyan-500 shrink-0 mt-0.5" />
                     <div>
-                      <span className="block text-[10px] uppercase text-theme-textMuted">{t('contacts.hotlineLabel')}</span>
+                      <span className="block text-2xs uppercase text-theme-textMuted">{t('contacts.hotlineLabel')}</span>
                       <span className="text-theme-text group-hover:text-theme-gold text-xs font-medium">+992 (37) 233-14-15</span>
                     </div>
                   </a>
                   <div className="flex gap-3 p-3 rounded-xl glass border border-theme-border">
                     <FileText size={16} className="text-theme-textMuted shrink-0 mt-0.5" />
                     <div>
-                      <span className="block text-[10px] uppercase text-theme-textMuted">Факс</span>
+                      <span className="block text-2xs uppercase text-theme-textMuted">Факс</span>
                       <span className="text-theme-textSec text-xs">+992 (37) 233-14-15</span>
                     </div>
                   </div>
@@ -249,18 +249,18 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                           className="ticker-item glass border border-theme-border hover:border-theme-gold rounded-[16px] flex flex-col items-center justify-center gap-1.5 p-2 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-gold group shrink-0"
                           style={{ width: `${Math.max(140, marquee.logo_size * 2.1)}px`, height: `${marquee.logo_size}px` } as React.CSSProperties}
                         >
-                          <span className="w-9 h-9 rounded-full bg-theme-bg/60 border border-theme-border flex items-center justify-center text-[10px] font-mono text-theme-textSec group-hover:text-theme-gold group-hover:bg-theme-bg transition-colors shrink-0" aria-hidden="true">
+                          <span className="w-9 h-9 rounded-full bg-theme-bg/60 border border-theme-border flex items-center justify-center text-2xs font-mono text-theme-textSec group-hover:text-theme-gold group-hover:bg-theme-bg transition-colors shrink-0" aria-hidden="true">
                             {pickLink(l).slice(0, 2).toUpperCase()}
                           </span>
                           <span className="text-[11px] font-medium text-theme-text leading-tight line-clamp-2">{pickLink(l)}</span>
-                          <span className="text-[9px] font-mono text-theme-textMuted truncate max-w-full px-2">{(() => { try { return new URL(l.url).hostname } catch { return l.url } })()}</span>
+                          <span className="text-2xs font-mono text-theme-textMuted truncate max-w-full px-2">{(() => { try { return new URL(l.url).hostname } catch { return l.url } })()}</span>
                         </a>
                       ))}
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="flex justify-between items-center mt-2 text-[10px] font-mono text-theme-textMuted">
+              <div className="flex justify-between items-center mt-2 text-2xs font-mono text-theme-textMuted">
                 <span className="sm:hidden">← swipe / touch →</span>
                 <span className="hidden sm:inline opacity-60">{marquee.autoplay ? (language === 'en' ? 'Auto • hover to pause' : 'Авто • пауза при наведении') : (language === 'en' ? 'Paused' : 'Пауза')}</span>
                 <span className="hidden sm:inline opacity-60">{marquee.speed}s • {marquee.direction}</span>
@@ -282,7 +282,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
               </div>
               <div className="flex items-center gap-3">
                 {/* IT branding — GlassBrandBadge compact, only if real official element present */}
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full glass border border-theme-gold/30 text-[10px] font-mono text-theme-gold font-semibold">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full glass border border-theme-gold/30 text-2xs font-mono text-theme-gold font-semibold">
                   <span style={{ fontSize: '12px' }} aria-hidden="true">⚖️</span> BlackTecCom
                 </span>
                 <span className="text-theme-textMuted hidden sm:inline">v2.6.0</span>

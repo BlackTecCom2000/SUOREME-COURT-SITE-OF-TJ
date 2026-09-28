@@ -108,7 +108,7 @@ export const CourtLeaf: React.FC<CourtLeafProps> = ({
         <span className="text-[11px] font-mono text-theme-text leading-tight block">
           {fullTitle}
         </span>
-        <span className="text-[9px] font-mono text-theme-gold uppercase tracking-wider block mt-1">
+        <span className="text-2xs font-mono text-theme-gold uppercase tracking-wider block mt-1">
           {court.domain}
         </span>
       </div>

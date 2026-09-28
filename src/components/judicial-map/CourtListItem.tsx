@@ -70,7 +70,7 @@ export const CourtListItem: React.FC<CourtListItemProps> = ({
       <MapPin size={15} strokeWidth={1.75} className="shrink-0 text-[var(--jm-muted)] transition-colors" />
       <span className="flex-1 min-w-0" style={{ opacity: dimmed ? 0.35 : 1 }}>
         <span className="block text-[13px] font-medium text-[var(--jm-text)] leading-snug">{name}</span>
-        <span className="block font-mono text-[10px] text-[var(--jm-muted)] leading-tight mt-0.5">{typeLabel}</span>
+        <span className="block font-mono text-2xs text-[var(--jm-muted)] leading-tight mt-0.5">{typeLabel}</span>
       </span>
       <ChevronRight size={14} className="shrink-0 text-[var(--jm-muted)] group-hover:translate-x-0.5 transition-all" />
     </button>

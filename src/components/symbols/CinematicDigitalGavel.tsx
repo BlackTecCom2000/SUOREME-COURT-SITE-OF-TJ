@@ -452,7 +452,7 @@ export const CinematicDigitalGavel: React.FC<CinematicDigitalGavelProps> = ({
         </div>
 
         {/* Keyboard & Mouse Interaction Hint */}
-        <div className="flex items-center gap-2 font-mono text-[10px] text-white/50 tracking-wider">
+        <div className="flex items-center gap-2 font-mono text-2xs text-white/50 tracking-wider">
           <span className="hidden sm:inline">
             [Space / Enter] = {language === 'tj' ? 'Зарба' : language === 'en' ? 'Strike' : 'Удар'}
           </span>

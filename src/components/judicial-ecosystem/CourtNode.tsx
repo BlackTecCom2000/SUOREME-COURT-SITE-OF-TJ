@@ -51,7 +51,7 @@ export const CourtNode: React.FC<CourtNodeProps> = ({
             style={{ backgroundColor: colorHex }}
             className="w-1.5 h-1.5 rounded-full shrink-0 shadow-xs"
           />
-          <span className="font-mono text-[10px] text-theme-textMuted truncate">
+          <span className="font-mono text-2xs text-theme-textMuted truncate">
             {court.domain}
           </span>
         </div>
@@ -73,7 +73,7 @@ export const CourtNode: React.FC<CourtNodeProps> = ({
       </div>
 
       {!compact && (
-        <div className="mt-2 pt-1.5 border-t border-theme-border flex items-center justify-between text-[10px] font-mono text-theme-textMuted">
+        <div className="mt-2 pt-1.5 border-t border-theme-border flex items-center justify-between text-2xs font-mono text-theme-textMuted">
           <span className="flex items-center gap-1">
             <MapPin size={10} />
             <span className="truncate max-w-[140px]">{court.addressRu}</span>

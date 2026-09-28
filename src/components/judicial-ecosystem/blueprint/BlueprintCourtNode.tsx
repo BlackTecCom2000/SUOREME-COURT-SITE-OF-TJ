@@ -89,7 +89,7 @@ export const BlueprintCourtNode: React.FC<BlueprintCourtNodeProps> = ({
       <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: colorHex }} aria-hidden="true" />
       <MapPin size={11} className="shrink-0 opacity-50" aria-hidden="true" />
       <div className="flex-1 min-w-0">
-        <span className="font-mono text-[9px] uppercase tracking-wider text-theme-textMuted block truncate leading-none">{typePrefix}</span>
+        <span className="font-mono text-2xs uppercase tracking-wider text-theme-textMuted block truncate leading-none">{typePrefix}</span>
         <span className={`font-medium block truncate leading-tight ${isRegionalHeaderNode ? 'text-[13px] text-theme-text' : 'text-[11px] sm:text-xs text-theme-text'}`}>
           {isRegionalHeaderNode
             ? court.nameTj.replace(/^(Суди вилояти|Суди шаҳри) /i, '').toUpperCase()

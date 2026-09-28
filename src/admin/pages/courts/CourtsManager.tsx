@@ -161,7 +161,7 @@ export const CourtsManager: React.FC = () => {
             </span>
             <div className="flex items-center gap-2 mt-0.5">
               <span
-                className="font-mono text-[10px] font-bold uppercase tracking-wider"
+                className="font-mono text-2xs font-bold uppercase tracking-wider"
                 style={{ color: cluster?.colorHex || '#dfbe7e' }}
               >
                 {cluster?.shortNameRu || row.regionId}

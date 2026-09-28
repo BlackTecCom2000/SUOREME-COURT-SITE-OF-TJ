@@ -98,7 +98,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 font-mono text-xs">
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-theme-textMuted uppercase block">Всего органов</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Всего органов</span>
             <span className="text-lg font-bold text-theme-text">{total}</span>
           </div>
           <Landmark size={18} className="text-theme-gold" />
@@ -106,7 +106,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
 
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-theme-textMuted uppercase block">Городских судов</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Городских судов</span>
             <span className="text-lg font-bold text-theme-text">{cities}</span>
           </div>
           <Building2 size={18} className="text-cyan-500" />
@@ -114,7 +114,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
 
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-theme-textMuted uppercase block">Районных судов</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Районных судов</span>
             <span className="text-lg font-bold text-theme-text">{districts}</span>
           </div>
           <MapPin size={18} className="text-emerald-500" />
@@ -122,7 +122,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
 
         <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-theme-textMuted uppercase block">Гарнизон</span>
+            <span className="text-2xs text-theme-textMuted uppercase block">Гарнизон</span>
             <span className="text-lg font-bold text-theme-text">{military || 1}</span>
           </div>
           <Shield size={18} className="text-violet-500" />

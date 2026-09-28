@@ -533,7 +533,7 @@ export const LawBookshelf: React.FC<LawBookshelfProps> = ({ books, showSearch = 
                     >
                       <Scale size={15} className="text-theme-gold shrink-0" />
                       <span className="leglib-spine-text">{title}</span>
-                      <span className="font-mono text-[8px] tracking-[0.2em] text-theme-gold/80">
+                      <span className="font-mono text-2xs tracking-[0.2em] text-theme-gold/80">
                         {String(idx + 1).padStart(2, '0')}
                       </span>
                     </span>
@@ -548,7 +548,7 @@ export const LawBookshelf: React.FC<LawBookshelfProps> = ({ books, showSearch = 
                       <span className="font-sans text-[13px] font-semibold leading-snug text-center text-theme-text line-clamp-4">
                         {coverTitle(b, language)}
                       </span>
-                      <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-theme-gold">
+                      <span className="flex items-center gap-1.5 font-mono text-2xs uppercase tracking-wider text-theme-gold">
                         <span className="px-2 py-0.5 rounded border border-theme-gold/50 bg-theme-gold/10 inline-flex items-center gap-1">
                           <FileText size={11} aria-hidden="true" />
                           {b.badge || 'DOC'}

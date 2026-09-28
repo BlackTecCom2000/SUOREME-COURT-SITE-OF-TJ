@@ -47,7 +47,7 @@ export const AdminProfileMenu: React.FC = () => {
           <span className="text-xs font-semibold text-white leading-tight truncate max-w-[120px]">
             {user?.name || 'Administrator'}
           </span>
-          <span className="text-[9px] font-mono text-amber-400 uppercase tracking-wider">
+          <span className="text-2xs font-mono text-amber-400 uppercase tracking-wider">
             {user?.role || 'super_admin'}
           </span>
         </div>
@@ -60,7 +60,7 @@ export const AdminProfileMenu: React.FC = () => {
           <div className="p-2 pb-3 border-b border-slate-800">
             <div className="flex items-center gap-2 mb-1">
               <ShieldCheck size={14} className="text-amber-400" />
-              <span className="font-mono text-[10px] font-bold text-amber-400 uppercase tracking-wider">
+              <span className="font-mono text-2xs font-bold text-amber-400 uppercase tracking-wider">
                 {roleLabel}
               </span>
             </div>
@@ -100,7 +100,7 @@ export const AdminProfileMenu: React.FC = () => {
               <span className="font-mono text-[11px] text-slate-400">Тема</span>
               <button
                 onClick={toggleTheme}
-                className="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-mono text-[10px] hover:bg-slate-700"
+                className="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-mono text-2xs hover:bg-slate-700"
               >
                 {isDark ? 'ТЕМНАЯ (НОЧЬ)' : 'СВЕТЛАЯ (ДЕНЬ)'}
               </button>

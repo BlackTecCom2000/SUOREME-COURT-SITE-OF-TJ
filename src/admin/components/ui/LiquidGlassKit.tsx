@@ -54,10 +54,10 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({ design, onChange
           <div className="relative flex items-center justify-between gap-3 border-b border-white/15 pb-3">
             <div>
               <div className="font-serif text-base font-bold text-theme-text">Liquid Glass Foundations</div>
-              <div className="mt-1 font-mono text-[10px] uppercase tracking-widest text-theme-textMuted">Global component preview</div>
+              <div className="mt-1 font-mono text-2xs uppercase tracking-widest text-theme-textMuted">Global component preview</div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="hidden rounded-full border border-white/15 px-2 py-1 font-mono text-[9px] text-theme-textMuted sm:inline">{enabled ? 'Enabled' : 'Disabled'}</span>
+              <span className="hidden rounded-full border border-white/15 px-2 py-1 font-mono text-2xs text-theme-textMuted sm:inline">{enabled ? 'Enabled' : 'Disabled'}</span>
               <button type="button" aria-label="Toggle glass preview" onClick={() => setEnabled(!enabled)} className={`relative h-7 w-12 rounded-full border border-white/20 p-1 transition-colors ${enabled ? 'bg-cyan-400/35' : 'bg-black/20'}`}>
                 <span className={`block h-5 w-5 rounded-full bg-white shadow transition-transform ${enabled ? 'translate-x-5' : ''}`} />
               </button>
@@ -103,7 +103,7 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({ design, onChange
         <div className="grid gap-2 sm:grid-cols-3">
           {Object.entries(presets).map(([name, values]) => (
             <button type="button" key={name} onClick={() => setPreset(values)} className="glass glass-card min-h-11 px-3 text-left text-xs font-semibold text-theme-text transition-transform hover:-translate-y-0.5">
-              {name}<span className="mt-1 block text-[10px] font-normal text-theme-textMuted">Apply preset</span>
+              {name}<span className="mt-1 block text-2xs font-normal text-theme-textMuted">Apply preset</span>
             </button>
           ))}
         </div>
@@ -113,7 +113,7 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({ design, onChange
             const value = read(setting);
             return (
               <div key={setting.key} className="min-w-0">
-                <div className="mb-1 flex items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-wider text-theme-textMuted">
+                <div className="mb-1 flex items-center justify-between gap-2 font-mono text-2xs uppercase tracking-wider text-theme-textMuted">
                   <span>{setting.label}</span><span className="text-theme-text">{value}{setting.suffix || ''}</span>
                 </div>
                 <div className="grid grid-cols-[minmax(0,1fr)_4.5rem_auto] items-center gap-2">

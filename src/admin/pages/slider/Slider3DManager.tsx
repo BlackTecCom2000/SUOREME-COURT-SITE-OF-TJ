@@ -585,7 +585,7 @@ export const Slider3DManager: React.FC = () => {
 
                       <div className="min-w-0 text-left">
                         <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                          <span className="px-2 py-0.5 rounded text-2xs font-mono font-bold uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
                             {slide.categoryTj || slide.categoryRu}
                           </span>
                           <span className="text-[11px] font-mono text-black dark:text-white">
@@ -772,7 +772,7 @@ export const Slider3DManager: React.FC = () => {
                 onChange={(e) => setConfig({ ...config, interval: Number(e.target.value) })}
                 className="w-full accent-amber-500 dark:accent-amber-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
               />
-              <div className="flex justify-between text-[10px] font-mono text-black dark:text-white">
+              <div className="flex justify-between text-2xs font-mono text-black dark:text-white">
                 <span>Быстро (2 сек)</span>
                 <span>Стандарт (6 сек)</span>
                 <span>Медленно (15 сек)</span>
@@ -1602,7 +1602,7 @@ export const Slider3DManager: React.FC = () => {
                   className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 hover:bg-white dark:bg-slate-900/60 dark:hover:bg-slate-900 flex items-center justify-between gap-4 transition-colors shadow-sm dark:shadow-none"
                 >
                   <div className="min-w-0 text-left">
-                    <span className="text-[10px] font-mono text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30 uppercase font-bold">
+                    <span className="text-2xs font-mono text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30 uppercase font-bold">
                       {news.category || 'НОВОСТЬ'}
                     </span>
                     <h5 className="font-serif font-bold text-sm text-black dark:text-white truncate mt-1">

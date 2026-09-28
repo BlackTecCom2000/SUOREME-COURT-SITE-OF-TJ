@@ -149,10 +149,10 @@ export const DigitalDataRain: React.FC<DigitalDataRainProps> = ({
       {columns.map((col) => {
         const fontSize =
           col.depthLayer === 'bg'
-            ? 'text-[8px] sm:text-[9px] blur-[0.5px] opacity-40'
+            ? 'text-2xs sm:text-2xs blur-[0.5px] opacity-40'
             : col.depthLayer === 'fg'
-            ? 'text-[10px] sm:text-[11px] opacity-90'
-            : 'text-[9px] sm:text-[10px] opacity-65';
+            ? 'text-2xs sm:text-[11px] opacity-90'
+            : 'text-2xs sm:text-2xs opacity-65';
 
         const defaultTokenColor = isDark ? '#ffffff' : '#334155';
         const accentTokenColor = isDark ? col.accentColorDark : col.accentColorLight;

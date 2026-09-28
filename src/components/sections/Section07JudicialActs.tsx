@@ -31,7 +31,7 @@ export const Section07JudicialActs: React.FC<Section07JudicialActsProps> = ({
             <span className="tracking-widest text-theme-gold font-semibold">( G )</span>
             <span className="text-theme-textMuted">[ 007 / 010 ]</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-2" />
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase hidden sm:inline">
+            <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
               {t('acts.badge')}
             </span>
           </div>

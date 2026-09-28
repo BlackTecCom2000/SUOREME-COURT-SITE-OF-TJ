@@ -139,7 +139,7 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
           <span className="block text-sm sm:text-[15px] font-bold tracking-[0.03em] uppercase text-[var(--jm-text)] truncate">
             {title}
           </span>
-          <span className="block font-mono text-[10px] text-[var(--jm-muted)] leading-tight mt-0.5 truncate">
+          <span className="block font-mono text-2xs text-[var(--jm-muted)] leading-tight mt-0.5 truncate">
             {subtitle}
           </span>
         </span>

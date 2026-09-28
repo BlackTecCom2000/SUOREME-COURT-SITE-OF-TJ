@@ -56,7 +56,7 @@ export const InteractiveLawBook: React.FC<{ books?: ShowcaseBook[] }> = ({ books
       <div className="relative overflow-hidden glass glass-panel leglib-showcase-shell p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-1">
           <BookOpen size={14} className="text-theme-gold" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-theme-gold">
+          <span className="font-mono text-2xs uppercase tracking-[0.2em] text-theme-gold">
             {t('leglib.featuredBadge')}
           </span>
         </div>

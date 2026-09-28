@@ -39,7 +39,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onChange, className
           <span>{t.label}</span>
           {typeof t.count === 'number' && (
             <span
-              className={`px-1.5 rounded-full text-[10px] ${active ? 'bg-black/20' : 'bg-theme-bg text-theme-textMuted'}`}
+              className={`px-1.5 rounded-full text-2xs ${active ? 'bg-black/20' : 'bg-theme-bg text-theme-textMuted'}`}
             >
               {t.count}
             </span>

@@ -85,7 +85,7 @@ export const RegionalBranch: React.FC<RegionalBranchProps> = ({
 
           {/* Right: Court Count Badge */}
           <div
-            className="font-mono text-[10px] font-semibold px-2 py-0.5 rounded border"
+            className="font-mono text-2xs font-semibold px-2 py-0.5 rounded border"
             style={{
               borderColor: `${cluster.colorHex}50`,
               color: cluster.colorHex,

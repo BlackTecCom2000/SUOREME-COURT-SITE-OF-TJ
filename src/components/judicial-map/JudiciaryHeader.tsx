@@ -62,7 +62,7 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
           <div className="font-semibold text-xs sm:text-sm tracking-[0.08em] uppercase text-[var(--jm-gold)] leading-tight">
             {subtitle}
           </div>
-          <div className="font-mono text-[10px] sm:text-[11px] tracking-[0.22em] text-[var(--jm-muted)] mt-1.5">
+          <div className="font-mono text-2xs sm:text-[11px] tracking-[0.22em] text-[var(--jm-muted)] mt-1.5">
             {motto}
           </div>
         </div>

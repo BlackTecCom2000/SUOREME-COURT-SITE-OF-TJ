@@ -207,7 +207,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
           ) : (
             filteredGroups.map((g, gIdx) => (
               <div key={gIdx} className="py-2 first:pt-0 last:pb-0">
-                <div className="px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-slate-500 font-semibold">
+                <div className="px-3 py-1 font-mono text-2xs uppercase tracking-wider text-slate-500 font-semibold">
                   {g.group}
                 </div>
                 <div className="flex flex-col gap-0.5 mt-1">
@@ -223,7 +223,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
                         </span>
                         <span className="font-sans text-sm font-medium">{it.title}</span>
                       </div>
-                      <span className="font-mono text-[10px] text-slate-500 uppercase px-2 py-0.5 rounded bg-slate-900 border border-slate-800">
+                      <span className="font-mono text-2xs text-slate-500 uppercase px-2 py-0.5 rounded bg-slate-900 border border-slate-800">
                         {it.category}
                       </span>
                     </button>

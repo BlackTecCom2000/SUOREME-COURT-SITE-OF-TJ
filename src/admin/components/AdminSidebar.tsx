@@ -193,7 +193,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               <span className="font-serif font-bold text-xs text-amber-700 dark:text-[#e8c679] leading-tight tracking-wider uppercase truncate">
                 СУДИ ОЛИИ ҶТ
               </span>
-              <span className="font-mono text-[9px] text-black dark:text-white font-bold tracking-widest uppercase">
+              <span className="font-mono text-2xs text-black dark:text-white font-bold tracking-widest uppercase">
                 CONTROL CENTER
               </span>
             </div>
@@ -217,7 +217,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           .map((group, gIdx) => (
           <div key={gIdx} className="space-y-1">
             {!isCollapsed && (
-              <div className="px-3 py-1 font-mono text-[9px] uppercase tracking-widest text-black dark:text-white font-bold text-left">
+              <div className="px-3 py-1 font-mono text-2xs uppercase tracking-widest text-black dark:text-white font-bold text-left">
                 {group.title}
               </div>
             )}
@@ -253,7 +253,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       {/* Footer — same glass, no dark */}
       <div className="p-3 border-t border-[var(--glass-border)] bg-transparent">
         {!isCollapsed ? (
-          <div className="flex items-center justify-between text-[10px] font-mono text-black dark:text-slate-400 font-bold px-1">
+          <div className="flex items-center justify-between text-2xs font-mono text-black dark:text-slate-400 font-bold px-1">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-black dark:text-white uppercase font-bold">SECURE NODE</span>

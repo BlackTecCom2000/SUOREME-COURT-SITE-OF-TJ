@@ -529,10 +529,10 @@ export const ShelfBooksManager: React.FC = () => {
       width: '200px',
       accessor: (row) => (
         <div className="flex flex-col text-left gap-1">
-          <span className="font-mono text-[10px] text-amber-400 border border-amber-400/40 rounded px-1.5 py-0.5 w-fit">
+          <span className="font-mono text-2xs text-amber-400 border border-amber-400/40 rounded px-1.5 py-0.5 w-fit">
             {row.badge || 'PDF'}
           </span>
-          <span className="font-mono text-[10px] text-slate-500 truncate max-w-[180px]" title={row.url || ''}>
+          <span className="font-mono text-2xs text-slate-500 truncate max-w-[180px]" title={row.url || ''}>
             {row.url || '— нет ссылки —'}
           </span>
         </div>
@@ -758,7 +758,7 @@ export const ShelfBooksManager: React.FC = () => {
                 <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
                   Полный текст книги — язык: {contentTab.toUpperCase()} {(() => { const cur = contentTab==='tj'? formData.content_tj : contentTab==='en'? formData.content_en : formData.content_ru; return cur ? `(${String(cur).length} символов)` : '(пусто)'; })()}
                 </span>
-                <span className="text-[10px] font-mono text-slate-500">При смене языка в библиотеке читалка покажет текст для этого языка (fallback → RU → legacy)</span>
+                <span className="text-2xs font-mono text-slate-500">При смене языка в библиотеке читалка покажет текст для этого языка (fallback → RU → legacy)</span>
               </div>
               <div className="flex items-center gap-1.5">
                 {(['ru','tj','en'] as const).map(l => (
@@ -987,20 +987,20 @@ export const ShelfBooksManager: React.FC = () => {
 
           {/* Live mini preview */}
           <div className="flex flex-col items-center gap-3 p-4 rounded-xl bg-slate-950/60 border border-slate-800 h-fit">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+            <span className="text-2xs font-mono uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
               <BookOpen size={12} /> Предпросмотр
             </span>
             <span className="leglib-book" style={{ opacity: 1 }}>
               <span className="leglib-book-inner" style={{ transform: 'rotateY(-18deg)' }}>
                 <span className="leglib-face leglib-spine" style={{ background: BOOK_THEMES[formData.cover_theme % BOOK_THEMES.length] }}>
                   <span className="leglib-spine-text">{formData.title_ru || 'Название книги'}</span>
-                  <span className="font-mono text-[8px] tracking-[0.2em] text-theme-gold/80">
+                  <span className="font-mono text-2xs tracking-[0.2em] text-theme-gold/80">
                     {String((formData.sort_order || 0) + 1).padStart(2, '0')}
                   </span>
                 </span>
               </span>
             </span>
-            <span className="font-mono text-[10px] text-amber-400 border border-amber-400/40 rounded px-1.5 py-0.5">
+            <span className="font-mono text-2xs text-amber-400 border border-amber-400/40 rounded px-1.5 py-0.5">
               {formData.badge || 'PDF'}
             </span>
           </div>

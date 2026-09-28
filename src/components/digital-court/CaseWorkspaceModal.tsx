@@ -97,7 +97,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
                     ? 'Showcase data, not a real case file'
                     : 'Демонстрационные данные, а не реальное дело'
               }
-              className="px-2 py-1 rounded-full border border-theme-gold/40 text-theme-gold font-mono text-[10px] uppercase tracking-widest"
+              className="px-2 py-1 rounded-full border border-theme-gold/40 text-theme-gold font-mono text-2xs uppercase tracking-widest"
             >
               Demo
             </span>
@@ -233,7 +233,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
                     </div>
                     <div>
                       <h5 className="text-xs sm:text-sm font-semibold text-theme-text">{doc.title}</h5>
-                      <div className="flex items-center gap-3 font-mono text-[10px] text-theme-textMuted mt-0.5">
+                      <div className="flex items-center gap-3 font-mono text-2xs text-theme-textMuted mt-0.5">
                         <span>{doc.size}</span>
                         <span>•</span>
                         <span>{doc.date}</span>
@@ -294,7 +294,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
           {activeTab === 'parties' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 glass glass-card">
-                <span className="font-mono text-[10px] uppercase text-sky-700 dark:text-sky-400 font-bold block mb-1">
+                <span className="font-mono text-2xs uppercase text-sky-700 dark:text-sky-400 font-bold block mb-1">
                   {language === 'tj' ? 'ДАЪВОГАР' : language === 'en' ? 'PLAINTIFF' : 'ИСТЕЦ'}
                 </span>
                 <h5 className="text-sm font-semibold text-theme-text">ООО «Сомон Строй»</h5>
@@ -302,7 +302,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
               </div>
 
               <div className="p-4 glass glass-card">
-                <span className="font-mono text-[10px] uppercase text-amber-700 dark:text-amber-400 font-bold block mb-1">
+                <span className="font-mono text-2xs uppercase text-amber-700 dark:text-amber-400 font-bold block mb-1">
                   {language === 'tj' ? 'ҶАВОБГАР' : language === 'en' ? 'DEFENDANT' : 'ОТВЕТЧИК'}
                 </span>
                 <h5 className="text-sm font-semibold text-theme-text">ОАО «Таджикгидро»</h5>
@@ -367,9 +367,9 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
             <div className="flex-1 bg-white text-slate-900 rounded-xl p-8 overflow-y-auto font-serif text-xs leading-relaxed shadow-inner">
               <div className="text-center font-bold uppercase tracking-wider mb-6 text-sm">
                 СУДИ ОЛИИ ҶУМҲУРИИ ТОҶИКИСТОН<br />
-                <span className="text-[10px] font-sans font-normal text-slate-500">ВЕРХОВНЫЙ СУД РЕСПУБЛИКИ ТАДЖИКИСТАН</span>
+                <span className="text-2xs font-sans font-normal text-slate-500">ВЕРХОВНЫЙ СУД РЕСПУБЛИКИ ТАДЖИКИСТАН</span>
               </div>
-              <div className="text-right font-mono text-[10px] text-slate-600 mb-6">
+              <div className="text-right font-mono text-2xs text-slate-600 mb-6">
                 Парвандаи № {caseData.caseNumber}<br />
                 Сана: {caseData.registrationDate}
               </div>
@@ -379,7 +379,7 @@ export const CaseWorkspaceModal: React.FC<CaseWorkspaceModalProps> = ({
               <p className="mb-4">
                 Дар рафти баррасии парвандаи судӣ тибқи тартиби пешбининамудаи Кодекси мурофиавии граждании Ҷумҳурии Тоҷикистон, талаботҳои даъвогӣ ва ваҷҳҳои пешниҳодгардида мавриди омӯзиш қарор дода шуданд.
               </p>
-              <div className="mt-12 pt-6 border-t border-slate-300 flex items-center justify-between font-sans text-[10px]">
+              <div className="mt-12 pt-6 border-t border-slate-300 flex items-center justify-between font-sans text-2xs">
                 <div className="flex items-center gap-2">
                   <ShieldCheck size={24} className="text-blue-800" />
                   <div>

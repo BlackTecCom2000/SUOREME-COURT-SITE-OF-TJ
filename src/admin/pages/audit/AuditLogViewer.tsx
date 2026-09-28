@@ -63,7 +63,7 @@ export const AuditLogViewer: React.FC = () => {
             <span className="font-mono font-bold text-xs text-amber-300 uppercase">
               {row.action}
             </span>
-            <span className="font-mono text-[10px] text-slate-500 uppercase">
+            <span className="font-mono text-2xs text-slate-500 uppercase">
               {row.object_type} {row.object_id ? `ID #${row.object_id}` : ''}
             </span>
           </div>
@@ -78,7 +78,7 @@ export const AuditLogViewer: React.FC = () => {
             {row.object_title || row.object_type}
           </span>
           {row.old_status && row.new_status && (
-            <span className="font-mono text-[10px] text-slate-400 mt-0.5">
+            <span className="font-mono text-2xs text-slate-400 mt-0.5">
               Статус: {row.old_status} → {row.new_status}
             </span>
           )}

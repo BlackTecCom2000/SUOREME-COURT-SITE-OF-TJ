@@ -224,7 +224,7 @@ export const AILegalAssistantModal: React.FC<AILegalAssistantModalProps> = ({
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-theme-text flex items-center gap-2">
                 <span>{language === 'tj' ? 'Ёвари ҳуқуқии рақамӣ' : language === 'en' ? 'AI Legal Assistant' : 'Юридический AI-помощник'}</span>
-                <span className="font-mono text-[9px] px-2 py-0.5 rounded-full bg-theme-gold/20 text-theme-gold border border-theme-gold/30 uppercase">
+                <span className="font-mono text-2xs px-2 py-0.5 rounded-full bg-theme-gold/20 text-theme-gold border border-theme-gold/30 uppercase">
                   Hybrid RAG Model
                 </span>
               </h3>
@@ -272,7 +272,7 @@ export const AILegalAssistantModal: React.FC<AILegalAssistantModalProps> = ({
                 <div className="whitespace-pre-wrap select-text" style={{ userSelect: 'text' } as any}>{m.text}</div>
 
                 {m.citations && m.citations.length > 0 && (
-                  <div className="mt-3 pt-2 border-t border-theme-border/40 font-mono text-[10px] text-theme-textMuted">
+                  <div className="mt-3 pt-2 border-t border-theme-border/40 font-mono text-2xs text-theme-textMuted">
                     <span className="font-semibold text-theme-gold block mb-1">
                       {language === 'tj' ? 'САРЧАШМАҲОИ ҚОНУНГУЗОРӢ:' : language === 'en' ? 'LEGAL REFERENCES:' : 'НОРМАТИВНЫЕ АКТЫ:'}
                     </span>

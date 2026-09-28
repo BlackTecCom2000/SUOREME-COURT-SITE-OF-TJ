@@ -138,7 +138,7 @@ export const Dashboard: React.FC = () => {
                 <stat.icon size={22} />
               </div>
               {stat.badge ? (
-                <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-mono font-bold animate-pulse">
+                <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-2xs font-mono font-bold animate-pulse">
                   {stat.badge}
                 </span>
               ) : (
@@ -177,7 +177,7 @@ export const Dashboard: React.FC = () => {
               >
                 <Newspaper size={20} className="text-amber-500 dark:text-amber-400 mb-2 group-hover:scale-110 transition-transform" />
                 <span className="font-serif font-semibold text-xs text-black dark:text-white block">Новость</span>
-                <span className="font-mono text-[10px] text-black dark:text-white block mt-0.5">Пресс-релиз</span>
+                <span className="font-mono text-2xs text-black dark:text-white block mt-0.5">Пресс-релиз</span>
               </button>
 
               <button
@@ -186,7 +186,7 @@ export const Dashboard: React.FC = () => {
               >
                 <Gavel size={20} className="text-sky-500 dark:text-sky-400 mb-2 group-hover:scale-110 transition-transform" />
                 <span className="font-serif font-semibold text-xs text-black dark:text-white block">Судебный акт</span>
-                <span className="font-mono text-[10px] text-black dark:text-white block mt-0.5">PDF решение</span>
+                <span className="font-mono text-2xs text-black dark:text-white block mt-0.5">PDF решение</span>
               </button>
 
               <button
@@ -195,7 +195,7 @@ export const Dashboard: React.FC = () => {
               >
                 <Landmark size={20} className="text-emerald-500 dark:text-emerald-400 mb-2 group-hover:scale-110 transition-transform" />
                 <span className="font-serif font-semibold text-xs text-black dark:text-white block">Суд РТ</span>
-                <span className="font-mono text-[10px] text-black dark:text-white block mt-0.5">Филиал / данные</span>
+                <span className="font-mono text-2xs text-black dark:text-white block mt-0.5">Филиал / данные</span>
               </button>
 
               <button
@@ -204,7 +204,7 @@ export const Dashboard: React.FC = () => {
               >
                 <PlusCircle size={20} className="text-cyan-500 dark:text-cyan-400 mb-2 group-hover:scale-110 transition-transform" />
                 <span className="font-serif font-semibold text-xs text-black dark:text-white block">Медиа файл</span>
-                <span className="font-mono text-[10px] text-black dark:text-white block mt-0.5">Фото / Документ</span>
+                <span className="font-mono text-2xs text-black dark:text-white block mt-0.5">Фото / Документ</span>
               </button>
             </div>
           </AdminCard>
@@ -281,12 +281,12 @@ export const Dashboard: React.FC = () => {
                     <Activity size={14} className="text-amber-500 dark:text-amber-400 mt-0.5 shrink-0" />
                     <div className="flex-1 overflow-hidden">
                       <p className="text-black dark:text-white font-medium truncate">
-                        <span className="text-amber-600 dark:text-amber-300 uppercase font-mono text-[10px]">
+                        <span className="text-amber-600 dark:text-amber-300 uppercase font-mono text-2xs">
                           {log.action}
                         </span>{' '}
                         {log.object_title || log.object_type}
                       </p>
-                      <div className="flex items-center justify-between text-[10px] font-mono text-black dark:text-white mt-0.5">
+                      <div className="flex items-center justify-between text-2xs font-mono text-black dark:text-white mt-0.5">
                         <span>{log.user_name || 'System Admin'}</span>
                         <span>{new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                       </div>

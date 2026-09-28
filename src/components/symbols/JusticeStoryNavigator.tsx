@@ -86,7 +86,7 @@ export const JusticeStoryNavigator: React.FC<JusticeStoryNavigatorProps> = ({
               </div>
 
               <div>
-                <div className="font-mono text-[9px] text-theme-gold uppercase tracking-widest leading-none mb-1 font-bold">
+                <div className="font-mono text-2xs text-theme-gold uppercase tracking-widest leading-none mb-1 font-bold">
                   {st.number} {st.subtitle}
                 </div>
                 <h4 className="font-serif font-bold text-sm text-theme-text leading-none tracking-wide">
@@ -95,7 +95,7 @@ export const JusticeStoryNavigator: React.FC<JusticeStoryNavigatorProps> = ({
               </div>
             </div>
 
-            <div className="font-mono text-[10px] text-theme-textMuted group-hover:text-theme-gold transition-colors">
+            <div className="font-mono text-2xs text-theme-textMuted group-hover:text-theme-gold transition-colors">
               ➔
             </div>
           </button>

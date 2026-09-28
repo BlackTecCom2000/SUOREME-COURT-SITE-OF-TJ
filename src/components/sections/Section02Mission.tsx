@@ -70,7 +70,7 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
               <span className="tracking-widest text-theme-gold font-semibold">( 02 )</span>
               <span className="text-theme-textMuted">[ 002 / 007 ]</span>
               <span className="w-1.5 h-1.5 rounded-full bg-theme-gold animate-pulse ml-1" />
-              <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
+              <span className="text-2xs text-theme-textMuted tracking-wider uppercase">
                 {t('mission.badge')}
               </span>
             </div>
@@ -135,7 +135,7 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
                     </p>
                   </div>
 
-                  <div className="mt-4 pt-2 border-t border-theme-border flex items-center justify-between font-mono text-[10px] text-theme-textMuted">
+                  <div className="mt-4 pt-2 border-t border-theme-border flex items-center justify-between font-mono text-2xs text-theme-textMuted">
                     <span>SUD.TJ // COLLEGIUM</span>
                     <span className="text-theme-gold">{t('nav.openPortal')}</span>
                   </div>

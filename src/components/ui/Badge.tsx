@@ -45,7 +45,7 @@ export const Badge: React.FC<BadgeProps> = ({ variant = 'neutral', label, childr
   <span
     className={`inline-flex items-center gap-1.5 rounded-full border font-semibold select-none backdrop-blur-md ${styles[variant]} ${
       size === 'sm'
-        ? 'text-[10px] px-2 py-0.5 font-mono uppercase tracking-wider'
+        ? 'text-2xs px-2 py-0.5 font-mono uppercase tracking-wider'
         : 'text-xs px-2.5 py-1 font-mono uppercase tracking-wider'
     }`}
   >

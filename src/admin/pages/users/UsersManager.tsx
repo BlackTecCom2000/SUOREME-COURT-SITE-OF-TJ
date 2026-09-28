@@ -108,7 +108,7 @@ export const UsersManager: React.FC = () => {
       accessor: (row) => (
         <div className="flex flex-col text-left">
           <AdminBadge variant="role" label={roleLabelMap[row.role] || row.role} />
-          <span className="font-mono text-[10px] text-slate-500 mt-1 uppercase">
+          <span className="font-mono text-2xs text-slate-500 mt-1 uppercase">
             {row.role}
           </span>
         </div>

@@ -28,7 +28,7 @@ export const Section03DigitalHammer: React.FC<Section03DigitalHammerProps> = ({
           <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
             <span className="tracking-widest text-theme-gold font-semibold">( C )</span>
             <span className="text-theme-textMuted">[ 003 / 010 ]</span>
-            <span className="text-[10px] text-theme-textMuted tracking-wider uppercase">
+            <span className="text-2xs text-theme-textMuted tracking-wider uppercase">
               {t('digitalJustice.badge')}
             </span>
           </div>
