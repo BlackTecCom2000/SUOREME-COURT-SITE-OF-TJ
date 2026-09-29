@@ -982,10 +982,11 @@ html[data-a11y="true"] .content-card::before {
 
   /* Primary / gold - tinted glass, never a flat fill, so the live sky stays
      visible through it. Colours come from theme-scoped tokens so the label
-     stays above 4.5:1 in light, dark and accessibility modes. */
+     stays above 4.5:1 in light, dark and accessibility modes.
+     The press state compresses the material rather than only dimming it. */
   .btn-primary,
   .btn-gold {
-    @apply btn-base glass;
+    @apply btn-base glass lg-material lg-button;
     background: var(--btn-gold-bg);
     border: 1px solid var(--btn-gold-border);
     color: var(--btn-gold-fg);
@@ -1002,11 +1003,12 @@ html[data-a11y="true"] .content-card::before {
   }
   .btn-primary:active:not(:disabled),
   .btn-gold:active:not(:disabled) {
-    transform: scale(0.97) translateY(0);
+    transform: scale(var(--lg-press-scale)) translateY(0);
     background: var(--btn-gold-bg-active);
+    transition-duration: var(--lg-dur-press);
   }
   .btn-secondary {
-    @apply btn-base glass;
+    @apply btn-base glass lg-material lg-button;
     color: var(--text-primary);
     background: var(--glass-surface);
     border: 1px solid var(--glass-border);
@@ -1023,7 +1025,7 @@ html[data-a11y="true"] .content-card::before {
     background: var(--glass-surface-active);
   }
   .btn-ghost {
-    @apply btn-base glass;
+    @apply btn-base glass lg-material lg-button;
     color: var(--text-muted);
     background: var(--glass-surface);
     border: 1px solid var(--glass-border-subtle);
@@ -1037,6 +1039,166 @@ html[data-a11y="true"] .content-card::before {
   .btn-ghost:active {
     transform: scale(0.97);
     background: var(--glass-surface-active);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     LIQUID GLASS MATERIAL
+     Four stacked layers: tint, backdrop, specular rim, inner highlight.
+     Used by cards, buttons, inputs, modals and the nav — the same material
+     everywhere, with size deciding the weight (see anim-apple-design §12).
+     ═══════════════════════════════════════════════════════════════════ */
+  .lg-material {
+    position: relative;
+    isolation: isolate;
+    background: var(--lg-tint);
+    backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    box-shadow: var(--lg-shadow), var(--lg-highlight);
+    transition:
+      background-color var(--lg-dur-hover) var(--lg-ease-out),
+      box-shadow var(--lg-dur-hover) var(--lg-ease-out),
+      backdrop-filter var(--lg-dur-press) var(--lg-ease-out);
+  }
+
+  /* Layer 3 — the specular rim.
+     Drawn as a masked gradient ring rather than a border, because a flat
+     stroke is the clearest "fake glass" tell: real edges are bright where
+     light catches the bevel and dark where the surface turns away.
+     `--lg-px/--lg-py` are written by LiquidGlassSurface so the highlight
+     tracks the pointer. */
+  .lg-material::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--lg-rim-width);
+    background:
+      radial-gradient(
+        120% 120% at var(--lg-px, 30%) var(--lg-py, 0%),
+        rgba(255, 255, 255, 0.55) 0%,
+        rgba(255, 255, 255, 0.06) 38%,
+        rgba(255, 255, 255, 0) 62%
+      ),
+      linear-gradient(
+        150deg,
+        var(--lg-rim-top) 0%,
+        var(--lg-rim-side) 32%,
+        var(--lg-rim-bottom) 58%,
+        rgba(255, 255, 255, calc(var(--lg-rim-strength) * 0.42)) 100%
+      );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.9;
+    transition: opacity var(--lg-dur-hover) var(--lg-ease-out);
+    z-index: 1;
+  }
+  .lg-material:hover::after {
+    opacity: 1;
+  }
+
+  /* Press: the material compresses — less tint, flatter shadow, tighter
+     blur — then springs back. Transform is handled by a spring in
+     LiquidGlassSurface; this is the material half of the response. */
+  .lg-material.is-pressed {
+    background: var(--lg-tint-press);
+    backdrop-filter: blur(calc(var(--lg-blur) + var(--lg-press-blur-delta))) saturate(var(--lg-saturate));
+    -webkit-backdrop-filter: blur(calc(var(--lg-blur) + var(--lg-press-blur-delta))) saturate(var(--lg-saturate));
+    box-shadow: var(--lg-shadow-pressed), var(--lg-highlight);
+    transition-duration: var(--lg-dur-press);
+  }
+
+  /* Elevation tiers. Bigger surface = thicker material. */
+  .lg-chip   { border-radius: var(--lg-radius-chip); }
+  .lg-button { border-radius: var(--lg-radius-button); }
+  .lg-card   { border-radius: var(--lg-radius-card); }
+  .lg-panel  { border-radius: var(--lg-radius-panel); }
+
+  /* Hover only where the surface is actually interactive. A non-interactive
+     card must not advertise itself as clickable. */
+  a.lg-card, button.lg-card, [role='button'].lg-card, .lg-card.is-interactive {
+    transition:
+      background-color var(--lg-dur-hover) var(--lg-ease-out),
+      box-shadow var(--lg-dur-hover) var(--lg-ease-out);
+    cursor: pointer;
+  }
+  a.lg-card:hover, button.lg-card:hover, [role='button'].lg-card:hover, .lg-card.is-interactive:hover {
+    background: var(--lg-tint-hover);
+    box-shadow: var(--lg-shadow-hover), var(--lg-highlight-edge);
+  }
+
+  /* Vibrancy: text over a blurred surface needs more weight and a touch of
+     tracking to stay legible as the backdrop changes underneath it. */
+  .lg-vibrant {
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.01em;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+  }
+  [data-theme='dark'] .lg-vibrant {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ─── Reduced transparency & high contrast (anim-apple-design §14) ──
+     Reduced transparency is a separate signal from reduced motion and was
+     not handled at all: users who ask for less transparency were still
+     getting full translucency. Frost the material instead of removing it,
+     so hierarchy survives. */
+  @media (prefers-reduced-transparency: reduce) {
+    .lg-material,
+    .glass,
+    .glass-card,
+    .glass-panel,
+    .glass-premium,
+    .glass-ultra,
+    .glass-navigation,
+    .glass-input,
+    .btn-base,
+    .btn-primary,
+    .btn-gold,
+    .btn-secondary,
+    .btn-ghost {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: var(--glass-surface-strong) !important;
+      --lg-tint: transparent;
+      --lg-tint-hover: transparent;
+      --lg-tint-press: transparent;
+    }
+    .lg-material::after {
+      opacity: 0.55;
+    }
+  }
+  @media (prefers-contrast: more) {
+    .lg-material,
+    .glass,
+    .btn-base {
+      background: var(--surface-card) !important;
+      box-shadow: none !important;
+    }
+    .lg-material::after {
+      --lg-rim-strength: 1;
+      opacity: 1;
+    }
+    .glass-input,
+    .glass-input:focus-visible {
+      border-width: 2px;
+    }
+  }
+  /* Low-end devices already drop the blur globally; keep the tint readable
+     rather than leaving near-transparent surfaces. */
+  @media (forced-colors: active) {
+    .lg-material,
+    .glass {
+      backdrop-filter: none;
+      background: Canvas;
+      border: 1px solid CanvasText;
+    }
   }
 
   /* ─── Keyboard skip link ─────────────────────────────────────────

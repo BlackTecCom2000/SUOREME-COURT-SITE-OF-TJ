@@ -88,8 +88,8 @@ export const StateBlock: React.FC<StateBlockProps> = ({
       >
         <Icon size={22} />
       </span>
-      <p className="text-md font-semibold text-theme-text">{heading}</p>
-      {body && <p className="max-w-sm text-sm leading-relaxed text-theme-textMuted">{body}</p>}
+      <p className="lg-vibrant text-md font-semibold text-theme-text">{heading}</p>
+      {body && <p className="lg-vibrant max-w-sm text-sm leading-relaxed text-theme-textMuted">{body}</p>}
       {/* A control is only rendered when it can actually do something. */}
       {actionLabel && onAction && (
         <button type="button" onClick={onAction} className="btn-secondary mt-1">

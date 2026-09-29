@@ -21,8 +21,8 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
     <span className="p-3 rounded-2xl border border-theme-gold/30 bg-theme-gold/10 text-theme-gold">
       {icon || <FolderOpen size={22} />}
     </span>
-    <p className="font-serif font-bold text-theme-text">{title}</p>
-    {description && <p className="max-w-sm text-xs text-theme-textMuted leading-relaxed">{description}</p>}
+    <p className="lg-vibrant text-lg font-semibold text-theme-text">{title}</p>
+    {description && <p className="lg-vibrant max-w-sm text-sm text-theme-textMuted leading-relaxed">{description}</p>}
     {actionLabel && onAction && (
       <button type="button" onClick={onAction} className="btn-primary mt-1">
         {actionLabel}

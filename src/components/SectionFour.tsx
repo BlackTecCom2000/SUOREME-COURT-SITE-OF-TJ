@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Share2, Check, FileDown, Newspaper } from 'lucide-react';
 import { Reveal } from './Reveal';
 import StateBlock from './ui/StateBlock';
+import LiquidGlassSurface from './ui/LiquidGlassSurface';
 import { Language } from '../data/sudTjData';
 
 interface SectionFourProps {
@@ -119,27 +120,32 @@ export const SectionFour: React.FC<SectionFourProps> = ({
               />
             ) : (
               news.slice(0, 2).map((item) => (
-                <div
+                <LiquidGlassSurface
                   key={item.id}
+                  as="button"
+                  type="button"
+                  shape="card"
+                  interactive
                   onClick={onOpenNews}
-                  className="glass glass-card p-4 hover:border-[var(--glass-border-hover)] transition-colors cursor-pointer group"
+                  aria-label={lang === 'ru' ? item.title_ru : item.title_tj}
+                  className="p-4 text-left group"
                 >
                   <div className="u-meta flex items-center justify-between mb-2">
                     <span className="flex items-center gap-1.5">
                       <Newspaper size={12} aria-hidden="true" />
-                      <span className="u-label">{lang === 'ru' ? 'МАТБУОТ' : 'МАТБУОТ'}</span>
+                      <span className="u-label">МАТБУОТ</span>
                     </span>
                     <time dateTime={item.published_at}>
                       {new Date(item.published_at).toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'tg-TJ')}
                     </time>
                   </div>
-                  <h4 className="text-md font-semibold text-theme-text line-clamp-2 mb-1.5 leading-snug">
+                  <h4 className="lg-vibrant text-md font-semibold text-theme-text line-clamp-2 mb-1.5 leading-snug">
                     {lang === 'ru' ? item.title_ru : item.title_tj}
                   </h4>
-                  <p className="text-sm text-theme-textMuted line-clamp-2 leading-relaxed">
+                  <p className="lg-vibrant text-sm text-theme-textMuted line-clamp-2 leading-relaxed">
                     {lang === 'ru' ? item.excerpt_ru : item.excerpt_tj}
                   </p>
-                </div>
+                </LiquidGlassSurface>
               ))
             )}
           </div>

@@ -108,3 +108,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.10.5 - Wire StateBlock into news and court sections, replace opaque black cards with glass
 - Released: 2026-09-29 10:10
+
+## v2.11.0 - Apple-style Liquid Glass material - specular rim, pointer-tracked light, spring press physics, reduced-transparency support
+- Released: 2026-09-29 11:51

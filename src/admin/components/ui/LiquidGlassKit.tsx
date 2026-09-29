@@ -65,25 +65,25 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({ design, onChange
           </div>
 
           <div className={`relative mt-4 grid gap-3 transition-opacity sm:grid-cols-2 ${enabled ? 'opacity-100' : 'opacity-45'}`}>
-            <button type="button" className="glass glass-card flex min-h-16 items-center justify-between gap-3 p-4 text-left text-theme-text transition-transform hover:-translate-y-0.5">
+            <button type="button" className="glass glass-card lg-material lg-card flex min-h-16 items-center justify-between gap-3 p-4 text-left text-theme-text transition-transform hover:-translate-y-0.5">
               <span><Sparkles size={16} className="mb-1 text-cyan-200" /><span className="block text-sm font-semibold">Start project</span></span>
               <span className="grid h-9 w-9 place-items-center rounded-full bg-black/35 text-white"><Check size={16} /></span>
             </button>
-            <div className="glass glass-card flex min-h-16 items-center gap-2 p-3">
+            <div className="glass glass-card lg-material lg-card flex min-h-16 items-center gap-2 p-3">
               <Search size={16} className="shrink-0 text-theme-textMuted" />
               <AdminInput aria-label="Preview text field" placeholder="Text field" className="!min-h-10 !rounded-full !border-0 !bg-transparent !shadow-none" />
             </div>
-            <button type="button" className="glass glass-card flex min-h-16 items-center justify-between p-4 text-left text-theme-text">
+            <button type="button" className="glass glass-card lg-material lg-card flex min-h-16 items-center justify-between p-4 text-left text-theme-text">
               <span className="text-sm font-semibold">Select</span><Check size={18} className="text-emerald-300" />
             </button>
-            <button type="button" onClick={() => setEnabled(!enabled)} className="glass glass-card flex min-h-16 items-center justify-between p-4 text-left text-theme-text">
+            <button type="button" onClick={() => setEnabled(!enabled)} className="glass glass-card lg-material lg-card flex min-h-16 items-center justify-between p-4 text-left text-theme-text">
               <span className="text-sm font-semibold">Switch</span><span className={`relative h-7 w-12 rounded-full border border-white/20 p-1 ${enabled ? 'bg-cyan-400/35' : 'bg-black/20'}`}><span className={`block h-5 w-5 rounded-full bg-white shadow transition-transform ${enabled ? 'translate-x-5' : ''}`} /></span>
             </button>
           </div>
 
           <div className="relative mt-4 grid grid-cols-3 gap-2">
             {[['cyan', 'Surface 01'], ['amber', 'Highlight'], ['violet', 'Pro plan']].map(([tone, label]) => (
-              <div key={label} className={`glass glass-card min-h-20 p-3 ${tone === 'cyan' ? 'border-cyan-200/35' : tone === 'amber' ? 'border-amber-200/35' : 'border-violet-200/35'}`}>
+              <div key={label} className={`glass glass-card lg-material lg-card min-h-20 p-3 ${tone === 'cyan' ? 'border-cyan-200/35' : tone === 'amber' ? 'border-amber-200/35' : 'border-violet-200/35'}`}>
                 <div className="text-xs font-semibold text-theme-text">{label}</div>
                 <div className="mt-3 h-1.5 rounded-full bg-white/20"><div className={`h-full w-2/3 rounded-full ${tone === 'cyan' ? 'bg-cyan-200' : tone === 'amber' ? 'bg-amber-200' : 'bg-violet-200'}`} /></div>
               </div>
@@ -102,7 +102,7 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({ design, onChange
 
         <div className="grid gap-2 sm:grid-cols-3">
           {Object.entries(presets).map(([name, values]) => (
-            <button type="button" key={name} onClick={() => setPreset(values)} className="glass glass-card min-h-11 px-3 text-left text-xs font-semibold text-theme-text transition-transform hover:-translate-y-0.5">
+            <button type="button" key={name} onClick={() => setPreset(values)} className="glass glass-card lg-material lg-card min-h-11 px-3 text-left text-xs font-semibold text-theme-text transition-transform hover:-translate-y-0.5">
               {name}<span className="mt-1 block text-2xs font-normal text-theme-textMuted">Apply preset</span>
             </button>
           ))}

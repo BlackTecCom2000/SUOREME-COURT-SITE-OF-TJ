@@ -204,4 +204,71 @@
   --sky-500: #0ea5e9;
   --sky-600: #0284c7;
   --sky-700: #0369a1;
+
+  /* ═══════════════════════════════════════════════════════════════════
+     LIQUID GLASS MATERIAL — Apple-style, v2.11.0
+     Translucency on the web is usually one flat fill plus a blur, which
+     reads as tinted plastic. A real material needs four layers stacked:
+
+       1. tint        what light the material scatters back
+       2. backdrop    blur + saturate + brightness of what is behind it
+       3. specular rim  a gradient hairline that is bright where light
+                      catches the bevel and dark where it turns away
+       4. inner highlight  a thin bright band along the top edge
+
+     The rim is the part that sells it. A flat 1px border is the single
+     clearest "fake glass" tell, so it is drawn as a masked gradient ring
+     rather than a stroke.
+     ═══════════════════════════════════════════════════════════════════ */
+  --lg-blur: 24px;
+  --lg-saturate: 180%;
+  --lg-brightness: 108%;
+
+  /* Layer 1 — tint. Kept low: the court architecture must stay visible. */
+  --lg-tint: rgba(255, 255, 255, 0.10);
+  --lg-tint-hover: rgba(255, 255, 255, 0.15);
+  --lg-tint-press: rgba(255, 255, 255, 0.07);
+
+  /* Layer 3 — specular rim. Light source is top-left, so the rim is
+     brightest on the top and left edges and fades around to the bottom. */
+  --lg-rim-strength: 0.72;
+  --lg-rim-width: 1px;
+  --lg-rim-top: rgba(255, 255, 255, calc(var(--lg-rim-strength) * 1));
+  --lg-rim-side: rgba(255, 255, 255, calc(var(--lg-rim-strength) * 0.28));
+  --lg-rim-bottom: rgba(255, 255, 255, calc(var(--lg-rim-strength) * 0.12));
+  --lg-rim-inner-shadow: rgba(0, 0, 0, 0.16);
+
+  /* Layer 4 — inner top highlight, the "meniscus" of a real edge. */
+  --lg-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.30);
+  --lg-highlight-edge: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+
+  /* Elevation. Bigger surfaces read as thicker: more blur, deeper shadow. */
+  --lg-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 24px -8px rgba(0, 0, 0, 0.18);
+  --lg-shadow-hover:
+    0 2px 4px rgba(0, 0, 0, 0.07),
+    0 18px 40px -12px rgba(0, 0, 0, 0.24);
+  --lg-shadow-pressed:
+    0 1px 1px rgba(0, 0, 0, 0.08);
+
+  /* Press "compression": the material is squeezed, so it gets thinner and
+     more transparent while held, then springs back on release. */
+  --lg-press-scale: 0.97;
+  --lg-press-lift: 1px;
+  --lg-press-blur-delta: -6px;
+
+  /* Radius. iOS materials are generously rounded; larger surfaces round more. */
+  --lg-radius-chip: 14px;
+  --lg-radius-button: 18px;
+  --lg-radius-card: 26px;
+  --lg-radius-panel: 32px;
+
+  /* Motion. Spring params from anim-apple-design: damping 1.0 (critically
+     damped, no bounce) with a 0.3-0.4s response for UI state changes. */
+  --lg-dur-press: 140ms;
+  --lg-dur-release: 380ms;
+  --lg-dur-hover: 260ms;
+  --lg-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --lg-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
