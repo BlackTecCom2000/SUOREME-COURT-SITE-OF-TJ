@@ -48,7 +48,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
               <div className="flex items-center gap-3">
                 <span className="tracking-widest text-theme-gold font-semibold">( F )</span>
                 <span className="text-theme-textMuted">[ 006 / 010 ]</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-2" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--court-gold)] animate-pulse ml-2" />
                 <span className="font-mono text-2xs text-theme-textMuted uppercase tracking-widest hidden sm:inline">
                   {t('network.badge')}
                 </span>
@@ -98,7 +98,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={language === 'tj' ? 'Ҷустуҷӯи суд аз рӯи ном, минтақа, шаҳр...' : language === 'en' ? 'Search court by name, region, city...' : 'Поиск суда по названию, региону, городу...'}
                 aria-label={t('network.searchPlaceholder')}
-                className="w-full h-11 glass border border-white/20 rounded-[16px] pl-10 pr-10 py-2 text-sm font-mono text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-[var(--court-gold)] focus:ring-1 focus:ring-[var(--court-gold)] transition-all"
+                className="w-full h-11 glass-input lg-material lg-button pl-10 pr-10 text-md text-theme-text"
               />
               {searchQuery && (
                 <button
@@ -162,7 +162,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
             {/* Floating Quick Legend in Canvas Bottom Left */}
             <div className="absolute left-4 bottom-4 z-20 hidden md:flex items-center gap-3 glass glass-chip px-3.5 py-2 font-mono text-2xs text-theme-textSec">
               <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#dfbe7e] shadow-[0_0_8px_rgba(223,190,126,0.8)]" />
+                <span className="w-2 h-2 rounded-full bg-[var(--court-gold)] shadow-[0_0_8px_rgba(212,164,45,0.55)]" />
                 <span>{t('network.legendSupreme')}</span>
               </div>
               <span>•</span>
@@ -173,7 +173,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
                 </div>
               ))}
               <span>•</span>
-              <div className="flex items-center gap-1.5 text-violet-400">
+              <div className="flex items-center gap-1.5 text-[var(--court-gold)]">
                 <Shield size={10} />
                 <span>{t('network.legendMilitary')}</span>
               </div>

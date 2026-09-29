@@ -102,7 +102,7 @@ export const JudicialTreeView: React.FC<JudicialTreeViewProps> = ({
   return (
     <div
       ref={containerRef}
-      className="relative w-full overflow-visible select-none glass glass-large p-3 sm:p-4 transition-all duration-700"
+      className="relative w-full overflow-hidden select-none glass glass-large p-3 sm:p-4 transition-all duration-700"
     >
       {/* Background — very subtle, low opacity */}
       <div className="absolute inset-0 opacity-20 pointer-events-none" aria-hidden="true">

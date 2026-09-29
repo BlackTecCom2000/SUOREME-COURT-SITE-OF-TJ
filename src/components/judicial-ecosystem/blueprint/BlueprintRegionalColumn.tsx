@@ -135,8 +135,8 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
       onMouseEnter={() => onHoverColumn?.(cluster.id)}
       onMouseLeave={() => onHoverColumn?.(null)}
       className={`
-        relative flex-1 min-w-[340px] max-w-[460px] flex flex-col items-center select-none transition-all duration-300
-        ${isFocused || isRegionSelected ? 'scale-101 z-30 opacity-100' : isRegionMuted ? 'opacity-35 hover:opacity-75 z-10' : 'opacity-100 z-20'}
+        relative flex-1 min-w-0 w-full flex flex-col items-center select-none transition-all duration-300
+        ${isFocused || isRegionSelected ? 'scale-[1.01] z-30 opacity-100' : isRegionMuted ? 'opacity-35 hover:opacity-75 z-10' : 'opacity-100 z-20'}
       `}
     >
       {/* 1. Regional header — unified glass, region color only as dot accent */}
@@ -157,7 +157,10 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
         aria-pressed={isRegionSelected}
       >
         <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cluster.colorHex, boxShadow: `0 0 6px ${cluster.colorHex}60` }} aria-hidden="true" />
-        <span className="font-mono font-bold text-[11px] uppercase tracking-widest text-center truncate">
+        {/* wraps to two lines instead of truncating: the region name is the
+            heading of the column and losing half of it ("ВМКБ") made the whole
+            tree unreadable */}
+        <span className="u-label text-center leading-tight">
           {headerPillTitle}
         </span>
       </div>
@@ -191,13 +194,26 @@ export const BlueprintRegionalColumn: React.FC<BlueprintRegionalColumnProps> = (
         {/* Subtle informational divider */}
         <div className="w-full h-px bg-white/10 my-2" aria-hidden="true" />
 
-        {/* Compact statistics — subtle glass, no inner heavy borders */}
-        <div className="w-full flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-xl glass border border-white/10 font-mono text-2xs text-theme-textMuted">
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cluster.colorHex }} aria-hidden="true" /> 1 {language === 'tj' ? 'вилоятӣ' : language === 'en' ? 'regional' : 'областной'}</span>
-          <span className="opacity-30">•</span>
-          <span>{cityCount} {language === 'tj' ? 'шаҳрӣ' : language === 'en' ? 'city' : 'городских'}</span>
-          <span className="opacity-30">•</span>
-          <span>{districtCount} {language === 'tj' ? 'ноҳия' : language === 'en' ? 'district' : 'районных'}</span>
+        {/* Compact statistics — subtle glass, no inner heavy borders.
+            A single justify-between row clipped its labels to "Городские су…"
+            in a 4-up grid. A wrapping grid keeps the numbers and lets the
+            labels break on their own instead of being cut. */}
+        <div className="w-full grid grid-cols-2 gap-1.5 px-2.5 py-2 rounded-xl glass border border-white/10 u-meta">
+          <span className="flex items-center gap-1 min-w-0">
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: cluster.colorHex }} aria-hidden="true" />
+            <span className="font-semibold text-theme-text">{cityCount}</span>
+            <span className="leading-tight">{language === 'tj' ? 'шаҳрӣ' : language === 'en' ? 'city' : 'городских'}</span>
+          </span>
+          <span className="flex items-center gap-1 min-w-0">
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: cluster.colorHex }} aria-hidden="true" />
+            <span className="font-semibold text-theme-text">{districtCount}</span>
+            <span className="leading-tight">{language === 'tj' ? 'ноҳия' : language === 'en' ? 'district' : 'районных'}</span>
+          </span>
+          <span className="col-span-2 flex items-center gap-1 min-w-0">
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: cluster.colorHex }} aria-hidden="true" />
+            <span className="font-semibold text-theme-text">{cluster.courts?.length ?? 0}</span>
+            <span className="leading-tight">{language === 'tj' ? 'вилоятӣ' : language === 'en' ? 'regional' : 'областной'}</span>
+          </span>
         </div>
 
         {/* 3. CITY & DISTRICT COURTS — default 5-6, show all */}

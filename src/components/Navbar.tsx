@@ -288,11 +288,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="w-full h-full object-contain rounded-full drop-shadow-sm"
               />
             </div>
-            <div className="w-[92px] sm:w-[210px] md:w-[230px] flex min-w-0 flex-col justify-center overflow-hidden">
-              <div className="font-serif text-xs sm:text-sm font-bold text-theme-text leading-tight group-hover:text-theme-gold transition-colors truncate">
+            <div className="w-[104px] sm:w-[210px] md:w-[230px] flex min-w-0 flex-col justify-center overflow-hidden">
+              {/* The court name is an identity, not a paragraph. Truncating it
+                  to "(ВЕРХОВНЫЙ СУД)" with an ellipsis looked like a bug, so it
+                  wraps to a second line instead. */}
+              <div className="font-display text-xs sm:text-sm font-semibold text-theme-text leading-tight group-hover:text-theme-gold transition-colors line-clamp-2">
                 {t('nav.title')}
               </div>
-              <div className="font-mono text-2xs text-theme-textMuted leading-none mt-0.5 truncate">
+              <div className="u-meta leading-none mt-1 line-clamp-1">
                 {t('nav.subtitle')}
               </div>
             </div>
