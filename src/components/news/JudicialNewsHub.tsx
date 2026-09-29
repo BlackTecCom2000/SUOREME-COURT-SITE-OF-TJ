@@ -23,8 +23,8 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
       {/* 🌟 1. ВЕРХНИЙ БЛОК: 3D-СЛАЙДЕР ГЛАВНЫХ НОВОСТЕЙ + СВЕЖИЕ СОБЫТИЯ (ХАБАРҲОИ ОХИРИН) */}
       <div className="w-full">
         {/* Header Ribbon */}
-        <div className="flex items-center justify-between border-b-2 border-cyan-500/80 mb-6 pb-2">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-cyan-700 text-white font-serif font-bold text-xs sm:text-sm uppercase tracking-wider px-4 py-1.5 rounded-t-lg shadow-md">
+        <div className="flex items-center justify-between border-b border-[var(--glass-border)] mb-6 pb-2">
+          <div className="inline-flex items-center gap-2 lg-material lg-chip text-[var(--accent-gold)] font-semibold text-xs sm:text-sm uppercase tracking-wider px-4 py-1.5 rounded-t-lg shadow-md">
             <Newspaper size={16} />
             <span>{language === 'tj' ? 'ХАБАРҲОИ ОХИРИН' : language === 'en' ? 'LATEST NEWS' : 'ПОСЛЕДНИЕ НОВОСТИ'}</span>
           </div>
@@ -50,8 +50,8 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
       {/* 🌟 2. СРЕДНИЙ БЛОК: ХАБАРҲОИ МИНТАҚАВӢ (РЕГИОНАЛЬНЫЕ НОВОСТИ) С ФИЛЬТРОМ ОБЛАСТЕЙ */}
       <div className="w-full">
         {/* Regional Header Ribbon with Tabs */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-cyan-500/80 mb-6 pb-2 gap-3">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-cyan-700 text-white font-serif font-bold text-xs sm:text-sm uppercase tracking-wider px-4 py-1.5 rounded-t-lg shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[var(--glass-border)] mb-6 pb-2 gap-3">
+          <div className="inline-flex items-center gap-2 lg-material lg-chip text-[var(--accent-gold)] font-semibold text-xs sm:text-sm uppercase tracking-wider px-4 py-1.5 rounded-t-lg shadow-md">
             <MapPin size={16} />
             <span>{language === 'tj' ? 'ХАБАРҲОИ МИНТАҚАВӢ' : language === 'en' ? 'REGIONAL COURT NEWS' : 'РЕГИОНАЛЬНЫЕ НОВОСТИ'}</span>
           </div>
@@ -71,8 +71,8 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
                 onClick={() => setActiveRegionTab(tab.id as any)}
                 className={`px-3 py-1 rounded-lg transition-all ${
                   activeRegionTab === tab.id
-                    ? 'bg-cyan-600 text-white shadow-sm font-bold'
-                    : 'text-theme-textSec hover:text-cyan-400 hover:bg-cyan-500/10'
+                    ? 'lg-material lg-button text-[var(--accent-gold)] font-semibold'
+                    : 'text-theme-textMuted hover:text-theme-gold hover:bg-[var(--btn-gold-bg)]'
                 }`}
               >
                 {language === 'tj' ? tab.labelTj : tab.labelRu}
@@ -87,16 +87,16 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
             <Reveal key={item.id} delay={100 + idx * 30}>
               <div
                 onClick={() => onOpenNewsModal?.('news')}
-                className="group p-4 glass glass-card hover:border-cyan-500/60 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                className="group p-4 glass glass-card hover:border-[var(--lg-rim-top)] transition-all duration-300 cursor-pointer flex flex-col justify-between"
               >
                 <div>
-                  <h4 className="font-serif font-bold text-xs sm:text-sm text-theme-text group-hover:text-cyan-400 transition-colors leading-snug mb-3 line-clamp-3">
+                  <h4 className="font-serif font-bold text-xs sm:text-sm text-theme-text group-hover:text-theme-gold transition-colors leading-snug mb-3 line-clamp-3">
                     {language === 'en' ? (item.titleEn || item.titleRu) : language === 'tj' ? item.titleTj : item.titleRu}
                   </h4>
                 </div>
 
                 <div className="flex items-center justify-between text-[11px] font-mono text-theme-textMuted border-t border-theme-border/40 pt-2.5 mt-2">
-                  <span className="flex items-center gap-1 text-cyan-400 font-semibold" title={language === 'tj' ? 'Манбаи хабар' : language === 'en' ? 'News source' : 'Источник новости'}>
+                  <span className="flex items-center gap-1 text-theme-gold font-semibold" title={language === 'tj' ? 'Манбаи хабар' : language === 'en' ? 'News source' : 'Источник новости'}>
                     <Globe size={12} /> {item.courtDomain}
                   </span>
                   <span className="flex items-center gap-1">
@@ -112,8 +112,8 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
       {/* 🌟 3. НИЖНИЙ БЛОК: ЭЪЛОНҲО (ОФИЦИАЛЬНЫЕ ОБЪЯВЛЕНИЯ И ОЗМУНҲО) */}
       <div className="w-full">
         {/* Announcements Ribbon */}
-        <div className="flex items-center justify-between border-b-2 border-cyan-500/80 mb-6 pb-2">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-cyan-700 text-white font-serif font-bold text-xs sm:text-sm uppercase tracking-wider px-4 py-1.5 rounded-t-lg shadow-md">
+        <div className="flex items-center justify-between border-b border-[var(--glass-border)] mb-6 pb-2">
+          <div className="inline-flex items-center gap-2 lg-material lg-chip text-[var(--accent-gold)] font-semibold text-xs sm:text-sm uppercase tracking-wider px-4 py-1.5 rounded-t-lg shadow-md">
             <Bell size={16} />
             <span>{language === 'tj' ? 'ЭЪЛОНҲО ВА ОЗМУНҲО' : language === 'en' ? 'OFFICIAL ANNOUNCEMENTS' : 'ОБЪЯВЛЕНИЯ И КОНКУРСЫ'}</span>
           </div>

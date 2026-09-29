@@ -603,34 +603,160 @@ html.is-morphing-theme ::view-transition-new(root) {
     outline-offset: 2px;
   }
 
-  /* Content Safe Backdrop Card — Liquid Glass Premium Ultra surface.
-     Single global glass system: every standard card/panel uses this family. */
+  /* Content Safe Backdrop Card — same material as .glass, so a content-card
+     and a glass-card are visually identical instead of two near-matches. */
   .content-card {
-    position: relative;
-    background: var(--glass-surface);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--glass-radius-card);
+    border-radius: var(--lg-radius-card);
     padding: 1.5rem;
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-    box-shadow: var(--glass-shadow), var(--glass-highlight);
-    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-                border-color 240ms ease,
-                box-shadow 240ms ease,
-                background-color 240ms ease;
+  }
+  .content-card,
+  .glass-card,
+  .glass-panel,
+  .glass-premium,
+  .glass-ultra,
+  .glass-navigation,
+  .glass-large,
+  .glass-chip,
+  .glass-admin,
+  .glass-admin-strong {
+    background: var(--lg-tint);
+    border: 0;
+    backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    box-shadow: var(--lg-shadow), var(--lg-highlight);
+    position: relative;
+    isolation: isolate;
+    transition:
+      background-color var(--lg-dur-hover) var(--lg-ease-out),
+      box-shadow var(--lg-dur-hover) var(--lg-ease-out);
+  }
+  /* Every one of those surfaces also gets the specular rim. */
+  .content-card::after,
+  .glass-card::after,
+  .glass-panel::after,
+  .glass-premium::after,
+  .glass-ultra::after,
+  .glass-navigation::after,
+  .glass-large::after,
+  .glass-chip::after,
+  .glass-admin::after,
+  .glass-admin-strong::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--lg-rim-width);
+    background: linear-gradient(
+      150deg,
+      var(--lg-rim-top) 0%,
+      var(--lg-rim-side) 32%,
+      var(--lg-rim-bottom) 58%,
+      rgba(255, 255, 255, calc(var(--lg-rim-strength) * 0.42)) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.9;
+    z-index: 1;
+    transition: opacity var(--lg-dur-hover) var(--lg-ease-out);
+  }
+  .glass-card:hover::after,
+  .glass-panel:hover::after,
+  .glass-premium:hover::after,
+  .glass-ultra:hover::after,
+  .glass-navigation:hover::after,
+  .content-card:hover::after {
+    opacity: 1;
+  }
+  .glass-navigation {
+    border-radius: var(--lg-radius-panel);
+  }
+  .glass-large {
+    border-radius: var(--lg-radius-panel);
+  }
+  .glass-chip {
+    border-radius: var(--lg-radius-chip);
+  }
+  .glass-panel {
+    border-radius: var(--lg-radius-panel);
+  }
+  .glass-premium {
+    border-radius: var(--lg-radius-panel);
+  }
+  .glass-ultra {
+    border-radius: var(--lg-radius-panel);
   }
 
-  /* ── BlackTecCom Liquid Glass Premium Ultra primitives ──────────────
-     ONE reusable surface family. Use .glass + a shape class on every
-     standard card/panel instead of hand-written backgrounds. Do NOT set
-     bg-white / opaque fills on elements carrying these classes. */
-  .glass {
+  /* ── THE surface primitive ────────────────────────────────────────
+     ONE material for the entire platform (v2.11.1).
+     `.glass` is not one option among several: it IS the liquid glass
+     material, so every existing `.glass` / `.glass-card` / `.glass-panel`
+     surface in the codebase becomes real glass without touching a single
+     component. `.lg-material` stays as the alias used by LiquidGlassSurface.
+
+     Layer 1 tint -> layer 2 backdrop -> layer 3 specular rim (::after, which
+     follows the pointer through --lg-px/--lg-py) -> layer 4 inner highlight.
+     A flat 1px border is the clearest "fake glass" tell, so the rim is a
+     masked gradient ring rather than a stroke. */
+  .glass,
+  .lg-material {
     position: relative;
-    background: var(--glass-surface);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-    box-shadow: var(--glass-shadow), var(--glass-highlight);
+    isolation: isolate;
+    background: var(--lg-tint);
+    border: 0;
+    backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    box-shadow: var(--lg-shadow), var(--lg-highlight);
+    transition:
+      background-color var(--lg-dur-hover) var(--lg-ease-out),
+      box-shadow var(--lg-dur-hover) var(--lg-ease-out),
+      backdrop-filter var(--lg-dur-press) var(--lg-ease-out);
+  }
+  /* Specular rim: bright where light catches the bevel, dark where the
+     surface turns away, and tracking the pointer on top of that. */
+  .glass::after,
+  .lg-material::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--lg-rim-width);
+    background:
+      radial-gradient(
+        120% 120% at var(--lg-px, 30%) var(--lg-py, 0%),
+        rgba(255, 255, 255, 0.55) 0%,
+        rgba(255, 255, 255, 0.06) 38%,
+        rgba(255, 255, 255, 0) 62%
+      ),
+      linear-gradient(
+        150deg,
+        var(--lg-rim-top) 0%,
+        var(--lg-rim-side) 32%,
+        var(--lg-rim-bottom) 58%,
+        rgba(255, 255, 255, calc(var(--lg-rim-strength) * 0.42)) 100%
+      );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.9;
+    z-index: 1;
+    transition: opacity var(--lg-dur-hover) var(--lg-ease-out);
+  }
+  .glass:hover::after,
+  .lg-material:hover::after {
+    opacity: 1;
   }
   /* Inputs: 44px minimum, full-width safe padding so text never sits under
      the browser's autofill/clear affordance. Focus uses :focus-visible so a

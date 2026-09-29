@@ -60,8 +60,16 @@ export const DigitalDataRain: React.FC<DigitalDataRainProps> = ({
   const { isDark } = useTheme();
   const { tier, isReducedMotion } = useDeviceCapability();
 
-  // If low-end or reduced motion, disable the particle animation entirely
-  if (tier === 'low-end' || isReducedMotion) {
+  // Users who ask for less transparency get no decorative moving layer at all.
+  // The rain is pure atmosphere; without translucency it is just noise on top
+  // of the glass, so there is nothing to degrade gracefully to.
+  const prefersReducedTransparency =
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-transparency: reduce)').matches;
+
+  // If low-end, reduced motion or reduced transparency: disable entirely
+  if (tier === 'low-end' || isReducedMotion || prefersReducedTransparency) {
     return null;
   }
 

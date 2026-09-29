@@ -111,3 +111,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.11.0 - Apple-style Liquid Glass material - specular rim, pointer-tracked light, spring press physics, reduced-transparency support
 - Released: 2026-09-29 11:51
+
+## v2.11.1 - Everything is glass - .glass IS the liquid material, all 10 surface variants unified, cyan accent removed, rain respects reduced-transparency
+- Released: 2026-09-29 12:35

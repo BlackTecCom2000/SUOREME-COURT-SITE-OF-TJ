@@ -54,7 +54,7 @@ export const Section08ElectronicCourt: React.FC<Section08ElectronicCourtProps> =
       aria-label={t('nav.eservices')}
       className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
-      <DigitalDataRain density="medium" speed="medium" opacity={0.25} colorTheme="cyan" />
+      <DigitalDataRain density="medium" speed="medium" opacity={0.25} colorTheme="gold" />
 
       {/* Top Indicator */}
       <Reveal delay={100}>
