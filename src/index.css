@@ -177,13 +177,56 @@
 
   body {
     font-family: var(--font-sans);
-    font-size: var(--text-base);
+    /* 17px, not 15px. The web-typography diagnostic puts 16px at the floor and
+       18px for reading-heavy sites; this is a portal of legal acts read in
+       long sessions, so the body sits between the two. */
+    font-size: var(--text-md);
     line-height: var(--leading-body);
     background-color: var(--bg-primary);
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  /* ─── Form controls ───────────────────────────────────────────────
+     The project has ~90 bare <input>, 12 <select> and 17 <textarea> elements
+     that never went through the Input/Select primitives, and each one was
+     styled independently. A control that reads as a different surface from the
+     card it sits on breaks the material instantly, so the base layer gives
+     every native control the same size, rhythm and font, and any explicit
+     utility class still wins (utilities live in a later layer).
+     The glass fill itself stays opt-in via .glass-input / .lg-material so this
+     never overwrites a deliberate opaque admin table cell. */
+  input,
+  select,
+  textarea {
+    font-family: var(--font-sans);
+    font-size: var(--text-md);
+    line-height: 1.45;
+    color: var(--text-primary);
+    min-height: 44px;
+  }
+  textarea {
+    min-height: 96px;
+    line-height: var(--leading-body);
+  }
+  /* Checkboxes, radios and colour swatches keep their native box - forcing the
+     text size onto them makes the box huge. */
+  input[type='checkbox'],
+  input[type='radio'],
+  input[type='range'],
+  input[type='color'] {
+    min-height: 0;
+  }
+  ::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+  }
+  /* Native option lists follow the theme instead of rendering bright white. */
+  option {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
   }
 
   /* Display headings: serif authority, tight tracking, balanced wrap.
@@ -551,6 +594,32 @@ html.is-morphing-theme ::view-transition-new(root) {
 
   .public-readable :is(h1, h2, h3, h4, h5, h6, p, span, a, button, label) {
     text-shadow: var(--public-text-shadow);
+  }
+
+  /* ─── Readable measure ───────────────────────────────────────────
+     Saccades: the eye jumps 7-9 characters at a time and loses its place on
+     the return sweep when a line runs past ~75 characters. The hero cards are
+     wide, so without a cap their descriptions were running to ~90 characters
+     per line. Capping the paragraph, not the card, keeps the glass surface
+     full-bleed while the text stays comfortable. */
+  .public-readable p,
+  .public-readable li,
+  .public-readable dd {
+    max-width: 62ch;
+  }
+  .public-readable h1,
+  .public-readable h2,
+  .public-readable h3 {
+    max-width: 24ch;
+  }
+  .public-readable h4,
+  .public-readable h5,
+  .public-readable h6 {
+    max-width: 32ch;
+  }
+  /* Short UI strings and centred blocks should not inherit the cap. */
+  .public-readable :is(.text-center, .u-label, .u-meta) p {
+    max-width: none;
   }
 
   @media (max-width: 640px) {

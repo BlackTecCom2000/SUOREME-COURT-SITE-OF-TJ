@@ -114,3 +114,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.11.1 - Everything is glass - .glass IS the liquid material, all 10 surface variants unified, cyan accent removed, rain respects reduced-transparency
 - Released: 2026-09-29 12:35
+
+## v2.12.0 - Forms and readability - glass fields, 17px body, readable measure, consistent section headings
+- Released: 2026-09-29 14:02

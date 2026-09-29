@@ -53,7 +53,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
               </div>
             </div>
 
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-sans font-semibold leading-[1.05] tracking-tight mb-4 text-theme-text drop-shadow-sm">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-semibold leading-[1.05] tracking-tight mb-4 text-theme-text drop-shadow-sm">
               {language === 'tj' ? 'Адолат аз ' : language === 'en' ? 'Justice begins with ' : 'Правосудие начинается с '}
               <span className="italic font-light text-theme-gold">
                 {language === 'tj' ? 'қонун' : language === 'en' ? 'the law' : 'закона'}

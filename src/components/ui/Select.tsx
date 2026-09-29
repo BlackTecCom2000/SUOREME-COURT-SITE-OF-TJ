@@ -15,9 +15,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
 ) {
   const inputId = id || `select-${label ? String(label).replace(/\s+/g, '-').toLowerCase() : Math.random().toString(36).slice(2)}`;
   return (
-    <div className={`flex flex-col gap-1.5 ${className}`}>
+    <div className={`flex flex-col gap-2 ${className}`}>
       {label && (
-        <label htmlFor={inputId} className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">
+        <label htmlFor={inputId} className="u-label">
           {label}
         </label>
       )}
@@ -26,8 +26,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
           ref={ref}
           id={inputId}
           aria-invalid={error ? 'true' : undefined}
-          className={`w-full h-11 pl-4 pr-10 rounded-xl bg-theme-bg border text-sm text-theme-text focus:outline-none focus:border-theme-gold transition-colors appearance-none cursor-pointer ${
-            error ? 'border-red-500' : 'border-theme-border'
+          aria-describedby={error ? `${inputId}-error` : helperText ? `${inputId}-hint` : undefined}
+          className={`glass-input lg-material lg-button text-md pl-4 pr-10 appearance-none cursor-pointer ${
+            error ? 'border-[var(--status-error)]' : ''
           }`}
           {...rest}
         >
@@ -40,12 +41,16 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         <ChevronDown size={15} className="absolute right-3.5 text-theme-textMuted pointer-events-none" aria-hidden="true" />
       </div>
       {error ? (
-        <span role="alert" className="text-[11px] text-red-400">
+        <span id={`${inputId}-error`} role="alert" className="text-xs text-[var(--status-error)]">
           {error}
         </span>
       ) : helperText ? (
-        <span className="text-[11px] text-theme-textMuted">{helperText}</span>
+        <span id={`${inputId}-hint`} className="text-xs text-theme-textMuted">
+          {helperText}
+        </span>
       ) : null}
     </div>
   );
 });
+
+export default Select;
