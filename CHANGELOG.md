@@ -102,3 +102,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.10.3 - Admin and login on shared tokens - replaced 275-line brute-force contrast engine
 - Released: 2026-09-29 09:40
+
+## v2.10.4 - Accessibility and state kit - skip link, StateBlock loading/empty/error, semantic form colours
+- Released: 2026-09-29 09:46

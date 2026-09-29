@@ -1039,6 +1039,52 @@ html[data-a11y="true"] .content-card::before {
     background: var(--glass-surface-active);
   }
 
+  /* ─── Keyboard skip link ─────────────────────────────────────────
+     Written in CSS rather than as utility classes on purpose: the
+     `focus:not-sr-only` combination was being purged by the Tailwind JIT
+     scan, which would have left keyboard users with a permanently hidden
+     skip target. Visually hidden, but never display:none, so it stays
+     in the accessibility tree until it is focused. */
+  .skip-link {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 100;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--glass-radius-small);
+    border: 1px solid var(--accent-gold);
+    background: var(--glass-surface-strong);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    box-shadow: var(--glass-shadow-hover);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+
   /* ─── Shared text utilities ──────────────────────────────────────
      Replaces the ad-hoc "8px ui-monospace uppercase" pattern that appeared
      across the 3D installation, map and table meta. One role, one size. */

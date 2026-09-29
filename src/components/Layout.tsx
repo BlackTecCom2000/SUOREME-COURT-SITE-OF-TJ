@@ -77,7 +77,18 @@ export const Layout: React.FC = () => {
         />
       )}
 
-      <main className="public-readable relative z-10 flex flex-col space-y-0 min-h-screen">
+      {/* Keyboard users land here first and can jump past the long nav and the
+          hero. Styles live in index.css as .skip-link because the utility
+          combination was being purged from the build. */}
+      <a href="#main-content" className="skip-link">
+        Перейти к содержанию
+      </a>
+
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="public-readable relative z-10 flex flex-col space-y-0 min-h-screen focus:outline-none"
+      >
         <Outlet 
           context={{ 
             handleOpenSectionModal,
