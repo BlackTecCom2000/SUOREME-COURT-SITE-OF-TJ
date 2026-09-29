@@ -121,7 +121,7 @@
     margin-right: auto;
   }
 
-  html {
+    html {
     scroll-behavior: smooth;
   }
 
@@ -1548,3 +1548,81 @@ html[data-a11y="true"] .content-card::before {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   SPACING RHYTHM + BREAKPOINT LADDER - deliberately outside @layer
+
+   Rules added inside @layer base were being dropped from the build: only the
+   .site-container rule that preceded them survived, along with nothing else
+   in that block, including the pre-existing 768/1024 media queries. Unlayered
+   rules are not tree-shaken, and these carry the page rhythm, so they must
+   not depend on a usage count.
+   --------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
+   SPACING RHYTHM + BREAKPOINT LADDER - deliberately outside @layer
+
+   Added inside @layer base these rules were dropped from the build entirely,
+   together with the pre-existing 768/1024 media queries that followed them.
+   Unlayered rules are not tree-shaken, and they carry the page rhythm, so
+   they must not depend on a usage count.
+
+   Three spacing levels, one scale:
+     inside   -> within one component
+     between  -> between sibling items
+     section  -> between major sections
+   --------------------------------------------------------------------------- */
+/* ─── Section rhythm ──────────────────────────────────────────────
+   One rule carries the three spacing levels onto every major section:
+     inside   -> the card's own padding
+     between  -> gap between cards in a row
+     section  -> the vertical breath between sections
+
+   Sections previously used ad-hoc `py-10 lg:py-16` and `mb-6` values that
+   landed within a few pixels of each other, so the page had no readable
+   grouping. */
+.section-rhythm {
+  padding-block: var(--section-pad-y);
+  padding-inline: var(--section-pad-x);
+}
+@media (min-width: 768px) {
+  .section-rhythm {
+    padding-block: var(--space-section-2);
+  }
+}
+@media (min-width: 1280px) {
+  .section-rhythm {
+    padding-block: var(--space-section-3);
+  }
+}
+.card-grid {
+  display: grid;
+  gap: var(--card-gap);
+}
+.field-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--field-gap);
+}
+
+/* ─── Breakpoint ladder ───────────────────────────────────────────
+   640 / 768 / 1024 existed; 1280 and 1440 were missing even though the
+   container is 1680px, so between 1024 and 1680 nothing had control.
+   The container now steps through the tiers instead of staying pinned. */
+.site-container {
+  max-width: var(--container-lg);
+}
+@media (min-width: 768px) {
+  .site-container {
+    max-width: var(--container-lg);
+  }
+}
+@media (min-width: 1280px) {
+  .site-container {
+    max-width: var(--container-xl);
+  }
+}
+@media (min-width: 1440px) {
+  .site-container {
+    max-width: var(--container-2xl);
+  }
+}

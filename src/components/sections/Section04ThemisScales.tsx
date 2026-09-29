@@ -11,7 +11,7 @@ export const Section04ThemisScales: React.FC = () => {
     <section
       id="justice-age"
       aria-label={t('nav.justiceAge')}
-      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden"
+      className="relative section-rhythm px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden"
     >
 
       <div className="max-w-7xl mx-auto w-full relative z-10">

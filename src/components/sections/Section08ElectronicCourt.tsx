@@ -51,7 +51,7 @@ export const Section08ElectronicCourt: React.FC<Section08ElectronicCourtProps> =
     <section
       id="eservices"
       aria-label={t('nav.eservices')}
-      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
+      className="relative section-rhythm px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
 
       {/* Top Indicator */}

@@ -126,3 +126,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.12.3 - Fix dark-mode vanishing building (broken night mask removed) and make clouds non-interactive - autonomous drift only
 - Released: 2026-09-29 15:38
+
+## v2.13.0 - Three-level spacing scale, breakpoint ladder to 1440, section rhythm, action-result-benchmark CTA copy
+- Released: 2026-09-29 16:09

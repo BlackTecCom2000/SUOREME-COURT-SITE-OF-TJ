@@ -28,7 +28,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
     <section
       id="digital-justice"
       aria-label={t('nav.digitalJustice')}
-      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden transition-colors duration-700 select-none"
+      className="relative section-rhythm px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden transition-colors duration-700 select-none"
     >
 
       <div className="site-container relative z-10 space-y-6">

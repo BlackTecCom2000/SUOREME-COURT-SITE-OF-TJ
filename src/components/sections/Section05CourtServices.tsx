@@ -85,7 +85,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
     <section
       id="services"
       aria-label={t('nav.eservices')}
-      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
+      className="relative section-rhythm px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
 
       <div className="site-container relative z-10 space-y-8">

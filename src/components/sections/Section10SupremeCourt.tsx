@@ -42,7 +42,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
     <section
       id="contacts"
       aria-label={t('nav.contacts')}
-      className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
+      className="relative section-rhythm px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
 
       {/* Section Header with Liquid Glass UI Pod */}

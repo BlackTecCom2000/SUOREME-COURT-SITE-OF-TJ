@@ -198,6 +198,58 @@
   --ink-900: #05080f;
   --ink-950: #03060b;
 
+  /* ═══════════════════════════════════════════════════════════════════
+     SPACING — three levels, one scale, v2.13.0
+     Rhythm breaks down when a single arbitrary value scale is used for
+     everything: a card padding and a section gap end up within 4px of each
+     other and the page reads as noise. Three explicit levels give the eye a
+     hierarchy it can parse at a glance.
+
+       inside   -> within one component (label to field, icon to text)
+       between  -> between sibling items (cards in a row, fields in a form)
+       section  -> between major sections of the page
+
+     The jumps are deliberate: 16 -> 24 -> 64. Each level is clearly larger
+     than the one below it, so grouping is readable without a single border.
+     ═══════════════════════════════════════════════════════════════════ */
+  --space-inside-1: 4px;
+  --space-inside-2: 8px;
+  --space-inside-3: 12px;
+  --space-inside-4: 16px;
+
+  --space-between-1: 16px;
+  --space-between-2: 24px;
+  --space-between-3: 32px;
+
+  --space-section-1: 48px;
+  --space-section-2: 64px;
+  --space-section-3: 96px;
+
+  /* Vertical rhythm of the main content column. Sections breathe on this. */
+  --section-pad-y: var(--space-section-2);
+  --section-pad-x: var(--sp-5);
+  --card-gap: var(--space-between-2);
+  --field-gap: var(--space-between-1);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     BREAKPOINTS — v2.13.0
+     Only 640 / 768 / 1024 existed while the container is 1680px wide, so
+     everything between 1024 and 1680 had no control point. The layout now
+     has an explicit ladder; these values are mirrored in tailwind.config.js.
+     ═══════════════════════════════════════════════════════════════════ */
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --bp-2xl: 1440px;
+
+  /* Container width per tier, so the measure never runs away on ultrawide. */
+  --container-sm: 100%;
+  --container-md: 960px;
+  --container-lg: 1200px;
+  --container-xl: 1360px;
+  --container-2xl: var(--container-max);
+
   /* Sky accent - ties the interface to the CloudSky background */
   --sky-300: #7dd3fc;
   --sky-400: #38bdf8;

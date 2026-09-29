@@ -35,7 +35,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
     <section
       id="courts"
       aria-label={t('nav.courts')}
-      className="relative py-10 lg:py-16 overflow-hidden text-theme-text select-none"
+      className="relative section-rhythm overflow-hidden text-theme-text select-none"
     >
 
       {/* 1. Header — with Liquid Glass UI Pod */}

@@ -56,7 +56,7 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
     <section
       id="mission"
       aria-label={t('nav.mission')}
-      className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden"
+      className="relative section-rhythm px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden"
     >
       {/* Background data rain */}
 

@@ -42,6 +42,32 @@ export default {
       },
       maxWidth: {
         prose: 'var(--measure-prose)',
+        sm: 'var(--container-md)',
+        md: 'var(--container-md)',
+        lg: 'var(--container-lg)',
+        xl: 'var(--container-xl)',
+        '2xl': 'var(--container-2xl)',
+      },
+      // Three spacing levels, mirroring src/styles/tokens.css. Using
+      // `p-inside-3` instead of `p-3` documents intent: this is padding
+      // inside a component, not an arbitrary gap.
+      spacing: {
+        inside: {
+          1: 'var(--space-inside-1)',
+          2: 'var(--space-inside-2)',
+          3: 'var(--space-inside-3)',
+          4: 'var(--space-inside-4)',
+        },
+        between: {
+          1: 'var(--space-between-1)',
+          2: 'var(--space-between-2)',
+          3: 'var(--space-between-3)',
+        },
+        section: {
+          1: 'var(--space-section-1)',
+          2: 'var(--space-section-2)',
+          3: 'var(--space-section-3)',
+        },
       },
       colors: {
         // Theme roles -> semantic CSS variables (set per light/dark/a11y theme)

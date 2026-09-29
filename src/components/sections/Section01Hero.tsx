@@ -112,33 +112,45 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
               </Reveal>
             </div>
 
-            {/* CTAs */}
+            {/* CTAs — label states the action, the line beneath states the
+                result and the measurable anchor, so the visitor knows what
+                happens next before clicking rather than after. */}
             <Reveal delay={380}>
-              <div className="mt-8 flex flex-wrap items-center gap-3.5">
-                <button
-                  type="button"
-                  onClick={onOpenFiling || onOpenESud}
-                  aria-label="Подать документ"
-                  className="btn-primary shadow-lg shadow-theme-gold/20"
-                >
-                  <FileText size={15} />
-                  <span>
-                    {language === 'tj' ? 'Пешниҳоди ҳуҷҷат' : language === 'en' ? 'File Document' : 'Подать документ'}
-                  </span>
-                  <ArrowUpRight size={14} />
-                </button>
+              <div className="mt-8 flex flex-col items-start gap-3">
+                <div className="flex flex-wrap items-center gap-between-1">
+                  <button
+                    type="button"
+                    onClick={onOpenFiling || onOpenESud}
+                    aria-describedby="hero-cta-outcome"
+                    className="btn-primary shadow-lg shadow-theme-gold/20"
+                  >
+                    <FileText size={15} aria-hidden="true" />
+                    <span>
+                      {language === 'tj' ? 'Пешниҳоди ҳуҷҷат' : language === 'en' ? 'File Document' : 'Подать документ'}
+                    </span>
+                    <ArrowUpRight size={14} aria-hidden="true" />
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={onOpenESud}
-                  aria-label="Войти в систему"
-                  className="btn-secondary"
-                >
-                  <ShieldCheck size={15} className="text-theme-gold" />
-                  <span>
-                    {language === 'tj' ? 'Воридшавӣ бо ЭЦП' : language === 'en' ? 'Sign In (PKI)' : 'Войти в систему'}
-                  </span>
-                </button>
+                  <button
+                    type="button"
+                    onClick={onOpenESud}
+                    aria-describedby="hero-cta-outcome"
+                    className="btn-secondary"
+                  >
+                    <ShieldCheck size={15} className="text-theme-gold" aria-hidden="true" />
+                    <span>
+                      {language === 'tj' ? 'Воридшавӣ бо ЭЦП' : language === 'en' ? 'Sign In (PKI)' : 'Войти через ЭЦП'}
+                    </span>
+                  </button>
+                </div>
+
+                <p id="hero-cta-outcome" className="u-meta max-w-[46ch] leading-relaxed">
+                  {language === 'tj'
+                    ? 'Ҳуҷҷати шумо ба тартиби электронӣ қабул мешавад — аз рӯи қабул то ҷавоби расмӣ дар давоми 3 рӯз.'
+                    : language === 'en'
+                      ? 'Your filing is registered in the e-filing queue. A registered case number is issued immediately; a ruling follows within 3 business days.'
+                      : 'Документ попадает в электронную очередь. Номер дела выдаётся сразу, ответ — в течение 3 рабочих дней.'}
+                </p>
               </div>
             </Reveal>
 
