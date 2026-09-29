@@ -79,7 +79,7 @@ export const SectionThree: React.FC<SectionThreeProps> = ({
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-4 max-w-4xl py-4 font-mono text-xs text-white/80">
             <div
               onClick={onOpenCourts}
-              className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer group"
+              className="glass glass-card p-3 hover:border-[var(--glass-border-hover)] transition-all cursor-pointer group"
             >
               <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>01 // DUSHANBE</span>
@@ -91,7 +91,7 @@ export const SectionThree: React.FC<SectionThreeProps> = ({
 
             <div
               onClick={onOpenCourts}
-              className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer group"
+              className="glass glass-card p-3 hover:border-[var(--glass-border-hover)] transition-all cursor-pointer group"
             >
               <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>02 // RRP</span>
@@ -103,7 +103,7 @@ export const SectionThree: React.FC<SectionThreeProps> = ({
 
             <div
               onClick={onOpenCourts}
-              className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer group"
+              className="glass glass-card p-3 hover:border-[var(--glass-border-hover)] transition-all cursor-pointer group"
             >
               <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>03 // SUGD</span>
@@ -115,7 +115,7 @@ export const SectionThree: React.FC<SectionThreeProps> = ({
 
             <div
               onClick={onOpenCourts}
-              className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer group"
+              className="glass glass-card p-3 hover:border-[var(--glass-border-hover)] transition-all cursor-pointer group"
             >
               <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>04 // KHATLON</span>
@@ -127,7 +127,7 @@ export const SectionThree: React.FC<SectionThreeProps> = ({
 
             <div
               onClick={onOpenCourts}
-              className="p-3 bg-black/40 border border-white/10 hover:border-white/30 rounded-xl transition-all cursor-pointer col-span-2 sm:col-span-1 group"
+              className="glass glass-card p-3 hover:border-[var(--glass-border-hover)] transition-all cursor-pointer col-span-2 sm:col-span-1 group"
             >
               <div className="text-2xs text-white/50 mb-1 flex items-center justify-between">
                 <span>05 // GBAO</span>

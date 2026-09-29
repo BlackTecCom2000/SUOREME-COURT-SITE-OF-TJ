@@ -105,3 +105,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.10.4 - Accessibility and state kit - skip link, StateBlock loading/empty/error, semantic form colours
 - Released: 2026-09-29 09:46
+
+## v2.10.5 - Wire StateBlock into news and court sections, replace opaque black cards with glass
+- Released: 2026-09-29 10:10

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Share2, Check, FileDown, Newspaper } from 'lucide-react';
 import { Reveal } from './Reveal';
+import StateBlock from './ui/StateBlock';
 import { Language } from '../data/sudTjData';
 
 interface SectionFourProps {
@@ -104,27 +105,38 @@ export const SectionFour: React.FC<SectionFourProps> = ({
         <Reveal delay={380}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl py-2">
             {loading ? (
-              <div className="text-white/60 font-mono text-xs">Loading...</div>
+              <StateBlock tone="loading" rows={2} className="col-span-full py-6" />
             ) : news.length === 0 ? (
-              <div className="text-white/60 font-mono text-xs">No news found</div>
+              <StateBlock
+                tone="empty"
+                title={lang === 'ru' ? 'Новостей пока нет' : 'Ахбар нест'}
+                description={
+                  lang === 'ru'
+                    ? 'Официальные материалы появятся здесь сразу после публикации.'
+                    : 'Рақамӣ маводҳо баъди нашр дар ҳамин ҷой нашвар мешаванд.'
+                }
+                className="col-span-full"
+              />
             ) : (
               news.slice(0, 2).map((item) => (
                 <div
                   key={item.id}
                   onClick={onOpenNews}
-                  className="p-4 rounded-xl bg-black/40 border border-white/10 hover:border-white/30 transition-all cursor-pointer group"
+                  className="glass glass-card p-4 hover:border-[var(--glass-border-hover)] transition-colors cursor-pointer group"
                 >
-                  <div className="flex items-center justify-between font-mono text-2xs text-white/50 mb-2">
-                    <span className="flex items-center gap-1.5 text-white/80">
-                      <Newspaper size={12} />
-                      <span>МАТБУОТ</span>
+                  <div className="u-meta flex items-center justify-between mb-2">
+                    <span className="flex items-center gap-1.5">
+                      <Newspaper size={12} aria-hidden="true" />
+                      <span className="u-label">{lang === 'ru' ? 'МАТБУОТ' : 'МАТБУОТ'}</span>
                     </span>
-                    <span>{new Date(item.published_at).toLocaleDateString()}</span>
+                    <time dateTime={item.published_at}>
+                      {new Date(item.published_at).toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'tg-TJ')}
+                    </time>
                   </div>
-                  <h4 className="text-xs sm:text-sm font-medium text-white group-hover:text-white line-clamp-2 mb-1.5 leading-snug">
+                  <h4 className="text-md font-semibold text-theme-text line-clamp-2 mb-1.5 leading-snug">
                     {lang === 'ru' ? item.title_ru : item.title_tj}
                   </h4>
-                  <p className="text-[11px] text-white/60 line-clamp-2 leading-relaxed">
+                  <p className="text-sm text-theme-textMuted line-clamp-2 leading-relaxed">
                     {lang === 'ru' ? item.excerpt_ru : item.excerpt_tj}
                   </p>
                 </div>
