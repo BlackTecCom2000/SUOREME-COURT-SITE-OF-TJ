@@ -51,15 +51,15 @@ export const AdminLogin: React.FC = () => {
           className="absolute inset-0 w-full h-full pointer-events-none opacity-10"
           viewBox="0 0 800 800"
         >
-          <path d="M 50 100 L 200 100 L 250 150 L 500 150" fill="none" stroke="#dfbe7e" strokeWidth="1" />
+          <path d="M 50 100 L 200 100 L 250 150 L 500 150" fill="none" stroke="var(--gold-300)" strokeWidth="1" />
           <path d="M 100 600 L 250 600 L 300 550 L 700 550" fill="none" stroke="#00e5ff" strokeWidth="1" />
-          <circle cx="250" cy="150" r="4" fill="#dfbe7e" />
+          <circle cx="250" cy="150" r="4" fill="var(--gold-300)" />
           <circle cx="300" cy="550" r="4" fill="#00e5ff" />
         </svg>
 
         {/* Top Header Badge */}
-        <div className="relative z-10 flex items-center gap-2.5 text-xs font-mono tracking-widest text-[#dfbe7e]">
-          <span className="w-2 h-2 rounded-full bg-[#dfbe7e] animate-pulse" />
+        <div className="relative z-10 flex items-center gap-2.5 text-xs font-mono tracking-widest text-[var(--gold-300)]">
+          <span className="w-2 h-2 rounded-full bg-[var(--gold-300)] animate-pulse" />
           <span>SUD.TJ / SECURE ADMINISTRATIVE NODE</span>
         </div>
 
@@ -69,10 +69,10 @@ export const AdminLogin: React.FC = () => {
             <NationalEmblem size={64} />
           </div>
 
-          <h1 className="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl text-theme-text tracking-wide leading-tight">
+          <h1 className="font-display font-semibold text-3xl sm:text-4xl lg:text-5xl text-theme-text leading-tight">
             СУДИ ОЛИИ ҶУМҲУРИИ ТОҶИКИСТОН
           </h1>
-          <h2 className="font-serif text-sm sm:text-base text-[var(--court-gold)] tracking-widest uppercase mt-2">
+          <h2 className="u-label mt-2">
             ВЕРХОВНЫЙ СУД РЕСПУБЛИКИ ТАДЖИКИСТАН
           </h2>
 

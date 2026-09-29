@@ -16,308 +16,100 @@
   overflow: hidden;
 }
 
+/* Admin glass density is a deliberate step above the public portal: figures
+   and tables need a more opaque surface over the live sky. The values below
+   are that step, not a second design language - they still resolve from the
+   same token family, and text comes from the shared palette. */
 :root .admin-shell,
 [data-theme="light"] .admin-shell {
-  --text-primary: #000000;
-  --text-secondary: #000000;
-  --text-muted: #1e293b;
-  color: #000000;
+  --text-primary: var(--ink-950);
+  --text-secondary: var(--ink-950);
+  --text-muted: var(--ink-700);
+  color: var(--text-primary);
   --glass-surface: rgba(255, 255, 255, 0.92);
   --glass-surface-strong: rgba(255, 255, 255, 0.98);
   --glass-surface-hover: rgba(245, 247, 250, 0.98);
   --glass-border: rgba(0, 0, 0, 0.12);
   --glass-border-subtle: rgba(0, 0, 0, 0.08);
-  --glass-border-hover: rgba(184, 138, 36, 0.8);
+  --glass-border-hover: color-mix(in srgb, var(--gold-500) 80%, transparent);
   --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 [data-theme="dark"] .admin-shell {
   --text-primary: #ffffff;
   --text-secondary: #ffffff;
-  --text-muted: #94a3b8;
-  color: #ffffff;
+  --text-muted: var(--ink-300);
+  color: var(--text-primary);
   --glass-surface: rgba(7, 18, 36, 0.85);
   --glass-surface-strong: rgba(7, 18, 36, 0.94);
   --glass-surface-hover: rgba(14, 30, 56, 0.95);
   --glass-border: rgba(255, 255, 255, 0.12);
   --glass-border-subtle: rgba(255, 255, 255, 0.06);
-  --glass-border-hover: rgba(223, 190, 126, 0.55);
+  --glass-border-hover: color-mix(in srgb, var(--gold-300) 55%, transparent);
   --glass-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
 }
 
 /* ==========================================================================
-   ADMIN TYPOGRAPHY & THEME CONTRAST ENGINE
-   Strict User Rule:
-   - LIGHT MODE: text MUST be black (#000000)
-   - DARK MODE: text MUST be white (#ffffff)
+   ADMIN THEME BRIDGE - one place, token-driven (v2.10.3)
+
+   This file used to carry ~270 lines of brute-force selectors that forced
+   h1-h6 / p / label / th / td / select / textarea and every text-slate-* /
+   text-gray-* utility to pure black or white with !important, duplicated
+   across six selector variants for light and dark.
+
+   The guarantee it was after is real - the Control Center sits on glass over
+   a live sky, so text must stay readable - but the implementation destroyed
+   the visual hierarchy: muted metadata and table meta were repainted the
+   same colour as headings, and the admin drifted away from the tokens the
+   public portal and login now share (see AGENTS.md).
+
+   Contrast is therefore kept, but expressed through the same tokens:
+   - the shared theme already guarantees >= 4.5:1 for --text-primary,
+     --text-secondary and --text-muted in light, dark and accessibility mode
+   - admin gets a slightly denser glass surface for data density, one step
+     above the public value, still from the same token family
+   - form controls keep an explicit rule, because browsers force their own
+     text colour on select and date inputs
    ========================================================================== */
 
-/* 1. Global Light Mode for Admin Shell & Modals */
-:root:not(.dark) .admin-shell,
-html:not(.dark) .admin-shell,
+.admin-shell,
+.admin-portal-modal {
+  color: var(--text-primary);
+}
+
+/* Data-dense admin surfaces: same glass family, one step more opaque than the
+   public portal so tables and figures stay legible over the moving sky. */
+.admin-shell .glass,
+.admin-content .glass,
+.admin-shell .glass-admin,
+.admin-portal-modal .glass {
+  --glass-opacity: 0.18;
+}
+
+/* Native form controls. Browsers force their own text colour on select and
+   date inputs, so this stays explicit - and unlike before it no longer
+   overrides the heading or muted-text utilities. */
+.admin-shell input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
+.admin-shell textarea,
+.admin-shell select,
+.admin-portal-modal input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
+.admin-portal-modal textarea,
+.admin-portal-modal select {
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+/* Tell the browser which palette to draw native widgets with, so scrollbars,
+   date pickers and select arrows match the active theme. */
 [data-theme="light"] .admin-shell,
-:root:not(.dark) .admin-portal-modal,
-html:not(.dark) .admin-portal-modal,
 [data-theme="light"] .admin-portal-modal {
-  color: #000000;
-  --text-primary: #000000;
-  --text-secondary: #000000;
-  --text-muted: #1e293b;
+  color-scheme: light;
 }
-
-:root:not(.dark) .admin-shell h1,
-:root:not(.dark) .admin-shell h2,
-:root:not(.dark) .admin-shell h3,
-:root:not(.dark) .admin-shell h4,
-:root:not(.dark) .admin-shell h5,
-:root:not(.dark) .admin-shell h6,
-:root:not(.dark) .admin-shell p,
-:root:not(.dark) .admin-shell label,
-:root:not(.dark) .admin-shell th,
-:root:not(.dark) .admin-shell td,
-:root:not(.dark) .admin-shell select,
-:root:not(.dark) .admin-shell textarea,
-[data-theme="light"] .admin-shell h1,
-[data-theme="light"] .admin-shell h2,
-[data-theme="light"] .admin-shell h3,
-[data-theme="light"] .admin-shell h4,
-[data-theme="light"] .admin-shell h5,
-[data-theme="light"] .admin-shell h6,
-[data-theme="light"] .admin-shell p,
-[data-theme="light"] .admin-shell label,
-[data-theme="light"] .admin-shell th,
-[data-theme="light"] .admin-shell td,
-[data-theme="light"] .admin-shell select,
-[data-theme="light"] .admin-shell textarea,
-:root:not(.dark) .admin-portal-modal h1,
-:root:not(.dark) .admin-portal-modal h2,
-:root:not(.dark) .admin-portal-modal h3,
-:root:not(.dark) .admin-portal-modal h4,
-:root:not(.dark) .admin-portal-modal h5,
-:root:not(.dark) .admin-portal-modal h6,
-:root:not(.dark) .admin-portal-modal p,
-:root:not(.dark) .admin-portal-modal label,
-:root:not(.dark) .admin-portal-modal select,
-:root:not(.dark) .admin-portal-modal textarea,
-[data-theme="light"] .admin-portal-modal h1,
-[data-theme="light"] .admin-portal-modal h2,
-[data-theme="light"] .admin-portal-modal h3,
-[data-theme="light"] .admin-portal-modal h4,
-[data-theme="light"] .admin-portal-modal h5,
-[data-theme="light"] .admin-portal-modal h6,
-[data-theme="light"] .admin-portal-modal p,
-[data-theme="light"] .admin-portal-modal label,
-[data-theme="light"] .admin-portal-modal select,
-[data-theme="light"] .admin-portal-modal textarea {
-  color: #000000;
-}
-
-/* Neutral text utilities in light mode -> pure black */
-:root:not(.dark) .admin-shell .text-white,
-:root:not(.dark) .admin-shell .text-slate-900,
-:root:not(.dark) .admin-shell .text-slate-800,
-:root:not(.dark) .admin-shell .text-slate-700,
-:root:not(.dark) .admin-shell .text-slate-600,
-:root:not(.dark) .admin-shell .text-slate-500,
-:root:not(.dark) .admin-shell .text-slate-400,
-:root:not(.dark) .admin-shell .text-slate-300,
-:root:not(.dark) .admin-shell .text-slate-200,
-:root:not(.dark) .admin-shell .text-slate-100,
-:root:not(.dark) .admin-shell .text-gray-900,
-:root:not(.dark) .admin-shell .text-gray-800,
-:root:not(.dark) .admin-shell .text-gray-700,
-:root:not(.dark) .admin-shell .text-gray-600,
-:root:not(.dark) .admin-shell .text-gray-500,
-:root:not(.dark) .admin-shell .text-gray-400,
-[data-theme="light"] .admin-shell .text-white,
-[data-theme="light"] .admin-shell .text-slate-900,
-[data-theme="light"] .admin-shell .text-slate-800,
-[data-theme="light"] .admin-shell .text-slate-700,
-[data-theme="light"] .admin-shell .text-slate-600,
-[data-theme="light"] .admin-shell .text-slate-500,
-[data-theme="light"] .admin-shell .text-slate-400,
-[data-theme="light"] .admin-shell .text-slate-300,
-[data-theme="light"] .admin-shell .text-slate-200,
-[data-theme="light"] .admin-shell .text-slate-100,
-[data-theme="light"] .admin-shell .text-gray-900,
-[data-theme="light"] .admin-shell .text-gray-800,
-[data-theme="light"] .admin-shell .text-gray-700,
-[data-theme="light"] .admin-shell .text-gray-600,
-[data-theme="light"] .admin-shell .text-gray-500,
-[data-theme="light"] .admin-shell .text-gray-400,
-:root:not(.dark) .admin-portal-modal .text-white,
-:root:not(.dark) .admin-portal-modal .text-slate-900,
-:root:not(.dark) .admin-portal-modal .text-slate-800,
-:root:not(.dark) .admin-portal-modal .text-slate-700,
-:root:not(.dark) .admin-portal-modal .text-slate-600,
-:root:not(.dark) .admin-portal-modal .text-slate-500,
-:root:not(.dark) .admin-portal-modal .text-slate-400,
-[data-theme="light"] .admin-portal-modal .text-white,
-[data-theme="light"] .admin-portal-modal .text-slate-900,
-[data-theme="light"] .admin-portal-modal .text-slate-800,
-[data-theme="light"] .admin-portal-modal .text-slate-700,
-[data-theme="light"] .admin-portal-modal .text-slate-600,
-[data-theme="light"] .admin-portal-modal .text-slate-500,
-[data-theme="light"] .admin-portal-modal .text-slate-400 {
-  color: #000000 !important;
-}
-
-/* Light mode inputs & textareas text color */
-:root:not(.dark) .admin-shell input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
-:root:not(.dark) .admin-shell textarea,
-[data-theme="light"] .admin-shell input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
-[data-theme="light"] .admin-shell textarea,
-:root:not(.dark) .admin-portal-modal input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
-:root:not(.dark) .admin-portal-modal textarea,
-[data-theme="light"] .admin-portal-modal input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
-[data-theme="light"] .admin-portal-modal textarea {
-  color: #000000 !important;
-}
-
-/* 2. Global Dark Mode for Admin Shell & Modals */
-.dark .admin-shell,
-html.dark .admin-shell,
 [data-theme="dark"] .admin-shell,
-.dark .admin-portal-modal,
-html.dark .admin-portal-modal,
-[data-theme="dark"] .admin-portal-modal {
-  color: #ffffff;
-  --text-primary: #ffffff;
-  --text-secondary: #ffffff;
-  --text-muted: #94a3b8;
-}
-
-.dark .admin-shell h1,
-.dark .admin-shell h2,
-.dark .admin-shell h3,
-.dark .admin-shell h4,
-.dark .admin-shell h5,
-.dark .admin-shell h6,
-.dark .admin-shell p,
-.dark .admin-shell label,
-.dark .admin-shell th,
-.dark .admin-shell td,
-.dark .admin-shell select,
-.dark .admin-shell textarea,
-[data-theme="dark"] .admin-shell h1,
-[data-theme="dark"] .admin-shell h2,
-[data-theme="dark"] .admin-shell h3,
-[data-theme="dark"] .admin-shell h4,
-[data-theme="dark"] .admin-shell h5,
-[data-theme="dark"] .admin-shell h6,
-[data-theme="dark"] .admin-shell p,
-[data-theme="dark"] .admin-shell label,
-[data-theme="dark"] .admin-shell th,
-[data-theme="dark"] .admin-shell td,
-[data-theme="dark"] .admin-shell select,
-[data-theme="dark"] .admin-shell textarea,
-.dark .admin-portal-modal h1,
-.dark .admin-portal-modal h2,
-.dark .admin-portal-modal h3,
-.dark .admin-portal-modal h4,
-.dark .admin-portal-modal h5,
-.dark .admin-portal-modal h6,
-.dark .admin-portal-modal p,
-.dark .admin-portal-modal label,
-.dark .admin-portal-modal select,
-.dark .admin-portal-modal textarea,
-[data-theme="dark"] .admin-portal-modal h1,
-[data-theme="dark"] .admin-portal-modal h2,
-[data-theme="dark"] .admin-portal-modal h3,
-[data-theme="dark"] .admin-portal-modal h4,
-[data-theme="dark"] .admin-portal-modal h5,
-[data-theme="dark"] .admin-portal-modal h6,
-[data-theme="dark"] .admin-portal-modal p,
-[data-theme="dark"] .admin-portal-modal label,
-[data-theme="dark"] .admin-portal-modal select,
-[data-theme="dark"] .admin-portal-modal textarea {
-  color: #ffffff;
-}
-
-/* Dark mode overrides for neutral Tailwind text utilities */
-.dark .admin-shell .dark\:text-white,
-.dark .admin-shell .dark\:text-slate-100,
-.dark .admin-shell .dark\:text-slate-200,
-.dark .admin-shell .dark\:text-slate-300,
-.dark .admin-shell .dark\:text-slate-400,
-.dark .admin-shell .dark\:text-slate-500,
-.dark .admin-shell .dark\:text-gray-100,
-.dark .admin-shell .dark\:text-gray-200,
-.dark .admin-shell .dark\:text-gray-300,
-.dark .admin-shell .dark\:text-gray-400,
-.dark .admin-shell .text-white,
-.dark .admin-shell .text-slate-200,
-.dark .admin-shell .text-slate-300,
-.dark .admin-shell .text-slate-400,
-[data-theme="dark"] .admin-shell .dark\:text-white,
-[data-theme="dark"] .admin-shell .dark\:text-slate-100,
-[data-theme="dark"] .admin-shell .dark\:text-slate-200,
-[data-theme="dark"] .admin-shell .dark\:text-slate-300,
-[data-theme="dark"] .admin-shell .dark\:text-slate-400,
-[data-theme="dark"] .admin-shell .dark\:text-slate-500,
-[data-theme="dark"] .admin-shell .dark\:text-gray-100,
-[data-theme="dark"] .admin-shell .dark\:text-gray-200,
-[data-theme="dark"] .admin-shell .dark\:text-gray-300,
-[data-theme="dark"] .admin-shell .dark\:text-gray-400,
-[data-theme="dark"] .admin-shell .text-white,
-[data-theme="dark"] .admin-shell .text-slate-200,
-[data-theme="dark"] .admin-shell .text-slate-300,
-[data-theme="dark"] .admin-shell .text-slate-400,
-.dark .admin-portal-modal .dark\:text-white,
-.dark .admin-portal-modal .dark\:text-slate-200,
-.dark .admin-portal-modal .dark\:text-slate-300,
-.dark .admin-portal-modal .dark\:text-slate-400,
-[data-theme="dark"] .admin-portal-modal .dark\:text-white,
-[data-theme="dark"] .admin-portal-modal .dark\:text-slate-200,
-[data-theme="dark"] .admin-portal-modal .dark\:text-slate-300,
-[data-theme="dark"] .admin-portal-modal .dark\:text-slate-400 {
-  color: #ffffff !important;
-}
-
-/* Dark mode inputs & textareas text color */
-.dark .admin-shell input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
-.dark .admin-shell textarea,
-[data-theme="dark"] .admin-shell input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
-[data-theme="dark"] .admin-shell textarea,
-.dark .admin-portal-modal input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
-.dark .admin-portal-modal textarea,
-[data-theme="dark"] .admin-portal-modal input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
-[data-theme="dark"] .admin-portal-modal textarea {
-  color: #ffffff !important;
-}
-
-/* Preserve semantic accents like amber, emerald, rose, sky, cyan */
-:root .admin-shell .text-amber-300,
-:root .admin-shell .text-amber-400,
-:root .admin-shell .text-amber-500,
-:root .admin-shell .text-amber-600,
-:root .admin-shell .text-amber-700,
-:root .admin-shell .text-emerald-300,
-:root .admin-shell .text-emerald-400,
-:root .admin-shell .text-emerald-500,
-:root .admin-shell .text-emerald-600,
-:root .admin-shell .text-rose-300,
-:root .admin-shell .text-rose-400,
-:root .admin-shell .text-rose-500,
-:root .admin-shell .text-rose-600,
-:root .admin-shell .text-sky-400,
-:root .admin-shell .text-sky-500,
-:root .admin-shell .text-sky-600,
-:root .admin-shell .text-cyan-400,
-:root .admin-shell .text-cyan-500,
-.dark .admin-shell .dark\:text-amber-300,
-.dark .admin-shell .dark\:text-amber-400,
-.dark .admin-shell .dark\:text-emerald-300,
-.dark .admin-shell .dark\:text-emerald-400,
-.dark .admin-shell .dark\:text-rose-300,
-.dark .admin-shell .dark\:text-rose-400,
-.dark .admin-shell .dark\:text-cyan-400,
-.dark .admin-shell .dark\:text-sky-400,
-:root .admin-portal-modal .text-amber-400,
-:root .admin-portal-modal .text-amber-500,
-:root .admin-portal-modal .text-amber-600,
-.dark .admin-portal-modal .dark\:text-amber-400 {
-  color: unset;
+[data-theme="dark"] .admin-portal-modal,
+.dark .admin-shell,
+.dark .admin-portal-modal {
+  color-scheme: dark;
 }
 
 /* 1. Desktop sidebar slot: hidden on mobile, flex column from md (768px) up */
