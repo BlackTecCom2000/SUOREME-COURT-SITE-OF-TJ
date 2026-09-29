@@ -123,3 +123,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.12.2 - Remove matrix rain from 17 sections, cap atmospheric haze so the glass material stays readable
 - Released: 2026-09-29 14:31
+
+## v2.12.3 - Fix dark-mode vanishing building (broken night mask removed) and make clouds non-interactive - autonomous drift only
+- Released: 2026-09-29 15:38

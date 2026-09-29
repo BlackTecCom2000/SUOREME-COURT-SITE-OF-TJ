@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSiteBackground } from '../hooks/useSiteBackground';
-import { useSkyMasks } from '../hooks/useSkyMasks';
+import { useSkyMask } from '../hooks/useSkyMasks';
 import CloudSky from './CloudSky';
 
 export const ScrollVideo: React.FC = () => {
@@ -69,7 +69,7 @@ export const ScrollVideo: React.FC = () => {
 
   // Same silhouette masks as GlobalBackground: the baked sky is cut away so the
   // live WebGL clouds fill the space around the building.
-  const masks = useSkyMasks();
+  const mask = useSkyMask();
   const photoStyle = (mask: string | null): React.CSSProperties => ({
     filter: 'saturate(var(--bg-saturation, 100%)) brightness(var(--bg-brightness, 100%)) contrast(var(--bg-contrast, 100%))',
     ...(mask
@@ -102,7 +102,7 @@ export const ScrollVideo: React.FC = () => {
         size={140}
         clouds={{ softness: 170, shadow: isDark ? 40 : 78, cirrus: 60 }}
         sun={{ x: 82, y: 94, glow: isDark ? 'rgba(148, 170, 210, 0.35)' : 'rgba(255, 246, 224, 0.95)' }}
-        pointer={{ parallax: 150, wind: 190, damping: 26 }}
+        interactive={false}
         resolutionScale={0.5}
         opacity={isDark ? 0.95 : 1}
       />
@@ -123,7 +123,7 @@ export const ScrollVideo: React.FC = () => {
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${
             !isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
-          style={photoStyle(masks.day)}
+          style={photoStyle(mask.day)}
         />
         <img
           src={imageNight}
@@ -133,7 +133,7 @@ export const ScrollVideo: React.FC = () => {
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${
             isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
-          style={photoStyle(masks.night)}
+          style={photoStyle(null)}
         />
       </div>
       {/* Atmospheric White Overlay â€” configurable, weak, building and sky remain visible â€” NO backdrop-filter here */}

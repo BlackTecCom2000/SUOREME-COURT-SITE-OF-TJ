@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSiteBackground } from '../hooks/useSiteBackground';
-import { useSkyMasks } from '../hooks/useSkyMasks';
+import { useSkyMask } from '../hooks/useSkyMasks';
 import CloudSky from './CloudSky';
 
 /**
@@ -27,7 +27,7 @@ import CloudSky from './CloudSky';
 export const GlobalBackground: React.FC = () => {
   const { isDark } = useTheme();
   const { imageDay, imageNight } = useSiteBackground();
-  const masks = useSkyMasks();
+  const mask = useSkyMask();
   const parallaxRef = useRef<HTMLDivElement>(null);
   const maxScrollRef = useRef(1);
   const frameRef = useRef(0);
@@ -97,7 +97,7 @@ export const GlobalBackground: React.FC = () => {
         size={140}
         clouds={{ softness: 170, shadow: isDark ? 45 : 78, cirrus: 60 }}
         sun={{ x: 82, y: 94, glow: isDark ? 'rgba(150, 172, 212, 0.30)' : 'rgba(255, 246, 224, 0.95)' }}
-        pointer={{ parallax: 150, wind: 190, damping: 26 }}
+        interactive={false}
         resolutionScale={0.5}
         opacity={isDark ? 0.95 : 1}
       />
@@ -119,7 +119,7 @@ export const GlobalBackground: React.FC = () => {
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${
             !isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
-          style={photoStyle(masks.day)}
+          style={photoStyle(mask.day)}
         />
         <img
           src={imageNight}
@@ -129,7 +129,16 @@ export const GlobalBackground: React.FC = () => {
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-in-out ${
             isDark ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
-          style={photoStyle(masks.night)}
+          style={photoStyle(null)}
+          onLoad={(e) => {
+            // The night plate is underexposed by design. Without a lift the
+            // building sank into the dark theme, so nudge the midtones once it
+            // has decoded - a no-op while the editor's own brightness token
+            // is doing the work.
+            const el = e.currentTarget;
+            const v = getComputedStyle(el).getPropertyValue('--bg-brightness').trim();
+            if (v === '100%' || v === '') el.style.filter = 'brightness(1.12)';
+          }}
         />
       </div>
 

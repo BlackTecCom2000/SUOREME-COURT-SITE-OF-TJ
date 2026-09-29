@@ -246,6 +246,15 @@ export interface CloudSkyProps {
   resolutionScale?: number;
   /** 0-1, global fade so the layer can be dialled per theme */
   opacity?: number;
+  /**
+   * Pointer interaction. OFF by default.
+   *
+   * The clouds are background scenery, not a control. A visitor must not be
+   * able to grab them with the cursor, push them around, or find that the page
+   * reacts to the mouse for no reason - they drift on their own. Opt in only
+   * for an explicit, purposeful experience.
+   */
+  interactive?: boolean;
   /** force the animation off (also honoured automatically for reduced motion) */
   paused?: boolean;
 }
@@ -276,6 +285,7 @@ export const CloudSky: React.FC<CloudSkyProps> = ({
   pointer,
   resolutionScale = 0.5,
   opacity = 1,
+  interactive = false,
   paused = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -403,9 +413,17 @@ export const CloudSky: React.FC<CloudSkyProps> = ({
       const v = vRef.current;
       const p = ptrRef.current;
 
-      const k = 1 - Math.exp(-(v.damping as number) * 0.12 * dt);
-      leanX += ((p.inside ? p.x : 0) - leanX) * k;
-      leanY += ((p.inside ? p.y : 0) - leanY) * k;
+      // With `interactive` off the lean never moves off zero, so the gust is a
+      // constant 1 and the decks drift at their own steady speed. No listener
+      // is attached either, so the cursor cannot reach these clouds at all.
+      if (interactive) {
+        const k = 1 - Math.exp(-(v.damping as number) * 0.12 * dt);
+        leanX += ((p.inside ? p.x : 0) - leanX) * k;
+        leanY += ((p.inside ? p.y : 0) - leanY) * k;
+      } else {
+        leanX = 0;
+        leanY = 0;
+      }
 
       const gust = 1 + leanX * (v.wind as number);
       const rate = (v.speed as number) * gust;
@@ -459,8 +477,12 @@ export const CloudSky: React.FC<CloudSkyProps> = ({
     };
     const onResize = () => draw();
 
-    window.addEventListener('pointermove', track, { passive: true });
-    window.addEventListener('pointerleave', onLeave, { passive: true });
+    // Pointer listeners are only attached when interaction is explicitly
+    // enabled, so the default clouds are completely inert to the cursor.
+    if (interactive) {
+      window.addEventListener('pointermove', track, { passive: true });
+      window.addEventListener('pointerleave', onLeave, { passive: true });
+    }
     window.addEventListener('resize', onResize);
     document.addEventListener('visibilitychange', onVisibility);
     if (mq.addEventListener) mq.addEventListener('change', syncRunState);
@@ -470,8 +492,8 @@ export const CloudSky: React.FC<CloudSkyProps> = ({
 
     return () => {
       stop();
-      window.removeEventListener('pointermove', track);
-      window.removeEventListener('pointerleave', onLeave);
+      if (interactive) window.removeEventListener('pointermove', track);
+      if (interactive) window.removeEventListener('pointerleave', onLeave);
       window.removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVisibility);
       if (mq.removeEventListener) mq.removeEventListener('change', syncRunState);
