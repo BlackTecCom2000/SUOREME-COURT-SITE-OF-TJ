@@ -129,3 +129,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.13.0 - Three-level spacing scale, breakpoint ladder to 1440, section rhythm, action-result-benchmark CTA copy
 - Released: 2026-09-29 16:09
+
+## v2.14.0 - Dark-mode clouds via masked veil, Skiper26 theme reveal, service worker and cache tiers
+- Released: 2026-09-29 16:57

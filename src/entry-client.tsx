@@ -30,5 +30,15 @@ if (import.meta.env.DEV) {
   // Actually, standard vite SSR pattern: just hydrate.
   hydrateRoot(rootEl, app);
 } else {
-  hydrateRoot(rootEl, app);
+  hydrateRoot(rootEl, app);}
+
+/* Offline + repeat-visit caching. Registered after hydration so it never
+   competes with the first paint, and skipped in dev where hashed assets and
+   HMR make a cache actively harmful. */
+if ('serviceWorker' in navigator && !import.meta.env.DEV) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => {
+      /* caching is an enhancement; the site must work without it */
+    });
+  });
 }

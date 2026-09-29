@@ -34,6 +34,15 @@ function Write-Utf8NoBom {
   [System.IO.File]::WriteAllText($Path, $Text, (New-Object System.Text.UTF8Encoding($false)))
 }
 
+# PowerShell 5.1's Get-Content assumes the system ANSI codepage for a file
+# without a BOM, so reading our UTF-8 output with it corrupts every non-ASCII
+# character and Write-Utf8NoBom then stores the corruption permanently. Always
+# read UTF-8 explicitly.
+function Read-Utf8Raw {
+  param([string]$Path)
+  [System.IO.File]::ReadAllText($Path, [System.Text.Encoding]::UTF8)
+}
+
 # ---------------------------------------------------------------- list
 if ($List) {
   Say 'published versions (newest last)'
@@ -114,7 +123,7 @@ Ok 'build:client ok'
 # ---------------------------------------------------------------- publish as new version
 Say "publishing as $newTag"
 $pkgPath = Join-Path $root 'package.json'
-$pkg = Get-Content $pkgPath -Raw | ConvertFrom-Json
+$pkg = Read-Utf8Raw $pkgPath | ConvertFrom-Json
 $pkg.version = $NewVersion
 Write-Utf8NoBom $pkgPath ($pkg | ConvertTo-Json -Depth 10)
 
@@ -129,7 +138,7 @@ $entry = @"
 - QA: ``tsc 0``, ``build:client``.
 "@
 $changelog = Join-Path $root 'CHANGELOG.md'
-$text = Get-Content $changelog -Raw
+$text = Read-Utf8Raw $changelog
 $idx = $text.IndexOf("`n## ")
 if ($idx -lt 0) { $text = $entry + "`n" + $text } else { $text = $text.Substring(0, $idx) + $entry + $text.Substring($idx) }
 Write-Utf8NoBom $changelog $text

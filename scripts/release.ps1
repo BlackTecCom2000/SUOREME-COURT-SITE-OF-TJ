@@ -36,6 +36,17 @@ function Write-Utf8NoBom {
   [System.IO.File]::WriteAllText($Path, $Text, (New-Object System.Text.UTF8Encoding($false)))
 }
 
+# The read side of the same problem. PowerShell 5.1's Get-Content assumes the
+# system ANSI codepage for a file that has no BOM, so reading a UTF-8 file with
+# it mangles every non-ASCII character - and because Write-Utf8NoBom then stores
+# that mangled text as UTF-8 again, the damage is permanent and compounds once
+# per release. That is how CHANGELOG.md reached 1.3 GB of mojibake. Always read
+# UTF-8 explicitly.
+function Read-Utf8Raw {
+  param([string]$Path)
+  [System.IO.File]::ReadAllText($Path, [System.Text.Encoding]::UTF8)
+}
+
 # ---------------------------------------------------------------- preflight
 Say "preflight"
 & git rev-parse --is-inside-work-tree | Out-Null
@@ -91,7 +102,7 @@ if (-not $SkipBackup) {
 # ---------------------------------------------------------------- version bump
 Say "version bump ($Type -> $Version)"
 $pkgPath = Join-Path $root 'package.json'
-$pkg = Get-Content $pkgPath -Raw | ConvertFrom-Json
+$pkg = Read-Utf8Raw $pkgPath | ConvertFrom-Json
 $pkgCurrent = $pkg.version
 # the release series is tracked by git tags, package.json may lag behind
 $latestTag = (& git tag -l --sort=v:refname | Where-Object { $_ -match '^v\d+\.\d+\.\d+$' } | Select-Object -Last 1)
@@ -122,7 +133,7 @@ $entry = @"
   ``/api/marquee-config`` ``/api/useful-sites`` ``/sitemap.xml`` ``/robots.txt``.
 "@
 $changelog = Join-Path $root 'CHANGELOG.md'
-$text = Get-Content $changelog -Raw
+$text = Read-Utf8Raw $changelog
 $idx = $text.IndexOf("`n## ")
 if ($idx -lt 0) {
   $text = $entry + "`n" + $text

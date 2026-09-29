@@ -26,7 +26,7 @@ import {
   Settings
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { useTheme } from '../context/ThemeContext';
+import { useThemeReveal } from '../hooks/useThemeReveal';
 import { Language } from '../i18n';
 import { motion } from 'motion/react';
 
@@ -60,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenFiling,
 }) => {
   const { language, setLanguage, t } = useLanguage();
-  const { toggleTheme, isDark } = useTheme();
+  const { revealToggle, isDark } = useThemeReveal('circle', 'top-right', true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [menuPopoverOpen, setMenuPopoverOpen] = useState(false);
   const [supremeCourtOpen, setSupremeCourtOpen] = useState(false);
@@ -339,18 +339,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </div>
 
-          {/* Theme Switcher */}
+          {/* Theme Switcher — reveal wipe from the control itself, so the
+              wipe starts where the eye already is (spatial consistency). */}
           <button
             type="button"
-            onClick={toggleTheme}
+            onClick={revealToggle}
             className="hidden sm:flex p-1.5 rounded-xl border border-theme-border hover:border-theme-borderHover hover:text-theme-text transition-colors bg-theme-bg/60 text-theme-textSec items-center justify-center shadow-xs"
             title={isDark ? t('nav.themeLight') : t('nav.themeDark')}
             aria-label={isDark ? t('nav.themeLight') : t('nav.themeDark')}
           >
             {isDark ? (
-              <Sun size={13} className="text-amber-400" />
+              <Sun size={13} className="text-amber-400" aria-hidden="true" />
             ) : (
-              <Moon size={13} className="text-indigo-600" />
+              <Moon size={13} className="text-indigo-600" aria-hidden="true" />
             )}
           </button>
 

@@ -137,6 +137,31 @@ export const ScrollVideo: React.FC = () => {
         />
       </div>
       {/* Atmospheric White Overlay â€” configurable, weak, building and sky remain visible â€” NO backdrop-filter here */}
+      {/* Dark only: in light mode the sky is cut out of the day photograph by
+          its alpha mask, so the CloudSky layer underneath already shows through.
+          A second layer here would double the clouds. */}
+      {/* 1b - live clouds drifting across the night sky, masked away from the
+          building so they never pass over the architecture. Dark only: the day
+          photograph is cut open by its alpha mask, so the CloudSky layer below
+          already shows through there and a second layer would double it. */}
+      {isDark && (
+        <div className="clouds-over-sky" aria-hidden="true">
+          <CloudSky
+            className="absolute inset-0 w-full h-full"
+            background="#050d1f"
+            baseColor="#16233d"
+            accentColor="#8fa3c4"
+            density={44}
+            speed={26}
+            size={150}
+            clouds={{ softness: 200, shadow: 35, cirrus: 55 }}
+            sun={{ x: 84, y: 96, glow: 'rgba(150, 172, 212, 0.28)' }}
+            interactive={false}
+            resolutionScale={0.45}
+            opacity={0.55}
+          />
+        </div>
+      )}
       {/* atmospheric haze, capped by .bg-atmosphere-haze */}
       <div className="absolute inset-0 pointer-events-none bg-atmosphere-haze" />
       <div

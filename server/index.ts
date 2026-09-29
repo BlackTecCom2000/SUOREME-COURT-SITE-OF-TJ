@@ -1863,8 +1863,34 @@ import { pathToFileURL } from 'node:url';
       }
     });
   } else {
-    app.use(express.static(path.join(root, 'dist/client'), { index: false }));
-    
+    /* ── Caching ──────────────────────────────────────────────────────
+       Without this a returning visitor re-downloads the whole app on every
+       visit. Three tiers, because one policy cannot be right for all of them:
+
+         /assets/* and fingerprinted files  immutable for a year. Vite hashes
+           the filenames, so the content behind a URL can never change.
+         /api/*                             short max-age + ETag, so repeat
+           reads cost a 304 instead of a payload.
+         HTML                               no-store, never cached. The shell
+           must be revalidated or a deploy would never reach anyone.        */    app.use(
+      express.static(path.join(root, 'dist/client'), {
+        index: false,
+        setHeaders: (res, filePath) => {
+          if (path.basename(filePath) === 'sw.js') {
+            // A cached worker never updates, which strands users on old code.
+            res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+            res.setHeader('Service-Worker-Allowed', '/');
+          } else if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+          } else if (/\.(png|jpe?g|webp|avif|svg|ico|woff2?|glb|gltf|bin)$/i.test(filePath)) {
+            res.setHeader('Cache-Control', 'public, max-age=2592000');
+          } else {
+            res.setHeader('Cache-Control', 'public, max-age=3600');
+          }
+        },
+      })
+    );
+
     app.use(async (req, res, next) => {
       if (req.originalUrl.startsWith('/api/') || req.originalUrl.startsWith('/uploads/')) {
         res.status(404).json({error: 'Not found'});
@@ -1878,8 +1904,12 @@ import { pathToFileURL } from 'node:url';
         
         const { html: appHtml } = render(url);
         const html = template.replace('<!--ssr-outlet-->', appHtml);
-        
-        res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+
+        res.status(200).set({
+          'Content-Type': 'text/html; charset=utf-8',
+          // never cache the shell, so a deploy reaches returning visitors
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+        }).end(html);
       } catch (e) {
         next(e);
       }

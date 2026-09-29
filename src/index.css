@@ -1626,3 +1626,35 @@ html[data-a11y="true"] .content-card::before {
     max-width: var(--container-2xl);
   }
 }
+
+/* ---------------------------------------------------------------------------
+   CLOUDS OVER THE BUILDING
+   The night photograph is opaque, so the CloudSky layer behind it was
+   invisible in dark mode and the sky went flat. Cutting the night photo with
+   a silhouette mask was the obvious fix and it was the wrong one: it removes
+   the star field and depends on a generated PNG lining up with the framing.
+
+   Instead a second cloud layer sits ABOVE the photograph, masked out exactly
+   where the building stands. The stars stay, the clouds drift across the sky
+   and the sides, and they never pass over the architecture. No asset, no
+   alignment to maintain, works in both themes.
+   --------------------------------------------------------------------------- */
+.clouds-over-sky {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mask-image: radial-gradient(
+    ellipse 38% 92% at 50% 52%,
+    transparent 0%,
+    transparent 52%,
+    rgba(0, 0, 0, 0.45) 74%,
+    #000 92%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 38% 92% at 50% 52%,
+    transparent 0%,
+    transparent 52%,
+    rgba(0, 0, 0, 0.45) 74%,
+    #000 92%
+  );
+}

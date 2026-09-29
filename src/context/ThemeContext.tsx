@@ -4,9 +4,19 @@ export type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
-  setTheme: (theme: Theme) => void;
+  setTheme: (theme: Theme, options?: SetThemeOptions) => void;
   toggleTheme: () => void;
   isDark: boolean;
+}
+
+/**
+ * `transition: false` applies the theme without starting a View Transition.
+ * Callers that own their own transition (see useThemeReveal) need this: a
+ * View Transition started inside another one is skipped by the browser, so
+ * nesting them would silently disable the reveal.
+ */
+export interface SetThemeOptions {
+  transition?: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -27,7 +37,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return 'dark';
   });
 
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = (newTheme: Theme, options?: SetThemeOptions) => {
     if (newTheme === theme) return;
 
     try {
@@ -35,6 +45,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       localStorage.setItem('supreme-court-theme', newTheme);
     } catch {
       // ignore
+    }
+
+    if (options?.transition === false) {
+      setThemeState(newTheme);
+      return;
     }
 
     const prefersReducedMotion =
