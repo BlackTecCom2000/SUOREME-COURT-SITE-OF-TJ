@@ -1396,6 +1396,17 @@ html[data-a11y="true"] .content-card::before {
     }
   }
 
+  /* ── Atmospheric White Overlay ────────────────────────────────────
+     The Site CMS lets an editor set this value, and a high number is the
+     fastest way to destroy the material: a 0.2 white wash over every surface
+     turns real glass into milk. The setting is respected but capped at 0.10,
+     which keeps the architecture bright and the specular rim readable.
+     Lower it in Design -> Background if you want less haze still. */
+  .bg-atmosphere-haze,
+  .public-readable ~ .bg-atmosphere-haze {
+    background: rgba(255, 255, 255, min(0.1, var(--bg-overlay-opacity, 0.1)));
+  }
+
   /* ─── Keyboard skip link ─────────────────────────────────────────
      Written in CSS rather than as utility classes on purpose: the
      `focus:not-sr-only` combination was being purged by the Tailwind JIT

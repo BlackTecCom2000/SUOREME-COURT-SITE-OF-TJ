@@ -5,7 +5,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
 import { LibraryBig, ArrowRight } from 'lucide-react';
 import { Reveal } from '../Reveal';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { useLanguage } from '../../context/LanguageContext';
 import { InteractiveLawBook } from './InteractiveLawBook';
 import { useShelfBooks } from './LawBookshelf';
@@ -63,7 +62,6 @@ export const LegislativeLibrary: React.FC = () => {
       ref={rootRef}
       className="relative py-14 lg:py-24 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
-      <DigitalDataRain density="sparse" speed="medium" opacity={0.18} colorTheme="gold" />
 
       <div className="site-container relative z-10 space-y-8">
         {/* Section Header with Liquid Glass UI Pod */}

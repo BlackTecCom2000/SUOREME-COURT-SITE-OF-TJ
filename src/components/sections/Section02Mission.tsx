@@ -2,7 +2,6 @@ import React from 'react';
 import { ArrowUpRight, BookOpen, Shield, Users, Gavel, Scale } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 
 interface Section02MissionProps {
   onOpenAbout: () => void;
@@ -60,7 +59,6 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
       className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden"
     >
       {/* Background data rain */}
-      <DigitalDataRain density="medium" speed="slow" opacity={0.25} colorTheme="mixed" />
 
       <div className="site-container relative z-10">
         {/* Section Header with Liquid Glass UI Pod */}

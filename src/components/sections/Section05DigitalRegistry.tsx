@@ -3,7 +3,6 @@ import { Building2, Landmark, MapPin, Shield } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
 import { REGIONAL_CLUSTERS, getRegionName, getRegionShortName } from '../../data/sudTjData';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 
 interface Section05DigitalRegistryProps {
   onExploreNetwork: () => void;
@@ -57,7 +56,6 @@ export const Section05DigitalRegistry: React.FC<Section05DigitalRegistryProps> =
       aria-label={t('nav.registry')}
       className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden"
     >
-      <DigitalDataRain density="medium" speed="medium" opacity={0.25} colorTheme="mixed" />
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         {/* Section Header */}

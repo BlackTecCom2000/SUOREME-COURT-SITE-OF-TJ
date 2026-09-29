@@ -120,3 +120,6 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 ## v2.12.1 - Fix court network layout - min-w-0 columns, wrapping stats, clipped brand, panel overflow
 - Released: 2026-09-29 14:15
+
+## v2.12.2 - Remove matrix rain from 17 sections, cap atmospheric haze so the glass material stays readable
+- Released: 2026-09-29 14:31

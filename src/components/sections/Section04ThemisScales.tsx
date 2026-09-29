@@ -3,7 +3,6 @@ import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
 import { DigitalThemis } from '../symbols/DigitalThemis';
 import { DigitalJusticeScales } from '../symbols/DigitalJusticeScales';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 
 export const Section04ThemisScales: React.FC = () => {
   const { t } = useLanguage();
@@ -14,7 +13,6 @@ export const Section04ThemisScales: React.FC = () => {
       aria-label={t('nav.justiceAge')}
       className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden"
     >
-      <DigitalDataRain density="medium" speed="slow" opacity={0.3} colorTheme="gold" />
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         {/* Section Header */}

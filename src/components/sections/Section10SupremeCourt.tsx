@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Reveal } from '../Reveal';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { MapPin, Phone, Mail, ArrowUpRight, BookOpen } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -45,7 +44,6 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
       aria-label={t('nav.contacts')}
       className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
-      <DigitalDataRain density="medium" speed="slow" opacity={0.25} colorTheme="gold" />
 
       {/* Section Header with Liquid Glass UI Pod */}
       <Reveal delay={100}>

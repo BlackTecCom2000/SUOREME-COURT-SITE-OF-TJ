@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Reveal } from '../Reveal';
 import { JUDICIAL_ACTS } from '../../data/sudTjData';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { FileText, ArrowUpRight, CheckCircle2, Newspaper, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { JudicialNewsHub } from '../news/JudicialNewsHub';
@@ -41,7 +40,6 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
       aria-label={t('nav.acts')}
       className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
-      <DigitalDataRain density="sparse" speed="medium" opacity={0.2} colorTheme="gold" />
 
       <div className="site-container relative z-10 space-y-16">
         {/* Section Header with Liquid Glass UI Pod */}

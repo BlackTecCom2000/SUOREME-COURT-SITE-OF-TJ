@@ -10,7 +10,6 @@ import { SelectedCourtContextHub } from '../judicial-ecosystem/SelectedCourtCont
 import { RegionSummaryContextHub } from '../judicial-ecosystem/RegionSummaryContextHub';
 import { SupremeCourtContextHub } from '../judicial-ecosystem/SupremeCourtContextHub';
 import { ImmersivePresentationModal } from '../judicial-ecosystem/ImmersivePresentationModal';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 
 interface Section04JudicialSystemProps {
   onOpenService?: (serviceKey: string, courtContext?: CourtNodeData) => void;
@@ -124,7 +123,6 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
       aria-label={t('network.title1') + ' ' + t('network.title2')}
       className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
-      <DigitalDataRain density="sparse" speed="slow" opacity={0.18} colorTheme="gold" />
 
       <div className="site-container relative z-10 space-y-6">
         <JudicialSystemDashboard

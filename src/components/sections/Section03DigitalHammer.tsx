@@ -3,7 +3,6 @@ import { ArrowUpRight, ShieldCheck, Database, QrCode } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
 import { DigitalJudicialHammer } from '../symbols/DigitalJudicialHammer';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 
 interface Section03DigitalHammerProps {
   onOpenActs: () => void;
@@ -20,7 +19,6 @@ export const Section03DigitalHammer: React.FC<Section03DigitalHammerProps> = ({
       aria-label={t('nav.digitalJustice')}
       className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden"
     >
-      <DigitalDataRain density="medium" speed="medium" opacity={0.3} colorTheme="gold" />
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         {/* Section Header */}

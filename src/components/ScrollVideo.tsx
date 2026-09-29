@@ -137,12 +137,8 @@ export const ScrollVideo: React.FC = () => {
         />
       </div>
       {/* Atmospheric White Overlay â€” configurable, weak, building and sky remain visible â€” NO backdrop-filter here */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `rgba(255,255,255, var(--bg-overlay-opacity, 0.12))`,
-        }}
-      />
+      {/* atmospheric haze, capped by .bg-atmosphere-haze */}
+      <div className="absolute inset-0 pointer-events-none bg-atmosphere-haze" />
       <div
         className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ${isDark ? 'opacity-20' : 'opacity-10'}`}
         style={{

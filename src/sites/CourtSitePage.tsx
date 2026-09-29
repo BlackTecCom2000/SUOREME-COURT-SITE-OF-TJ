@@ -1,7 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { ArrowUpRight, Calendar, Clock, Landmark, Mail, MapPin, Phone, Scale, Send, ShieldCheck, Sparkles, Target, Users } from "lucide-react";
-import { DigitalDataRain } from "../components/effects/DigitalDataRain";
 import { useLanguage } from "../context/LanguageContext";
 import { Reveal } from "../components/Reveal";
 import { ModalTab } from "../components/JudicialModal";
@@ -92,7 +91,6 @@ export const CourtSitePage: React.FC = () => {
       />
       {/* HERO (mirrors main Section01Hero) */}
       <section className="relative pt-24 lg:pt-32 pb-12 lg:pb-16 px-4 sm:px-8 md:px-12 overflow-hidden border-b border-theme-border/30 select-none">
-        <DigitalDataRain density="sparse" speed="slow" opacity={0.14} colorTheme="gold" />
 
         {/* Top meta indicator */}
         <div className="site-container relative z-10 mb-6">

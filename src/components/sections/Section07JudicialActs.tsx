@@ -1,7 +1,6 @@
 import React from 'react';
 import { Reveal } from '../Reveal';
 import { JUDICIAL_ACTS } from '../../data/sudTjData';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { FileText, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useDynamicData } from '../../hooks/useDynamicData';
@@ -22,7 +21,6 @@ export const Section07JudicialActs: React.FC<Section07JudicialActsProps> = ({
       aria-label={t('nav.acts')}
       className="relative py-14 lg:py-28 px-5 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
-      <DigitalDataRain density="medium" speed="medium" opacity={0.25} colorTheme="gold" />
 
       {/* Section Header with Liquid Glass UI Pod */}
       <Reveal delay={100}>

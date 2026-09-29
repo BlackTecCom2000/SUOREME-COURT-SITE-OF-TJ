@@ -1,6 +1,5 @@
 import React from 'react';
 import { Reveal } from '../Reveal';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { MapPin, Phone, Mail, ArrowUpRight, Calendar, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -19,7 +18,6 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
       aria-label={t('nav.contacts')}
       className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
-      <DigitalDataRain density="sparse" speed="slow" opacity={0.2} colorTheme="gold" />
 
       <div className="site-container relative z-10 space-y-8">
         {/* Section Header with Liquid Glass UI Pod */}

@@ -16,7 +16,6 @@ import {
 import { JudicialTreeView } from '../judicial-ecosystem/JudicialTreeView';
 import { CourtDetailsDrawer } from '../judicial-ecosystem/CourtDetailsDrawer';
 import { ImmersivePresentationModal } from '../judicial-ecosystem/ImmersivePresentationModal';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 
 interface Section06JudicialNetworkProps {
   onOpenService?: (serviceTab: string) => void;
@@ -38,7 +37,6 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
       aria-label={t('nav.courts')}
       className="relative py-10 lg:py-16 overflow-hidden text-theme-text select-none"
     >
-      <DigitalDataRain density="sparse" speed="slow" opacity={0.2} colorTheme="gold" />
 
       {/* 1. Header — with Liquid Glass UI Pod */}
       <div className="relative px-5 sm:px-8 md:px-12 mb-6">

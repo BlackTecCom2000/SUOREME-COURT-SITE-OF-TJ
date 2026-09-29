@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { JusticeStoryNavigator, JusticeStage } from '../symbols/JusticeStoryNavigator';
 import { JusticeStoryTimeline } from '../symbols/JusticeStoryTimeline';
 import { JudicialActPreview } from '../symbols/JudicialActPreview';
@@ -31,7 +30,6 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
       aria-label={t('nav.digitalJustice')}
       className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden transition-colors duration-700 select-none"
     >
-      <DigitalDataRain density="sparse" speed="slow" opacity={0.12} colorTheme="gold" />
 
       <div className="site-container relative z-10 space-y-6">
         

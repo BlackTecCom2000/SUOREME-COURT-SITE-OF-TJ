@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { ArrowDown, ArrowUpRight, ShieldCheck, Sparkles, FileText } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 import { InteractiveProcessFlow } from '../digital-court/InteractiveProcessFlow';
 
 interface Section01HeroProps {
@@ -44,7 +43,6 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
       className="relative min-h-[85vh] lg:min-h-[92vh] flex flex-col justify-between pt-20 lg:pt-28 pb-10 lg:pb-16 text-theme-text overflow-hidden select-none"
     >
       {/* Background ambient rain */}
-      <DigitalDataRain density="sparse" speed="slow" opacity={0.16} colorTheme="gold" />
 
       {/* Top Meta Indicator */}
       <div className="px-4 sm:px-8 md:px-12 site-container mb-6">

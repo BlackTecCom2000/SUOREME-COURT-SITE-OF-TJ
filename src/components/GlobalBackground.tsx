@@ -133,11 +133,10 @@ export const GlobalBackground: React.FC = () => {
         />
       </div>
 
-      {/* 2 — Atmospheric White Overlay: configurable, weak, building and sky stay visible */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: `rgba(255,255,255, var(--bg-overlay-opacity, 0.12))` }}
-      />
+      {/* 2 — Atmospheric White Overlay: configurable but capped by
+          .bg-atmosphere-haze, so a high CMS value cannot turn the glass
+          into milk. Building and live sky stay visible. */}
+      <div className="absolute inset-0 pointer-events-none bg-atmosphere-haze" />
       {/* 3 — gold glow ties the live sky to the court palette */}
       <div
         className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ${

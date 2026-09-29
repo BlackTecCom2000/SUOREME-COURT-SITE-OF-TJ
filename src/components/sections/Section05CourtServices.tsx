@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Reveal } from '../Reveal';
-import { DigitalDataRain } from '../effects/DigitalDataRain';
 import {
   Send,
   FileDown,
@@ -88,7 +87,6 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
       aria-label={t('nav.eservices')}
       className="relative py-14 lg:py-28 px-4 sm:px-8 md:px-12 text-theme-text overflow-hidden select-none"
     >
-      <DigitalDataRain density="sparse" speed="medium" opacity={0.2} colorTheme="gold" />
 
       <div className="site-container relative z-10 space-y-8">
         {/* Section Header Indicator */}
