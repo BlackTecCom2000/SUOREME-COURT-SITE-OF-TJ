@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { ArrowLeft, Building2, Calendar, ChevronRight, Clock, Compass, ExternalLink, Eye, Gavel, Globe2, Landmark, Lock, Mail, Moon, Newspaper, Phone, Scale, Search, Send, Settings, Sparkles, Sun, Users } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import { useTheme } from "../context/ThemeContext";
+import { useThemeReveal } from "../hooks/useThemeReveal";
 import { useA11y } from "../context/A11yContext";
 import { CourtSiteConfig } from "./types";
 import { pickTri } from "./types";
@@ -27,7 +27,8 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
   onOpenAppeals,
 }) => {
   const { language, setLanguage } = useLanguage();
-  const { isDark, toggleTheme } = useTheme();
+  // Same reveal wipe as the public navbar, driven by the CMS setting.
+const { isDark, revealToggle } = useThemeReveal();
   const { isHighContrast, toggleContrast } = useA11y();
   const [menuPopoverOpen, setMenuPopoverOpen] = useState(false);
 
@@ -144,7 +145,7 @@ export const CourtSiteNavbar: React.FC<CourtSiteNavbarProps> = ({
           {/* Theme */}
           <button
             type="button"
-            onClick={toggleTheme}
+            onClick={() => revealToggle()}
             className="p-1.5 glass glass-chip hover:text-theme-text transition-colors hidden sm:flex items-center justify-center"
             aria-label="theme"
           >

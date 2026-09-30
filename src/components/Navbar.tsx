@@ -343,7 +343,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               wipe starts where the eye already is (spatial consistency). */}
           <button
             type="button"
-            onClick={revealToggle}
+            onClick={() => revealToggle()}
             className="hidden sm:flex p-1.5 rounded-xl border border-theme-border hover:border-theme-borderHover hover:text-theme-text transition-colors bg-theme-bg/60 text-theme-textSec items-center justify-center shadow-xs"
             title={isDark ? t('nav.themeLight') : t('nav.themeDark')}
             aria-label={isDark ? t('nav.themeLight') : t('nav.themeDark')}

@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import { LogOut, ShieldCheck, ChevronDown, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { useTheme } from '../../context/ThemeContext';
+import { useThemeReveal } from "../../hooks/useThemeReveal";
 import { motion } from 'motion/react';
 
 export const AdminProfileMenu: React.FC = () => {
   const { user, logout } = useAdminAuth();
   const { language, setLanguage } = useLanguage();
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark, revealToggle } = useThemeReveal();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -99,7 +99,7 @@ export const AdminProfileMenu: React.FC = () => {
             <div className="flex items-center justify-between px-2 text-xs text-slate-300">
               <span className="font-mono text-[11px] text-slate-400">Тема</span>
               <button
-                onClick={toggleTheme}
+                onClick={() => revealToggle()}
                 className="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-mono text-2xs hover:bg-slate-700"
               >
                 {isDark ? 'ТЕМНАЯ (НОЧЬ)' : 'СВЕТЛАЯ (ДЕНЬ)'}

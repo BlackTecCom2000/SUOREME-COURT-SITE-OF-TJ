@@ -9,7 +9,13 @@ UTF-8 file with `Get-Content`, which assumes the system ANSI codepage
 for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
-
+
+## v2.15.0 - Theme transition as a CMS setting: variant, direction, blur, on/off, admin preview
+- Released: 2026-09-30 09:00
+- Previous: v2.14.0
+- QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
+  `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
+  `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
 ## v2.1.0 - Phase 1+2 lock-in - search, sitemap, RBAC, workflow, rate limiting, backup system
 - Released: 2026-09-22 16:32
 

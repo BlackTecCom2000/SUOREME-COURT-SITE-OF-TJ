@@ -197,6 +197,14 @@ try {
       db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('bg_contrast','100','100');
       db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('glass_saturation','160','160');
       db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('glass_highlight','0.42','0.42');
+      // Theme reveal transition, ported from Skiper 26. INSERT OR IGNORE only
+      // fills a row that does not exist yet, so an editor's saved value is
+      // never overwritten on the next boot. See src/hooks/useThemeReveal.ts for
+      // the accepted values; anything unrecognised falls back client-side.
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('theme_transition_enabled','1','1');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('theme_transition_variant','circle','circle');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('theme_transition_start','top-right','top-right');
+      db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('theme_transition_blur','1','1');
     } catch {}
   } catch (e) { console.error('site cms migration failed', e); }
 

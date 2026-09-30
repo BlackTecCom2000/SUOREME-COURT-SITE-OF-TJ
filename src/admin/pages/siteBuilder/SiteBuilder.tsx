@@ -10,6 +10,42 @@ import { AdminSelect } from '../../components/ui/AdminSelect';
 import { LiquidGlassKit } from '../../components/ui/LiquidGlassKit';
 import { apiFetch } from '../../context/adminHttp';
 import { useAdminAuth } from '../../context/AdminAuthContext';
+import {
+  DEFAULT_REVEAL,
+  REVEAL_STARTS,
+  REVEAL_VARIANTS,
+  useThemeReveal,
+  type RevealStart,
+  type RevealVariant,
+} from '../../../hooks/useThemeReveal';
+
+/** The four CMS keys behind the Skiper 26 reveal, in save order. */
+const THEME_TRANSITION_KEYS = [
+  'theme_transition_enabled',
+  'theme_transition_variant',
+  'theme_transition_start',
+  'theme_transition_blur',
+] as const;
+
+/**
+ * Settings values are stored as strings, so a checkbox has to be read back
+ * through the same truthiness rules the hook uses. An absent or unparseable
+ * value means "use the default", not "off".
+ */
+const isOff = (value: string | undefined, fallback: boolean) => {
+  if (value === undefined || value.trim() === '') return !fallback;
+  const v = value.trim().toLowerCase();
+  if (v === '0' || v === 'false' || v === 'off' || v === 'no') return true;
+  if (v === '1' || v === 'true' || v === 'on' || v === 'yes') return false;
+  return !fallback;
+};
+
+const themeTransitionValue = (design: Record<string, string>, key: string) => {
+  if (key === 'theme_transition_variant') return design[key] || DEFAULT_REVEAL.variant;
+  if (key === 'theme_transition_start') return design[key] || DEFAULT_REVEAL.start;
+  const fallback = key === 'theme_transition_enabled' ? DEFAULT_REVEAL.enabled : DEFAULT_REVEAL.blur;
+  return isOff(design[key], fallback) ? '0' : '1';
+};
 
 type Section = { id:string; key:string; title_ru?:string; title_tj?:string; title_en?:string; subtitle_ru?:string; subtitle_tj?:string; subtitle_en?:string; description_ru?:string; description_tj?:string; description_en?:string; image?:string; icon?:string; link?:string; category?:string; language?:string; visible:number; sort_order:number; status:string; settings?:string };
 
@@ -45,6 +81,8 @@ export const SiteBuilder: React.FC = () => {
   const [versions, setVersions] = useState<any[]>([]);
   const [message, setMessage] = useState('');
   const sensors = useSensors(useSensor(PointerSensor));
+  // Lets the editor try an unsaved combination before publishing it.
+  const { revealToggle } = useThemeReveal();
 
   const load = () => {
     apiFetch('/api/admin/site-sections').then(r=> r.ok?r.json():[]).then(setSections).catch(()=>{});
@@ -195,6 +233,92 @@ export const SiteBuilder: React.FC = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+              {/* Theme transition (Skiper 26 reveal) */}
+              <div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-[var(--court-gold)] mb-2">
+                  Переход темы — Skiper 26
+                </div>
+                <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+                  <div className="flex min-w-0 flex-col gap-1">
+                    <span className="font-mono text-2xs text-theme-textSec">Форма</span>
+                    <select
+                      aria-label="Форма перехода темы"
+                      value={design.theme_transition_variant || DEFAULT_REVEAL.variant}
+                      onChange={e=> setDesign({...design, theme_transition_variant: e.target.value})}
+                      className="h-11 w-full min-w-0 rounded-xl border border-theme-border bg-theme-bg/60 px-3 text-sm text-theme-text focus:border-theme-borderHover"
+                    >
+                      {REVEAL_VARIANTS.map(o=> (
+                        <option key={o.value} value={o.value}>{o.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex min-w-0 flex-col gap-1">
+                    <span className="font-mono text-2xs text-theme-textSec">Откуда идёт шторка</span>
+                    <select
+                      aria-label="Направление перехода темы"
+                      value={design.theme_transition_start || DEFAULT_REVEAL.start}
+                      onChange={e=> setDesign({...design, theme_transition_start: e.target.value})}
+                      className="h-11 w-full min-w-0 rounded-xl border border-theme-border bg-theme-bg/60 px-3 text-sm text-theme-text focus:border-theme-borderHover"
+                    >
+                      {REVEAL_STARTS.map(o=> (
+                        <option key={o.value} value={o.value}>{o.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="grid min-w-0 grid-cols-2 gap-3">
+                    <label className="flex min-w-0 items-center gap-2 text-sm text-theme-text">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 accent-amber-400"
+                        checked={!isOff(design.theme_transition_enabled, DEFAULT_REVEAL.enabled)}
+                        onChange={e=> setDesign({...design, theme_transition_enabled: e.target.checked ? '1' : '0'})}
+                      />
+                      Включён
+                    </label>
+                    <label className="flex min-w-0 items-center gap-2 text-sm text-theme-text">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 accent-amber-400"
+                        checked={!isOff(design.theme_transition_blur, DEFAULT_REVEAL.blur)}
+                        onChange={e=> setDesign({...design, theme_transition_blur: e.target.checked ? '1' : '0'})}
+                      />
+                      Размытие
+                    </label>
+                  </div>
+                  <div className="grid min-w-0 grid-cols-2 gap-2">
+                    <AdminButton
+                      size="sm"
+                      onClick={()=> revealToggle({
+                        variant: (design.theme_transition_variant || DEFAULT_REVEAL.variant) as RevealVariant,
+                        start: (design.theme_transition_start || DEFAULT_REVEAL.start) as RevealStart,
+                        blur: !isOff(design.theme_transition_blur, DEFAULT_REVEAL.blur),
+                        enabled: !isOff(design.theme_transition_enabled, DEFAULT_REVEAL.enabled),
+                      })}
+                    >
+                      Проверить
+                    </AdminButton>
+                    <AdminButton
+                      size="sm"
+                      variant="ghost"
+                      onClick={async()=>{
+                        for (const key of THEME_TRANSITION_KEYS) {
+                          await apiFetch('/api/admin/design-settings', {
+                            method:'POST',
+                            body: JSON.stringify({ key, value: themeTransitionValue(design, key) }),
+                          });
+                        }
+                        setMessage('Переход темы сохранён в черновик');
+                      }}
+                    >
+                      Сохранить
+                    </AdminButton>
+                  </div>
+                </div>
+                <p className="mt-2 font-mono text-2xs text-theme-textSec">
+                  «Проверить» применяет выбранные значения сразу, без публикации. Публичный сайт
+                  увидит их после «Опубликовать» (до 30 с у открытых вкладок).
+                </p>
               </div>
               {/* Presets */}
               <div>

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Monitor, Smartphone, Tablet, Moon, Sun, ArrowLeftRight, Maximize2, LayoutGrid, Layers, List, FileText, Lock } from 'lucide-react';
 import { useTheme } from '../../../context/ThemeContext';
+import { useThemeReveal } from "../../../hooks/useThemeReveal";
 import { useLanguage } from '../../../context/LanguageContext';
 import { PreviewComponentMapper, placementsForType, PreviewPlacement } from './PreviewComponentMapper';
 import { motion } from 'motion/react';
@@ -14,7 +15,8 @@ interface LivePreviewEngineProps {
 }
 
 export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data, originalData }) => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
+const { revealToggle } = useThemeReveal();
   const { language, setLanguage } = useLanguage();
   const [viewport, setViewport] = useState<ViewportMode>('desktop');
   const [showComparison, setShowComparison] = useState(false);
@@ -158,7 +160,7 @@ export const LivePreviewEngine: React.FC<LivePreviewEngineProps> = ({ type, data
 
         {/* Theme Switcher */}
         <button
-          onClick={toggleTheme}
+          onClick={() => revealToggle()}
           className="p-1.5 rounded-lg text-theme-textSec hover:text-theme-gold transition-colors"
           title="Toggle Day/Night Mode"
         >
