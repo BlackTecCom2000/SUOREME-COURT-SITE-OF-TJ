@@ -398,9 +398,11 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
                     </span>
                   </div>
 
-                  <h4 className="text-sm font-semibold text-theme-text group-hover:text-theme-gold transition-colors truncate mb-1">
+                  {/* h3, not h4: each result sits directly under the section's
+                      h2, so h4 skipped a level and broke the document outline. */}
+                  <h3 className="text-sm font-semibold text-theme-text group-hover:text-theme-gold transition-colors truncate mb-1">
                     {language === 'tj' ? caseItem.partiesTj : language === 'en' ? caseItem.partiesEn : caseItem.partiesRu}
-                  </h4>
+                  </h3>
 
                   <div className="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs text-theme-textSec">
                     <span className="flex items-center gap-1">

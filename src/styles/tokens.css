@@ -138,6 +138,10 @@
   --text-sm: 0.8125rem;    /* 13px - dense table, captions */
   --text-base: 0.9375rem;  /* 15px - body copy */
   --text-md: 1rem;         /* 16px - default UI text */
+  --text-body: 1.0625rem;  /* 17px - long-form reading size. Separate from
+                              --text-md on purpose: --text-md is used by every
+                              control and heading, so raising it would shift the
+                              whole UI. Only body copy needs the extra pixel. */
   --text-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
   --text-xl: clamp(1.1875rem, 1.1rem + 0.45vw, 1.375rem);
   --text-2xl: clamp(1.375rem, 1.2rem + 0.85vw, 1.75rem);

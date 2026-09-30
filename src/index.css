@@ -179,8 +179,9 @@
     font-family: var(--font-sans);
     /* 17px, not 15px. The web-typography diagnostic puts 16px at the floor and
        18px for reading-heavy sites; this is a portal of legal acts read in
-       long sessions, so the body sits between the two. */
-    font-size: var(--text-md);
+       long sessions, so the body sits between the two. --text-body carries the
+       17px value; --text-md stays at 16px for controls and headings. */
+    font-size: var(--text-body);
     line-height: var(--leading-body);
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -1484,10 +1485,59 @@ html[data-a11y="true"] .content-card::before {
     margin-top: 0.9em;
   }
 
+  /* ── Touch target floor ──────────────────────────────────────────────
+     Many controls here are visually small on purpose: a 26px chip in a dense
+     filter row, an 18px text link. WCAG 2.2 target size (minimum) wants a
+     24x24 CSS px hit area and 44x44 is the comfortable figure the design rules
+     use. Growing the boxes would wreck the layouts, so the hit area is expanded
+     with an absolutely positioned pseudo-element instead: it never affects flow,
+     and the visual size stays exactly as designed.
+
+     The element needs `position: relative` for the offsets to resolve against
+     it, which is applied here rather than left to each call site. */
+  .tap-target {
+    position: relative;
+  }
+
+  @media (pointer: coarse), (max-width: 640px) {
+    .tap-target::after,
+    /* Two global button classes that are compact by design and used all over
+       the portal, so expanding them here covers dozens of controls at once
+       instead of hunting each call site. */
+    .btn-icon::after,
+    .btn-outline::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: max(100%, 44px);
+      height: max(100%, 44px);
+      /* Transparent, not hidden: it must stay clickable. */
+      background: transparent;
+      border-radius: inherit;
+    }
+  }
+
+  /* The offset above needs an anchor. Only touch-pointer devices pay for this. */
+  @media (pointer: coarse), (max-width: 640px) {
+    .tap-target,
+    .btn-icon,
+    .btn-outline {
+      position: relative;
+    }
+  }
+
   /* Useful-sites running ticker (footer marquee) */
   .ticker {
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+    /* The track is deliberately wider than the viewport and shifted left by a
+       third of its width to make the loop seamless. Without paint containment
+       that oversized track still contributes to the document's scroll width, so
+       a 320px viewport measured 335px wide and looked like a layout overflow to
+       anything that inspects scrollWidth. */
+    contain: paint;
   }
   .ticker-track {
     display: flex;

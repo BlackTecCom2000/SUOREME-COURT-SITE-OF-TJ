@@ -18,20 +18,11 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <script>
-      (function() {
-        try {
-          var saved = localStorage.getItem('sud-theme') || localStorage.getItem('supreme-court-theme');
-          var theme = (saved === 'light' || saved === 'dark') ? saved : 'dark';
-          document.documentElement.setAttribute('data-theme', theme);
-          if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-          }
-        } catch (e) {}
-      })();
-    </script>
+    <!-- Sets the saved theme before first paint. Served from /theme-bootstrap.js
+         rather than inline because production CSP is script-src 'self' with no
+         unsafe-inline, which silently blocked the inline version. Synchronous and
+         without defer, so it still runs before the body is painted. -->
+    <script src="/theme-bootstrap.js"></script>
   </head>
   <body>
     <div id="root"><!--ssr-outlet--></div>

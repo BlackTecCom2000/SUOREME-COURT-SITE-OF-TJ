@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 /**
  * CloudSky â€” WebGL procedural cloud layer for the global background.
@@ -292,6 +292,18 @@ export const CloudSky: React.FC<CloudSkyProps> = ({
   const sizeRef = useRef({ w: 0, h: 0 });
   sizeRef.current = { w: 0, h: 0 };
 
+  /* A <canvas> cannot exist during SSR, so the server emitted no element here
+     while the client produced one. That single difference made React discard
+     the entire server-rendered document on every page load - the 380 KB of HTML
+     the server had already paid to render was thrown away and rebuilt in the
+     browser. Rendering nothing until mount makes the first client pass match
+     the server exactly; the canvas is inserted right after, which is not
+     perceptible because the photograph behind it is already painted. */
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const vRef = useRef<Record<string, number | string>>({});
   vRef.current = {
     zenith: background,
@@ -503,9 +515,13 @@ export const CloudSky: React.FC<CloudSkyProps> = ({
       gl.deleteShader(fs);
       gl.deleteBuffer(buf);
     };
-    // mount once: every prop is read through refs on each frame
+    // Runs once the canvas is actually in the DOM. Keyed on `mounted` because
+    // before that the ref is null and the early `return` above would leave the
+    // sky dead for the lifetime of the page.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) return null;
 
   return (
     <canvas

@@ -31,7 +31,7 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
           <button
             type="button"
             onClick={() => onOpenNewsModal?.('news')}
-            className="text-xs font-mono text-theme-gold hover:underline flex items-center gap-1"
+            className="tap-target text-xs font-mono text-theme-gold hover:underline flex items-center gap-1"
           >
             <span>{language === 'tj' ? 'Ҳамаи хабарҳо' : language === 'en' ? 'View All' : 'Все новости'}</span>
             <ChevronRight size={13} />
@@ -69,7 +69,7 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveRegionTab(tab.id as any)}
-                className={`px-3 py-1 rounded-lg transition-all ${
+                className={`tap-target px-3 py-1 rounded-lg transition-all ${
                   activeRegionTab === tab.id
                     ? 'lg-material lg-button text-[var(--accent-gold)] font-semibold'
                     : 'text-theme-textMuted hover:text-theme-gold hover:bg-[var(--btn-gold-bg)]'
@@ -120,7 +120,7 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
           <button
             type="button"
             onClick={() => onOpenNewsModal?.('news')}
-            className="text-xs font-mono text-theme-gold hover:underline flex items-center gap-1"
+            className="tap-target text-xs font-mono text-theme-gold hover:underline flex items-center gap-1"
           >
             <span>{language === 'tj' ? 'Ҳамаи эълонҳо' : language === 'en' ? 'View All' : 'Все объявления'}</span>
             <ChevronRight size={13} />

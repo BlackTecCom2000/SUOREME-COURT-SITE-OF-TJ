@@ -129,7 +129,7 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
         type="button"
         onClick={() => onSelectRegion(cluster.id)}
         aria-pressed={selected}
-        className="w-full flex items-center gap-3 text-left group cursor-pointer rounded-[10px] focus-visible:outline-2 focus-visible:outline-[var(--jm-gold)]"
+        className="tap-target w-full flex items-center gap-3 text-left group cursor-pointer rounded-[10px] focus-visible:outline-2 focus-visible:outline-[var(--jm-gold)]"
       >
         <span className="font-mono text-[11px] font-bold tracking-widest text-[var(--jm-muted)] group-hover:text-[var(--jm-text)] transition-colors">
           {String(index + 1).padStart(2, '0')}

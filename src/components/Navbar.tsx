@@ -316,7 +316,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={l}
                   type="button"
                   onClick={() => setLanguage(l)}
-                  className={`relative px-2 py-0.5 rounded-lg text-2xs font-mono font-medium transition-colors z-10 ${
+                  // 29x20 visually; tap-target expands the hit area to 44px
+                  // without changing the compact look of the switcher.
+                  className={`tap-target relative px-2 py-0.5 rounded-lg text-2xs font-mono font-medium transition-colors z-10 ${
                     isActive
                       ? 'text-black font-bold'
                       : 'text-theme-textMuted hover:text-theme-text'
@@ -380,7 +382,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               onClick={onOpenSearch}
               title={language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}
-              className="p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
+              className="tap-target p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
             >
               <Search size={14} />
               <span className="hidden md:inline">{language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}</span>
@@ -393,7 +395,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               onClick={onOpenAiAssistant}
               title={language === 'tj' ? 'Ёвари ҳуқуқӣ' : language === 'en' ? 'AI Legal Assistant' : 'Юридический AI-помощник'}
-              className="p-2 sm:px-3 sm:py-2 rounded-2xl bg-theme-gold/15 backdrop-blur-xl border border-theme-gold/40 text-theme-gold hover:bg-theme-gold/25 transition-colors flex items-center gap-1.5 text-xs font-mono font-bold shadow-md"
+              className="tap-target p-2 sm:px-3 sm:py-2 rounded-2xl bg-theme-gold/15 backdrop-blur-xl border border-theme-gold/40 text-theme-gold hover:bg-theme-gold/25 transition-colors flex items-center gap-1.5 text-xs font-mono font-bold shadow-md"
             >
               <Sparkles size={14} />
               <span className="hidden sm:inline">{language === 'tj' ? 'Ёвар' : language === 'en' ? 'AI Assistant' : 'AI-Помощник'}</span>
@@ -404,7 +406,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative group">
             <a
               href="/admin"
-              className="p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
+              className="tap-target p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
             >
               <Settings size={14} />
               <span className="hidden lg:inline">{language === 'tj' ? 'Админ' : language === 'en' ? 'Admin' : 'Админ'}</span>
@@ -424,7 +426,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               type="button"
               onClick={onOpenESud}
-              className="btn-primary text-xs h-9 px-3 sm:px-4 hidden sm:inline-flex"
+              className="btn-primary tap-target text-xs h-9 px-3 sm:px-4 hidden sm:inline-flex"
             >
               <Lock size={12} />
               <span>{language === 'tj' ? 'Воридшавӣ' : language === 'en' ? 'Sign In' : 'Войти'}</span>
@@ -567,7 +569,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? t('nav.close') : 'Menu'}
-              className="p-2 glass glass-chip text-theme-text transition-colors"
+              className="tap-target p-2 glass glass-chip text-theme-text transition-colors"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>

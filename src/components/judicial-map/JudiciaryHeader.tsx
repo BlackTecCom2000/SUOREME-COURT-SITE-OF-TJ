@@ -82,7 +82,7 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
               aria-label={menuLabel}
-              className="h-10 w-10 rounded-[10px] border border-[var(--jm-border)] bg-[var(--jm-surface)] text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:border-[var(--jm-gold)] transition-colors flex items-center justify-center"
+              className="tap-target h-10 w-10 rounded-[10px] border border-[var(--jm-border)] bg-[var(--jm-surface)] text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:border-[var(--jm-gold)] transition-colors flex items-center justify-center"
             >
               <LayoutGrid size={16} />
             </button>

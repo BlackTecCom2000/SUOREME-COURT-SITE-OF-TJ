@@ -85,7 +85,11 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
                 </div>
               </Reveal>
 
-              <div className="public-section-title text-3xl font-medium leading-[1.08] tracking-tight text-theme-text drop-shadow-sm sm:text-5xl md:text-6xl">
+              {/* The page's only h1. It was a <div>, so the document outline
+                  started at h2 and assistive technology had no top-level
+                  heading to navigate to. Size is unaffected: the unlayered
+                  .md:text-6xl utility outranks the element-level h1 rule. */}
+              <h1 className="public-section-title text-3xl font-medium leading-[1.08] tracking-tight text-theme-text drop-shadow-sm sm:text-5xl md:text-6xl">
                 <Reveal delay={0} priority={true}>
                   <div>
                     {t('hero.line1')}{' '}
@@ -99,7 +103,7 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
                     {t('hero.line2')}
                   </div>
                 </Reveal>
-              </div>
+              </h1>
 
               <Reveal delay={300}>
                 <p className="mt-5 text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-lg">
@@ -201,7 +205,7 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
         <button
           type="button"
           onClick={onScrollNext}
-          className="flex items-center gap-1.5 text-theme-textSec hover:text-theme-gold transition-colors"
+          className="tap-target flex items-center gap-1.5 text-theme-textSec hover:text-theme-gold transition-colors"
         >
           <span>{language === 'tj' ? 'Ба пеш' : language === 'en' ? 'Explore' : 'Исследовать'}</span>
           <ArrowDown size={13} className="text-theme-gold animate-bounce" />

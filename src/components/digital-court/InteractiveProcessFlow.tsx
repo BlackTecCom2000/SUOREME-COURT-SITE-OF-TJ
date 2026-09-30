@@ -216,10 +216,13 @@ export const InteractiveProcessFlow: React.FC = () => {
                 {React.createElement(steps[activeStep].icon, { size: 22 })}
               </div>
               <div>
-                <h4 className="text-base sm:text-lg font-semibold text-theme-text flex items-center gap-2">
+                {/* h2, not h4: this panel lives inside the hero section, so it
+                    follows the page h1 directly and anything deeper skipped
+                    levels in the document outline. */}
+                <h2 className="text-base sm:text-lg font-semibold text-theme-text flex items-center gap-2">
                   <span>{steps[activeStep].titleKey}</span>
                   <Sparkles size={14} className="text-theme-gold" />
-                </h4>
+                </h2>
                 <p className="text-xs text-theme-gold font-mono">
                   {steps[activeStep].subKey}
                 </p>

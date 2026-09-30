@@ -14,7 +14,7 @@ export const LanguageSwitcher: React.FC = () => {
           type="button"
           onClick={() => setLanguage(l)}
           aria-pressed={language === l}
-          className={`px-2 py-1 rounded-md text-[11px] font-mono uppercase tracking-wider transition-colors ${
+          className={`tap-target px-2 py-1 rounded-md text-[11px] font-mono uppercase tracking-wider transition-colors ${
             language === l
               ? 'text-[var(--jm-gold)] font-bold'
               : 'text-[var(--jm-muted)] hover:text-[var(--jm-text)]'

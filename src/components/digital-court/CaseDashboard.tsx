@@ -145,7 +145,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
                 <button
                   type="button"
                   onClick={() => onSelectCase(caseItem)}
-                  className="btn-outline text-xs group-hover:border-theme-gold group-hover:text-theme-gold"
+                  className="btn-outline tap-target text-xs group-hover:border-theme-gold group-hover:text-theme-gold"
                 >
                   <span>{language === 'tj' ? 'Кабинети парванда' : language === 'en' ? 'Workspace' : 'Кабинет дела'}</span>
                   <ArrowRight size={13} />

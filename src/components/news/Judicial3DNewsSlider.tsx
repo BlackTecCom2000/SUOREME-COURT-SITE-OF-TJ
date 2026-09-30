@@ -573,7 +573,7 @@ const toReadableTitle = (text: string): string => {
               type="button"
               onClick={() => setCurrentIndex(dotIdx)}
               aria-label={`Go to slide ${dotIdx + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
+              className={`tap-target h-1.5 rounded-full transition-all duration-300 ${
                 currentIndex === dotIdx
                   ? 'w-7 bg-theme-gold shadow-[0_0_8px_rgba(223,190,126,0.6)]'
                   : 'w-2 bg-theme-border hover:bg-theme-gold/50'

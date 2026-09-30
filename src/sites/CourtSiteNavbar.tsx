@@ -90,7 +90,7 @@ const { isDark, revealToggle } = useThemeReveal();
             to="/"
             aria-label="SUD.TJ"
             title="SUD.TJ"
-            className="p-1.5 rounded-xl text-theme-textMuted hover:text-theme-gold hover:bg-white/10 transition-colors shrink-0"
+            className="tap-target p-1.5 rounded-xl text-theme-textMuted hover:text-theme-gold hover:bg-white/10 transition-colors shrink-0"
           >
             <ArrowLeft size={15} />
           </Link>
@@ -146,7 +146,7 @@ const { isDark, revealToggle } = useThemeReveal();
           <button
             type="button"
             onClick={() => revealToggle()}
-            className="p-1.5 glass glass-chip hover:text-theme-text transition-colors hidden sm:flex items-center justify-center"
+            className="tap-target p-1.5 glass glass-chip hover:text-theme-text transition-colors hidden sm:flex items-center justify-center"
             aria-label="theme"
           >
             {isDark ? <Sun size={13} className="text-amber-400" /> : <Moon size={13} className="text-indigo-600" />}
@@ -156,7 +156,7 @@ const { isDark, revealToggle } = useThemeReveal();
           <button
             type="button"
             onClick={toggleContrast}
-            className={'p-1.5 glass glass-chip transition-colors hidden sm:flex items-center ' + (isHighContrast ? 'border-yellow-400 text-yellow-400' : 'hover:text-theme-text')}
+            className={'tap-target p-1.5 glass glass-chip transition-colors hidden sm:flex items-center ' + (isHighContrast ? 'border-yellow-400 text-yellow-400' : 'hover:text-theme-text')}
             aria-label="accessibility"
           >
             <Eye size={13} />
@@ -169,7 +169,7 @@ const { isDark, revealToggle } = useThemeReveal();
             type="button"
             onClick={onOpenSearch}
             title={language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}
-            className="p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
+            className="tap-target p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
           >
             <Search size={14} />
             <span className="hidden md:inline">{language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}</span>
@@ -179,7 +179,7 @@ const { isDark, revealToggle } = useThemeReveal();
             type="button"
             onClick={onOpenAiAssistant}
             title={language === 'tj' ? 'Ёвари ҳуқуқӣ' : language === 'en' ? 'AI Legal Assistant' : 'Юридический AI-помощник'}
-            className="p-2 sm:px-3 sm:py-2 rounded-2xl bg-theme-gold/15 backdrop-blur-xl border border-theme-gold/40 text-theme-gold hover:bg-theme-gold/25 transition-colors flex items-center gap-1.5 text-xs font-mono font-bold shadow-md"
+            className="tap-target p-2 sm:px-3 sm:py-2 rounded-2xl bg-theme-gold/15 backdrop-blur-xl border border-theme-gold/40 text-theme-gold hover:bg-theme-gold/25 transition-colors flex items-center gap-1.5 text-xs font-mono font-bold shadow-md"
           >
             <Sparkles size={14} />
             <span className="hidden sm:inline">{language === 'tj' ? 'Ёвар' : language === 'en' ? 'AI Assistant' : 'AI-Помощник'}</span>
@@ -188,7 +188,7 @@ const { isDark, revealToggle } = useThemeReveal();
           <div className="relative group hidden sm:block">
             <a
               href={'/courts/' + config.id + '/admin'}
-              className="p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
+              className="tap-target p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
             >
               <Settings size={14} />
               <span className="hidden lg:inline">{language === 'tj' ? 'Админ' : language === 'en' ? 'Admin' : 'Админ'}</span>
@@ -214,7 +214,7 @@ const { isDark, revealToggle } = useThemeReveal();
             <button
               type="button"
               onClick={() => setMenuPopoverOpen(!menuPopoverOpen)}
-              className={'p-2.5 glass glass-chip transition-colors flex items-center gap-1.5 text-xs font-mono ' + (menuPopoverOpen ? 'border-theme-gold text-theme-gold' : 'border-theme-border text-theme-text hover:border-theme-gold')}
+              className={'tap-target p-2.5 glass glass-chip transition-colors flex items-center gap-1.5 text-xs font-mono ' + (menuPopoverOpen ? 'border-theme-gold text-theme-gold' : 'border-theme-border text-theme-text hover:border-theme-gold')}
             >
               <Compass size={16} />
               <span className="hidden md:inline">{language === 'tj' ? 'Мундариҷа' : language === 'en' ? 'Explore' : 'Навигация'}</span>

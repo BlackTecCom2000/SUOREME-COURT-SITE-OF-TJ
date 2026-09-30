@@ -82,7 +82,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 <ul className="space-y-1" role="list">
                   {courtNav.map((l) => (
                     <li key={l.to}>
-                      <a href={l.to} onClick={(e) => { e.preventDefault(); navigate(l.to); }} className="flex items-center justify-between py-1.5 px-2 rounded-lg text-sm text-theme-textSec hover:text-theme-text hover:bg-theme-bg/60 border border-transparent hover:border-theme-border transition-colors">
+                      <a href={l.to} onClick={(e) => { e.preventDefault(); navigate(l.to); }} className="tap-target flex items-center justify-between py-1.5 px-2 rounded-lg text-sm text-theme-textSec hover:text-theme-text hover:bg-theme-bg/60 border border-transparent hover:border-theme-border transition-colors">
                         <span>{l.label}</span>
                         <ChevronRight size={12} className="opacity-40" />
                       </a>
@@ -93,7 +93,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                     { label: language === 'en' ? 'Acts' : language === 'tj' ? 'Санадаҳо' : 'Акты', tab: 'acts' as ModalTab },
                   ].map((l) => (
                     <li key={l.tab}>
-                      <button type="button" onClick={() => onOpenSectionModal?.(l.tab)} className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg text-sm text-theme-textSec hover:text-theme-gold hover:bg-theme-bg/60 border border-transparent hover:border-theme-border transition-colors text-left">
+                      <button type="button" onClick={() => onOpenSectionModal?.(l.tab)} className="tap-target w-full flex items-center justify-between py-1.5 px-2 rounded-lg text-sm text-theme-textSec hover:text-theme-gold hover:bg-theme-bg/60 border border-transparent hover:border-theme-border transition-colors text-left">
                         <span>{l.label}</span>
                         <ChevronRight size={12} className="opacity-40" />
                       </button>
@@ -111,7 +111,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                       <button
                         type="button"
                         onClick={() => setSelectedRegion(selectedRegion === rc.id ? null : rc.id)}
-                        className={`w-full text-left px-2 py-1.5 rounded-lg text-xs font-mono flex items-center justify-between border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold/15 border-theme-gold/40 text-theme-text font-semibold' : 'border-transparent text-theme-textSec hover:text-theme-text hover:bg-theme-bg/60 hover:border-theme-border'}`}
+                        className={`tap-target w-full text-left px-2 py-1.5 rounded-lg text-xs font-mono flex items-center justify-between border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold/15 border-theme-gold/40 text-theme-text font-semibold' : 'border-transparent text-theme-textSec hover:text-theme-text hover:bg-theme-bg/60 hover:border-theme-border'}`}
                         aria-expanded={selectedRegion === rc.id}
                       >
                         <span>{rc.nameRu} <span className="opacity-60">({rc.courts.length})</span></span>
@@ -121,7 +121,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                         <ul className="mt-1 ml-3 space-y-0.5 border-l border-theme-border pl-3">
                           {rc.courts.slice(0, 8).map((c) => (
                             <li key={c.id}>
-                              <a href={`http://${c.domain ?? ''}`} target="_blank" rel="noreferrer" className="block py-1 text-[11px] text-theme-textSec hover:text-theme-gold transition-colors truncate">
+                              <a href={`http://${c.domain ?? ''}`} target="_blank" rel="noreferrer" className="tap-target block py-1 text-[11px] text-theme-textSec hover:text-theme-gold transition-colors truncate">
                                 {c.nameRu}
                               </a>
                             </li>
@@ -169,7 +169,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 {/* Accessible alternative list for keyboard/screen reader */}
                 <nav aria-label="Regions" className="mt-3 flex flex-wrap gap-1.5">
                   {REGIONAL_CLUSTERS.map((rc) => (
-                    <button key={`foot-map-${rc.id}`} type="button" onClick={() => setSelectedRegion(rc.id)} className={`px-2.5 py-1 rounded-full text-2xs font-mono border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold text-black font-semibold border-theme-gold' : 'border-theme-border text-theme-textSec hover:text-theme-text hover:border-theme-gold/40 hover:bg-theme-bg/60'}`}>{rc.shortNameRu}</button>
+                    <button key={`foot-map-${rc.id}`} type="button" onClick={() => setSelectedRegion(rc.id)} className={`tap-target px-2.5 py-1 rounded-full text-2xs font-mono border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold text-black font-semibold border-theme-gold' : 'border-theme-border text-theme-textSec hover:text-theme-text hover:border-theme-gold/40 hover:bg-theme-bg/60'}`}>{rc.shortNameRu}</button>
                   ))}
                 </nav>
               </section>
@@ -276,7 +276,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 <span className="opacity-60">•</span>
                 <span className="text-theme-textSec">{t('contacts.officialPortalNotice')}</span>
                 <span className="opacity-60">•</span>
-                <a href="/sitemap" className="text-theme-textSec hover:text-theme-gold transition-colors underline-offset-2 hover:underline">{language === 'en' ? 'Sitemap' : language === 'tj' ? 'Харитаи сомона' : 'Карта сайта'}</a>
+                <a href="/sitemap" className="tap-target text-theme-textSec hover:text-theme-gold transition-colors underline-offset-2 hover:underline">{language === 'en' ? 'Sitemap' : language === 'tj' ? 'Харитаи сомона' : 'Карта сайта'}</a>
                 <span className="opacity-60">•</span>
                 <span className="text-theme-textMuted">{t('contacts.copyright')}</span>
               </div>

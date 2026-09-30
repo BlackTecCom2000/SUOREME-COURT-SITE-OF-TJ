@@ -130,7 +130,7 @@ export const Section06JudicialNetwork: React.FC<Section06JudicialNetworkProps> =
                   aria-pressed={typeFilter === opt.id}
                   onClick={() => setTypeFilter(opt.id as typeof typeFilter)}
                   className={
-                    'px-2.5 py-1 rounded-full border font-mono text-2xs uppercase tracking-wider transition-colors ' +
+                    'tap-target px-2.5 py-1 rounded-full border font-mono text-2xs uppercase tracking-wider transition-colors ' +
                     (typeFilter === opt.id
                       ? 'border-theme-gold bg-theme-gold/15 text-theme-gold'
                       : 'border-theme-border text-theme-textMuted hover:border-theme-borderHover hover:text-theme-text')
