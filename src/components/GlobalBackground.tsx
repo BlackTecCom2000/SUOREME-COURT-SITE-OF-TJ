@@ -76,6 +76,8 @@ export const GlobalBackground: React.FC = () => {
 
   const photoStyle = (mask: string | null): React.CSSProperties => ({
     filter: 'saturate(var(--bg-saturation, 100%)) brightness(var(--bg-brightness, 100%)) contrast(var(--bg-contrast, 100%))',
+    objectFit: 'var(--bg-image-fit, cover)' as React.CSSProperties['objectFit'],
+    objectPosition: 'var(--bg-image-position, center)',
     ...(mask
       ? {
           maskImage: `url(${mask})`,
@@ -157,7 +159,14 @@ export const GlobalBackground: React.FC = () => {
           already shows through there and a second layer would double it. */}
       {isDark && (
         <div className="clouds-over-sky" aria-hidden="true">
-          <CloudSky
+      {/* CloudSky builds its WebGL program once, on mount. The theme
+          reconciles from the SSR default a beat after hydration, so without
+          this key the program was created from the previous palette and a
+          light-theme visitor got the dark night sky painted over the day
+          photograph. Remounting on the theme flip costs one GL context and
+          happens during the reveal transition anyway. */}
+      <CloudSky
+        key={isDark ? 'sky-night' : 'sky-day'}
             className="absolute inset-0 w-full h-full"
             background="#050d1f"
             baseColor="#16233d"
@@ -173,6 +182,12 @@ export const GlobalBackground: React.FC = () => {
           />
         </div>
       )}
+      {/* 1c — atmospheric field: sits above the photograph and below the content
+          so every frosted surface has light and colour to refract. Without it
+          the glass had only a near-black night sky behind it and every panel
+          collapsed into a dark slab, however translucent the material was. */}
+      <div className="bg-field" aria-hidden="true" />
+
       {/* 2 — Atmospheric White Overlay: configurable but capped by
           .bg-atmosphere-haze, so a high CMS value cannot turn the glass
           into milk. Building and live sky stay visible. */}

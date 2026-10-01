@@ -1,20 +1,17 @@
-import React, {
-  createContext,
-  startTransition,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
+import React, { createContext, startTransition, useContext, useEffect, useState } from 'react';
+import { useThemeStore } from '../theme/store';
 
 export type Theme = 'light' | 'dark';
 
-/** Must match what the server renders; the client reconciles to the visitor's
- *  stored preference in a layout effect after hydration. */
+/** Must match what the server renders; the client reconciles to the store's
+ *  published scheme after it loads. */
 const DEFAULT_THEME: Theme = 'dark';
 
-/** Layout effects warn on the server, where they never run anyway. */
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+export interface SetThemeOptions {
+  /** `false` skips the View Transition — for callers that own their own
+   *  (see useThemeReveal): nesting transitions makes the browser skip them. */
+  transition?: boolean;
+}
 
 interface ThemeContextType {
   theme: Theme;
@@ -23,69 +20,59 @@ interface ThemeContextType {
   isDark: boolean;
 }
 
-/**
- * `transition: false` applies the theme without starting a View Transition.
- * Callers that own their own transition (see useThemeReveal) need this: a
- * View Transition started inside another one is skipped by the browser, so
- * nesting them would silently disable the reveal.
- */
-export interface SetThemeOptions {
-  transition?: boolean;
-}
-
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const THEME_STORAGE_KEY = 'sud-theme';
+const LEGACY_STORAGE_KEY = 'sud-theme';
 
+/**
+ * Legacy light/dark bridge.
+ *
+ * The platform has exactly one configuration — the theme store in
+ * `src/theme`. This context keeps its original API (toggleTheme /
+ * setTheme + reveal transitions, used by the navbar, admin menu and live
+ * preview) but delegates every change to the store, so a visitor toggle and
+ * a Site Builder scheme change are the same event on the same config. It no
+ * longer writes `data-theme`/`.dark` itself: the store's CSS projection is
+ * the only writer, which removes the render race the two providers used to
+ * have.
+ *
+ * It is optional about the store because it must also render during SSR,
+ * where no provider has mounted yet.
+ */
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  /* The initial value must be identical on the server and on the client, or the
-     first client render disagrees with the server's HTML and React throws the
-     whole document away (error #418). The server has no localStorage, so it can
-     only ever render DEFAULT_THEME; reading the visitor's stored preference here
-     is what used to break hydration.
-
-     The real preference is applied in the layout effect below, before paint, so
-     nothing is visible in the wrong theme. public/theme-bootstrap.js has already
-     put the correct class on <html> by then. */
+  const store = useThemeStore();
   const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME);
 
-  const resolveStoredTheme = (): Theme | null => {
-    if (typeof window === 'undefined') return null;
-    const stored =
-      localStorage.getItem(THEME_STORAGE_KEY) || localStorage.getItem('supreme-court-theme');
-    if (stored === 'light' || stored === 'dark') return stored;
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      return 'light';
-    }
-    return 'dark';
-  };
-
-  useIsomorphicLayoutEffect(() => {
-    const preferred = resolveStoredTheme();
-    if (!preferred || preferred === theme) return;
-    /* startTransition is required, not cosmetic: this update runs while React is
-       still hydrating, and a plain setState here makes the Suspense boundary
-       report "received an update before it finished hydrating" and fall back to
-       client rendering, throwing away the server HTML all over again. The
-       correction is non-urgent by nature - the correct class is already on
-       <html> from theme-bootstrap.js - so a transition is the right priority. */
-    startTransition(() => setThemeState(preferred));
-    // Mount only: this reconciles the client with the server once.
+  /* Follow the store: when the CMS publishes a scheme (or the Site Builder
+     changes it), the toggle's state must reflect it. startTransition keeps
+     this non-urgent so it cannot interrupt hydration. */
+  const scheme = store?.theme.scheme;
+  useEffect(() => {
+    if (!scheme) return;
+    if (scheme === theme) return;
+    startTransition(() => setThemeState(scheme));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [scheme]);
 
-  const setTheme = (newTheme: Theme, options?: SetThemeOptions) => {
-    if (newTheme === theme) return;
-
+  const applyToStore = (newTheme: Theme) => {
     try {
-      localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+      localStorage.setItem(LEGACY_STORAGE_KEY, newTheme);
       localStorage.setItem('supreme-court-theme', newTheme);
     } catch {
       // ignore
     }
+    /* The store's effect projects the scheme onto the document, including
+       inside the View Transition snapshot, so the morph shows the full
+       token set — not just the class flip it used to be. */
+    store?.patch({ scheme: newTheme });
+    setThemeState(newTheme);
+  };
+
+  const setTheme = (newTheme: Theme, options?: SetThemeOptions) => {
+    if (newTheme === theme) return;
 
     if (options?.transition === false) {
-      setThemeState(newTheme);
+      applyToStore(newTheme);
       return;
     }
 
@@ -93,17 +80,19 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // View Transitions API for theme morph
     if (
       !prefersReducedMotion &&
       typeof document !== 'undefined' &&
       'startViewTransition' in document &&
-      typeof (document as any).startViewTransition === 'function'
+      typeof (document as Document & { startViewTransition: unknown }).startViewTransition ===
+        'function'
     ) {
       document.documentElement.classList.add('is-morphing-theme');
-      
-      const transition = (document as any).startViewTransition(() => {
-        setThemeState(newTheme);
+
+      const transition = (
+        document as Document & { startViewTransition: (cb: () => void) => { finished: Promise<void> } }
+      ).startViewTransition(() => {
+        applyToStore(newTheme);
       });
 
       transition.finished
@@ -112,23 +101,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           document.documentElement.classList.remove('is-morphing-theme');
         });
     } else {
-      setThemeState(newTheme);
+      applyToStore(newTheme);
     }
   };
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
-
-  useEffect(() => {
-    const root = document.documentElement;
-    root.setAttribute('data-theme', theme);
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [theme]);
 
   return (
     <ThemeContext.Provider

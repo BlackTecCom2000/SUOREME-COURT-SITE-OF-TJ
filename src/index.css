@@ -25,6 +25,20 @@
     --court-navy: #000000;
     --court-gold: #9a6b12;
 
+    /* Atmospheric field. The day photograph is already bright, so the field only
+       has to take the hard edge off the lower half - it must stay translucent.
+       Opaque values here bleached the building away entirely. */
+    --field-base: rgba(238, 242, 249, 0.30);
+    --field-base-deep: rgba(224, 231, 244, 0.46);
+    --field-wash-a: rgba(56, 118, 214, 0.07);
+    --field-wash-b: rgba(184, 138, 36, 0.06);
+    --field-wash-top: rgba(255, 255, 255, 0.10);
+
+    /* Hero pod: light enough to keep the sky behind it, dense enough that
+       black body text stays readable over a bright photograph. */
+    --lg-pod-surface: linear-gradient(135deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.36) 100%);
+    --lg-pod-ink: #0b1220;
+
     /* Light Theme Liquid Glass Surfaces - guaranteed readable contrast */
     --glass-surface: rgba(255, 255, 255, 0.86);
     --glass-surface-strong: rgba(255, 255, 255, 0.94);
@@ -82,18 +96,49 @@
     --court-navy: #ffffff;
     --court-gold: #dfbe7e;
 
-    /* Dark Theme Liquid Glass Surfaces — deep rich contrast */
-    --glass-surface: rgba(7, 16, 32, 0.86);
-    --glass-surface-strong: rgba(10, 22, 44, 0.94);
-    --glass-surface-hover: rgba(14, 28, 56, 0.97);
-    --glass-surface-active: rgba(18, 34, 68, 0.99);
-    --glass-border: rgba(255, 255, 255, 0.14);
-    --glass-border-subtle: rgba(255, 255, 255, 0.09);
-    --glass-border-hover: rgba(223, 190, 126, 0.50);
-    --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    --glass-shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.20);
-    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    /* Dark Theme Liquid Glass Surfaces.
+       These used to be near-opaque navy (alpha 0.86–0.99). Against the night
+       photograph that produced black slabs: a surface at 0.94 alpha has nothing
+       left to refract, so it read as a hole rather than as glass. Liquid glass
+       only looks like glass when light passes through it, so the dark palette
+       now uses a LUMINOUS tint instead of a dark fill - cool moonlight white,
+       low alpha. White body text keeps a large contrast margin over a dark
+       photograph, so legibility improves while the material starts reading. */
+    --glass-surface: rgba(158, 190, 240, 0.11);
+    --glass-surface-strong: rgba(170, 200, 245, 0.16);
+    --glass-surface-hover: rgba(190, 215, 255, 0.22);
+    --glass-surface-active: rgba(150, 182, 235, 0.18);
+    --glass-surface-dark: rgba(9, 16, 32, 0.72);
+    --glass-surface-subtle: rgba(158, 190, 240, 0.07);
+    --glass-surface-tint: rgba(223, 190, 126, 0.12);
+    --glass-surface-scene: rgba(120, 152, 210, 0.14);
+    --glass-border: rgba(255, 255, 255, 0.16);
+    --glass-border-subtle: rgba(255, 255, 255, 0.10);
+    --glass-border-hover: rgba(223, 190, 126, 0.55);
+    --glass-shadow: 0 16px 44px rgba(2, 6, 14, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+    --glass-shadow-hover: 0 22px 56px rgba(2, 6, 14, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.20);
+    --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+
+    /* The dark material tints slightly more than the light one so it separates
+       from the night sky instead of dissolving into it. */
+    --lg-tint: rgba(176, 206, 250, 0.13);
+    --lg-tint-hover: rgba(196, 220, 255, 0.20);
+    --lg-tint-press: rgba(150, 182, 235, 0.10);
+
+    /* Atmospheric field: cool moonlight and a warm court-gold bloom over deep
+       navy. Low alpha on purpose - this is atmosphere, not a scrim. */
+    --field-base: #070d1c;
+    --field-base-deep: #040814;
+    --field-wash-a: rgba(84, 128, 214, 0.20);
+    --field-wash-b: rgba(196, 154, 74, 0.13);
+    --field-wash-top: rgba(120, 160, 235, 0.16);
+
+    /* Hero pod: cool moonlight tint over the night sky. White body text keeps a
+       very wide contrast margin because the sky behind it is nearly black. */
+    --lg-pod-surface: linear-gradient(135deg, rgba(30, 52, 92, 0.46) 0%, rgba(12, 24, 46, 0.34) 100%);
+    --lg-pod-ink: #ffffff;
 
     --ring-offset: var(--bg-primary);
 
@@ -425,16 +470,20 @@ html.is-morphing-theme ::view-transition-new(root) {
   .liquid-glass-title-pod {
     position: relative;
     border-radius: var(--glass-radius-panel, 28px);
-    background: linear-gradient(135deg, rgba(8, 20, 42, 0.86) 0%, rgba(3, 9, 22, 0.78) 100%);
-    backdrop-filter: blur(24px) saturate(140%);
-    -webkit-backdrop-filter: blur(24px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    color: #ffffff;
-    box-shadow: 
-      inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.35),
-      inset 0 -1px 1px 0 rgba(0, 0, 0, 0.45),
-      0 20px 45px -12px rgba(0, 0, 0, 0.38),
-      0 0 32px -4px rgba(223, 190, 126, 0.08);
+    /* Was a hardcoded 0.86-alpha navy gradient, which is why the hero read as a
+       black box on a beautiful night sky instead of glass: at that opacity
+       there is nothing left of the background to refract. Now it uses the same
+       luminous translucent material as every other surface, themed per scheme. */
+    background: var(--lg-pod-surface);
+    backdrop-filter: blur(28px) saturate(180%) brightness(1.06);
+    -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(1.06);
+    border: 1px solid var(--lg-rim-top);
+    color: var(--lg-pod-ink);
+    box-shadow:
+      inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.38),
+      inset 0 -1px 1px 0 rgba(0, 0, 0, 0.28),
+      0 24px 54px -14px rgba(2, 6, 14, 0.46),
+      0 0 40px -6px rgba(223, 190, 126, 0.10);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
   }
@@ -1237,6 +1286,29 @@ html[data-a11y="true"] .content-card::before {
     background: var(--glass-surface-active);
   }
 
+  /* Accent tier: the single gold feature button on a screen. It exists so the
+     navbar stops inventing a fifth look for "AI Assistant" - before this the
+     header mixed ghost, glass-chip, gold-fill and outline on one row and read
+     as five unrelated controls. */
+  .btn-accent {
+    @apply btn-base glass lg-material lg-button;
+    color: var(--gold-300, #dfbe7e);
+    background: color-mix(in srgb, var(--gold-300, #dfbe7e) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--gold-300, #dfbe7e) 42%, transparent);
+    box-shadow: var(--glass-shadow), var(--glass-highlight);
+  }
+  .btn-accent:hover:not(:disabled) {
+    color: var(--gold-200, #f0d9a8);
+    background: color-mix(in srgb, var(--gold-300, #dfbe7e) 22%, transparent);
+    border-color: color-mix(in srgb, var(--gold-300, #dfbe7e) 62%, transparent);
+    box-shadow: var(--glass-shadow-hover), var(--glass-highlight-edge);
+    transform: translateY(-1px);
+  }
+  .btn-accent:active:not(:disabled) {
+    transform: scale(0.97) translateY(0);
+    background: color-mix(in srgb, var(--gold-200, #f0d9a8) 26%, transparent);
+  }
+
   /* ═══════════════════════════════════════════════════════════════════
      LIQUID GLASS MATERIAL
      Four stacked layers: tint, backdrop, specular rim, inner highlight.
@@ -1358,6 +1430,7 @@ html[data-a11y="true"] .content-card::before {
     .btn-primary,
     .btn-gold,
     .btn-secondary,
+    .btn-accent,
     .btn-ghost {
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
@@ -1526,6 +1599,79 @@ html[data-a11y="true"] .content-card::before {
     .btn-outline {
       position: relative;
     }
+  }
+
+  /* ── ATMOSPHERIC FIELD ───────────────────────────────────────────────
+     The single most important layer for making the glass read as glass.
+     Real liquid glass needs light and colour passing behind it; the night
+     photograph is nearly black and very busy, so every frosted surface over it
+     collapsed into a dark slab no matter how translucent the material was.
+
+     This layer sits above the photograph and below the content: it keeps the
+     top of the viewport clear so the building and the live clouds stay crisp
+     in the hero, then dissolves the image into a calm, softly coloured field
+     towards the bottom where the reading content lives. The two large radial
+     washes give the frosted panels something colourful to refract, which is
+     exactly what turns a grey rectangle into glass. */
+  /* Scoped to the dark theme on purpose. The day photograph is already bright
+     and well balanced; a field on top of it measurably drained the sky to a
+     dull slate, so light mode gets the photograph untouched. Verified by
+     capturing both with and without this layer.
+
+     The two accent washes and the top glow are driven by the theme
+     configuration (`--theme-field-gradient`, `--theme-field-glow`,
+     `--theme-field-noise`): Site Builder's gradient/glow/noise controls write
+     them, so the field can never be a dead control. The base dissolve below
+     stays theme-authored — it is a readability layer, not a style choice. */
+  [data-theme='dark'] .bg-field {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        110% 48% at 50% -4%,
+        color-mix(in srgb, var(--theme-accent) calc(var(--theme-field-glow, 0.2) * 26%), transparent) 0%,
+        transparent 72%
+      ),
+      var(--theme-field-gradient, none),
+      radial-gradient(120% 55% at 50% -6%, var(--field-wash-top) 0%, transparent 58%),
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        color-mix(in srgb, var(--field-base) 12%, transparent) 16%,
+        color-mix(in srgb, var(--field-base) 62%, transparent) 42%,
+        color-mix(in srgb, var(--field-base) 88%, transparent) 68%,
+        var(--field-base-deep) 100%
+      );
+  }
+
+  /* Light mode deliberately skips the base dissolve and the top wash (they
+     grey out the day photograph), but keeps the configured accent washes,
+     glow and noise so the controls mean the same thing in both schemes. */
+  [data-theme='light'] .bg-field {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        110% 48% at 50% -4%,
+        color-mix(in srgb, var(--theme-accent) calc(var(--theme-field-glow, 0.2) * 20%), transparent) 0%,
+        transparent 72%
+      ),
+      var(--theme-field-gradient, none);
+  }
+
+  /* Film grain: a hair of noise keeps the large flat gradients from banding
+     on cheap panels. Opacity comes from the theme configuration. */
+  .bg-field::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--theme-field-noise, 0.02);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    mix-blend-mode: overlay;
   }
 
   /* Useful-sites running ticker (footer marquee) */

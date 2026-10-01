@@ -11,12 +11,15 @@
  *                           content changes, so they can never go stale)
  *   - navigations          network-first with a cached shell fallback, so a
  *                           deploy is picked up but an offline visit still works
+ *   - the theme endpoint   network-first: this payload is the published Theme
+ *                           Configuration, and a stale copy here would make
+ *                           "Save + Publish + reload" look like it failed
  *   - allowlisted public GET  stale-while-revalidate: instant response,
  *                           refreshed in the background
  *   - everything else    never cached, always live
  */
 
-const VERSION = 'sudtj-v1';
+const VERSION = 'sudtj-v2';
 const SHELL = `${VERSION}-shell`;
 const ASSETS = `${VERSION}-assets`;
 const DATA = `${VERSION}-data`;
@@ -61,7 +64,6 @@ const isAsset = (url) =>
 const PUBLIC_API = [
   '/api/news',
   '/api/site-sections',
-  '/api/design-settings',
   '/api/marquee-config',
   '/api/useful-sites',
   '/api/court-structure',
@@ -70,6 +72,23 @@ const PUBLIC_API = [
 ];
 
 const isPublicApi = (url) => PUBLIC_API.includes(url.pathname);
+
+/** The published Theme Configuration: always live when the network is up,
+ *  cached only as an offline fallback. Stale-while-revalidate here would let
+ *  an open tab keep rendering the previous theme after a Publish. */
+async function networkFirstTheme(request) {
+  const cache = await caches.open(DATA);
+  try {
+    const response = await fetch(request);
+    if (response && response.ok) cache.put(request, response.clone()).catch(() => undefined);
+    return response;
+  } catch {
+    return (
+      (await cache.match(request)) ||
+      new Response('{}', { status: 504, headers: { 'Content-Type': 'application/json' } })
+    );
+  }
+}
 
 async function cacheFirst(request) {
   const cache = await caches.open(ASSETS);
@@ -131,6 +150,10 @@ self.addEventListener('fetch', (event) => {
   }
   if (isAsset(url)) {
     event.respondWith(cacheFirst(request));
+    return;
+  }
+  if (url.pathname === '/api/design-settings') {
+    event.respondWith(networkFirstTheme(request));
     return;
   }
   if (isPublicApi(url)) {

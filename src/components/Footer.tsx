@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ExternalLink, MapPin, Phone, Mail, FileText, ChevronLeft, ChevronRight, ArrowUp, Map } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { APP_VERSION, APP_VERSION_LABEL } from '../version';
 import { useNavigate } from 'react-router-dom';
 import { PRESIDENT_MESSAGE, USEFUL_LINKS } from '../data/portalLinks';
 import { REGIONAL_CLUSTERS } from '../data/sudTjData';
@@ -285,7 +286,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full glass border border-theme-gold/30 text-2xs font-mono text-theme-gold font-semibold">
                   <span style={{ fontSize: '12px' }} aria-hidden="true">⚖️</span> BlackTecCom
                 </span>
-                <span className="text-theme-textMuted hidden sm:inline">v2.6.0</span>
+                <span className="text-theme-textMuted hidden sm:inline" title={`Build ${APP_VERSION}`}>{APP_VERSION_LABEL}</span>
               </div>
             </div>
           </div>

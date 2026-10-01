@@ -45,14 +45,17 @@ export const DeviceCapabilityProvider: React.FC<{ children: React.ReactNode }> =
       tier = 'medium';
     }
 
-    setCapability({
-      tier,
-      isReducedMotion,
-    });
+    setCapability((prev) =>
+      prev.tier === tier && prev.isReducedMotion === isReducedMotion
+        ? prev
+        : { tier, isReducedMotion },
+    );
 
     // Optional: listen to changes in reduced motion
     const listener = (e: MediaQueryListEvent) => {
-      setCapability(prev => ({ ...prev, isReducedMotion: e.matches }));
+      setCapability((prev) =>
+        prev.isReducedMotion === e.matches ? prev : { ...prev, isReducedMotion: e.matches },
+      );
     };
     motionMatch.addEventListener('change', listener);
     return () => motionMatch.removeEventListener('change', listener);

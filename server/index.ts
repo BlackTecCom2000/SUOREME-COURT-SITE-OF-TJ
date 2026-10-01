@@ -1372,7 +1372,11 @@ app.get('/api/marquee-config', cache(60), (_req, res) => {
 app.get('/api/site-sections', cache(60), (_req, res) => {
   res.json(db.prepare(`SELECT * FROM site_sections WHERE status='published' AND visible=1 ORDER BY sort_order, id`).all());
 });
-app.get('/api/design-settings', cache(60), (_req, res) => {
+app.get('/api/design-settings', (_req, res) => {
+  // no-store on purpose: this payload IS the published Theme Configuration.
+  // A cached copy here means "Save + Publish + reload" shows the previous
+  // theme for up to a minute, which reads as "my save did not work".
+  res.set('Cache-Control', 'no-store');
   const rows = db.prepare('SELECT key, published_value as value FROM site_design_settings').all() as any[];
   const out: Record<string,string> = {}; rows.forEach(r=> out[r.key]=r.value); res.json(out);
 });
@@ -1382,7 +1386,7 @@ app.post('/api/admin/useful-sites', auth, requirePerm('content.edit'), (req:Auth
   if(denyScoped(req,res)) return;
   const p=z.object({url:z.string().url(), label_ru:z.string().min(1), label_tj:z.string().optional(), label_en:z.string().optional(), image:z.string().optional(), icon:z.string().optional(), category:z.string().optional(), language:z.string().optional(), status:z.enum(['draft','published','archived']).optional(), sort_order:z.number().optional()}).safeParse(req.body);
   if(!p.success) return res.status(400).json({error:'Invalid', details:p.error.flatten()});
-  const d=p.data; const r=db.prepare('INSERT INTO useful_sites(url,label_ru,label_tj,label_en,image,icon,category,language,status,sort_order,published_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,datetime("now"),datetime("now"))').run(d.url,d.label_ru,d.label_tj||d.label_ru,d.label_en||d.label_ru,d.image||null,d.icon||null,d.category||'useful',d.language||'ru',d.status||'draft',d.sort_order ?? 999);
+  const d=p.data; const r=db.prepare("INSERT INTO useful_sites(url,label_ru,label_tj,label_en,image,icon,category,language,status,sort_order,published_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,datetime('now'),datetime('now'))").run(d.url,d.label_ru,d.label_tj||d.label_ru,d.label_en||d.label_ru,d.image||null,d.icon||null,d.category||'useful',d.language||'ru',d.status||'draft',d.sort_order ?? 999);
   audit(req.user!.id,'create','useful_site',Number(r.lastInsertRowid)); res.status(201).json({id:r.lastInsertRowid});
 });
 app.put('/api/admin/useful-sites/:id', auth, requirePerm('content.edit'), (req:Auth,res)=>{
@@ -1391,7 +1395,7 @@ app.put('/api/admin/useful-sites/:id', auth, requirePerm('content.edit'), (req:A
   if(!p.success) return res.status(400).json({error:'Invalid'});
   const cur=db.prepare('SELECT * FROM useful_sites WHERE id=?').get(req.params.id) as any; if(!cur) return res.status(404).json({error:'Not found'});
   const d={...cur, ...p.data, updated_at: new Date().toISOString() } as any;
-  db.prepare('UPDATE useful_sites SET url=?, label_ru=?, label_tj=?, label_en=?, image=?, icon=?, category=?, language=?, status=?, sort_order=?, updated_at=datetime("now"), published_at=CASE WHEN ?="published" THEN COALESCE(published_at, datetime("now")) ELSE published_at END WHERE id=?')
+  db.prepare("UPDATE useful_sites SET url=?, label_ru=?, label_tj=?, label_en=?, image=?, icon=?, category=?, language=?, status=?, sort_order=?, updated_at=datetime('now'), published_at=CASE WHEN ?='published' THEN COALESCE(published_at, datetime('now')) ELSE published_at END WHERE id=?")
     .run(d.url,d.label_ru,d.label_tj,d.label_en,d.image,d.icon,d.category,d.language,d.status,d.sort_order,d.status,req.params.id);
   audit(req.user!.id,'update','useful_site',Number(req.params.id)); res.json({ok:true});
 });
@@ -1410,7 +1414,7 @@ app.post('/api/admin/useful-sites/reorder', auth, requirePerm('content.edit'), (
 app.post('/api/admin/useful-sites/:id/duplicate', auth, requirePerm('content.edit'), (req:Auth,res)=>{
   if(denyScoped(req,res)) return;
   const cur=db.prepare('SELECT * FROM useful_sites WHERE id=?').get(req.params.id) as any; if(!cur) return res.status(404).json({error:'Not found'});
-  const r=db.prepare('INSERT INTO useful_sites(url,label_ru,label_tj,label_en,image,icon,category,language,status,sort_order,published_at) VALUES(?,?,?,?,?,?,?,?,?,?,datetime("now"))')
+  const r=db.prepare("INSERT INTO useful_sites(url,label_ru,label_tj,label_en,image,icon,category,language,status,sort_order,published_at) VALUES(?,?,?,?,?,?,?,?,?,?,datetime('now'))")
     .run(cur.url, cur.label_ru+' (копия)', cur.label_tj, cur.label_en, cur.image, cur.icon, cur.category, cur.language, 'draft', 999);
   audit(req.user!.id,'duplicate','useful_site',Number(r.lastInsertRowid)); res.status(201).json({id:r.lastInsertRowid});
 });
@@ -1420,7 +1424,7 @@ app.post('/api/admin/marquee-config', auth, requirePerm('settings.manage'), (req
   const p=z.object({speed:z.number().min(5).max(120), direction:z.enum(['left','right']), autoplay:z.boolean(), pause_on_hover:z.boolean(), pause_on_focus:z.boolean(), logo_size:z.number().min(40).max(200), gap:z.number().min(4).max(48)}).safeParse(req.body);
   if(!p.success) return res.status(400).json({error:'Invalid', details:p.error.flatten()});
   const d=p.data;
-  db.prepare('UPDATE site_marquee_config SET speed=?, direction=?, autoplay=?, pause_on_hover=?, pause_on_focus=?, logo_size=?, gap=?, updated_at=datetime("now") WHERE id=1')
+  db.prepare("UPDATE site_marquee_config SET speed=?, direction=?, autoplay=?, pause_on_hover=?, pause_on_focus=?, logo_size=?, gap=?, updated_at=datetime('now') WHERE id=1")
     .run(d.speed, d.direction, d.autoplay?1:0, d.pause_on_hover?1:0, d.pause_on_focus?1:0, d.logo_size, d.gap);
   // version snapshot for draft/publish audit
   const snap=JSON.stringify(db.prepare('SELECT * FROM site_marquee_config WHERE id=1').get());
@@ -1434,7 +1438,7 @@ app.post('/api/admin/site-sections', auth, requirePerm('content.edit'), (req:Aut
   const p=z.object({key:z.string().min(1), title_ru:z.string().optional(), title_tj:z.string().optional(), title_en:z.string().optional(), subtitle_ru:z.string().optional(), subtitle_tj:z.string().optional(), subtitle_en:z.string().optional(), description_ru:z.string().optional(), description_tj:z.string().optional(), description_en:z.string().optional(), image:z.string().optional().nullable(), icon:z.string().optional().nullable(), link:z.string().optional().nullable(), category:z.string().optional(), language:z.string().optional(), status:z.enum(['draft','published','archived']).optional(), sort_order:z.number().optional(), visible:z.boolean().optional(), settings:z.any().optional()}).safeParse(req.body);
   if(!p.success) return res.status(400).json({error:'Invalid', details:p.error.flatten()});
   const d=p.data; const id=d.key + '_' + Date.now();
-  db.prepare('INSERT INTO site_sections(id, key, title_ru, title_tj, title_en, subtitle_ru, subtitle_tj, subtitle_en, description_ru, description_tj, description_en, image, icon, link, category, language, status, sort_order, visible, settings, published_at, updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime("now"))')
+  db.prepare("INSERT INTO site_sections(id, key, title_ru, title_tj, title_en, subtitle_ru, subtitle_tj, subtitle_en, description_ru, description_tj, description_en, image, icon, link, category, language, status, sort_order, visible, settings, published_at, updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'))")
     .run(id, d.key, d.title_ru||null, d.title_tj||null, d.title_en||null, d.subtitle_ru||null, d.subtitle_tj||null, d.subtitle_en||null, d.description_ru||null, d.description_tj||null, d.description_en||null, d.image||null, d.icon||null, d.link||null, d.category||'Главная страница', d.language||'ru', d.status||'draft', d.sort_order??99, d.visible?1:1, JSON.stringify(d.settings||{}), d.status==='published'? new Date().toISOString(): null);
   audit(req.user!.id,'create','site_section',0); res.status(201).json({id});
 });
@@ -1444,7 +1448,7 @@ app.put('/api/admin/site-sections/:id', auth, requirePerm('content.edit'), (req:
   const p=z.object({title_ru:z.string().optional(), title_tj:z.string().optional(), title_en:z.string().optional(), subtitle_ru:z.string().optional(), subtitle_tj:z.string().optional(), subtitle_en:z.string().optional(), description_ru:z.string().optional(), description_tj:z.string().optional(), description_en:z.string().optional(), image:z.string().optional().nullable(), icon:z.string().optional().nullable(), link:z.string().optional().nullable(), category:z.string().optional(), language:z.string().optional(), status:z.enum(['draft','published','archived']).optional(), sort_order:z.number().optional(), visible:z.boolean().optional(), settings:z.any().optional()}).safeParse(req.body);
   if(!p.success) return res.status(400).json({error:'Invalid'});
   const d={...cur, ...p.data} as any;
-  db.prepare('UPDATE site_sections SET title_ru=?, title_tj=?, title_en=?, subtitle_ru=?, subtitle_tj=?, subtitle_en=?, description_ru=?, description_tj=?, description_en=?, image=?, icon=?, link=?, category=?, language=?, status=?, sort_order=?, visible=?, settings=?, updated_at=datetime("now"), published_at=CASE WHEN ?="published" THEN COALESCE(published_at, datetime("now")) ELSE published_at END WHERE id=?')
+  db.prepare("UPDATE site_sections SET title_ru=?, title_tj=?, title_en=?, subtitle_ru=?, subtitle_tj=?, subtitle_en=?, description_ru=?, description_tj=?, description_en=?, image=?, icon=?, link=?, category=?, language=?, status=?, sort_order=?, visible=?, settings=?, updated_at=datetime('now'), published_at=CASE WHEN ?='published' THEN COALESCE(published_at, datetime('now')) ELSE published_at END WHERE id=?")
     .run(d.title_ru,d.title_tj,d.title_en,d.subtitle_ru,d.subtitle_tj,d.subtitle_en,d.description_ru,d.description_tj,d.description_en,d.image,d.icon,d.link,d.category,d.language,d.status,d.sort_order, d.visible?1:0, JSON.stringify(d.settings||{}), d.status, req.params.id);
   audit(req.user!.id,'update','site_section',0); res.json({ok:true});
 });
@@ -1472,10 +1476,32 @@ app.post('/api/admin/site-sections/:id/duplicate', auth, requirePerm('content.ed
 app.get('/api/admin/design-settings', auth, (req:Auth,res)=>{ if(denyScoped(req,res)) return; res.json(db.prepare('SELECT key, draft_value, published_value FROM site_design_settings').all()); });
 app.post('/api/admin/design-settings', auth, requirePerm('settings.manage'), (req:Auth,res)=>{
   if(denyScoped(req,res)) return;
-  const p=z.object({key:z.string(), value:z.string()}).safeParse(req.body); if(!p.success) return res.status(400).json({error:'Invalid'});
-  db.prepare('INSERT INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET draft_value=excluded.draft_value, updated_at=datetime("now")').run(p.data.key, p.data.value, p.data.value);
-  // immediate draft only, publish separately
-  audit(req.user!.id,'update','design_setting',0); res.json({ok:true});
+  // Batch form: the theme is one configuration, so it is written as one value.
+  // Accepting a single key/value keeps every existing caller working.
+  const p = z.union([
+    z.object({ keys: z.array(z.object({ key: z.string().min(1).max(64), value: z.string().max(8000) })).min(1).max(64) }),
+    z.object({ key: z.string().min(1).max(64), value: z.string().max(8000) }),
+  ]).safeParse(req.body);
+  if(!p.success) return res.status(400).json({error:'Invalid'});
+
+  const rows = 'keys' in p.data ? p.data.keys : [{ key: p.data.key, value: p.data.value }];
+
+  /* Draft only, for brand-new keys too — including the two theme rows.
+     The publish gate has to mean the same thing for every key: nothing
+     reaches the public endpoint until POST /api/admin/site/publish copies
+     draft -> published. Inserting published_value here made the FIRST save
+     of a new key go live immediately while every later save waited, so the
+     same control behaved differently depending on whether it existed yet.
+     Existing published values are never touched: the DO UPDATE branch only
+     rewrites draft_value. */
+  const stmt = db.prepare(`INSERT INTO site_design_settings(key, draft_value, published_value)
+    VALUES(?,?,?)
+    ON CONFLICT(key) DO UPDATE SET draft_value=excluded.draft_value, updated_at=datetime('now')`);
+
+  for (const row of rows) {
+    stmt.run(row.key, row.value, null);
+  }
+  audit(req.user!.id,'update','design_setting',rows.length); res.json({ok:true, count: rows.length});
 });
 // Draft / Publish / Versions
 app.post('/api/admin/site/publish', auth, requirePerm('content.publish'), (req:Auth,res)=>{
@@ -1486,8 +1512,10 @@ app.post('/api/admin/site/publish', auth, requirePerm('content.publish'), (req:A
   const designRows=db.prepare('SELECT * FROM site_design_settings').all();
   const payload=JSON.stringify({sections:draftSections, design:designRows, marquee: db.prepare('SELECT * FROM site_marquee_config WHERE id=1').get()});
   // mark site_sections draft -> published if they were draft and visible
-  // design: copy draft_value to published_value
-  db.prepare('UPDATE site_design_settings SET published_value=draft_value, updated_at=datetime("now")').run();
+  // design: copy draft to published. COALESCE keeps a published value that
+  // has no draft (possible for rows seeded by older versions) instead of
+  // nulling it out on publish.
+  db.prepare("UPDATE site_design_settings SET published_value=COALESCE(draft_value, published_value), updated_at=datetime('now')").run();
   db.prepare('INSERT INTO site_versions(snapshot_data, author_id, author_name, commit_message, type) VALUES(?,?,?,?,?)').run(payload, req.user!.id, req.user!.name||req.user!.email, req.body.message||'Publish site', 'publish');
   audit(req.user!.id,'publish','site_builder',0); res.json({ok:true});
 });
@@ -1567,7 +1595,7 @@ const DEFAULT_SLIDER_3D_CONFIG = {
 
 function getSlider3DConfig(): any {
   try {
-    const row = db.prepare('SELECT value FROM settings WHERE key="slider_3d_config"').get() as any;
+    const row = db.prepare("SELECT value FROM settings WHERE key='slider_3d_config'").get() as any;
     if (row && row.value) {
       return { ...DEFAULT_SLIDER_3D_CONFIG, ...JSON.parse(row.value) };
     }
@@ -1671,14 +1699,18 @@ app.get('/api/admin/slider-3d', auth, (req: Auth, res) => {
   if (denyScoped(req, res)) return;
   const config = getSlider3DConfig();
   const slides = (db.prepare('SELECT * FROM slider_3d_slides ORDER BY sort_order ASC, id ASC').all() as any[]).map(mapDbSlideToFrontend);
-  const recentNews = db.prepare("SELECT id, slug, title_ru, title_tj, title_en, excerpt_ru, excerpt_tj, excerpt_en, cover_image, category, published_at FROM content WHERE type='news' AND status='published' AND deleted_at IS NULL ORDER BY published_at DESC LIMIT 20").all();
+  // content has no `cover_image`/`category` column — cover comes from media
+  // (same join as the public news list), so a bare cover_image broke this
+  // endpoint with 500 since v2.9.6. `category` is intentionally omitted;
+  // the admin UI falls back to 'НОВОСТЬ' when it is absent.
+  const recentNews = db.prepare("SELECT c.id, c.slug, c.title_ru, c.title_tj, c.title_en, c.excerpt_ru, c.excerpt_tj, c.excerpt_en, m.filename as cover_image, c.published_at FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type='news' AND c.status='published' AND c.deleted_at IS NULL ORDER BY c.published_at DESC LIMIT 20").all();
   res.json({ config, slides, recentNews });
 });
 
 app.post('/api/admin/slider-3d/config', auth, requirePerm('settings.manage'), (req: Auth, res) => {
   if (denyScoped(req, res)) return;
   const config = req.body || {};
-  db.prepare('INSERT INTO settings("key", "value") VALUES("slider_3d_config", ?) ON CONFLICT("key") DO UPDATE SET "value"=excluded."value"').run(JSON.stringify(config));
+  db.prepare("INSERT INTO settings(\"key\", \"value\") VALUES('slider_3d_config', ?) ON CONFLICT(\"key\") DO UPDATE SET \"value\"=excluded.\"value\"").run(JSON.stringify(config));
   audit(req.user!.id, 'update', 'slider_3d_config', 0);
   res.json({ ok: true, config });
 });
@@ -1771,7 +1803,7 @@ app.put('/api/admin/slider-3d/slides/:id', auth, requirePerm('content.edit'), (r
       date_text = COALESCE(?, date_text),
       sort_order = COALESCE(?, sort_order),
       is_active = COALESCE(?, is_active),
-      updated_at = datetime("now")
+      updated_at = datetime('now')
     WHERE id=?
   `).run(
     d.titleTj ?? null,
@@ -1821,7 +1853,7 @@ app.post('/api/admin/slider-3d/slides/reorder', auth, requirePerm('content.edit'
 
 app.post('/api/admin/slider-3d/reset', auth, requirePerm('settings.manage'), (req: Auth, res) => {
   if (denyScoped(req, res)) return;
-  db.prepare('DELETE FROM settings WHERE key="slider_3d_config"').run();
+  db.prepare("DELETE FROM settings WHERE key='slider_3d_config'").run();
   db.exec('DELETE FROM slider_3d_slides');
   const insSlide = db.prepare(`
     INSERT INTO slider_3d_slides (

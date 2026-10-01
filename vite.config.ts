@@ -1,10 +1,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import pkg from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  /* The footer used to hardcode "v2.6.0", so the site advertised a version ten
+     releases behind and every bump had to be remembered by hand. Reading it
+     from package.json at build time makes the displayed version correct by
+     construction, and the release script only has to touch the one file. */
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+  },
   server: {
     port: 5173,
     host: true,

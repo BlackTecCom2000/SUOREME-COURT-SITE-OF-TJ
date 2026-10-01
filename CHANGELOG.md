@@ -9,7 +9,13 @@ UTF-8 file with `Get-Content`, which assumes the system ANSI codepage
 for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
-
+
+## v2.17.0 - Unified Glassmorphism Theme System
+- Released: 2026-10-01 17:16
+- Previous: v2.16.0
+- QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
+  `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
+  `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
 ## v2.16.0 - Browser audit fixes: SSR hydration restored, CSP-safe theme bootstrap, 17px body, 44px tap targets, heading outline
 - Released: 2026-09-30 12:32
 - Previous: v2.15.0

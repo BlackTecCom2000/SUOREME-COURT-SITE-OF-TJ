@@ -7,8 +7,6 @@
   --admin-sidebar-collapsed-w: 80px;
   --admin-topbar-h: 64px;
   --admin-drawer-w: 288px;
-  --glass-blur: 8px;
-  --glass-saturation: 120%;
 
   display: flex;
   width: 100%;
@@ -16,37 +14,18 @@
   overflow: hidden;
 }
 
-/* Admin glass density is a deliberate step above the public portal: figures
-   and tables need a more opaque surface over the live sky. The values below
-   are that step, not a second design language - they still resolve from the
-   same token family, and text comes from the shared palette. */
-:root .admin-shell,
-[data-theme="light"] .admin-shell {
-  --text-primary: var(--ink-950);
-  --text-secondary: var(--ink-950);
-  --text-muted: var(--ink-700);
+/* Admin density is one step above the public portal: figures and tables need
+   a more opaque surface over the live sky. That step is expressed ONLY as a
+   swap to the strong surface token — which the store rewrites per scheme and
+   per preset — so the admin follows the Theme Configuration instead of
+   carrying its own light/dark hex values (see AGENTS.md: one background, one
+   glass system, one theme). */
+:root .admin-shell {
   color: var(--text-primary);
-  --glass-surface: rgba(255, 255, 255, 0.92);
-  --glass-surface-strong: rgba(255, 255, 255, 0.98);
-  --glass-surface-hover: rgba(245, 247, 250, 0.98);
-  --glass-border: rgba(0, 0, 0, 0.12);
-  --glass-border-subtle: rgba(0, 0, 0, 0.08);
-  --glass-border-hover: color-mix(in srgb, var(--gold-500) 80%, transparent);
-  --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-}
-
-[data-theme="dark"] .admin-shell {
-  --text-primary: #ffffff;
-  --text-secondary: #ffffff;
-  --text-muted: var(--ink-300);
-  color: var(--text-primary);
-  --glass-surface: rgba(7, 18, 36, 0.85);
-  --glass-surface-strong: rgba(7, 18, 36, 0.94);
-  --glass-surface-hover: rgba(14, 30, 56, 0.95);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-subtle: rgba(255, 255, 255, 0.06);
-  --glass-border-hover: color-mix(in srgb, var(--gold-300) 55%, transparent);
-  --glass-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+  --glass-surface: var(--glass-surface-strong);
+  --glass-surface-hover: var(--glass-surface-strong);
+  --glass-surface-active: var(--glass-surface-strong);
+  --glass-shadow: var(--theme-shadow-lg);
 }
 
 /* ==========================================================================
@@ -75,15 +54,6 @@
 .admin-shell,
 .admin-portal-modal {
   color: var(--text-primary);
-}
-
-/* Data-dense admin surfaces: same glass family, one step more opaque than the
-   public portal so tables and figures stay legible over the moving sky. */
-.admin-shell .glass,
-.admin-content .glass,
-.admin-shell .glass-admin,
-.admin-portal-modal .glass {
-  --glass-opacity: 0.18;
 }
 
 /* Native form controls. Browsers force their own text colour on select and

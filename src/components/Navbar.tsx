@@ -382,7 +382,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               onClick={onOpenSearch}
               title={language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}
-              className="tap-target p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
+              className="btn-ghost tap-target px-2.5 sm:px-3 text-xs font-mono"
             >
               <Search size={14} />
               <span className="hidden md:inline">{language === 'tj' ? 'Ҷустуҷӯ' : language === 'en' ? 'Search' : 'Поиск'}</span>
@@ -395,7 +395,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               onClick={onOpenAiAssistant}
               title={language === 'tj' ? 'Ёвари ҳуқуқӣ' : language === 'en' ? 'AI Legal Assistant' : 'Юридический AI-помощник'}
-              className="tap-target p-2 sm:px-3 sm:py-2 rounded-2xl bg-theme-gold/15 backdrop-blur-xl border border-theme-gold/40 text-theme-gold hover:bg-theme-gold/25 transition-colors flex items-center gap-1.5 text-xs font-mono font-bold shadow-md"
+              className="btn-accent tap-target px-2.5 sm:px-3 text-xs font-mono font-semibold"
             >
               <Sparkles size={14} />
               <span className="hidden sm:inline">{language === 'tj' ? 'Ёвар' : language === 'en' ? 'AI Assistant' : 'AI-Помощник'}</span>
@@ -406,7 +406,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative group">
             <a
               href="/admin"
-              className="tap-target p-2 sm:px-3 sm:py-2 glass glass-chip text-theme-text hover:border-theme-gold hover:text-theme-gold transition-colors flex items-center gap-1.5 text-xs font-mono"
+              className="btn-ghost tap-target px-2.5 sm:px-3 text-xs font-mono"
             >
               <Settings size={14} />
               <span className="hidden lg:inline">{language === 'tj' ? 'Админ' : language === 'en' ? 'Admin' : 'Админ'}</span>
