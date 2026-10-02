@@ -10,6 +10,21 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.2 - Security H2: require auth + RBAC for AI knowledge indexing
+- Released: 2026-10-02 (pending tag)
+- Previous: v2.18.1
+- `/api/ai/index-knowledge` (was: unauthenticated POST that wrote to
+  `knowledge_sources`/`knowledge_chunks` and triggered one embedding call
+  per chunk — RAG poisoning + cost/DoS vector; H2 of the white-box
+  security audit) now requires a session and `ai.manage`
+  (super_admin/admin). `/api/ai/chat` stays public and rate-limited.
+- `aiRouter` is mounted after the auth middleware so the guard runs
+  before the route handler.
+- QA: `tsc 0`, `build:client`, `build:server`, smoke 200 on `/` `/admin`
+  `/api/health` `/api/design-settings` `/api/news` `/api/search`
+  `/api/site-sections` `/api/marquee-config` `/api/useful-sites`
+  `/sitemap.xml` `/robots.txt`; live matrix: anon 401, editor 403,
+  super_admin passes guard, chat still public (400 on empty body).
 ## v2.18.1 - Security H1: remove hardcoded admin credentials
 - Released: 2026-10-02 (pending tag)
 - Previous: v2.18.0

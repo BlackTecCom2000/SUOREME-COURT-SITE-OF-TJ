@@ -508,8 +508,8 @@ app.use((_req, res, next) => {
   next();
 });
 app.use('/uploads', express.static(uploadDir, { setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff') }));
-app.use('/api/ai', aiRouter);
 // ARCH-01: extracted routers (system: health/sync/stats/sitemap; search: global search)
+// aiRouter is mounted AFTER the auth middleware is defined (see H2 guard below).
 app.use(systemRouter);
 app.use('/api/search', searchRouter);
 
@@ -539,6 +539,11 @@ const requireSuper = (req:Auth,res:express.Response,next:express.NextFunction) =
   if (!s || s.role !== 'super_admin') return res.status(403).json({ error:'Forbidden' });
   next();
 };
+// H2: /api/ai/index-knowledge mutates the RAG knowledge base (knowledge_sources/
+// knowledge_chunks + one embedding call per chunk). It is an admin tool: require
+// a session and ai.manage (super_admin/admin). /api/ai/chat stays public (rate-limited).
+app.use('/api/ai/index-knowledge', auth, requirePerm('ai.manage'));
+app.use('/api/ai', aiRouter);
 const audit = (userId:number|undefined, action:string, type:string, id?:number) => db.prepare('INSERT INTO audit_log(user_id,action,object_type,object_id) VALUES(?,?,?,?)').run(userId || null, action, type, id || null);
 // Login brute-force guard (SEC-02): shared sliding-window limiter, 10 req / 15 min / IP.
 app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) return res.status(401).json({error:'Invalid credentials'}); const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h'}); audit(user.id,'login','user',user.id); res.cookie('cms_token', token, cookieOpts(req)); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
