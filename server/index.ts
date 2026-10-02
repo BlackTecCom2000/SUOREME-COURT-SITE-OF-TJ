@@ -799,7 +799,32 @@ app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf
 
 // Courts
 app.get('/api/courts', cache(3600), (_req, res) => res.json(db.prepare('SELECT * FROM courts WHERE active=1').all()));
-app.post('/api/admin/courts', auth, requirePerm('courts.manage'), (req:Auth, res) => { if (denyScoped(req,res)) return; const p=z.object({nameRu:z.string().min(2),nameTj:z.string().optional(),nameEn:z.string().optional(),region:z.string(),type:z.string(),address:z.string().optional(),phone:z.string().optional(),lat:z.number().optional(),lng:z.number().optional()}).safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid court', details: p.error}); const x=p.data; const result=db.prepare('INSERT INTO courts(name_ru,name_tj,name_en,region,type,address,phone,lat,lng) VALUES(?,?,?,?,?,?,?,?,?)').run(x.nameRu,x.nameTj||null,x.nameEn||null,x.region,x.type,x.address||null,x.phone||null,x.lat||null,x.lng||null); audit(req.user!.id,'create','court',Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
+const courtBody = z.object({nameRu:z.string().min(2),nameTj:z.string().optional(),nameEn:z.string().optional(),region:z.string(),type:z.string(),address:z.string().optional(),phone:z.string().optional(),website:z.string().optional(),lat:z.number().optional(),lng:z.number().optional()});
+// The table has address_ru/tj/en (no `address` column) — the pre-fix INSERT
+// threw a prepare error on every create, and `website` from the form was
+// dropped by the old schema. PATCH is what CourtsManager sends on edit.
+app.post('/api/admin/courts', auth, requirePerm('courts.manage'), (req:Auth, res) => { if (denyScoped(req,res)) return; const p=courtBody.safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid court', details: p.error}); const x=p.data; const result=db.prepare('INSERT INTO courts(name_ru,name_tj,name_en,region,type,address_ru,phone,website,lat,lng) VALUES(?,?,?,?,?,?,?,?,?,?)').run(x.nameRu,x.nameTj||null,x.nameEn||null,x.region,x.type,x.address||null,x.phone||null,x.website||null,x.lat||null,x.lng||null); audit(req.user!.id,'create','court',Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
+const courtPatch = z.object({nameRu:z.string().min(2).optional(),nameTj:z.string().optional(),nameEn:z.string().optional(),region:z.string().optional(),type:z.string().optional(),address:z.string().optional(),phone:z.string().optional(),website:z.string().optional(),lat:z.number().optional(),lng:z.number().optional()});
+app.patch('/api/admin/courts/:id', auth, requirePerm('courts.manage'), (req:Auth, res) => {
+  if (denyScoped(req,res)) return;
+  const row = db.prepare('SELECT id FROM courts WHERE id=?').get(req.params.id) as any;
+  if (!row) return res.status(404).json({error:'Not found'});
+  const p = courtPatch.safeParse(req.body);
+  if (!p.success) return res.status(400).json({error:'Invalid court', details: p.error});
+  const map: Record<string,string> = { nameRu:'name_ru', nameTj:'name_tj', nameEn:'name_en', region:'region', type:'type', address:'address_ru', phone:'phone', website:'website', lat:'lat', lng:'lng' };
+  const sets: string[] = []; const vals: any[] = [];
+  for (const [k,col] of Object.entries(map)) { const v = (p.data as any)[k]; if (v !== undefined) { sets.push(`${col}=?`); vals.push(v); } }
+  if (sets.length) { vals.push(req.params.id); db.prepare(`UPDATE courts SET ${sets.join(',')} WHERE id=?`).run(...vals); }
+  audit(req.user!.id,'update','court',Number(req.params.id));
+  res.json({ok:true});
+});
+app.delete('/api/admin/courts/:id', auth, requirePerm('courts.manage'), (req:Auth, res) => {
+  if (denyScoped(req,res)) return;
+  const r = db.prepare('DELETE FROM courts WHERE id=?').run(req.params.id);
+  if (!r.changes) return res.status(404).json({error:'Not found'});
+  audit(req.user!.id,'delete','court',Number(req.params.id));
+  res.sendStatus(204);
+});
 
 // Judicial Acts
 // v2.3.0: filters q (title/number/case), category, doc_type, from/to (act_date ISO).

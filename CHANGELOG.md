@@ -9,7 +9,13 @@ UTF-8 file with `Get-Content`, which assumes the system ANSI codepage
 for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
-
+
+## v2.18.0 - Courts admin CRUD and self-hosted fonts
+- Released: 2026-10-02 13:58
+- Previous: v2.17.0
+- QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
+  `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
+  `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
 ## v2.17.0 - Unified Glassmorphism Theme System
 - Released: 2026-10-01 17:16
 - Previous: v2.16.0

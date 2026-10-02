@@ -6,18 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Верховный суд Республики Таджикистан — Судебная власть</title>
     <meta name="description" content="Официальный портал Верховного суда Республики Таджикистан. Осуществление судебной власти, защита прав и свобод человека, электронное правосудие." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
-      Inter for UI/body (full Cyrillic), Cormorant Garamond for display headings.
-      The previous "Flexo Soft Medium" came from a third-party font CDN and was
-      applied to body copy; it has been removed. `display=swap` is already set
-      in the URL, and the local fallbacks in tokens.css cover an offline load.
+      Fonts are self-hosted via @fontsource (Inter 300-700, Cormorant Garamond
+      400/600/700 + italics incl. Cyrillic) and imported by entry-client, so
+      they bundle into /assets and work offline. The previous Google Fonts
+      CDN link hung on networks that cannot reach fonts.gstatic.com, blocking
+      first paint; the preconnects went with it. Local fallbacks in tokens.css
+      still cover a slow font load.
     -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
     <!-- Sets the saved theme before first paint. Served from /theme-bootstrap.js
          rather than inline because production CSP is script-src 'self' with no
          unsafe-inline, which silently blocked the inline version. Synchronous and

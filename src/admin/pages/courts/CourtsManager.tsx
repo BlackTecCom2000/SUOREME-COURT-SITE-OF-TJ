@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, MapPin, Phone, Globe, Edit } from 'lucide-react';
+import { Plus, Search, MapPin, Phone, Globe, Edit, Trash2 } from 'lucide-react';
 import { AdminButton } from '../../components/ui/AdminButton';
 import { AdminBadge } from '../../components/ui/AdminBadge';
 import { AdminTable, AdminTableColumn } from '../../components/ui/AdminTable';
@@ -141,6 +141,16 @@ export const CourtsManager: React.FC = () => {
     }
   };
 
+  const handleDeleteCourt = async (court: CourtRecord) => {
+    if (!window.confirm(`Удалить суд «${court.nameRu}»? Действие необратимо.`)) return;
+    try {
+      const res = await apiFetch(`/api/admin/courts/${court.id}`, { method: 'DELETE' });
+      if (res.ok) fetchCourts();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const filteredCourts = courts.filter((c) => {
     const matchesSearch =
       c.nameRu.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -214,6 +224,13 @@ export const CourtsManager: React.FC = () => {
             title="Редактировать"
           >
             <Edit size={15} />
+          </button>
+          <button
+            onClick={() => handleDeleteCourt(row)}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-colors"
+            title="Удалить"
+          >
+            <Trash2 size={15} />
           </button>
         </div>
       ),

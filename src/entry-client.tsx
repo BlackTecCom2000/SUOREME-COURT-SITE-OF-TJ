@@ -3,6 +3,21 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { DeviceCapabilityProvider } from './context/DeviceCapabilityContext';
 import { ThemeProvider } from './theme';
+/* Self-hosted fonts (were Google Fonts CDN). The CDN is unreachable from
+   some networks — requests to fonts.googleapis.com/gstatic.com hang until
+   timeout and block first paint. Fontsource ships the exact Inter and
+   Cormorant Garamond weights this design uses (incl. Cyrillic subsets),
+   bundled by Vite, so the page renders fully offline. */
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/cormorant-garamond/700.css';
+import '@fontsource/cormorant-garamond/400-italic.css';
+import '@fontsource/cormorant-garamond/600-italic.css';
 import './styles/tokens.css';
 import './index.css';
 
