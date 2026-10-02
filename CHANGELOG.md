@@ -10,6 +10,20 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.1 - Security H1: remove hardcoded admin credentials
+- Released: 2026-10-02 (pending tag)
+- Previous: v2.18.0
+- `AdminLogin.tsx` no longer prefills the demo email/password — the old
+  default password was shipping in the public JS bundle (H1 of the
+  white-box security audit). Both fields start empty.
+- Local seed password rotated to a 24-char random value (kept in `.env`
+  only; `.env` is git-ignored). The live `users` row was re-hashed; the
+  old default password no longer authenticates (401).
+- QA: `tsc 0`, `build:client`, `build:server`, smoke 200 on `/` `/admin`
+  `/api/health` `/api/design-settings` `/api/news` `/api/search`
+  `/api/site-sections` `/api/marquee-config` `/api/useful-sites`
+  `/sitemap.xml` `/robots.txt`, login 200 (new) / 401 (old),
+  `grep` for the old password = 0 in `dist/` and in the source tree.
 ## v2.18.0 - Courts admin CRUD and self-hosted fonts
 - Released: 2026-10-02 13:58
 - Previous: v2.17.0
