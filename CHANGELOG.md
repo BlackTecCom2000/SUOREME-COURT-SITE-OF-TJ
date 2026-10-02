@@ -10,6 +10,34 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.4 - Security M2: sanitize stored HTML at every write
+- Released: 2026-10-02 (pending tag)
+- Previous: v2.18.3
+- Rich HTML stored in `shelf_books.content*` (public `/library` reader,
+  `dangerouslySetInnerHTML`) and `content.body_*` (admin previews) is now
+  sanitized **at write time** with a strict allowlist
+  (`server/utils/sanitizeHtml.ts`, `sanitize-html`):
+  - no script/style/iframe/form/svg/math and no event-handler attributes —
+    stored XSS is neutralized even when CSP is off (dev mode /
+    `CMS_CSP_MODE=off`), not only when `script-src 'self'` blocks it;
+  - no `javascript:`/`data:` on href/src; no class/style attributes
+    (blocks overlay/UI-redress markup inside the reader);
+  - allowed: p/headings/lists/inline emphasis/blockquote/a/table/img/pre.
+- Sanitized on: shelf-book create + PATCH, shelf-book version **rollback**
+  (snapshots may predate this release), sync/import from allowlisted
+  sources, content create + PATCH (`setRich` for body_*), content version
+  rollback. Existing rows verified tag-free and harmless (no migration
+  needed).
+- QA: `tsc 0`, `build:client`, `build:server`, smoke 200 on `/` `/admin`
+  `/api/health` `/api/design-settings` `/api/news` `/api/search`
+  `/api/site-sections` `/api/marquee-config` `/api/useful-sites`
+  `/sitemap.xml` `/robots.txt`. Live PoC: create/PATCH shelf-book with
+  `<script>`/`onerror`/`javascript:`/`<iframe>`/`<svg onload>`/`<form>`
+  payload → stored content keeps `<p>/<h2>/<strong>/<a href="https:">`
+  and drops every vector (verified via public GET); dirty snapshot
+  inserted directly into `shelf_book_versions` → rollback → stored
+  sanitized; content `body_ru` sanitized on create and PATCH; all test
+  artifacts removed from the DB.
 ## v2.18.3 - Security M1: strict public contract for /api/ai/chat
 - Released: 2026-10-02 (pending tag)
 - Previous: v2.18.2

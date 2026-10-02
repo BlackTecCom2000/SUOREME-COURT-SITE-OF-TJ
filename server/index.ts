@@ -17,6 +17,10 @@ import { requirePerm, hasPerm, permissionsFor, permForContentStatus } from './mi
 import { searchRouter } from './routes/search';
 import { systemRouter } from './routes/system';
 import { cache } from './utils/cache';
+import { sanitizeRich, sanitizeRichOrNull } from './utils/sanitizeHtml';
+
+// M2: columns holding rich HTML rendered via dangerouslySetInnerHTML.
+const RICH_CONTENT_COLS = new Set(['content', 'content_ru', 'content_tj', 'content_en']);
 
 const root = process.cwd(); const dataDir = path.join(root, 'data'); fs.mkdirSync(dataDir, { recursive: true });
 // Strip imported legislation HTML down to readable plain text for the e-library.
@@ -737,7 +741,7 @@ app.post('/api/admin/content', auth, requirePerm('content.create'), (req:Auth,re
   if ((status==='approved' || status==='archived') && !hasPerm(role,'content.approve')) return res.status(403).json({error:'Forbidden: approval requires approve permission'});
   const region = sc ? sc.region : (x.region || null);
   const pubAt = status==='published' ? (normDateTime(x.published_at) || new Date().toISOString()) : (status==='scheduled' ? (normDateTime(x.scheduled_at) || normDateTime(x.published_at)) : null);
-  const result=db.prepare('INSERT INTO content(type,slug,title_ru,title_tj,title_en,body_ru,body_tj,body_en,excerpt_ru,excerpt_tj,excerpt_en,region,ai_meta,status,published_at,author_id,published_by) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.type,x.slug,titleRu,pick('titleTj','title_tj'),pick('titleEn','title_en'),pick('bodyRu','body_ru'),pick('bodyTj','body_tj'),pick('bodyEn','body_en'),pick('excerptRu','excerpt_ru'),pick('excerptTj','excerpt_tj'),pick('excerptEn','excerpt_en'),region,x.ai_meta ? JSON.stringify(x.ai_meta) : null,status,pubAt,req.user!.id,status==='published' ? req.user!.id : null); audit(req.user!.id,'create',x.type,Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
+  const result=db.prepare('INSERT INTO content(type,slug,title_ru,title_tj,title_en,body_ru,body_tj,body_en,excerpt_ru,excerpt_tj,excerpt_en,region,ai_meta,status,published_at,author_id,published_by) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.type,x.slug,titleRu,pick('titleTj','title_tj'),pick('titleEn','title_en'),sanitizeRichOrNull(pick('bodyRu','body_ru')),sanitizeRichOrNull(pick('bodyTj','body_tj')),sanitizeRichOrNull(pick('bodyEn','body_en')),pick('excerptRu','excerpt_ru'),pick('excerptTj','excerpt_tj'),pick('excerptEn','excerpt_en'),region,x.ai_meta ? JSON.stringify(x.ai_meta) : null,status,pubAt,req.user!.id,status==='published' ? req.user!.id : null); audit(req.user!.id,'create',x.type,Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
 app.delete('/api/admin/content/:id', auth, requirePerm('content.delete'), (req:Auth,res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); if(sc){ const row = db.prepare('SELECT region FROM content WHERE id=?').get(req.params.id) as any; if(!row || row.region !== sc.region)return res.status(403).json({error:'Forbidden'}); } db.prepare('UPDATE content SET deleted_at=CURRENT_TIMESTAMP WHERE id=?').run(req.params.id); audit(req.user!.id,'delete','content',Number(req.params.id)); res.sendStatus(204); });
 app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); const row = db.prepare('SELECT * FROM content WHERE id=? AND deleted_at IS NULL').get(req.params.id) as any; if(!row)return res.status(404).json({error:'Not found'}); if(sc && row.region !== sc.region)return res.status(403).json({error:'Forbidden'});
   const b = req.body || {};
@@ -747,11 +751,13 @@ app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf
   const hasEdit = hasPerm(role,'content.edit');
   const hasReview = hasPerm(role,'content.review');
   const setCol = (col:string, ...ks:string[]) => { for (const k of ks) { if (x[k] !== undefined) { sets.push(col + '=?'); vals.push(x[k] === '' ? null : x[k]); break; } } };
+  // M2: body_* fields are rendered with dangerouslySetInnerHTML → sanitize at write.
+  const setRich = (col:string, ...ks:string[]) => { for (const k of ks) { if (x[k] !== undefined) { sets.push(col + '=?'); vals.push(x[k] === '' ? null : sanitizeRich(x[k])); break; } } };
   // CMS-01: body edits require content.edit (reviewers act on status only).
   const fieldTouched = ['slug','titleRu','title_ru','titleTj','title_tj','titleEn','title_en','bodyRu','body_ru','bodyTj','body_tj','bodyEn','body_en','excerptRu','excerpt_ru','excerptTj','excerpt_tj','excerptEn','excerpt_en','ai_meta','published_at','scheduled_at'].some((k) => x[k] !== undefined);
   if (fieldTouched && !hasEdit) return res.status(403).json({error:'Forbidden: editing requires edit permission'});
   setCol('slug','slug'); setCol('title_ru','titleRu','title_ru'); setCol('title_tj','titleTj','title_tj'); setCol('title_en','titleEn','title_en');
-  setCol('body_ru','bodyRu','body_ru'); setCol('body_tj','bodyTj','body_tj'); setCol('body_en','bodyEn','body_en');
+  setRich('body_ru','bodyRu','body_ru'); setRich('body_tj','bodyTj','body_tj'); setRich('body_en','bodyEn','body_en');
   setCol('excerpt_ru','excerptRu','excerpt_ru'); setCol('excerpt_tj','excerptTj','excerpt_tj'); setCol('excerpt_en','excerptEn','excerpt_en');
   if (x.ai_meta && typeof x.ai_meta === 'object') {
     const curRow = db.prepare('SELECT ai_meta FROM content WHERE id=?').get(req.params.id) as any;
@@ -956,6 +962,8 @@ app.post('/api/admin/shelf-books', auth, requirePerm('library.manage'), (req:Aut
     else if (x.doc_lang === 'ru') cr = legacy;
     else cr = legacy; // default ru
   }
+  // M2: sanitize rich HTML at write time (rendered with dangerouslySetInnerHTML).
+  cr = sanitizeRichOrNull(cr); ct = sanitizeRichOrNull(ct); ce = sanitizeRichOrNull(ce);
   const fallbackContent = cr || ct || ce || legacy || null;
   let urlRu = x.url_ru ?? null, urlTj = x.url_tj ?? null, urlEn = x.url_en ?? null;
   const legacyUrl = x.url ?? null;
@@ -1005,7 +1013,11 @@ app.patch('/api/admin/shelf-books/:id', auth, requirePerm('library.manage'), (re
     } catch {}
   }
   for (const col of ['title_ru','title_tj','title_en','url','url_ru','url_tj','url_en','badge','kind','content','content_ru','content_tj','content_en','doc_lang','doc_number','act_date','external_id','source_url','cover_text','cover_emblem','cover_bg','cover_image','cover_theme','sort_order','is_visible']) {
-    if (x[col] !== undefined) { sets.push(col + '=?'); vals.push(x[col] === '' ? null : x[col]); }
+    if (x[col] !== undefined) {
+      let v = x[col] === '' ? null : x[col];
+      if (v !== null && RICH_CONTENT_COLS.has(col) && typeof v === 'string') v = sanitizeRich(v); // M2
+      sets.push(col + '=?'); vals.push(v);
+    }
   }
   if (x.published_at !== undefined) { sets.push('published_at=?'); vals.push(normDateTime(x.published_at)); }
   if (sets.length === 0) return res.status(400).json({error:'Nothing to update'});
@@ -1026,8 +1038,9 @@ app.post('/api/admin/shelf-books/:id/rollback', auth, requirePerm('library.manag
   if (!v) return res.status(404).json({ error: 'Version not found' });
   const snap = JSON.parse(v.snapshot_data);
   const cols = ['title_ru','title_tj','title_en','url','url_ru','url_tj','url_en','badge','kind','content','content_ru','content_tj','content_en','doc_lang','doc_number','act_date','published_at','external_id','source_url','cover_text','cover_emblem','cover_bg','cover_image','cover_theme','sort_order','is_visible'];
+  // M2: snapshots may predate write-time sanitization — sanitize on restore.
   db.prepare(`UPDATE shelf_books SET ${cols.map((c) => c + '=?').join(',')}, updated_at=CURRENT_TIMESTAMP WHERE id=?`)
-    .run(...cols.map((c) => snap[c] ?? null), req.params.id);
+    .run(...cols.map((c) => { const v = snap[c] ?? null; return (v !== null && RICH_CONTENT_COLS.has(c) && typeof v === 'string') ? sanitizeRich(v) : v; }), req.params.id);
   audit(req.user!.id,'rollback','shelf_book',Number(req.params.id));
   res.json({ success: true });
 });
@@ -1045,7 +1058,7 @@ app.post('/api/admin/shelf-books/:id/sync', auth, requirePerm('library.manage'),
   }
   try {
     const html = await fetchCapped(row.source_url, { timeoutMs: 90000, maxBytes: 32 * 1024 * 1024 });
-    const text = cleanImportedText(html.toString('utf8'));
+    const text = sanitizeRich(cleanImportedText(html.toString('utf8')));
     if (text.length < 500) {
       db.prepare("UPDATE shelf_books SET sync_status='short', synced_at=CURRENT_TIMESTAMP WHERE id=?").run(req.params.id);
       return res.status(422).json({ error: 'Document text too short or unreachable' });
@@ -1114,7 +1127,7 @@ app.post('/api/admin/library/import', auth, requirePerm('library.manage'), async
   try {
     const url = parsed.toString();
     const html = await fetchCapped(url, { timeoutMs: 90000, maxBytes: 32 * 1024 * 1024 });
-    const text = cleanImportedText(html.toString('utf8'));
+    const text = sanitizeRich(cleanImportedText(html.toString('utf8')));
     if (text.length < 500) return res.status(422).json({ error: 'Document text too short or unreachable', gotBytes: html.length, gotChars: text.length });
     // Fill legacy content + all lang variants so language switch works even if doc was imported before multilingual support
     db.prepare('UPDATE shelf_books SET content=?, content_ru=COALESCE(content_ru, ?), content_tj=COALESCE(content_tj, ?), content_en=COALESCE(content_en, ?), source_url=?, updated_at=CURRENT_TIMESTAMP WHERE id=?').run(text, text, text, text, url, p.data.bookId);
@@ -1371,7 +1384,7 @@ app.post('/api/admin/content/:id/rollback', auth, (req:Auth, res) => {
   if (needPublish && !hasPerm(role, 'content.publish')) return res.status(403).json({error:'Forbidden: rollback to published version requires publish permission'});
   if (!needPublish && !hasPerm(role, 'content.edit')) return res.status(403).json({error:'Forbidden'});
   db.prepare('UPDATE content SET title_ru=?, title_tj=?, title_en=?, body_ru=?, body_tj=?, body_en=?, excerpt_ru=?, excerpt_tj=?, excerpt_en=?, cover_image_id=?, status=?, updated_at=CURRENT_TIMESTAMP WHERE id=?')
-    .run(snap.title_ru, snap.title_tj, snap.title_en, snap.body_ru, snap.body_tj, snap.body_en, snap.excerpt_ru, snap.excerpt_tj, snap.excerpt_en, snap.cover_image_id, snap.status, req.params.id);
+    .run(snap.title_ru, snap.title_tj, snap.title_en, sanitizeRichOrNull(snap.body_ru), sanitizeRichOrNull(snap.body_tj), sanitizeRichOrNull(snap.body_en), snap.excerpt_ru, snap.excerpt_tj, snap.excerpt_en, snap.cover_image_id, snap.status, req.params.id);
   audit(req.user!.id, 'rollback', 'content', Number(req.params.id));
   res.json({success: true});
 });
