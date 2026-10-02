@@ -10,6 +10,32 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.8 - Security M5: dependency updates — 6 advisories to 0 (multer, tiptap, qs, file-type)
+- Released: 2026-10-02
+- Previous: v2.18.7
+- `pnpm audit --prod`: 6 → **0** vulnerabilities.
+  - `multer` `2.0.0-rc.4` → `2.4.0`: fixes 5 advisories (3 high: crafted
+    multipart field-name DoS, fd leak on aborted uploads, oversized array
+    index; moderate: orphaned disk writes; low: fileFilter race) and drops
+    the vulnerable `stream-file-type > file-type@16` chain entirely.
+  - `@tiptap/*` `3.30.2` → `3.31.4`: high quadratic ReDoS in Markdown
+    attribute parsing + `mergeAttributes()` `__proto__` injection.
+  - `qs` `6.15.3` → `6.16.0` (via `express > body-parser`): 2 moderate
+    DoS advisories.
+- Multer 2.4 no longer provides the rc.4-only `detectedMimeType` /
+  `originalName` / stream fields, so both upload handlers
+  (`/api/admin/media`, `/api/admin/library/upload`) were migrated to the
+  standard multer API (`f.buffer`, `f.originalname`) and content sniffing
+  was **restored** with direct `file-type@21.3.1` (the patched line) —
+  magic-byte detection still gates uploads server-side.
+- Removed the dead `pnpm` field from `package.json` (pnpm 11 ignores it;
+  `allowBuilds` already lives in `pnpm-workspace.yaml`) — clears the
+  warning printed by every pnpm command.
+- QA: `tsc 0`, builds 0, smoke 11/11, `pnpm audit --prod` = 0. Live
+  upload PoC with a real admin token: `.txt` library → 201, real PNG →
+  201 library + 201 media, text disguised as `image/png` → **415**
+  (magic sniff rejects client-declared mime). Test artifacts cleaned.
+
 ## v2.18.7 - Security M4: opt-in `trust proxy` for correct client IPs behind a reverse proxy
 - Released: 2026-10-02
 - Previous: v2.18.6

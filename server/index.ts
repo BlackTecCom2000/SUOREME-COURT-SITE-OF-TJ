@@ -412,6 +412,9 @@ const seedContentData = () => {
 seedContentData();
 
 import multer from 'multer';
+// M5: multer ≥2.2 no longer sniffs magic bytes (stream-file-type removed);
+// file-type ≥21.3.1 (patched) restores server-side content detection.
+import { fileTypeFromBuffer } from 'file-type';
 
 const uploadDir = path.join(dataDir, 'uploads'); fs.mkdirSync(uploadDir, { recursive: true });
 const upload = multer({
@@ -595,28 +598,28 @@ app.patch('/api/admin/users/:id', auth, requirePerm('users.manage'), (req:Auth,r
 // Media endpoints (multer 2.x: file arrives as a stream + sniffed mime)
 const ALLOWED_UPLOAD_MIME = /^(image\/(png|jpeg|webp|gif)|application\/pdf|video\/(mp4|webm)|audio\/(mpeg|mp4))$/;
 const ALLOWED_UPLOAD_EXT = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.pdf', '.mp4', '.webm', '.mp3'];
-app.post('/api/admin/media', auth, requirePerm('media.manage'), upload.single('file'), (req:Auth, res) => {
+app.post('/api/admin/media', auth, requirePerm('media.manage'), upload.single('file'), async (req:Auth, res) => {
   if (denyScoped(req,res)) return;
   const f = (req as any).file;
-  if (!f || !f.stream) return res.status(400).json({ error: 'No file uploaded' });
-  const chunks: Buffer[] = [];
-  f.stream.on('data', (c: any) => chunks.push(Buffer.from(c)));
-  f.stream.on('error', () => { if (!res.headersSent) res.status(400).json({ error: 'Upload failed' }); });
-  f.stream.on('end', () => {
-    if (res.headersSent) return;
-    const buf = Buffer.concat(chunks);
-    const detected = f.detectedMimeType ? String(f.detectedMimeType) : '';
-    const ext = String(f.detectedFileExtension || path.extname(f.originalName || '') || '').toLowerCase();
+  if (!f || !Buffer.isBuffer(f.buffer)) return res.status(400).json({ error: 'No file uploaded' });
+  try {
+    const buf = f.buffer;
+    const sniff = await fileTypeFromBuffer(buf);
+    const detected = sniff ? String(sniff.mime) : '';
+    const origName = String(f.originalname || 'file');
+    const ext = String((sniff ? '.' + sniff.ext : path.extname(origName)) || '').toLowerCase();
     if (!ALLOWED_UPLOAD_MIME.test(detected) || !ALLOWED_UPLOAD_EXT.includes(ext)) {
       return res.status(415).json({ error: 'Unsupported file type' });
     }
-    const stem = (path.basename(f.originalName || 'file', ext).replace(/[^a-zA-Z0-9._-]+/g, '_').slice(-100) || 'file');
+    const stem = (path.basename(origName, ext).replace(/[^a-zA-Z0-9._-]+/g, '_').slice(-100) || 'file');
     const filename = `${Date.now()}-${stem}${ext}`;
     fs.writeFileSync(path.join(uploadDir, filename), buf);
-    const result = db.prepare('INSERT INTO media (filename, original_name, mime_type, size, uploaded_by) VALUES (?, ?, ?, ?, ?)').run(filename, f.originalName, detected, buf.length, req.user!.id);
+    const result = db.prepare('INSERT INTO media (filename, original_name, mime_type, size, uploaded_by) VALUES (?, ?, ?, ?, ?)').run(filename, origName, detected, buf.length, req.user!.id);
     audit(req.user!.id, 'upload', 'media', Number(result.lastInsertRowid));
     res.status(201).json({ id: result.lastInsertRowid, filename, url: `/uploads/${filename}` });
-  });
+  } catch (e:any) {
+    if (!res.headersSent) res.status(400).json({ error: 'Upload failed' });
+  }
 });
 app.get('/api/admin/media', auth, (req:Auth, res) => { if (denyScoped(req,res)) return; res.json(db.prepare('SELECT * FROM media ORDER BY created_at DESC').all()); });
 
@@ -1154,19 +1157,17 @@ fs.mkdirSync(libraryDir, { recursive: true });
 app.use('/library-files', express.static(libraryDir, { setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff') }));
 const LIBRARY_UPLOAD_MIME = /^(application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document|text\/plain|text\/markdown|image\/(png|jpeg|webp|gif))$/;
 const LIBRARY_UPLOAD_EXT = ['.pdf', '.doc', '.docx', '.txt', '.md', '.png', '.jpg', '.jpeg', '.webp', '.gif'];
-app.post('/api/admin/library/upload', auth, requirePerm('library.manage'), libraryUpload.single('file'), (req:Auth, res) => {
+app.post('/api/admin/library/upload', auth, requirePerm('library.manage'), libraryUpload.single('file'), async (req:Auth, res) => {
   if (denyScoped(req,res)) return;
 
   const f = (req as any).file;
-  if (!f || !f.stream) return res.status(400).json({ error: 'No file uploaded' });
-  const chunks: Buffer[] = [];
-  f.stream.on('data', (c: any) => chunks.push(Buffer.from(c)));
-  f.stream.on('error', () => { if (!res.headersSent) res.status(400).json({ error: 'Upload failed' }); });
-  f.stream.on('end', () => {
-    if (res.headersSent) return;
-    const buf = Buffer.concat(chunks);
-    const detected = f.detectedMimeType ? String(f.detectedMimeType) : '';
-    const ext = String(f.detectedFileExtension || path.extname(f.originalName || '') || '').toLowerCase();
+  if (!f || !Buffer.isBuffer(f.buffer)) return res.status(400).json({ error: 'No file uploaded' });
+  try {
+    const buf = f.buffer;
+    const sniff = await fileTypeFromBuffer(buf);
+    const detected = sniff ? String(sniff.mime) : '';
+    const origName = String(f.originalname || 'file');
+    const ext = String((sniff ? '.' + sniff.ext : path.extname(origName)) || '').toLowerCase();
     const kind = ['constitution', 'code', 'law', 'document', 'quote', 'other', 'covers'].includes(String(req.query.kind || '')) ? String(req.query.kind) : 'document';
     const isTextExt = ext === '.txt' || ext === '.md';
     const mimeOk = LIBRARY_UPLOAD_MIME.test(detected) || (isTextExt && (!detected || detected.startsWith('text/')));
@@ -1175,12 +1176,14 @@ app.post('/api/admin/library/upload', auth, requirePerm('library.manage'), libra
     }
     const dir = path.join(libraryDir, kind);
     fs.mkdirSync(dir, { recursive: true });
-    const stem = (path.basename(f.originalName || 'file', ext).replace(/[^a-zA-Z0-9._-]+/g, '_').slice(-80) || 'file');
+    const stem = (path.basename(origName, ext).replace(/[^a-zA-Z0-9._-]+/g, '_').slice(-80) || 'file');
     const filename = `${Date.now()}-${stem}${ext}`;
     fs.writeFileSync(path.join(dir, filename), buf);
     audit(req.user!.id, 'upload', 'library_file', undefined);
     res.status(201).json({ url: `/library-files/${kind}/${filename}`, size: buf.length });
-  });
+  } catch (e:any) {
+    if (!res.headersSent) res.status(400).json({ error: 'Upload failed' });
+  }
 });
 app.use('/api/admin/library/upload', multerErrors);
 app.use('/api/admin/media', multerErrors);
