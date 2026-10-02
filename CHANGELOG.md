@@ -10,6 +10,29 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.6 - Security M3: SSRF-proof redirects in server-side fetch
+- Released: 2026-10-02
+- Previous: v2.18.5
+- `fetchCapped` used `redirect: 'follow'` with a pre-fetch host check only
+  on the **initial** URL — an allowlisted host (`sud.tj`, `adliya.tj`, …)
+  answering `302 http://169.254.169.254/…` or `http://127.0.0.1:8787/…`
+  would have been followed by the server (SSRF; `/api/library/pdf` is
+  unauthenticated, so unauthenticated SSRF via an open redirect on any
+  allowlisted domain).
+- Fix (`server/utils/fetch.ts`): redirects are no longer auto-followed.
+  Every hop (max 5) is re-validated by `assertSafeTarget` **before** the
+  request is sent: protocol http/https, hostname ∈ caller allowlist, and
+  DNS resolution public-only (`isPrivateIp` blocks loopback, RFC1918,
+  link-local/metadata 169.254/16, CGNAT, multicast/reserved, IPv6
+  ULA/link-local/mapped). `allowHosts` is now a required option; all 3
+  call sites pass `LIB_PDF_HOSTS`.
+- QA: `tsc 0`, builds 0, smoke 11/11, unit matrix (16 private + 4 public
+  IPs, allowlist/protocol/DNS/suffix-spoof rejects) PASS; e2e negative —
+  direct loopback fetch via `fetchCapped` → `Private address`; live PoC —
+  `/api/library/pdf` returns 403 for loopback/metadata/evil-host targets,
+  400 for `javascript:`, and **200 via a real 301** (`http://sud.tj/` →
+  `https://sud.tj/`, 84 KB) proving manual redirect following works.
+
 ## v2.18.5 - Release metadata fix: package.json version restored (v2.18.4 tag shipped stale)
 - Released: 2026-10-02
 - Previous: v2.18.4

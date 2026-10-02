@@ -1057,7 +1057,7 @@ app.post('/api/admin/shelf-books/:id/sync', auth, requirePerm('library.manage'),
     return res.status(403).json({ error: 'Host not allowed' });
   }
   try {
-    const html = await fetchCapped(row.source_url, { timeoutMs: 90000, maxBytes: 32 * 1024 * 1024 });
+    const html = await fetchCapped(row.source_url, { allowHosts: LIB_PDF_HOSTS, timeoutMs: 90000, maxBytes: 32 * 1024 * 1024 });
     const text = sanitizeRich(cleanImportedText(html.toString('utf8')));
     if (text.length < 500) {
       db.prepare("UPDATE shelf_books SET sync_status='short', synced_at=CURRENT_TIMESTAMP WHERE id=?").run(req.params.id);
@@ -1100,7 +1100,7 @@ app.get('/api/library/pdf', async (req, res) => {
   if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') return res.status(400).json({ error: 'Bad url' });
   if (!LIB_PDF_HOSTS.includes(parsed.hostname.toLowerCase())) return res.status(403).json({ error: 'Host not allowed' });
   try {
-    const data = await fetchCapped(u, { timeoutMs: 90000, maxBytes: 50 * 1024 * 1024 });
+    const data = await fetchCapped(u, { allowHosts: LIB_PDF_HOSTS, timeoutMs: 90000, maxBytes: 50 * 1024 * 1024 });
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Cache-Control', 'public, max-age=86400');
     res.send(data);
@@ -1126,7 +1126,7 @@ app.post('/api/admin/library/import', auth, requirePerm('library.manage'), async
   }
   try {
     const url = parsed.toString();
-    const html = await fetchCapped(url, { timeoutMs: 90000, maxBytes: 32 * 1024 * 1024 });
+    const html = await fetchCapped(url, { allowHosts: LIB_PDF_HOSTS, timeoutMs: 90000, maxBytes: 32 * 1024 * 1024 });
     const text = sanitizeRich(cleanImportedText(html.toString('utf8')));
     if (text.length < 500) return res.status(422).json({ error: 'Document text too short or unreachable', gotBytes: html.length, gotChars: text.length });
     // Fill legacy content + all lang variants so language switch works even if doc was imported before multilingual support
