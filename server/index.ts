@@ -434,7 +434,17 @@ if (process.env.CMS_SEED_ADMIN_EMAIL && process.env.CMS_SEED_ADMIN_PASSWORD && !
   db.prepare('INSERT INTO users(email,password_hash,name,role) VALUES(?,?,?,?)').run(process.env.CMS_SEED_ADMIN_EMAIL, bcrypt.hashSync(process.env.CMS_SEED_ADMIN_PASSWORD, 12), 'System Administrator', 'super_admin');
 }
 const CMS_ORIGINS = [process.env.CMS_ORIGIN || 'http://127.0.0.1:5173', 'http://localhost:5173', 'http://127.0.0.1:5173'];
-const app = express(); app.use(cors({ origin: CMS_ORIGINS, credentials: true })); app.use(express.json({ limit: '8mb' }));
+const app = express();
+// M4: opt-in trust proxy. Set TRUST_PROXY when running behind nginx/a load
+// balancer (number of hops e.g. "1", or "loopback"/"uniquelocal"/IP list)
+// so req.ip, rate limits and audit logs see the real client instead of the
+// proxy's address. Default is OFF: enabling it without a real proxy in
+// front would let clients spoof X-Forwarded-For and bypass rate limits.
+const trustProxyCfg = (process.env.TRUST_PROXY ?? '').trim();
+if (trustProxyCfg && !/^(0|false|off|no)$/i.test(trustProxyCfg)) {
+  app.set('trust proxy', /^\d+$/.test(trustProxyCfg) ? Number(trustProxyCfg) : trustProxyCfg);
+}
+app.use(cors({ origin: CMS_ORIGINS, credentials: true })); app.use(express.json({ limit: '8mb' }));
 // SEC-05: cookie transport helpers (no extra deps).
 const parseCookies = (req: express.Request): Record<string, string> => {
   const out: Record<string, string> = {};

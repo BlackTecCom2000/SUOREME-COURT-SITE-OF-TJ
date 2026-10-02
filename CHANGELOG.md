@@ -10,6 +10,27 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.7 - Security M4: opt-in `trust proxy` for correct client IPs behind a reverse proxy
+- Released: 2026-10-02
+- Previous: v2.18.6
+- Express had no `trust proxy` setting: behind nginx/LB every request
+  shares the proxy's socket address, so rate limiters (`login`,
+  `appeals`, `questionnaire`, AI chat) and `audit.user_ip` keyed on the
+  wrong IP — one external client could exhaust a shared limiter for
+  everyone.
+- Fix: new `TRUST_PROXY` env (documented in `.env.example`, default
+  **off**). Accepts hop count (`1`), subnet name (`loopback`,
+  `uniquelocal`) or IP list; `0/false/off` keeps the current behaviour.
+  Deliberately opt-in: enabling it without a real proxy would let
+  clients spoof `X-Forwarded-For` and bypass rate limits.
+- QA: `tsc 0`, builds 0, smoke 11/11. PoC (split-brain test):
+  default instance — 11 logins with 11 rotating spoofed
+  `X-Forwarded-For` values → `401×10 then 429` (spoof ignored, limiter
+  counts the real IP); instance started with `TRUST_PROXY=1` on :8788 —
+  same 11 requests → `401×11, no 429` (XFF trusted, each spoofed IP is
+  its own rate key). Test instance killed, main limiter reset
+  (single login → 401).
+
 ## v2.18.6 - Security M3: SSRF-proof redirects in server-side fetch
 - Released: 2026-10-02
 - Previous: v2.18.5
