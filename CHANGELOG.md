@@ -10,8 +10,23 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.5 - Release metadata fix: package.json version restored (v2.18.4 tag shipped stale)
+- Released: 2026-10-02
+- Previous: v2.18.4
+- The published `v2.18.4` tag (commit `a5bb567`) contains a stale
+  `package.json` field `version: 2.18.3` — a local tooling glitch during
+  that release reverted the version bump between QA and commit. The M2
+  sanitizer code itself is intact in the tag; only the metadata field is
+  wrong. Published tags are immutable, so the correction ships as a new
+  patch release: `package.json` now reads `2.18.5`.
+- Process fix: the version is verified three times around the commit
+  (after bump, after QA+smoke, and from the committed blob itself before
+  tagging) so a silent revert can never be tagged again.
+- QA: `tsc 0`, `build:client`, `build:server`, smoke 11/11 paths
+  (0 fail).
+
 ## v2.18.4 - Security M2: sanitize stored HTML at every write
-- Released: 2026-10-02 (pending tag)
+- Released: 2026-10-02 (tagged; package.json version field stale — fixed in v2.18.5)
 - Previous: v2.18.3
 - Rich HTML stored in `shelf_books.content*` (public `/library` reader,
   `dangerouslySetInnerHTML`) and `content.body_*` (admin previews) is now
