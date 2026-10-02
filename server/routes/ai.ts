@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { ragPipeline } from '../services/ragPipeline';
 import { ChatMessage } from '../services/aiGateway';
 import { db } from '../index';
@@ -6,13 +7,31 @@ import { aiChatLimiter, indexLimiter } from '../middleware/rateLimit';
 
 const router = Router();
 
+// M1: strict public contract. /chat is intentionally anonymous (citizens' AI
+// assistant), so every field is typed and bounded:
+// - history[].role ∈ {user, assistant} — a client-supplied `system` role would
+//   be prompt injection straight into the model context;
+// - history capped (200 turns in, last 40 used for the prompt) and per-turn
+//   content bounded — the request goes to the LLM, so unbounded arrays are a
+//   cost/DoS vector;
+// - conversationId is opaque and regex-checked before it reaches the DB;
+// - message length bounded (UI textarea shares the same 4000-char limit).
+const chatSchema = z.object({
+  message: z.string().trim().min(1).max(4000),
+  history: z.array(z.object({
+    role: z.enum(['user', 'assistant']),
+    content: z.string().max(8000),
+  })).max(200).default([]),
+  conversationId: z.string().regex(/^[A-Za-z0-9_-]{1,64}$/).optional(),
+});
+
 router.post('/chat', aiChatLimiter(), async (req, res) => {
   try {
-    const { message, history = [], conversationId } = req.body;
-    
-    if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
+    const parsed = chatSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Invalid request' });
     }
+    const { message, conversationId } = parsed.data;
 
     // Set headers for Server-Sent Events (SSE)
     res.setHeader('Content-Type', 'text/event-stream');
@@ -20,11 +39,10 @@ router.post('/chat', aiChatLimiter(), async (req, res) => {
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
 
-    // In a real app, validate history array structure
-    const validHistory: ChatMessage[] = history.map((m: any) => ({
-      role: m.role,
-      content: m.content
-    }));
+    // Roles are already validated; only recent turns go to the model.
+    const validHistory: ChatMessage[] = parsed.data.history
+      .slice(-40)
+      .map((m) => ({ role: m.role, content: m.content }));
 
     const { stream, citations } = await ragPipeline.generateResponse(message, validHistory);
     

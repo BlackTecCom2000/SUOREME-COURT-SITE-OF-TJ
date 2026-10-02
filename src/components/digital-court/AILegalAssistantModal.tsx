@@ -350,6 +350,7 @@ export const AILegalAssistantModal: React.FC<AILegalAssistantModalProps> = ({
                     }}
                     disabled={busy}
                     rows={2}
+                    maxLength={4000}
                     aria-label={
                       language === 'tj' ? 'Савол ба ёвари ҳуқуқӣ' : language === 'en' ? 'Ask the legal assistant' : 'Вопрос юридическому помощнику'
                     }

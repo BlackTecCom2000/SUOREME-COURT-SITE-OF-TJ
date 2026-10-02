@@ -10,6 +10,29 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.3 - Security M1: strict public contract for /api/ai/chat
+- Released: 2026-10-02 (pending tag)
+- Previous: v2.18.2
+- `/api/ai/chat` stays anonymous (citizens' AI assistant) but is now a
+  validated contract instead of a raw LLM proxy (M1 of the white-box
+  security audit):
+  - `history[].role` must be `user|assistant` — a client-supplied
+    `system` role was prompt injection into the model context;
+  - `message` required after trim, ≤4000 chars (the modal textarea got
+    the matching `maxLength`), history ≤200 turns × ≤8000 chars, only
+    the last 40 turns go to the model (bounded token/cost);
+  - `conversationId` must match `^[A-Za-z0-9_-]{1,64}$` before it can
+    reach the DB; server-generated `new-<ts>` ids still round-trip.
+  - invalid payloads → 400 `{"error":"Invalid request"}` before SSE
+    headers are sent.
+- QA: `tsc 0`, `build:client`, `build:server`, smoke 200 on `/` `/admin`
+  `/api/health` `/api/design-settings` `/api/news` `/api/search`
+  `/api/site-sections` `/api/marquee-config` `/api/useful-sites`
+  `/sitemap.xml` `/robots.txt`; live PoC matrix: empty body, system
+  role, path-traversal conversationId, 4500-char message and
+  whitespace-only message all 400; valid request 200 SSE with
+  citations/token/done events; conversation id reuse 200 and rows
+  confirmed in `ai_conversations`/`ai_messages`.
 ## v2.18.2 - Security H2: require auth + RBAC for AI knowledge indexing
 - Released: 2026-10-02 (pending tag)
 - Previous: v2.18.1
