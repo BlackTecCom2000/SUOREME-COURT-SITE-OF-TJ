@@ -10,6 +10,50 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.9 - Security L-pass (L1–L7): perms, rate limits, CSP, HSTS, failed-login audit, dead code
+- Released: 2026-10-02
+- Previous: v2.18.8
+- **L1** — `GET /api/admin/appeals` now requires `appeals.manage`; the
+  handler was returning citizens' full name/phone/email to any logged-in
+  role (viewer, reviewer, editor).
+- **L2** — `GET /api/admin/settings` → `settings.manage`;
+  `GET /api/admin/audit` → `users.manage`; the dashboard's `activity`
+  field (last 8 `audit_log` rows) is now only included when the caller
+  holds `users.manage`, otherwise `[]`.
+- **L3** — `POST /api/duty/history` now behind `dutyLimiter`
+  (30 req / 15 min / IP). It previously wrote to `duty_history` with no
+  auth and no rate limit (DB spam vector). PoC: 30×201 then 429.
+- **L4** — CSP narrowed: `connect-src 'self' ws: wss:` (was `+ https:`)
+  and `img-src 'self' data: blob: https://images.unsplash.com
+  https://www.google.com` (was `https:` — any origin). The only external
+  image hosts actually used are the judicial-modal avatars (unsplash) and
+  the admin useful-sites favicons (google s2/favicons); styles still allow
+  `unsafe-inline` + Google Fonts for Tailwind. A stored-XSS (M2) payload
+  can no longer beacon to arbitrary https origins via `fetch`/img.
+- **L5** — failed logins are now written to `audit_log`
+  (`action='login_failed'`, `object_title` = attempted email,
+  `ip_address` = client IP) with an idempotent ALTER-migration adding
+  `object_title`/`ip_address` columns for older DBs and an extended CREATE
+  statement for fresh ones.   PoC: bad email/password returns 401 and writes the row
+  `{"object_type":"auth","object_title":"brute@example.com","ip_address":"::ffff:127.0.0.1"}`.
+  NOTE: the in-memory rate-limit store is per-process (resets on restart,
+  not shared between instances) — fine for the single-instance deployment;
+  if it is ever scaled out, swap `server/middleware/rateLimit.ts` for a
+  Redis-backed limiter (comment documents this).
+- **L6** — deleted dead routers `server/routes/public.ts` (never imported)
+  and `server/routes/upload.ts` (never mounted; if mounted it would be a
+  path-traversal via `?category=` plus an SVG allowlist hole).
+- **L7** — `CMS_HSTS=1` set in the local `.env`; verified
+  `Strict-Transport-Security: max-age=31536000; includeSubDomains` header
+  is emitted (harmless over plain http, active behind TLS). Default remains
+  env-gated (`CMS_HSTS=0` to disable).
+- QA: `tsc 0`, builds 0, smoke 11/11 (`/` `/admin` `/api/health`
+  `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
+  `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`),
+  PoC matrix: admin JWT passes all four gated GETs (200), bad login → 401
+  + audit row, duty limiter 429 at #31, fake-upload rejection still 415,
+  test artifacts cleaned.
+
 ## v2.18.8 - Security M5: dependency updates — 6 advisories to 0 (multer, tiptap, qs, file-type)
 - Released: 2026-10-02
 - Previous: v2.18.7

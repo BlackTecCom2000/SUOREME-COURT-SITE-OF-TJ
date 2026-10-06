@@ -12,8 +12,8 @@ dns.setDefaultResultOrder('ipv4first');
 import { aiRouter } from './routes/ai';
 import { fetchCapped } from './utils/fetch';
 import { translateText, magicGenerate, magicImprove, magicTransform, detectLang } from './editorTools';
-import { loginLimiter, appealsLimiter, questionnaireLimiter, editorLimiter } from './middleware/rateLimit';
-import { requirePerm, hasPerm, permissionsFor, permForContentStatus } from './middleware/rbac';
+import { loginLimiter, appealsLimiter, questionnaireLimiter, editorLimiter, dutyLimiter } from './middleware/rateLimit';
+import { requirePerm, hasPerm, permissionsFor, permForContentStatus, roleOf } from './middleware/rbac';
 import { searchRouter } from './routes/search';
 import { systemRouter } from './routes/system';
 import { cache } from './utils/cache';
@@ -51,7 +51,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UN
 CREATE TABLE IF NOT EXISTS content (id INTEGER PRIMARY KEY, type TEXT NOT NULL, slug TEXT NOT NULL, title_ru TEXT NOT NULL, title_tj TEXT, title_en TEXT, body_ru TEXT, body_tj TEXT, body_en TEXT, excerpt_ru TEXT, excerpt_tj TEXT, excerpt_en TEXT, cover_image_id INTEGER, status TEXT NOT NULL DEFAULT 'draft', published_at TEXT, author_id INTEGER, deleted_at TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP, UNIQUE(type,slug));
 CREATE TABLE IF NOT EXISTS content_versions (id INTEGER PRIMARY KEY, content_id INTEGER NOT NULL, version_number INTEGER NOT NULL, snapshot_data TEXT NOT NULL, created_by INTEGER, created_at TEXT DEFAULT CURRENT_TIMESTAMP, commit_message TEXT);
 CREATE TABLE IF NOT EXISTS appeals (id INTEGER PRIMARY KEY, full_name TEXT NOT NULL, phone TEXT NOT NULL, email TEXT, subject TEXT, message TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'new', assigned_to INTEGER, internal_note TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
-CREATE TABLE IF NOT EXISTS audit_log (id INTEGER PRIMARY KEY, user_id INTEGER, action TEXT NOT NULL, object_type TEXT NOT NULL, object_id INTEGER, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS audit_log (id INTEGER PRIMARY KEY, user_id INTEGER, action TEXT NOT NULL, object_type TEXT NOT NULL, object_id INTEGER, object_title TEXT, ip_address TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
 CREATE TABLE IF NOT EXISTS courts (id INTEGER PRIMARY KEY, name_ru TEXT NOT NULL, name_tj TEXT, name_en TEXT, short_name_ru TEXT, short_name_tj TEXT, short_name_en TEXT, region TEXT, type TEXT, address_ru TEXT, address_tj TEXT, address_en TEXT, phone TEXT, email TEXT, website TEXT, lat REAL, lng REAL, status TEXT DEFAULT 'normal', active INTEGER DEFAULT 1, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
 CREATE TABLE IF NOT EXISTS region_clusters (id TEXT PRIMARY KEY, name_ru TEXT NOT NULL, name_tj TEXT NOT NULL, name_en TEXT, short_name_ru TEXT NOT NULL, short_name_tj TEXT NOT NULL, short_name_en TEXT, color_hex TEXT, color_glow TEXT, accent_class TEXT, border_class TEXT, text_class TEXT, bg_glow_class TEXT);
 CREATE TABLE IF NOT EXISTS hearings (id INTEGER PRIMARY KEY, court_ru TEXT, court_tj TEXT, court_en TEXT, judge_ru TEXT, judge_tj TEXT, judge_en TEXT, hearing_date TEXT, hearing_time TEXT, category_ru TEXT, category_tj TEXT, category_en TEXT, parties_ru TEXT, parties_tj TEXT, parties_en TEXT, room TEXT);
@@ -95,6 +95,10 @@ try {
     const name = col.split(' ')[0];
     if (!db.prepare("PRAGMA table_info(content)").all().some((c: any) => c.name === name)) db.exec(`ALTER TABLE content ADD COLUMN ${col}`);
   }
+  // L5: audit_log forensic columns (failed-login IP/email)
+  const acols = db.prepare("PRAGMA table_info(audit_log)").all() as any[];
+  if (!acols.some((c) => c.name === 'object_title')) db.exec("ALTER TABLE audit_log ADD COLUMN object_title TEXT");
+  if (!acols.some((c) => c.name === 'ip_address')) db.exec("ALTER TABLE audit_log ADD COLUMN ip_address TEXT");
 } catch { /* already migrated */ }
 
 // Court-site scopes: which region/court names belong to each court site id.
@@ -500,9 +504,9 @@ const CSP_POLICY =
   "default-src 'self'; " +
   "script-src 'self'; " +
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-  "img-src 'self' data: blob: https:; " +
+  "img-src 'self' data: blob: https://images.unsplash.com https://www.google.com; " +
   "font-src 'self' https://fonts.gstatic.com data:; " +
-  "connect-src 'self' ws: wss: https:; " +
+  "connect-src 'self' ws: wss:; " +
   "media-src 'self' blob: data:; " +
   "worker-src 'self' blob:; " +
   "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'";
@@ -563,7 +567,7 @@ app.use('/api/ai/index-knowledge', auth, requirePerm('ai.manage'));
 app.use('/api/ai', aiRouter);
 const audit = (userId:number|undefined, action:string, type:string, id?:number) => db.prepare('INSERT INTO audit_log(user_id,action,object_type,object_id) VALUES(?,?,?,?)').run(userId || null, action, type, id || null);
 // Login brute-force guard (SEC-02): shared sliding-window limiter, 10 req / 15 min / IP.
-app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) return res.status(401).json({error:'Invalid credentials'}); const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h'}); audit(user.id,'login','user',user.id); res.cookie('cms_token', token, cookieOpts(req)); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
+app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) { db.prepare("INSERT INTO audit_log(action,object_type,object_title,ip_address) VALUES(?,?,?,?)").run('login_failed','auth',parsed.data.email,req.ip ?? null); return res.status(401).json({error:'Invalid credentials'}); } const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h'}); audit(user.id,'login','user',user.id); res.cookie('cms_token', token, cookieOpts(req)); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
 app.post('/api/admin/auth/logout', auth, (req:Auth,res) => { audit(req.user!.id,'logout','user',req.user!.id); res.clearCookie('cms_token', { path: '/' }); res.json({ ok: true }); });
 app.get('/api/admin/auth/me', auth, (req:Auth,res) => { const s=(req as any).scoped; const row=db.prepare('SELECT id,email,name,role,site_id FROM users WHERE id=?').get(s.id) as any; if(!row) return res.status(401).json({error:'Unauthorized'}); res.json({ ...row, permissions: permissionsFor(row.role) }); });
 // User management (super_admin only) — includes per-site access (site_id)
@@ -667,7 +671,7 @@ const getSetting = (key: string, fallback = '1'): string => {
     return row ? String(row.value) : fallback;
   } catch { return fallback; }
 };
-app.get('/api/admin/settings', auth, (req:Auth,res) => {
+app.get('/api/admin/settings', auth, requirePerm('settings.manage'), (req:Auth,res) => {
   if (denyScoped(req,res)) return;
   const rows = db.prepare('SELECT "key", "value" FROM settings').all() as any[];
   const out: Record<string, string> = {};
@@ -704,10 +708,10 @@ app.post('/api/editor/magic', auth, editorLimiter(), async (req:Auth,res) => {
     : magicTransform(clipped, lang, p.data.mode, opts.variant || 0);
   res.json({ ...out, lang });
 });
-app.get('/api/admin/appeals', auth, (req:Auth,res) => { if (denyScoped(req,res)) return; const q = req.query as any; const where:string[]=[]; const vals:any[]=[]; if (q.status) { where.push('status=?'); vals.push(String(q.status)); } const sql = `SELECT * FROM appeals${where.length ? ' WHERE ' + where.join(' AND ') : ''} ORDER BY created_at DESC LIMIT 200`; const items = db.prepare(sql).all(...vals); return res.json({ items, total: items.length }); });
+app.get('/api/admin/appeals', auth, requirePerm('appeals.manage'), (req:Auth,res) => { if (denyScoped(req,res)) return; const q = req.query as any; const where:string[]=[]; const vals:any[]=[]; if (q.status) { where.push('status=?'); vals.push(String(q.status)); } const sql = `SELECT * FROM appeals${where.length ? ' WHERE ' + where.join(' AND ') : ''} ORDER BY created_at DESC LIMIT 200`; const items = db.prepare(sql).all(...vals); return res.json({ items, total: items.length }); });
 app.patch('/api/admin/appeals/:id', auth, requirePerm('appeals.manage'), (req:Auth,res) => { if (denyScoped(req,res)) return; const p=z.object({status:z.enum(['new','in_review','assigned','answered','closed']).optional(),internal_note:z.string().max(5000).nullable().optional(),assigned_to:z.number().int().nullable().optional()}).safeParse(req.body || {}); if(!p.success)return res.status(400).json({error:'Invalid appeal', details: p.error}); const x=p.data; const sets:string[]=[]; const vals:any[]=[]; if(x.status!==undefined){sets.push('status=?');vals.push(x.status);} if(x.internal_note!==undefined){sets.push('internal_note=?');vals.push(x.internal_note);} if(x.assigned_to!==undefined){sets.push('assigned_to=?');vals.push(x.assigned_to);} if(sets.length===0)return res.status(400).json({error:'Nothing to update'}); vals.push(req.params.id); db.prepare(`UPDATE appeals SET ${sets.join(',')} WHERE id=?`).run(...vals); audit(req.user!.id,'update','appeal',Number(req.params.id)); res.sendStatus(204); });
-  app.get('/api/admin/dashboard', auth, (req:Auth,res) => { if (denyScoped(req,res)) return; return res.json({ news:db.prepare("SELECT count(*) count FROM content WHERE type='news' AND deleted_at IS NULL").get(), pending:db.prepare("SELECT count(*) count FROM content WHERE status='pending_review'").get(), appeals:db.prepare("SELECT count(*) count FROM appeals WHERE status='new'").get(), activity:db.prepare('SELECT * FROM audit_log ORDER BY created_at DESC LIMIT 8').all() }); });
-  app.get('/api/admin/audit', auth, (req:Auth,res) => {
+  app.get('/api/admin/dashboard', auth, (req:Auth,res) => { if (denyScoped(req,res)) return; return res.json({ news:db.prepare("SELECT count(*) count FROM content WHERE type='news' AND deleted_at IS NULL").get(), pending:db.prepare("SELECT count(*) count FROM content WHERE status='pending_review'").get(), appeals:db.prepare("SELECT count(*) count FROM appeals WHERE status='new'").get(), activity:(hasPerm(roleOf(req),'users.manage') ? db.prepare('SELECT * FROM audit_log ORDER BY created_at DESC LIMIT 8').all() : []) }); });
+  app.get('/api/admin/audit', auth, requirePerm('users.manage'), (req:Auth,res) => {
     if (denyScoped(req,res)) return;
     const items = db.prepare('SELECT a.*,u.name as user_name FROM audit_log a LEFT JOIN users u ON a.user_id=u.id ORDER BY a.created_at DESC LIMIT 200').all();
     return res.json({ items, total: items.length });
@@ -1409,7 +1413,7 @@ app.get('/api/duty/config', cache(3600), (_req, res) => {
   const exemptions = db.prepare('SELECT * FROM duty_exemptions WHERE active=1').all();
   res.json({ categories, rules, exemptions });
 });
-app.post('/api/duty/history', (req, res) => {
+app.post('/api/duty/history', dutyLimiter(), (req, res) => {
   const p = z.object({ categoryId: z.number(), amountInput: z.number().nullable(), resultAmount: z.number(), resultCurrency: z.string() }).safeParse(req.body);
   if (!p.success) return res.status(400).json({ error: 'Invalid payload' });
   const row = db.prepare('INSERT INTO duty_history (category_id, amount_input, result_amount, result_currency, user_id) VALUES (?, ?, ?, ?, ?)').run(p.data.categoryId, p.data.amountInput, p.data.resultAmount, p.data.resultCurrency, null);

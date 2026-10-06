@@ -1,6 +1,11 @@
 import express from 'express';
 
 // Dependency-free sliding-window rate limiter (in-memory, per key).
+// NOTE (L5): buckets are per-process — a counter resets on restart and is
+// NOT shared across multiple server instances. This deployment is
+// single-instance by design; if horizontal scaling is added, swap this
+// module for a shared store (e.g. Redis INCR+PEXPIRE) without touching
+// route code.
 // Safe error shape: machine-readable { error:'Too many requests' } + Retry-After.
 interface Bucket {
   hits: number[];
@@ -67,6 +72,8 @@ export const appealsLimiter = () =>
   rateLimit({ windowMs: 15 * 60 * 1000, max: 5, prefix: 'appeals' });
 export const questionnaireLimiter = () =>
   rateLimit({ windowMs: 15 * 60 * 1000, max: 5, prefix: 'questionnaire' });
+export const dutyLimiter = () =>
+  rateLimit({ windowMs: 15 * 60 * 1000, max: 30, prefix: 'duty' });
 export const aiChatLimiter = () =>
   rateLimit({ windowMs: 60 * 60 * 1000, max: 30, prefix: 'aichat' });
 export const editorLimiter = () =>
