@@ -10,6 +10,17 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.11 - Glass-card readability polish: ink shadows applied to every glass surface
+- Released: 2026-10-02
+- Previous: v2.18.10
+- Added a single text-shadow treatment for all hero/glass typography
+  (`.glass`, `.glass-card`, `.content-card`, `.liquid-glass-title-pod`)
+  via `--glass-ink-shadow`: a soft white halo in light mode, a short dark
+  shadow in dark mode. Small matte-glass surfaces now carry every label
+  at AA-level contrast against the gradient tint.
+- Browsers' screenshot check (Chromium headless): light hero unchanged but
+  all body/title text now legible; dark unchanged.
+
 ## v2.18.10 - Light-scheme readability fix: toggle swaps the full palette (was dark colors on light background)
 - Released: 2026-10-02
 - Previous: v2.18.9

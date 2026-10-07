@@ -528,6 +528,17 @@ html.is-morphing-theme ::view-transition-new(root) {
     text-shadow: var(--public-text-shadow);
   }
 
+  /* Matte-glass text contrast: a soft shadow below dark text on light
+     glass, and a faint white halo for coloured labels on dark glass. */
+  :root { --glass-ink-shadow: 0 1px 0 rgba(255,255,255,0.9); }
+  [data-theme='dark'] { --glass-ink-shadow: 0 1px 2px rgba(0,0,0,0.45); }
+  .glass :is(h1,h2,h3,h4,h5,h6,p,span,a,button,label),
+  .glass-card :is(h1,h2,h3,h4,h5,h6,p,span,a,button,label),
+  .content-card :is(h1,h2,h3,h4,h5,h6,p,span,a,button,label),
+  .liquid-glass-title-pod :is(h1,h2,h3,h4,h5,h6,p,span,a,button,label) {
+    text-shadow: var(--glass-ink-shadow);
+  }
+
   /* ── Universal Public Site Text Readability & Contrast Engine ── */
   :root:not(.dark) {
     /* Guaranteed high contrast on any card/pod/panel in light mode */
