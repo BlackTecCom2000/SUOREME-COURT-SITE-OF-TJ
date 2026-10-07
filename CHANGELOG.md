@@ -10,6 +10,30 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.19.0 - Smooth inertial scrolling across the platform
+- Released: 2026-10-07 12:35
+- Previous: v2.18.12
+- New `<SmoothScroll />` (mounted in both the public app and the admin):
+  wheel deltas move a target position and a rAF loop eases the document
+  towards it, so a notch glides instead of jumping. The browser stays the
+  owner of the real scroll position — no transform hijack — so sticky
+  headers, IntersectionObserver reveals, scroll-linked sections, the 30s
+  runtime poll and `position: fixed` overlays keep working unchanged.
+- Guardrails: `prefers-reduced-motion: reduce` disables the layer (native
+  wheel); Ctrl/Cmd+wheel (pinch, viewer zoom) stays native; a wheel event
+  over any inner scrollable container (admin panels, library, modals, chat)
+  is left to that container; any scroll not caused by the loop (keyboard,
+  scrollbar, anchor jump, `scrollIntoView`) synchronises the target
+  immediately so a native CSS-smooth animation and ours never fight; every
+  write uses `behavior: 'instant'` because `html` carries
+  `scroll-behavior: smooth`.
+- Existing CSS `scroll-behavior: smooth` keeps anchor navigation soft; the
+  two mechanisms are complementary (anchors = CSS, wheel inertia = rAF).
+- Playwright QA (Chromium, 9 assertions): easing is gradual (234px of a
+  600px notch at 60ms, settled by 900ms), wheels accumulate, programmatic
+  jumps are adopted, reduced-motion context scrolls natively (600px at
+  60ms), page range 13k px. `tsc 0`, build 0, smoke 11/11 HTTP 200.
+
 ## v2.18.12 - Theme preference fix: admin and public site follow the stored light/dark choice
 - Released: 2026-10-07 12:05
 - Previous: v2.18.11

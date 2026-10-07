@@ -22,6 +22,7 @@ import { SiteBuilder } from './admin/pages/siteBuilder/SiteBuilder';
 import { Slider3DManager } from './admin/pages/slider/Slider3DManager';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
+import { SmoothScroll } from './components/SmoothScroll';
 
 const ScopedDenied: React.FC<{ siteId: string }> = ({ siteId }) => (
   <div className="min-h-screen bg-[#04070f] text-slate-200 flex items-center justify-center p-4">
@@ -97,6 +98,7 @@ export default function AdminApp() {
     <ThemeProvider>
       <LanguageProvider>
         <AdminAuthProvider>
+          <SmoothScroll />
           <AdminRoutes />
         </AdminAuthProvider>
       </LanguageProvider>
