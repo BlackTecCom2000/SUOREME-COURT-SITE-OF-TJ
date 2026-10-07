@@ -63,8 +63,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
     /* The store's effect projects the scheme onto the document, including
        inside the View Transition snapshot, so the morph shows the full
-       token set — not just the class flip it used to be. */
-    store?.patch({ scheme: newTheme });
+       token set — not just the class flip it used to be.
+       Switching scheme must switch the FULL palette: a light scheme with
+       dark colors leaves white text on light glass (unreadable). There is
+       exactly one light preset in the catalogue, so switch to it there,
+       and to glass-dark on the way back. */
+    if (store) {
+      store.applyPreset(newTheme === 'light' ? 'glass-light' : 'glass-dark');
+    }
     setThemeState(newTheme);
   };
 

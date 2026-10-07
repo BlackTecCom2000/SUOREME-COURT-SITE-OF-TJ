@@ -10,6 +10,28 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.10 - Light-scheme readability fix: toggle swaps the full palette (was dark colors on light background)
+- Released: 2026-10-02
+- Previous: v2.18.9
+- Root cause of the "barely readable on light sections" report: the
+  legacy light/dark toggle (Navbar sun/moon) called `store.patch({ scheme:
+  newTheme })`, which updated only the scheme flag. CSS variables in
+  `<html style>` stayed on the active dark preset, because `validateTheme`
+  kept whatever colors the current theme held. Result:
+  `data-theme="light"` brand new light pod backgrounds, but
+  `--text-primary: #ffffff` and light-grey secondary colours still applied
+  via `text-theme-text/text-theme-textSec` — white text on light glass.
+- Fix: the toggle now runs `store.applyPreset(scheme === 'light' ?
+  'glass-light' : 'glass-dark')`, so the entire design token set (colors,
+  surfaces, glass radius, glow) switches with the scheme. Light mode now
+  uses `textPrimary: #0b1220`, `textSecondary: #1e293b`,
+  `textMuted: #475569`, `bg-primary: #f5f7fb` and the glass-light
+  surfaces — readable over the day sky.
+- QA: `tsc 0`, builds 0, smoke 11/11, verified in a real browser:
+  toggle to light produces `data-theme="light"` + light `--theme-*` tokens,
+  title color `rgb(11,18,32)`, description `rgb(30,41,59)`, screenshot
+  shows high-contrast dark text on the light building.
+
 ## v2.18.9 - Security L-pass (L1–L7): perms, rate limits, CSP, HSTS, failed-login audit, dead code
 - Released: 2026-10-02
 - Previous: v2.18.8
