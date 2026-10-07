@@ -76,7 +76,18 @@ export const ThemeProvider: React.FC<ProviderProps> = ({ children, mode }) => {
   const resolvedMode: ThemeMode = mode ?? (isEditor() ? 'editor' : 'runtime');
   const editor = resolvedMode === 'editor';
 
-  const [theme, setTheme] = useState<ThemeConfig>(() => clonePreset(DEFAULT_PRESET_ID));
+  // Initialize theme from the stored preference so the first paint already
+  // matches the scheme the visitor chose (no dark flash on a light site).
+  const initialTheme = (() => {
+    if (typeof window === 'undefined') return clonePreset(DEFAULT_PRESET_ID);
+    const localTheme =
+      localStorage.getItem('supreme-court-theme') || localStorage.getItem('sud-theme');
+    if (localTheme === 'light') return clonePreset('glass-light');
+    if (localTheme === 'dark') return clonePreset('glass-dark');
+    return clonePreset(DEFAULT_PRESET_ID);
+  })();
+
+  const [theme, setTheme] = useState<ThemeConfig>(initialTheme);
   const [presetId, setPresetId] = useState<string>(DEFAULT_PRESET_ID);
   const [ready, setReady] = useState(false);
   const [settings, setSettings] = useState<Record<string, string>>({});
@@ -124,10 +135,33 @@ export const ThemeProvider: React.FC<ProviderProps> = ({ children, mode }) => {
         Object.assign(bag, raw);
       }
 
+      /* An explicit light/dark choice in localStorage always wins over the
+         published scheme: a visitor toggle (and the same choice inside the
+         admin) must survive the runtime poll, a login and a navigation —
+         this is what used to force the admin back to dark. When the
+         preferences agree, or when there is no explicit choice at all, the
+         published configuration stays authoritative, so the Site Builder
+         keeps owning the default. The scheme can only be honoured with its
+         own full preset — a light scheme on the dark preset's colours is
+         exactly the unreadable combination this avoids. */
+      const localTheme =
+        typeof window !== 'undefined'
+          ? localStorage.getItem('supreme-court-theme') || localStorage.getItem('sud-theme')
+          : null;
+      const explicit = localTheme === 'light' || localTheme === 'dark';
+
       const storedPreset = bag[THEME_PRESET_KEY];
       const nextPreset = storedPreset || DEFAULT_PRESET_ID;
-      const next = decodeTheme(bag[THEME_STORAGE_KEY], nextPreset) ?? clonePreset(nextPreset);
-      const fingerprint = `${nextPreset}|${encodeTheme(next)}|${Object.keys(bag)
+      let next = decodeTheme(bag[THEME_STORAGE_KEY], nextPreset) ?? clonePreset(nextPreset);
+      let appliedPreset = nextPreset;
+      if (explicit && next.scheme !== localTheme) {
+        appliedPreset = localTheme === 'light' ? 'glass-light' : 'glass-dark';
+        next = clonePreset(appliedPreset);
+      }
+
+      const fingerprint = `${explicit ? localTheme : ''}|${appliedPreset}|${encodeTheme(
+        next
+      )}|${Object.keys(bag)
         .sort()
         .map((k) => `${k}=${bag[k]}`)
         .join('&')}`;
@@ -142,7 +176,7 @@ export const ThemeProvider: React.FC<ProviderProps> = ({ children, mode }) => {
       startTransition(() => {
         setDirty(false);
         setTheme((prev) => (encodeTheme(prev) === encodeTheme(next) ? prev : next));
-        setPresetId((prev) => (prev === nextPreset ? prev : nextPreset));
+        setPresetId((prev) => (prev === appliedPreset ? prev : appliedPreset));
         setSettings((prev) => (settingsEqual(prev, bag) ? prev : bag));
       });
     } catch {
@@ -226,7 +260,18 @@ export const ThemeProvider: React.FC<ProviderProps> = ({ children, mode }) => {
   const applyPreset = useCallback((nextPreset: string) => {
     setDirty(true);
     setPresetId(nextPreset);
-    setTheme(clonePreset(nextPreset));
+    const preset = clonePreset(nextPreset);
+    setTheme(preset);
+    /* Record the scheme this preset brings. `load` honours an explicit
+       preference over the published scheme, so a scheme that is only ever
+       applied here (the Site Builder gallery, the admin toggle) would be
+       reverted by the next reload without this line. */
+    try {
+      localStorage.setItem('supreme-court-theme', preset.scheme);
+      localStorage.setItem('sud-theme', preset.scheme);
+    } catch {
+      // storage unavailable (private mode): the in-memory theme still applies
+    }
   }, []);
 
   const setSetting = useCallback((key: string, value: string) => {

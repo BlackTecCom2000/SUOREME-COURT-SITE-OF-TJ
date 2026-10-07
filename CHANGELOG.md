@@ -10,6 +10,30 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.18.12 - Theme preference fix: admin and public site follow the stored light/dark choice
+- Released: 2026-10-07 12:05
+- Previous: v2.18.11
+- Root cause of "the admin turns dark when I enter it from a light site":
+  the theme store's `load()` always took the published scheme from
+  `/api/design-settings` and ignored the visitor's explicit choice, so any
+  navigation (notably `/admin`, which mounts a fresh provider) reset the
+  document back to the published dark theme.
+- Fix: `load()` now resolves the scheme as "explicit localStorage choice
+  wins over the published scheme" — when the preferences agree, or when no
+  choice was ever made, the published configuration stays authoritative, so
+  the Site Builder keeps owning the default. A scheme is only ever honoured
+  with its own full preset (`glass-light`/`glass-dark`), never as a flag on
+  the other preset's colours.
+- `store.applyPreset()` records the preset's scheme to localStorage, so a
+  scheme applied inside the Site Builder gallery survives the next reload
+  instead of being reverted by a stale preference.
+- The first paint initialises from the stored preference (full preset), so
+  a light site no longer flashes dark before the first load.
+- Playwright QA (Chromium, 11 assertions): fresh visit stays published-dark;
+  toggle→light persists across reload; `/admin` stays light when the site is
+  light and follows back to dark; the 30s runtime poll does not revert the
+  choice; admin login page renders. Browsers' smoke 11/11 HTTP 200.
+
 ## v2.18.11 - Glass-card readability polish: ink shadows applied to every glass surface
 - Released: 2026-10-02
 - Previous: v2.18.10
