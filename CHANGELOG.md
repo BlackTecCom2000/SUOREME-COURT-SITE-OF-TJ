@@ -10,6 +10,29 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.19.1 - Symmetric card grids and aligned split columns
+- Released: 2026-10-09 12:54
+- Previous: v2.19.0
+- Root cause of the "two parallel universes" look: cards inside grid cells
+  were natural-height blocks while their `<Reveal>` wrapper stretched to the
+  row, so left/right cards and columns never lined up (e.g. 101px vs 161px in
+  one announcement row, a 200px middle card between 220px neighbours).
+- Grids now use `auto-rows-fr` + `h-full` cards in regional news,
+  official announcements, quick actions ("Что вы хотите сделать?"), judicial
+  collegiums and the five e-services portals: every card in a grid is the
+  same size, measured 141/141, 161/161, 220/220, 222/222 and 256/256 px.
+- Section06 bank/press split re-flowed: both columns share one flex layout
+  (`flex-1` content, `flex-1` list, `flex-1` rows, `h-full` cards), so both
+  lists start at 2905px, end at 3331px and both footer buttons occupy
+  3355-3399px — identical geometry by measurement, not by eye.
+- `.btn-outline` was `height: 2.25rem` (36px) against `.btn-base`'s
+  `min-height: 44px`, so side-by-side secondary/outline buttons sat 8px out
+  of line. It now uses `min-height: 2.75rem`, matching the button system and
+  the ≥44px touch-target rule (10 usages, none in tight toolbars).
+- QA: `tsc 0`, build 0, smoke 11/11 HTTP 200, Playwright geometry checks
+  (grids + Section06 split, dark and light screenshots), no horizontal
+  overflow at 375px (scrollWidth 375 = clientWidth 375).
+
 ## v2.19.0 - Smooth inertial scrolling across the platform
 - Released: 2026-10-07 12:35
 - Previous: v2.18.12

@@ -117,7 +117,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
         </Reveal>
 
         {/* 5 Primary Interactive Service Portals */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 auto-rows-fr gap-4 mb-12">
           {services.map((item, idx) => {
             const Icon = item.icon;
             return (
@@ -129,7 +129,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                       document.getElementById('legislative-library')?.scrollIntoView({ behavior: 'smooth' });
                     } else onOpenService(item.id);
                   }}
-                  className="group p-5 glass glass-card hover:border-theme-gold transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[180px] relative overflow-hidden"
+                  className="group p-5 glass glass-card hover:border-theme-gold transition-all duration-300 cursor-pointer flex flex-col justify-between h-full min-h-[180px] relative overflow-hidden"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">

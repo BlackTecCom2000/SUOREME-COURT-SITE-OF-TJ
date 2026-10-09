@@ -82,12 +82,12 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
         </div>
 
         {/* 2-Column Responsive Grid of Regional News Articles */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-fr gap-4">
           {filteredRegionalNews.map((item, idx) => (
             <Reveal key={item.id} delay={100 + idx * 30}>
               <div
                 onClick={() => onOpenNewsModal?.('news')}
-                className="group p-4 glass glass-card hover:border-[var(--lg-rim-top)] transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                className="group p-4 glass glass-card hover:border-[var(--lg-rim-top)] transition-all duration-300 cursor-pointer flex flex-col justify-between h-full"
               >
                 <div>
                   <h4 className="font-serif font-bold text-xs sm:text-sm text-theme-text group-hover:text-theme-gold transition-colors leading-snug mb-3 line-clamp-3">
@@ -128,12 +128,12 @@ export const JudicialNewsHub: React.FC<JudicialNewsHubProps> = ({
         </div>
 
         {/* 2-Column Responsive Grid of Announcements */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-fr gap-4">
           {OFFICIAL_ANNOUNCEMENTS.map((ann, idx) => (
             <Reveal key={ann.id} delay={120 + idx * 30}>
               <div
                 onClick={() => onOpenNewsModal?.('news')}
-                className="group p-4 glass glass-card hover:border-theme-gold transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                className="group p-4 glass glass-card hover:border-theme-gold transition-all duration-300 cursor-pointer flex flex-col justify-between h-full"
               >
                 <div>
                   <h4 className="font-serif font-bold text-xs sm:text-sm text-theme-text group-hover:text-theme-gold transition-colors leading-relaxed mb-3">

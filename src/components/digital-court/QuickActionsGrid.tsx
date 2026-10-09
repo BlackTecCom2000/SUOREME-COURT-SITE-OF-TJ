@@ -136,7 +136,7 @@ export const QuickActionsGrid: React.FC<QuickActionsGridProps> = ({ onAction }) 
         </div>
       </Reveal>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr gap-4 sm:gap-5">
         {actions.map((action, idx) => {
           const Icon = action.icon;
           return (
@@ -146,7 +146,7 @@ export const QuickActionsGrid: React.FC<QuickActionsGridProps> = ({ onAction }) 
                 whileHover={{ y: -3 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onAction(action.id)}
-                className={`w-full text-left p-5 sm:p-6 glass glass-card transition-all duration-300 flex flex-col justify-between min-h-[170px] group ${action.bgGlow}`}
+                className={`w-full h-full text-left p-5 sm:p-6 glass glass-card transition-all duration-300 flex flex-col justify-between min-h-[170px] group ${action.bgGlow}`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-3.5">

@@ -78,7 +78,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
           
           {/* Left: Verified Judicial Acts & Plenum Decisions */}
           <div className="lg:col-span-7 flex flex-col justify-between">
-            <div>
+            <div className="flex-1 flex flex-col min-h-0">
               <div className="flex items-center justify-between mb-4 font-mono text-xs text-theme-textSec">
                 <span className="text-theme-gold font-semibold flex items-center gap-2 uppercase tracking-wider">
                   <FileText size={16} />
@@ -87,12 +87,12 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
                 <span className="text-theme-textMuted">SUD.TJ // DATABASE</span>
               </div>
 
-              <div className="space-y-3 mb-6">
+              <div className="flex-1 flex flex-col gap-3 mb-6">
                 {JUDICIAL_ACTS.slice(0, 4).map((act, i) => (
-                  <Reveal key={act.id} delay={200 + i * 50}>
+                  <Reveal key={act.id} delay={200 + i * 50} className="flex-1">
                     <div
                       onClick={onOpenActs}
-                      className="group p-4 glass glass-chip hover:border-theme-gold transition-all duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                      className="group p-4 glass glass-chip hover:border-theme-gold transition-all duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 h-full"
                     >
                       <div>
                         <div className="flex items-center gap-2 text-2xs font-mono text-theme-textMuted mb-1">
@@ -140,7 +140,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
 
           {/* Right: Press Center, News & "Мизони Қонун" */}
           <div className="lg:col-span-5 flex flex-col justify-between">
-            <div>
+            <div className="flex-1 flex flex-col min-h-0">
               <div className="flex items-center justify-between mb-4 font-mono text-xs text-theme-textSec">
                 <span className="text-theme-gold font-semibold flex items-center gap-2 uppercase tracking-wider">
                   <Newspaper size={16} />
@@ -149,13 +149,13 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
                 <span className="text-theme-textMuted">«МИЗОНИ ҚОНУН»</span>
               </div>
 
-              <div className="space-y-3 mb-6">
+              <div className="flex-1 flex flex-col gap-3 mb-6">
                 {news.length === 0 && <p className="text-sm text-theme-textSec">Нет новостей.</p>}
                 {news.slice(0, 3).map((item, idx) => (
-                  <Reveal key={item.id} delay={250 + idx * 60}>
+                  <Reveal key={item.id} delay={250 + idx * 60} className="flex-1">
                     <div
                       onClick={onOpenNews}
-                      className="group p-4 glass glass-chip hover:border-theme-gold transition-all duration-200 cursor-pointer"
+                      className="group p-4 glass glass-chip hover:border-theme-gold transition-all duration-200 cursor-pointer h-full"
                     >
                       <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-1.5">
                         <span className="text-theme-gold font-semibold">ПРЕСС-ЦЕНТР</span>

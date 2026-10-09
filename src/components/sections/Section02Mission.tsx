@@ -106,14 +106,14 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr gap-4">
           {collegiums.map((item, idx) => {
             const Icon = item.icon;
             return (
               <Reveal key={item.id} delay={350 + idx * 60}>
                 <div
                   onClick={() => onOpenCollegium(item.id)}
-                  className="group p-5 glass glass-card hover:border-theme-borderHover transition-all cursor-pointer relative flex flex-col justify-between min-h-[160px]"
+                  className="group p-5 glass glass-card hover:border-theme-borderHover transition-all cursor-pointer relative flex flex-col justify-between h-full min-h-[160px]"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">
