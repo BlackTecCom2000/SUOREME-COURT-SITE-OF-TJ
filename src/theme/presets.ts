@@ -113,20 +113,22 @@ export const THEME_PRESETS: ThemePreset[] = [
   {
     id: 'glass-light',
     name: 'Glass Light',
-    description: 'Светлое премиальное стекло поверх дневного неба',
+    description: 'Холодное серебристо-голубое стекло поверх дневного неба',
     config: {
       scheme: 'light',
       colors: {
         background: '#f5f7fb',
         backgroundSecondary: '#e8eef8',
-        surface: 'rgba(255, 255, 255, 0.62)',
-        surfaceSecondary: 'rgba(255, 255, 255, 0.44)',
-        surfaceGlass: 'rgba(255, 255, 255, 0.58)',
-        surfaceGlassStrong: 'rgba(255, 255, 255, 0.74)',
+        // v2.20.0: cool silver-blue veils (were neutral white). Alphas
+        // untouched, so weight stays; dark text keeps full contrast.
+        surface: 'rgba(231, 239, 251, 0.62)',
+        surfaceSecondary: 'rgba(226, 235, 250, 0.44)',
+        surfaceGlass: 'rgba(229, 238, 251, 0.58)',
+        surfaceGlassStrong: 'rgba(224, 233, 249, 0.74)',
         textPrimary: '#0b1220',
         textSecondary: '#1e293b',
         textMuted: '#475569',
-        border: 'rgba(15, 23, 42, 0.12)',
+        border: 'rgba(23, 43, 77, 0.14)',
         borderStrong: 'rgba(154, 107, 18, 0.55)',
         accent: '#9a6b12',
         accentSecondary: '#1d4ed8',
@@ -139,10 +141,11 @@ export const THEME_PRESETS: ThemePreset[] = [
       radius: { ...RADIUS },
       spacing: { ...SPACING },
       shadows: {
-        small: '0 2px 8px rgba(15, 23, 42, 0.06)',
-        medium: '0 10px 28px rgba(15, 23, 42, 0.08)',
-        large: '0 24px 56px rgba(15, 23, 42, 0.12)',
-        glass: '0 16px 40px rgba(15, 23, 42, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.85)',
+        // v2.20.0: deeper, cooler shadows — light finally casts depth.
+        small: '0 2px 8px rgba(15, 23, 42, 0.08)',
+        medium: '0 10px 28px rgba(15, 23, 42, 0.12)',
+        large: '0 24px 56px rgba(15, 23, 42, 0.16)',
+        glass: '0 16px 40px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.85)',
       },
       typography: { ...TYPE },
       effects: {

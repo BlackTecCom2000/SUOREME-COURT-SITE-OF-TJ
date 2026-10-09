@@ -41,12 +41,13 @@
    --glass-opacity-hover: 0.92;
    --glass-opacity-active: 0.96;
    --glass-opacity-strong: 0.92;
-  --glass-surface: rgba(255, 255, 255, var(--glass-opacity));
-  --glass-surface-hover: rgba(255, 255, 255, var(--glass-opacity-hover));
-  --glass-surface-active: rgba(255, 255, 255, var(--glass-opacity-active));
-  --glass-surface-strong: rgba(255, 255, 255, var(--glass-opacity-strong));
+  /* v2.20.0 first-paint: cool silver-blue to match the light preset. */
+  --glass-surface: rgba(232, 240, 252, var(--glass-opacity));
+  --glass-surface-hover: rgba(230, 238, 250, var(--glass-opacity-hover));
+  --glass-surface-active: rgba(228, 236, 250, var(--glass-opacity-active));
+  --glass-surface-strong: rgba(226, 234, 249, var(--glass-opacity-strong));
   --glass-surface-dark: rgba(5, 15, 30, 0.88);
-  --glass-surface-subtle: rgba(255, 255, 255, 0.80);
+  --glass-surface-subtle: rgba(230, 238, 250, 0.80);
   --glass-border-opacity: 0.22;
   --glass-border-opacity-hover: 0.34;
   --glass-border: rgba(255, 255, 255, var(--glass-border-opacity));

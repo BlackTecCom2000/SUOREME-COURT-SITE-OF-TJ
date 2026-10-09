@@ -112,7 +112,7 @@ export const InteractiveJudicialHammer: React.FC<InteractiveJudicialHammerProps>
           ${
             hasStruck
               ? 'border-emerald-400 bg-emerald-400/20 text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.4)] scale-105'
-              : 'border-[#dfbe7e] bg-[#dfbe7e]/15 text-[#ffe082] hover:bg-[#dfbe7e]/30 group-hover:scale-102'
+              : 'border-[#dfbe7e] bg-[#dfbe7e]/15 text-theme-gold hover:bg-[#dfbe7e]/30 group-hover:scale-102'
           }
         `}
       >

@@ -144,8 +144,8 @@ export const InteractiveThemis: React.FC<InteractiveThemisProps> = ({
           backdrop-blur-md
           ${
             isInsightMode
-              ? 'border-[#dfbe7e] bg-[#dfbe7e]/20 text-[#ffe082] shadow-[0_0_15px_rgba(223,190,126,0.4)] scale-105'
-              : 'border-white/15 bg-[#060b18]/80 text-white/75 hover:border-[#dfbe7e]/60 hover:text-white group-hover:scale-102'
+              ? 'border-[#dfbe7e] bg-[#dfbe7e]/20 text-theme-gold shadow-[0_0_15px_rgba(223,190,126,0.4)] scale-105'
+              : 'border-white/15 bg-theme-surface/60 text-theme-textSec hover:border-[#dfbe7e]/60 hover:text-theme-text group-hover:scale-102'
           }
         `}
       >

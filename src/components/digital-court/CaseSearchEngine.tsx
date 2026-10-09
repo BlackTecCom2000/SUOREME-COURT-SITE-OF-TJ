@@ -383,7 +383,7 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
                 key={caseItem.id}
                 whileHover={{ scale: 1.006 }}
                 onClick={() => onSelectCase(caseItem)}
-                className="p-4 sm:p-5 rounded-2xl border border-theme-border/60 bg-theme-bg/60 hover:bg-theme-surfaceHover hover:border-theme-borderHover transition-all duration-200 cursor-pointer shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 group"
+                className="p-4 sm:p-5 rounded-2xl border glass-nest hover:bg-theme-surfaceHover hover:border-theme-borderHover transition-all duration-200 cursor-pointer shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 group"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-2">

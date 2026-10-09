@@ -250,7 +250,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                           className="ticker-item glass border border-theme-border hover:border-theme-gold rounded-[16px] flex flex-col items-center justify-center gap-1.5 p-2 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-gold group shrink-0"
                           style={{ width: `${Math.max(140, marquee.logo_size * 2.1)}px`, height: `${marquee.logo_size}px` } as React.CSSProperties}
                         >
-                          <span className="w-9 h-9 rounded-full bg-theme-bg/60 border border-theme-border flex items-center justify-center text-2xs font-mono text-theme-textSec group-hover:text-theme-gold group-hover:bg-theme-bg transition-colors shrink-0" aria-hidden="true">
+                          <span className="w-9 h-9 rounded-full glass-nest border flex items-center justify-center text-2xs font-mono text-theme-textSec group-hover:text-theme-gold group-hover:bg-theme-bg transition-colors shrink-0" aria-hidden="true">
                             {pickLink(l).slice(0, 2).toUpperCase()}
                           </span>
                           <span className="text-[11px] font-medium text-theme-text leading-tight line-clamp-2">{pickLink(l)}</span>

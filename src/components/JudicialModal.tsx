@@ -390,7 +390,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                <div className="p-4 rounded-xl bg-theme-surface border border-theme-border shadow-xs">
+                <div className="p-4 rounded-xl glass-nest border shadow-xs">
                   <div className="flex items-center gap-2 mb-2 text-theme-text font-mono text-xs uppercase tracking-wider">
                     <Building2 size={16} className="text-theme-gold" />
                     <span>{language === 'en' ? 'Plenum & Presidium' : language === 'tj' ? 'Пленум ва Раёсат' : 'Пленум & Президиум'}</span>
@@ -404,7 +404,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-theme-surface border border-theme-border shadow-xs">
+                <div className="p-4 rounded-xl glass-nest border shadow-xs">
                   <div className="flex items-center gap-2 mb-2 text-theme-text font-mono text-xs uppercase tracking-wider">
                     <Users size={16} className="text-cyan-400" />
                     <span>{language === 'en' ? '5 Collegiums' : language === 'tj' ? '5 Коллегия' : '5 Коллегий'}</span>
@@ -418,7 +418,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-theme-surface border border-theme-border shadow-xs">
+                <div className="p-4 rounded-xl glass-nest border shadow-xs">
                   <div className="flex items-center gap-2 mb-2 text-theme-text font-mono text-xs uppercase tracking-wider">
                     <Shield size={16} className="text-emerald-400" />
                     <span>{language === 'en' ? 'Judicial Training Center' : language === 'tj' ? 'Маркази таълимии судяҳо' : 'Учебный центр судей'}</span>
@@ -555,7 +555,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl bg-theme-surface border border-theme-border">
+                <div className="p-4 rounded-2xl glass-nest border">
                   <div className="flex items-center gap-2 mb-2 text-theme-gold font-bold text-sm">
                     <Scale size={16} />
                     <span>{language === 'tj' ? 'Ваколатҳои асосии Пленум' : language === 'en' ? 'Plenum Authorities' : 'Полномочия Пленума'}</span>
@@ -567,7 +567,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   </ul>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-theme-surface border border-theme-border">
+                <div className="p-4 rounded-2xl glass-nest border">
                   <div className="flex items-center gap-2 mb-2 text-cyan-400 font-bold text-sm">
                     <BookOpen size={16} />
                     <span>{language === 'tj' ? 'Қарорҳои дастурии охирин' : language === 'en' ? 'Recent Directives' : 'Постановления'}</span>
@@ -654,35 +654,35 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     <button
                       type="button"
                       onClick={() => onSelectTab('collegiums')}
-                      className="p-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-[11px] hover:border-theme-gold transition-colors"
+                      className="p-2 rounded-xl glass-nest border font-mono text-[11px] hover:border-theme-gold transition-colors"
                     >
                       КОЛЛЕГИЯИ СУДӢ ОИД БА ПАРВАНДАҲОИ ҶИНОЯТӢ
                     </button>
                     <button
                       type="button"
                       onClick={() => onSelectTab('collegiums')}
-                      className="p-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-[11px] hover:border-theme-gold transition-colors"
+                      className="p-2 rounded-xl glass-nest border font-mono text-[11px] hover:border-theme-gold transition-colors"
                     >
                       КОЛЛЕГИЯИ СУДӢ ОИД БА ҲУҚУҚВАЙРОНКУНИИ МАЪМУРӢ
                     </button>
                     <button
                       type="button"
                       onClick={() => onSelectTab('collegiums')}
-                      className="p-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-[11px] hover:border-theme-gold transition-colors"
+                      className="p-2 rounded-xl glass-nest border font-mono text-[11px] hover:border-theme-gold transition-colors"
                     >
                       КОЛЛЕГИЯИ СУДӢ ОИД БА ПАРВАНДАҲОИ МАДАНӢ
                     </button>
                     <button
                       type="button"
                       onClick={() => onSelectTab('collegiums')}
-                      className="p-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-[11px] hover:border-theme-gold transition-colors"
+                      className="p-2 rounded-xl glass-nest border font-mono text-[11px] hover:border-theme-gold transition-colors"
                     >
                       КОЛЛЕГИЯИ СУДӢ ОИД БА ПАРВАНДАҲОИ ОИЛАВӢ
                     </button>
                     <button
                       type="button"
                       onClick={() => onSelectTab('collegiums')}
-                      className="p-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-[11px] hover:border-theme-gold transition-colors"
+                      className="p-2 rounded-xl glass-nest border font-mono text-[11px] hover:border-theme-gold transition-colors"
                     >
                       КОЛЛЕГИЯИ ҲАРБӢ
                     </button>
@@ -692,19 +692,19 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 {/* Level 4: Apparatus Head & Directorates */}
                 <div className="pt-2 border-t border-theme-border/60">
                   <div className="flex justify-center mb-3">
-                    <div className="px-5 py-1.5 rounded-xl bg-slate-800 border border-slate-600 text-white font-mono text-xs font-bold uppercase">
+                    <div className="px-5 py-1.5 rounded-xl glass-nest border font-mono text-xs font-bold uppercase text-theme-text">
                       РОҲБАРИ ДАСТГОҲ
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 font-mono text-[11px]">Раёсати ташкили кори судҳо</div>
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 font-mono text-[11px]">Раёсати баррасии муроҷиатҳо</div>
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 font-mono text-[11px]">Раёсати кадрҳо ва корҳои махсус</div>
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 font-mono text-[11px]">Раёсати коргузорӣ ва назорат</div>
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 font-mono text-[11px]">Раёсати омор ва ҷамъбасти амалияи судӣ</div>
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 font-mono text-[11px]">Раёсати марҳилаҳои якум, кассатсионӣ ва назоратӣ</div>
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 font-mono text-[11px]">Раёсати банақшагирӣ, муҳосибот ва таъминот</div>
-                    <div className="p-2 rounded-xl bg-theme-bg/60 border border-theme-border/60 font-mono text-[11px]">Раёсати муносибатҳои байналмилалӣ ва меъёрӣ</div>
+                    <div className="p-2 rounded-xl glass-nest border font-mono text-[11px]">Раёсати ташкили кори судҳо</div>
+                    <div className="p-2 rounded-xl glass-nest border font-mono text-[11px]">Раёсати баррасии муроҷиатҳо</div>
+                    <div className="p-2 rounded-xl glass-nest border font-mono text-[11px]">Раёсати кадрҳо ва корҳои махсус</div>
+                    <div className="p-2 rounded-xl glass-nest border font-mono text-[11px]">Раёсати коргузорӣ ва назорат</div>
+                    <div className="p-2 rounded-xl glass-nest border font-mono text-[11px]">Раёсати омор ва ҷамъбасти амалияи судӣ</div>
+                    <div className="p-2 rounded-xl glass-nest border font-mono text-[11px]">Раёсати марҳилаҳои якум, кассатсионӣ ва назоратӣ</div>
+                    <div className="p-2 rounded-xl glass-nest border font-mono text-[11px]">Раёсати банақшагирӣ, муҳосибот ва таъминот</div>
+                    <div className="p-2 rounded-xl glass-nest border font-mono text-[11px]">Раёсати муносибатҳои байналмилалӣ ва меъёрӣ</div>
                   </div>
                 </div>
 
@@ -745,7 +745,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   { name: t('mission.adminName'), desc: t('mission.adminDesc'), code: 'COL-ADMIN' },
                   { name: t('mission.militaryName'), desc: t('mission.militaryDesc'), code: 'COL-MILITARY' },
                 ].map((col, idx) => (
-                  <div key={idx} className="p-4 rounded-2xl bg-theme-surface border border-theme-border hover:border-theme-gold/40 transition-colors">
+                  <div key={idx} className="p-4 rounded-2xl glass-nest border hover:border-theme-gold/40 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-mono text-2xs text-theme-gold">{col.code}</span>
                       <Shield size={14} className="text-theme-gold" />
@@ -793,7 +793,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     { name: 'Ҳафиззода Тимур Ҷамшед', role: 'Аъзои Раёсат', initials: 'ҲТ' },
                     { name: 'Шарифзода Иноятулло Шарифҷон', role: 'Аъзои Раёсат', initials: 'ШИ' },
                   ].map((m, idx) => (
-                    <div key={idx} className="p-3 rounded-2xl bg-theme-surface/70 border border-theme-border flex items-center gap-3">
+                    <div key={idx} className="p-3 rounded-2xl glass-nest border flex items-center gap-3">
                       <div className="w-12 h-16 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 border border-theme-border shrink-0 flex items-center justify-center font-serif font-bold text-theme-gold text-base">
                         {m.initials}
                       </div>
@@ -838,7 +838,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     desc: language === 'tj' ? 'Татбиқи барномаҳои пайдарпайи ислоҳоти судӣ, ҷорӣ намудани суди электронӣ ва шаффофияти комил.' : language === 'en' ? 'Implementation of electronic filing, digital workflow, and transparency.' : 'Внедрение системы «Электронный суд» и цифровых технологий правосудия.'
                   }
                 ].map((item, idx) => (
-                  <div key={idx} className="p-4 rounded-2xl bg-theme-surface border border-theme-border flex flex-col sm:flex-row gap-3 items-start">
+                  <div key={idx} className="p-4 rounded-2xl glass-nest border flex flex-col sm:flex-row gap-3 items-start">
                     <span className="font-mono text-xs font-bold text-theme-gold bg-theme-gold/10 px-2.5 py-1 rounded-lg shrink-0">
                       {item.year}
                     </span>
@@ -873,13 +873,13 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl bg-theme-surface border border-theme-border">
+                <div className="p-4 rounded-2xl glass-nest border">
                   <GraduationCap size={20} className="text-theme-gold mb-2" />
                   <h4 className="font-serif font-bold text-sm text-theme-text mb-1">{language === 'tj' ? 'Барномаҳои такмили ихтисос' : language === 'en' ? 'Qualification Programs' : 'Программы повышения квалификации'}</h4>
                   <p className="text-xs text-theme-textSec">{language === 'tj' ? 'Курсҳои мунтазам оид ба қонунгузории нави мурофиавӣ ва стандартҳои байналмилалӣ.' : language === 'en' ? 'Regular courses on procedural law updates and international standards.' : 'Регулярные курсы по новеллам законодательства и международным стандартам.'}</p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-theme-surface border border-theme-border">
+                <div className="p-4 rounded-2xl glass-nest border">
                   <Award size={20} className="text-cyan-400 mb-2" />
                   <h4 className="font-serif font-bold text-sm text-theme-text mb-1">{language === 'tj' ? 'Технологияҳои муосири судӣ' : language === 'en' ? 'Digital Technologies' : 'Судебные технологии'}</h4>
                   <p className="text-xs text-theme-textSec">{language === 'tj' ? 'Омӯзиши кор бо системаи суди электронӣ, амнияти иттилоотӣ ва мурофиаҳои видеоконфронс.' : language === 'en' ? 'Training in electronic case files, cyber resilience, and video-hearings.' : 'Обучение работе с электронным делопроизводством и видеоконференцсвязью.'}</p>
@@ -1126,7 +1126,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     tabIndex={0}
                     onClick={() => { if (court.url) window.open(court.url, '_blank', 'noreferrer'); }}
                     onKeyDown={(e) => { if (e.key === 'Enter' && court.url) window.open(court.url, '_blank', 'noreferrer'); }}
-                    className="p-3 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all flex flex-col justify-between group shadow-xs cursor-pointer"
+                    className="p-3 rounded-xl glass-nest border hover:border-theme-gold transition-all flex flex-col justify-between group shadow-xs cursor-pointer"
                   >
                     <div>
                       <div className="flex items-center justify-between text-[11px] font-mono text-theme-textMuted mb-1">
@@ -1172,7 +1172,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 {filteredHearings.map((h) => (
                   <div
                     key={h.id}
-                    className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all font-mono text-xs shadow-xs"
+                    className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all font-mono text-xs shadow-xs"
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-theme-border pb-2 mb-2 text-theme-textMuted">
                       <span className="font-semibold text-theme-text">{h.id}</span>
@@ -1249,7 +1249,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 ) : filteredActs.map((act) => (
                   <div
                     key={act.id}
-                    className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all group cursor-pointer shadow-xs"
+                    className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all group cursor-pointer shadow-xs"
                   >
                     <div className="flex items-center justify-between font-mono text-[11px] text-theme-textMuted mb-1.5">
                       <span className="text-theme-gold font-semibold">
@@ -1312,7 +1312,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 ) : news.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all flex flex-col justify-between shadow-xs"
+                    className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all flex flex-col justify-between shadow-xs"
                   >
                     <div>
                       <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-2">
@@ -1364,7 +1364,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 ) : announcements.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all shadow-xs"
+                    className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all shadow-xs"
                   >
                     <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-2">
                       <span className="flex items-center gap-1.5 text-theme-gold">
@@ -1414,7 +1414,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 ) : vacancies.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all shadow-xs"
+                    className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all shadow-xs"
                   >
                     <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-2">
                       <span className="flex items-center gap-1.5 text-theme-gold">
@@ -1470,7 +1470,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   ].map((s) => (
                     <div
                       key={s.en}
-                      className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all text-center shadow-xs"
+                      className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all text-center shadow-xs"
                     >
                       <div className="flex items-center justify-center gap-1.5 text-theme-gold mb-1">
                         <BarChart3 size={14} />
@@ -1506,7 +1506,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 ) : journal.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all flex flex-col justify-between shadow-xs"
+                    className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all flex flex-col justify-between shadow-xs"
                   >
                     <div>
                       <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-2">
@@ -1555,7 +1555,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   </div>
                 </div>
               ) : (
-                <div className="p-5 rounded-xl bg-theme-surface border border-theme-border space-y-4">
+                <div className="p-5 rounded-xl glass-nest border space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
@@ -1642,7 +1642,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                 ) : acts.slice(0, 8).map((doc) => (
                   <div
                     key={doc.id}
-                    className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all flex flex-col justify-between shadow-xs"
+                    className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all flex flex-col justify-between shadow-xs"
                   >
                     <div>
                       <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-1.5">
@@ -1692,7 +1692,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="p-4 rounded-xl bg-theme-surface border border-theme-border shadow-xs">
+                <div className="p-4 rounded-xl glass-nest border shadow-xs">
                   <div className="font-mono text-xs text-theme-text font-medium mb-1.5 flex items-center gap-2">
                     <FileText size={15} className="text-cyan-400" />
                     <span>01. {language === 'en' ? 'Claim Filing' : language === 'tj' ? 'Пешниҳоди даъво' : 'Подача иска'}</span>
@@ -1702,7 +1702,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-theme-surface border border-theme-border shadow-xs">
+                <div className="p-4 rounded-xl glass-nest border shadow-xs">
                   <div className="font-mono text-xs text-theme-text font-medium mb-1.5 flex items-center gap-2">
                     <Search size={15} className="text-theme-gold" />
                     <span>02. {language === 'en' ? 'Case Tracking' : language === 'tj' ? 'Пайгирии парванда' : 'Трекинг дела'}</span>
@@ -1712,7 +1712,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-theme-surface border border-theme-border shadow-xs">
+                <div className="p-4 rounded-xl glass-nest border shadow-xs">
                   <div className="font-mono text-xs text-theme-text font-medium mb-1.5 flex items-center gap-2">
                     <Shield size={15} className="text-emerald-400" />
                     <span>03. {language === 'en' ? 'Personal Cabinet' : language === 'tj' ? 'Утоқи шахсӣ' : 'Личный кабинет'}</span>
@@ -1747,7 +1747,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
               </div>
 
               {/* Appeal Form */}
-              <div className="p-5 rounded-xl bg-theme-surface border border-theme-border space-y-4 shadow-xs">
+              <div className="p-5 rounded-xl glass-nest border space-y-4 shadow-xs">
                 <div className="flex items-center gap-2 font-mono text-xs text-theme-text uppercase tracking-wider">
                   <Send size={16} className="text-theme-gold" />
                   <span>{t('appeals.ctaSubmitAppeal')}</span>
@@ -1817,7 +1817,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-theme-surface border border-theme-border space-y-3 shadow-xs">
+                <div className="p-4 rounded-xl glass-nest border space-y-3 shadow-xs">
                   <div className="flex items-center gap-2 font-mono text-xs text-theme-text uppercase tracking-wider">
                     <Calendar size={16} className="text-theme-gold" />
                     <span>{language === 'en' ? 'Reception Schedule' : language === 'tj' ? 'Қабули шахсии шаҳрвандон' : 'Личный приём граждан'}</span>
@@ -1830,7 +1830,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-theme-surface border border-theme-border space-y-3 shadow-xs">
+                <div className="p-4 rounded-xl glass-nest border space-y-3 shadow-xs">
                   <div className="flex items-center gap-2 font-mono text-xs text-theme-text uppercase tracking-wider">
                     <MapPin size={16} className="text-cyan-400" />
                     <span>{t('nav.contacts')}</span>

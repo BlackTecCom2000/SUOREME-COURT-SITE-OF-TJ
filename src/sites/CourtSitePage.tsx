@@ -221,7 +221,7 @@ export const CourtSitePage: React.FC = () => {
         <div className="site-container relative z-10 space-y-5">
           {/* 3D News Carousel (like main project main news) */}
           <Reveal>
-            <div className="relative overflow-hidden rounded-2xl border border-theme-gold/40 bg-theme-surface shadow-theme-card p-2 sm:p-3">
+            <div className="relative overflow-hidden rounded-2xl border border-theme-gold/40 glass shadow-theme-card p-2 sm:p-3">
               <Judicial3DNewsSlider
                 region={cfg.region}
                 categoryTj="ХАБАРҲО"
@@ -244,7 +244,7 @@ export const CourtSitePage: React.FC = () => {
                   href={tile.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group flex flex-col items-center justify-center text-center gap-3 p-4 sm:p-5 rounded-2xl border border-theme-gold/40 bg-gradient-to-b from-theme-gold/20 via-theme-surface to-theme-surface hover:border-theme-gold hover:-translate-y-1 transition-all h-full min-h-[150px] sm:min-h-[170px] shadow-theme-card"
+                  className="group flex flex-col items-center justify-center text-center gap-3 p-4 sm:p-5 rounded-2xl border border-theme-gold/40 glass bg-gradient-to-b from-theme-gold/20 via-theme-surface to-theme-surface hover:border-theme-gold hover:-translate-y-1 transition-all h-full min-h-[150px] sm:min-h-[170px] shadow-theme-card"
                 >
                   <span className="p-3 rounded-full border border-theme-gold/50 bg-theme-gold/15 text-theme-gold group-hover:bg-theme-gold group-hover:text-black transition-colors">
                     <tile.icon size={26} />
@@ -283,7 +283,7 @@ export const CourtSitePage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {leaders.map((p: any, i: number) => (
                 <Reveal key={i} delay={i * 60}>
-                  <div className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all h-full">
+                  <div className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all h-full">
                     <div className="flex items-center gap-2 mb-2 text-theme-gold">
                       <Users size={15} />
                     </div>
@@ -357,7 +357,7 @@ export const CourtSitePage: React.FC = () => {
           ) : (
             <div className="space-y-3">
               {hearings.map((h: any) => (
-                <div key={h.id} className="p-4 rounded-xl bg-theme-surface border border-theme-border hover:border-theme-gold transition-all font-mono text-xs">
+                <div key={h.id} className="p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all font-mono text-xs">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-theme-border pb-2 mb-2 text-theme-textMuted">
                     <span className="font-semibold text-theme-text">{h.id}</span>
                     <div className="flex items-center gap-3 text-[11px]">
@@ -448,7 +448,7 @@ export const CourtSitePage: React.FC = () => {
                     href="https://president.tj"
                     target="_blank"
                     rel="noreferrer"
-                    className="group block overflow-hidden rounded-2xl border border-theme-gold/40 bg-theme-surface hover:border-theme-gold transition-all shadow-theme-card"
+                    className="group block overflow-hidden rounded-2xl border border-theme-gold/40 glass hover:border-theme-gold transition-all shadow-theme-card"
                   >
                     <div className="relative h-56 sm:h-64 overflow-hidden bg-gradient-to-br from-theme-gold/30 via-theme-surface to-theme-bg flex items-center justify-center">
                       <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-theme-gold/25 blur-3xl" />

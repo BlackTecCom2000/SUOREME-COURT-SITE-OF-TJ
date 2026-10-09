@@ -86,7 +86,7 @@ export function StateDutyCalculator({ language }: { language: 'ru' | 'tj' | 'en'
   const getName = (obj: any) => obj[`name_${language}`] || obj[`title_${language}`];
 
   return (
-    <div className="bg-[#f8f9fa] dark:bg-[#0a0f16] p-6 lg:p-12 font-serif text-gray-900 dark:text-gray-100">
+    <div className="glass glass-panel p-6 lg:p-12 font-serif text-theme-text">
       <h2 className="text-3xl font-bold mb-8 text-[#1a2b49] dark:text-[#b88a24]">
         {t.title[language]}
       </h2>
@@ -97,7 +97,7 @@ export function StateDutyCalculator({ language }: { language: 'ru' | 'tj' | 'en'
           <div>
             <label className="block text-sm font-semibold mb-2">{t.selectAction[language]}</label>
             <select 
-              className="w-full p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700 font-sans"
+              className="glass-input font-sans"
               value={selectedCategory || ''}
               onChange={e => {
                 setSelectedCategory(Number(e.target.value));
@@ -118,7 +118,7 @@ export function StateDutyCalculator({ language }: { language: 'ru' | 'tj' | 'en'
                 type="number"
                 min="0"
                 step="0.01"
-                className="w-full p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700 font-sans"
+                className="glass-input font-sans"
                 value={amount}
                 onChange={e => setAmount(e.target.value === '' ? '' : Number(e.target.value))}
               />
@@ -129,7 +129,7 @@ export function StateDutyCalculator({ language }: { language: 'ru' | 'tj' | 'en'
             <div>
               <label className="block text-sm font-semibold mb-2">{t.exemptionLabel[language]}</label>
               <select 
-                className="w-full p-3 border rounded-md dark:bg-gray-800 dark:border-gray-700 font-sans"
+                className="glass-input font-sans"
                 value={selectedExemption || ''}
                 onChange={e => setSelectedExemption(Number(e.target.value) || null)}
               >
@@ -144,23 +144,23 @@ export function StateDutyCalculator({ language }: { language: 'ru' | 'tj' | 'en'
           <div className="flex space-x-4 pt-4">
             <button 
               onClick={handleCalculate}
-              className="px-6 py-3 bg-[#b88a24] text-white font-semibold rounded shadow hover:bg-[#9c751e] transition-colors"
+              className="btn-primary"
             >
               {t.calculate[language]}
             </button>
             <button 
               onClick={handleReset}
-              className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-semibold rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              className="btn-secondary"
             >
               {t.reset[language]}
             </button>
           </div>
           
-          {error && <div className="text-red-600 dark:text-red-400 mt-4 p-4 bg-red-50 dark:bg-red-900/20 rounded border border-red-200 dark:border-red-800">{error}</div>}
+          {error && <div className="text-red-600 dark:text-red-400 mt-4 p-4 bg-red-500/10 rounded border border-red-500/30">{error}</div>}
         </div>
 
         {/* Right Column: Results */}
-        <div className="glass glass-card p-8 dark:bg-[#1a2b49] flex flex-col justify-between">
+        <div className="glass glass-card p-8 flex flex-col justify-between">
           <div>
             <h3 className="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">
               {t.resultTitle[language]}
@@ -175,14 +175,14 @@ export function StateDutyCalculator({ language }: { language: 'ru' | 'tj' | 'en'
                 <div className="space-y-6">
                   <div>
                     <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">{t.formulaTitle[language]}</h4>
-                    <pre className="font-mono text-sm bg-gray-50 dark:bg-gray-900 p-3 rounded whitespace-pre-wrap text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800">
+                    <pre className="glass-nest font-mono text-sm p-3 rounded whitespace-pre-wrap text-gray-600 dark:text-gray-400">
                       {result.formula}
                     </pre>
                   </div>
                   
                   <div>
                     <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">{t.legalBasisTitle[language]}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-100 dark:border-blue-800/30">
+                    <p className="glass-nest text-sm text-gray-600 dark:text-gray-400 p-3 rounded">
                       {result.exemption ? result.exemption.legal_basis : result.rule.legal_basis}
                     </p>
                   </div>

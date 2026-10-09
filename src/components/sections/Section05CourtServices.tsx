@@ -133,7 +133,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <div className="p-2 rounded-lg bg-theme-bg/60 border border-theme-border">
+                      <div className="p-2 rounded-lg glass-nest border">
                         <Icon size={20} className={item.colorClass} />
                       </div>
                       <span className="font-mono text-2xs px-2 py-0.5 rounded-full border border-theme-border bg-theme-bg/40 text-theme-textMuted uppercase tracking-wider">
@@ -190,7 +190,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                       value={calcClaimSum}
                       onChange={(e) => calculateStateDuty(e.target.value)}
                       placeholder={language === 'en' ? 'Claim amount in TJS...' : language === 'tj' ? 'Маблағи даъво бо сомонӣ (TJS)...' : 'Сумма иска в сомони (TJS)...'}
-                      className="w-full bg-theme-bg border border-theme-border rounded-xl px-4 py-2.5 text-xs text-theme-text font-mono placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
+                      className="glass-input w-full px-4 py-2.5 text-xs font-mono placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
                     />
 
                     {calculatedDuty !== null && (
@@ -230,7 +230,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                    <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/50 text-xs">
+                    <div className="p-3 rounded-xl border glass-nest text-xs">
                       <div className="font-mono text-2xs text-theme-textMuted uppercase mb-1">
                         {t('appeals.receptionPersonal')}
                       </div>
@@ -239,7 +239,7 @@ export const Section05CourtServices: React.FC<Section05CourtServicesProps> = ({
                       </div>
                     </div>
 
-                    <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/50 text-xs">
+                    <div className="p-3 rounded-xl border glass-nest text-xs">
                       <div className="font-mono text-2xs text-theme-textMuted uppercase mb-1">
                         {t('appeals.receptionNotice')}
                       </div>

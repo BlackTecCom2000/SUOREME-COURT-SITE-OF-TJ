@@ -39,16 +39,17 @@
     --lg-pod-surface: linear-gradient(135deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.36) 100%);
     --lg-pod-ink: #0b1220;
 
-    /* Light Theme Liquid Glass Surfaces - guaranteed readable contrast */
-    --glass-surface: rgba(255, 255, 255, 0.86);
-    --glass-surface-strong: rgba(255, 255, 255, 0.94);
-    --glass-surface-hover: rgba(255, 255, 255, 0.97);
-    --glass-surface-active: #ffffff;
-    --glass-border: rgba(15, 23, 42, 0.12);
-    --glass-border-subtle: rgba(15, 23, 42, 0.08);
+    /* Light Theme Liquid Glass Surfaces - guaranteed readable contrast.
+       v2.20.0: cool silver-blue veils (were neutral white). */
+    --glass-surface: rgba(231, 239, 251, 0.86);
+    --glass-surface-strong: rgba(226, 235, 250, 0.94);
+    --glass-surface-hover: rgba(229, 238, 251, 0.97);
+    --glass-surface-active: #f2f6fd;
+    --glass-border: rgba(23, 43, 77, 0.14);
+    --glass-border-subtle: rgba(23, 43, 77, 0.09);
     --glass-border-hover: rgba(154, 107, 18, 0.55);
-    --glass-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-    --glass-shadow-hover: 0 14px 40px rgba(15, 23, 42, 0.10), inset 0 1px 0 #ffffff;
+    --glass-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    --glass-shadow-hover: 0 14px 40px rgba(15, 23, 42, 0.12), inset 0 1px 0 #ffffff;
     --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.98);
     --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
 
@@ -504,7 +505,8 @@ html.is-morphing-theme ::view-transition-new(root) {
   }
 
   [data-theme="light"] .liquid-glass-title-pod {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(243, 247, 255, 0.80) 100%);
+    /* v2.20.0: layered cool veil (was flat near-white 0.88/0.80). */
+    background: linear-gradient(135deg, rgba(233, 241, 253, 0.90) 0%, rgba(212, 227, 246, 0.78) 100%);
     backdrop-filter: blur(24px) saturate(110%);
     -webkit-backdrop-filter: blur(24px) saturate(110%);
     border: 1px solid rgba(255, 255, 255, 0.95);
@@ -1005,6 +1007,23 @@ html.is-morphing-theme ::view-transition-new(root) {
   }
   .glass-chip {
     border-radius: var(--glass-radius-small);
+  }
+  /* v2.20.0: shared nested-row surface. One class replacing ~50 copies of
+     `bg-theme-bg/60` / `bg-theme-surface` rows that rendered flat (token but
+     no blur) inside glass cards. No padding/radius of its own, so it drops
+     into existing `p-* rounded-* border` shells without layout shifts; alphas
+     stay low so nesting never muddies. */
+  .glass-nest {
+    background: var(--glass-surface-subtle);
+    border: 1px solid var(--glass-border-subtle);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    box-shadow: var(--glass-highlight);
+  }
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass-nest {
+      background: var(--glass-surface);
+    }
   }
   /* Premium/ultra tiers: modals, dropdowns, popovers, nav shells. */
   .glass-premium {

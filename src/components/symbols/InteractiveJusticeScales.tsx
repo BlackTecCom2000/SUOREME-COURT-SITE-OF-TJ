@@ -92,7 +92,7 @@ export const InteractiveJusticeScales: React.FC<InteractiveJusticeScalesProps> =
           className={`px-3.5 py-1.5 rounded-lg border text-xs font-serif font-bold transition-all ${
             balanceState === 'law'
               ? 'border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.3)]'
-              : 'border-white/10 bg-[#060b18]/80 text-white/70 hover:border-[#dfbe7e]'
+              : 'border-white/10 bg-theme-surface/60 text-theme-textSec hover:border-[#dfbe7e] hover:text-theme-text'
           }`}
         >
           {language === 'tj' ? 'ҚОНУН' : language === 'en' ? 'LAW' : 'ЗАКОН'}
@@ -104,7 +104,7 @@ export const InteractiveJusticeScales: React.FC<InteractiveJusticeScalesProps> =
           className={`px-4 py-1.5 rounded-full border text-xs font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 ${
             balanceState === 'restored'
               ? 'border-emerald-400 bg-emerald-400/20 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.4)]'
-              : 'border-[#dfbe7e] bg-[#dfbe7e]/15 text-[#ffe082] hover:bg-[#dfbe7e]/30'
+              : 'border-[#dfbe7e] bg-[#dfbe7e]/15 text-theme-gold hover:bg-[#dfbe7e]/30'
           }`}
         >
           <Scale size={13} />
@@ -129,7 +129,7 @@ export const InteractiveJusticeScales: React.FC<InteractiveJusticeScalesProps> =
           className={`px-3.5 py-1.5 rounded-lg border text-xs font-serif font-bold transition-all ${
             balanceState === 'justice'
               ? 'border-emerald-400 bg-emerald-400/20 text-emerald-300 shadow-[0_0_12px_rgba(52,211,153,0.3)]'
-              : 'border-white/10 bg-[#060b18]/80 text-white/70 hover:border-[#dfbe7e]'
+              : 'border-white/10 bg-theme-surface/60 text-theme-textSec hover:border-[#dfbe7e] hover:text-theme-text'
           }`}
         >
           {language === 'tj' ? 'АДОЛАТ' : language === 'en' ? 'JUSTICE' : 'ПРАВО'}

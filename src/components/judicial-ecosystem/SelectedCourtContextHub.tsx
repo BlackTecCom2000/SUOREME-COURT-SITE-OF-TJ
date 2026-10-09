@@ -181,7 +181,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
 
       {/* 4. CONTACTS & DETAILS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6 font-mono text-xs">
-        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
+        <div className="p-3 rounded-xl border glass-nest flex items-start gap-2.5">
           <MapPin size={16} className="text-theme-gold shrink-0 mt-0.5" />
           <div className="overflow-hidden">
             <span className="text-2xs text-theme-textMuted uppercase block">Адрес канцелярии</span>
@@ -191,7 +191,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
           </div>
         </div>
 
-        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
+        <div className="p-3 rounded-xl border glass-nest flex items-start gap-2.5">
           <Phone size={16} className="text-cyan-500 shrink-0 mt-0.5" />
           <div className="overflow-hidden">
             <span className="text-2xs text-theme-textMuted uppercase block">Телефон приёмной</span>
@@ -201,7 +201,7 @@ export const SelectedCourtContextHub: React.FC<SelectedCourtContextHubProps> = (
           </div>
         </div>
 
-        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-start gap-2.5">
+        <div className="p-3 rounded-xl border glass-nest flex items-start gap-2.5">
           <Mail size={16} className="text-emerald-500 shrink-0 mt-0.5" />
           <div className="overflow-hidden">
             <span className="text-2xs text-theme-textMuted uppercase block">Электронная почта</span>

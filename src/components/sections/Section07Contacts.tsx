@@ -52,7 +52,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
           {/* Left: Official Headquarters Dossier */}
           <div className="lg:col-span-7">
             <Reveal delay={200}>
-              <div className="p-6 sm:content-card flex flex-col justify-between h-full">
+              <div className="p-6 content-card flex flex-col justify-between h-full">
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <span className="font-mono text-xs text-theme-gold uppercase tracking-wider font-semibold flex items-center gap-2">
@@ -65,7 +65,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                   </div>
 
                   <div className="space-y-4 font-mono text-xs text-theme-textSec mb-6">
-                    <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
+                    <div className="p-4 rounded-xl glass-nest border flex items-start gap-3">
                       <MapPin size={18} className="text-theme-gold shrink-0 mt-0.5" />
                       <div>
                         <span className="text-2xs text-theme-textMuted uppercase block">
@@ -78,7 +78,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
+                      <div className="p-4 rounded-xl glass-nest border flex items-start gap-3">
                         <Phone size={18} className="text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
                         <div>
                           <span className="text-2xs text-theme-textMuted uppercase block">
@@ -90,7 +90,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                         </div>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
+                      <div className="p-4 rounded-xl glass-nest border flex items-start gap-3">
                         <Mail size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                         <div>
                           <span className="text-2xs text-theme-textMuted uppercase block">
@@ -120,7 +120,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
           {/* Right: Citizens Personal Reception Schedule */}
           <div className="lg:col-span-5">
             <Reveal delay={250}>
-              <div className="p-6 sm:content-card flex flex-col justify-between h-full">
+              <div className="p-6 content-card flex flex-col justify-between h-full">
                 <div>
                   <div className="flex items-center gap-2 font-mono text-xs text-theme-gold uppercase tracking-wider font-semibold mb-4">
                     <Calendar size={16} />
@@ -128,7 +128,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                   </div>
 
                   <div className="space-y-3 font-mono text-xs text-theme-textSec mb-6">
-                    <div className="p-3.5 rounded-xl bg-theme-bg/60 border border-theme-border">
+                    <div className="p-3.5 rounded-xl glass-nest border">
                       <div className="text-2xs text-theme-textMuted uppercase mb-1">
                         {language === 'en' ? 'Chief Justice' : language === 'tj' ? 'Раиси Суди Олии ҶТ' : 'Председатель Верховного суда'}
                       </div>
@@ -138,7 +138,7 @@ export const Section07Contacts: React.FC<Section07ContactsProps> = ({
                       </div>
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-theme-bg/60 border border-theme-border">
+                    <div className="p-3.5 rounded-xl glass-nest border">
                       <div className="text-2xs text-theme-textMuted uppercase mb-1">
                         {language === 'en' ? 'Deputy Chairpersons' : language === 'tj' ? 'Муовинони Раиси Суди Олӣ' : 'Заместители Председателя'}
                       </div>

@@ -96,7 +96,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
 
       {/* 3. Regional Metrics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 font-mono text-xs">
-        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
+        <div className="p-3 rounded-xl border glass-nest flex items-center justify-between">
           <div>
             <span className="text-2xs text-theme-textMuted uppercase block">Всего органов</span>
             <span className="text-lg font-bold text-theme-text">{total}</span>
@@ -104,7 +104,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
           <Landmark size={18} className="text-theme-gold" />
         </div>
 
-        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
+        <div className="p-3 rounded-xl border glass-nest flex items-center justify-between">
           <div>
             <span className="text-2xs text-theme-textMuted uppercase block">Городских судов</span>
             <span className="text-lg font-bold text-theme-text">{cities}</span>
@@ -112,7 +112,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
           <Building2 size={18} className="text-cyan-500" />
         </div>
 
-        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
+        <div className="p-3 rounded-xl border glass-nest flex items-center justify-between">
           <div>
             <span className="text-2xs text-theme-textMuted uppercase block">Районных судов</span>
             <span className="text-lg font-bold text-theme-text">{districts}</span>
@@ -120,7 +120,7 @@ export const RegionSummaryContextHub: React.FC<RegionSummaryContextHubProps> = (
           <MapPin size={18} className="text-emerald-500" />
         </div>
 
-        <div className="p-3 rounded-xl border border-theme-border bg-theme-bg/60 flex items-center justify-between">
+        <div className="p-3 rounded-xl border glass-nest flex items-center justify-between">
           <div>
             <span className="text-2xs text-theme-textMuted uppercase block">Гарнизон</span>
             <span className="text-lg font-bold text-theme-text">{military || 1}</span>

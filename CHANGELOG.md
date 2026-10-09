@@ -10,6 +10,37 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.20.0 - Premium day theme: cool silver-blue glass (Phase 1)
+- Released: 2026-10-09 16:48
+- Previous: v2.19.3
+- Light glass identity: neutral white veils -> cool silver-blue
+  (`surfaceGlass` 229,238,251 etc., same alphas) in the `glass-light`
+  preset, mirrored into `index.css :root` and `tokens.css` first-paint
+  defaults. Dark stays neutral (v2.19.3 stands).
+- Light depth: shadows deepened (0.06->0.08, 0.08->0.12, 0.12->0.16,
+  glass 0.10->0.14), steel-navy borders, hero pod 0.88 flat white ->
+  layered cool gradient (0.90/0.78).
+- New shared `.glass-nest` class (subtle veil + blur + highlight, no
+  padding/radius of its own, `@supports` fallback) replacing ~50 flat
+  `bg-theme-bg/60` / `bg-theme-surface` rows across sections, hubs,
+  CourtSitePage, dashboard, search, footer and JudicialModal bodies.
+- Flat nodes to glass: `StateDutyCalculator` (opaque `bg-[#f8f9fa]` panel ->
+  `glass-panel`, inputs -> `glass-input`, buttons -> `btn-primary` /
+  `btn-secondary`, `dark:bg-[#1a2b49]` removed, red/blue boxes translucent),
+  Section05 mini-calculator input + reception boxes, CourtSite carousel
+  wrapper/tiles/rows/president card, `Section07Contacts` panels now glass on
+  mobile too, symbol control pills readable in light (`text-theme-*`,
+  gold actives via `text-theme-gold`), modal slate pill + directorate cells.
+- Left untouched by design: photo-filled symbol stages (bg invisible),
+  gradient heroes, header/footer strips, selection/semantic states
+  (emerald box, gold box, tabs), book-cover art, table `<tr>` rows, tiny
+  link rows/chips/inputs.
+- No DB republish needed: published config is dark-scheme (untouched);
+  light comes from the code preset for explicit choices.
+- QA: `tsc 0`, build 0, smoke 11/11 HTTP 200, Playwright dark+light
+  (hero, services, contacts, bank-acts modal), 375px no overflow, console
+  shows only pre-existing hydration #425/#418/#422 + WASM CSP notes.
+
 ## v2.19.3 - Neutral glass: hue drift removed in dark mode
 - Released: 2026-10-09 13:58
 - Previous: v2.19.2

@@ -93,7 +93,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                 </div>
 
                 <div className="space-y-4 font-mono text-xs text-theme-textSec mb-6">
-                  <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
+                  <div className="p-4 rounded-xl glass-nest border flex items-start gap-3">
                     <MapPin size={18} className="text-theme-gold shrink-0 mt-0.5" />
                     <div>
                       <span className="text-2xs text-theme-textMuted uppercase block">
@@ -106,7 +106,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
+                    <div className="p-4 rounded-xl glass-nest border flex items-start gap-3">
                       <Phone size={18} className="text-cyan-400 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-2xs text-theme-textMuted uppercase block">
@@ -118,7 +118,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                       </div>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-theme-bg/60 border border-theme-border flex items-start gap-3">
+                    <div className="p-4 rounded-xl glass-nest border flex items-start gap-3">
                       <Mail size={18} className="text-emerald-400 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-2xs text-theme-textMuted uppercase block">
@@ -176,7 +176,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
                       <div
                         key={item.id}
                         onClick={onOpenNews}
-                        className="group p-4 rounded-xl bg-theme-bg/60 border border-theme-border hover:border-theme-gold transition-all cursor-pointer shadow-xs"
+                        className="group p-4 rounded-xl glass-nest border hover:border-theme-gold transition-all cursor-pointer shadow-xs"
                       >
                         <div className="flex items-center justify-between text-2xs font-mono text-theme-textMuted mb-1">
                           <span>{new Date(item.published_at).toLocaleDateString()}</span>

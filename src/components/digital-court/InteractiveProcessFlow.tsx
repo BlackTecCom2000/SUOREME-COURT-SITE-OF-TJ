@@ -208,7 +208,7 @@ export const InteractiveProcessFlow: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.25 }}
-          className="rounded-xl border border-theme-border/60 bg-theme-bg/60 p-4 sm:p-5 relative overflow-hidden"
+          className="rounded-xl border glass-nest p-4 sm:p-5 relative overflow-hidden"
         >
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
             <div className="flex items-center gap-3">

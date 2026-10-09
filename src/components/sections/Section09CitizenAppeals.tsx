@@ -86,7 +86,7 @@ export const Section09CitizenAppeals: React.FC<Section09CitizenAppealsProps> = (
             <div className="content-card flex flex-col justify-between h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-2.5 rounded-xl bg-theme-bg/60 border border-theme-border">
+                  <div className="p-2.5 rounded-xl glass-nest border">
                     <Send size={22} className="text-theme-gold" />
                   </div>
                   <span className="font-mono text-2xs text-emerald-400 border border-emerald-400/30 bg-emerald-500/10 px-2.5 py-1 rounded-full uppercase tracking-wider">
@@ -134,7 +134,7 @@ export const Section09CitizenAppeals: React.FC<Section09CitizenAppealsProps> = (
             <div className="content-card flex flex-col justify-between h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-2.5 rounded-xl bg-theme-bg/60 border border-theme-border">
+                  <div className="p-2.5 rounded-xl glass-nest border">
                     <FileDown size={22} className="text-cyan-400" />
                   </div>
                   <span className="font-mono text-2xs text-theme-textMuted uppercase tracking-wider">
@@ -156,7 +156,7 @@ export const Section09CitizenAppeals: React.FC<Section09CitizenAppealsProps> = (
                       <div
                         key={doc.id}
                         onClick={onOpenDocs}
-                        className="group p-3.5 rounded-xl bg-theme-bg/60 border border-theme-border hover:border-theme-gold transition-all cursor-pointer flex items-center justify-between shadow-xs"
+                        className="group p-3.5 rounded-xl glass-nest border hover:border-theme-gold transition-all cursor-pointer flex items-center justify-between shadow-xs"
                       >
                         <div>
                           <div className="font-mono text-2xs text-theme-gold uppercase mb-0.5">

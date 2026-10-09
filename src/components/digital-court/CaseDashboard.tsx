@@ -94,7 +94,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
                 </p>
 
                 {/* Micro Timeline in Card */}
-                <div className="rounded-2xl bg-theme-bg/60 border border-theme-border/60 p-4 mb-6">
+                <div className="rounded-2xl glass-nest border p-4 mb-6">
                   <div className="text-2xs font-mono uppercase text-theme-textMuted mb-3 flex items-center justify-between">
                     <span>{language === 'tj' ? 'ТАЪРИХИ РАВАНД' : language === 'en' ? 'CASE PROGRESS' : 'ХОД ДЕЛА'}</span>
                     <span className="text-theme-gold">
