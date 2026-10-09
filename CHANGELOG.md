@@ -10,6 +10,30 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.21.0 - Typography audit: H1 discipline and verified trilingual type
+- Released: 2026-10-09 17:04
+- Previous: v2.20.0
+- Audit: every public page has exactly one H1 (Home hero, About,
+  Leadership, ContentDetail, Library, NotFound, Sitemap) — except court
+  pages, whose court-name hero was a plain `div`.
+- Fix: court hero title is now a valid `h1 > span` (Reveal wrappers switched
+  to `as="span" className="block"`, inner divs to block spans — a `div`
+  inside `h1` would be invalid HTML). Zero visual change, zero content
+  change (all official texts untouched per content-integrity rule).
+- Verified: Tajik glyphs ғ/ӣ/ӯ/қ/ҳ/ҷ render correctly (Inter + Cormorant
+  cyrillic-ext subsets ship in the bundle — confirmed in build assets).
+- Verified matrix 3 languages x 2 themes x desktop/mobile (12 combos):
+  exactly one H1 on `/` and `/courts/sino`, no horizontal overflow anywhere
+  (including Tajik 375px with long compounds), same layout system in all
+  languages. Body text never below 12px in public UI (`text-2xs` only on
+  admin labels); `::selection` + global `:focus-visible` already present.
+- Court-page console notes: #418 x9 + #422 x1 on `/courts/*` are
+  pre-existing data-fetch hydration mismatches (leaders/hearings load
+  client-side; SSR renders fallback) — homepage still shows only the known
+  4 pre-existing notes. Not introduced by this change (static identical JSX
+  both sides).
+- QA: `tsc 0`, build 0, smoke 11/11 HTTP 200.
+
 ## v2.20.0 - Premium day theme: cool silver-blue glass (Phase 1)
 - Released: 2026-10-09 16:48
 - Previous: v2.19.3

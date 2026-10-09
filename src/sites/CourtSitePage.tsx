@@ -127,16 +127,16 @@ export const CourtSitePage: React.FC = () => {
             </div>
           </Reveal>
 
-          <div className="text-3xl font-medium uppercase leading-[1.06] tracking-tight text-theme-text drop-shadow-sm sm:text-5xl md:text-6xl">
-            <Reveal delay={0} priority={true}>
-              <div>{pickTri(cfg.name, language)}</div>
+          <h1 className="text-3xl font-medium uppercase leading-[1.06] tracking-tight text-theme-text drop-shadow-sm sm:text-5xl md:text-6xl">
+            <Reveal delay={0} priority={true} as="span" className="block">
+              <span className="block">{pickTri(cfg.name, language)}</span>
             </Reveal>
-            <Reveal delay={150} priority={true}>
-              <div className="normal-case italic font-light text-theme-gold">
+            <Reveal delay={150} priority={true} as="span" className="block">
+              <span className="block normal-case italic font-light text-theme-gold">
                 {pickTri(cfg.cityLine, language)}
-              </div>
+              </span>
             </Reveal>
-          </div>
+          </h1>
 
           <Reveal delay={300}>
             <p className="mt-5 text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-lg">
