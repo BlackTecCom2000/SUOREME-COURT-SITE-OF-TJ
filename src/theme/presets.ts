@@ -66,16 +66,19 @@ export const THEME_PRESETS: ThemePreset[] = [
   {
     id: 'glass-dark',
     name: 'Glass Dark',
-    description: 'Ночное стекло: лунный холодный оттенок, глубокий фон',
+    description: 'Ночное стекло: нейтральное, глубокий фон',
     config: {
       scheme: 'dark',
       colors: {
         background: '#05080f',
         backgroundSecondary: '#070d1c',
-        surface: 'rgba(158, 190, 240, 0.11)',
-        surfaceSecondary: 'rgba(150, 182, 235, 0.08)',
-        surfaceGlass: 'rgba(176, 206, 250, 0.13)',
-        surfaceGlassStrong: 'rgba(170, 200, 245, 0.18)',
+        // v2.19.3: neutral achromatic glass — the old moonlight-blue tints
+        // (158,190,240…) drifted with the photograph under 180% saturation.
+        // Alphas are unchanged, so weight and depth stay identical.
+        surface: 'rgba(255, 255, 255, 0.11)',
+        surfaceSecondary: 'rgba(255, 255, 255, 0.08)',
+        surfaceGlass: 'rgba(255, 255, 255, 0.13)',
+        surfaceGlassStrong: 'rgba(255, 255, 255, 0.18)',
         textPrimary: '#ffffff',
         textSecondary: '#cbd5e1',
         textMuted: '#94a3b8',
@@ -88,7 +91,7 @@ export const THEME_PRESETS: ThemePreset[] = [
         danger: '#f87171',
         info: '#60a5fa',
       },
-      glass: { ...GLASS_GEOMETRY, transparency: 0.13 },
+      glass: { ...GLASS_GEOMETRY, transparency: 0.13, saturation: '105%' },
       radius: { ...RADIUS },
       spacing: { ...SPACING },
       shadows: {

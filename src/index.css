@@ -97,21 +97,20 @@
     --court-gold: #dfbe7e;
 
     /* Dark Theme Liquid Glass Surfaces.
-       These used to be near-opaque navy (alpha 0.86–0.99). Against the night
-       photograph that produced black slabs: a surface at 0.94 alpha has nothing
-       left to refract, so it read as a hole rather than as glass. Liquid glass
-       only looks like glass when light passes through it, so the dark palette
-       now uses a LUMINOUS tint instead of a dark fill - cool moonlight white,
-       low alpha. White body text keeps a large contrast margin over a dark
-       photograph, so legibility improves while the material starts reading. */
-    --glass-surface: rgba(158, 190, 240, 0.11);
-    --glass-surface-strong: rgba(170, 200, 245, 0.16);
-    --glass-surface-hover: rgba(190, 215, 255, 0.22);
-    --glass-surface-active: rgba(150, 182, 235, 0.18);
+       v2.19.3: neutral achromatic veils — the old moonlight-blue tints
+       drifted with the photograph under high saturation, so every glass
+       surface now uses white at the same alphas. Weight and depth are
+       unchanged; only the hue drift is gone. Liquid glass only looks like
+       glass when light passes through it, so alphas stay low. White body
+       text keeps a large contrast margin over a dark photograph. */
+    --glass-surface: rgba(255, 255, 255, 0.11);
+    --glass-surface-strong: rgba(255, 255, 255, 0.16);
+    --glass-surface-hover: rgba(255, 255, 255, 0.22);
+    --glass-surface-active: rgba(255, 255, 255, 0.18);
     --glass-surface-dark: rgba(9, 16, 32, 0.72);
-    --glass-surface-subtle: rgba(158, 190, 240, 0.07);
+    --glass-surface-subtle: rgba(255, 255, 255, 0.07);
     --glass-surface-tint: rgba(223, 190, 126, 0.12);
-    --glass-surface-scene: rgba(120, 152, 210, 0.14);
+    --glass-surface-scene: rgba(255, 255, 255, 0.14);
     --glass-border: rgba(255, 255, 255, 0.16);
     --glass-border-subtle: rgba(255, 255, 255, 0.10);
     --glass-border-hover: rgba(223, 190, 126, 0.55);
@@ -122,10 +121,11 @@
     --glass-highlight-inner: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
 
     /* The dark material tints slightly more than the light one so it separates
-       from the night sky instead of dissolving into it. */
-    --lg-tint: rgba(176, 206, 250, 0.13);
-    --lg-tint-hover: rgba(196, 220, 255, 0.20);
-    --lg-tint-press: rgba(150, 182, 235, 0.10);
+       from the night sky instead of dissolving into it. Neutral white since
+       v2.19.3 (was moonlight blue). */
+    --lg-tint: rgba(255, 255, 255, 0.13);
+    --lg-tint-hover: rgba(255, 255, 255, 0.20);
+    --lg-tint-press: rgba(255, 255, 255, 0.10);
 
     /* Atmospheric field: cool moonlight and a warm court-gold bloom over deep
        navy. Low alpha on purpose - this is atmosphere, not a scrim. */
@@ -135,9 +135,10 @@
     --field-wash-b: rgba(196, 154, 74, 0.13);
     --field-wash-top: rgba(120, 160, 235, 0.16);
 
-    /* Hero pod: cool moonlight tint over the night sky. White body text keeps a
-       very wide contrast margin because the sky behind it is nearly black. */
-    --lg-pod-surface: linear-gradient(135deg, rgba(30, 52, 92, 0.46) 0%, rgba(12, 24, 46, 0.34) 100%);
+    /* Hero pod: neutral white veil over the night sky (was a navy-blue
+       gradient that tinted the whole pod). White body text keeps a very
+       wide contrast margin because the sky behind it is nearly black. */
+    --lg-pod-surface: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.09) 100%);
     --lg-pod-ink: #ffffff;
 
     --ring-offset: var(--bg-primary);
@@ -475,8 +476,10 @@ html.is-morphing-theme ::view-transition-new(root) {
        there is nothing left of the background to refract. Now it uses the same
        luminous translucent material as every other surface, themed per scheme. */
     background: var(--lg-pod-surface);
-    backdrop-filter: blur(28px) saturate(180%) brightness(1.06);
-    -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(1.06);
+    /* v2.19.3: saturate 110% — the old 180% amplified the photograph's hue
+       through the translucent pod (blue over sky, warm over stone). */
+    backdrop-filter: blur(28px) saturate(110%) brightness(1.06);
+    -webkit-backdrop-filter: blur(28px) saturate(110%) brightness(1.06);
     border: 1px solid var(--lg-rim-top);
     color: var(--lg-pod-ink);
     box-shadow:
@@ -502,8 +505,8 @@ html.is-morphing-theme ::view-transition-new(root) {
 
   [data-theme="light"] .liquid-glass-title-pod {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(243, 247, 255, 0.80) 100%);
-    backdrop-filter: blur(24px) saturate(150%);
-    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(110%);
+    -webkit-backdrop-filter: blur(24px) saturate(110%);
     border: 1px solid rgba(255, 255, 255, 0.95);
     color: #000000;
     box-shadow: 

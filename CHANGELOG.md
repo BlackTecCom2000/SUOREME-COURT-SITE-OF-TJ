@@ -10,6 +10,30 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.19.3 - Neutral glass: hue drift removed in dark mode
+- Released: 2026-10-09 13:58
+- Previous: v2.19.2
+- Problem: dark glass carried a moonlight-blue veil (158,190,240 at 0.13)
+  under 180% backdrop saturation, so every surface drifted with the
+  photograph — blue over sky, warm over stone. Light was already neutral.
+- `glass-dark` preset: the four surface colors are now achromatic white at
+  the same alphas (0.11/0.08/0.13/0.18), saturation 180% -> 105%.
+  Transparency, blur, gold accents, shadows untouched.
+- `index.css` dark block mirrored to the same neutrals (first-paint/SSR
+  defaults, no blue flash before the store hydrates).
+- Hero pod had its own drift sources outside the preset system: navy-blue
+  gradient -> neutral white veil, hardcoded `saturate(180%)` -> 110%
+  (light pod 150% -> 110%).
+- Critical: the published DB `theme_config_v1` still held the old blue
+  values, and the DB config is authoritative for fresh visitors — republished
+  via admin API (draft save + site publish, both 200), public endpoint now
+  serves neutral surfaces at 105%.
+- Left alone: light preset/CSS, gold accents, background field washes
+  (atmosphere, not glass), opt-in CMS presets glass-blue/emerald/royal.
+- QA: `tsc 0`, build 0, smoke 11/11 HTTP 200, Playwright computed vars in
+  both runtime paths (fresh-DB and preset-dark: white 0.13, 105%),
+  dark screenshots over sky and building, light unchanged, 375px no overflow.
+
 ## v2.19.2 - Unified navbar row and clean light hero pod
 - Released: 2026-10-09 13:29
 - Previous: v2.19.1
