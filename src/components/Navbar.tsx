@@ -284,7 +284,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full p-0.5 border border-theme-gold/40 bg-theme-bg/80 shadow-md shadow-theme-gold/15 group-hover:scale-105 group-hover:border-theme-gold transition-all duration-300 flex items-center justify-center shrink-0">
               <img
                 src={`/emblems/emblem-${language}.png`}
-                alt="Эмблема Верховного Суда Республики Таджикистан"
+                alt={
+                  language === 'tj'
+                    ? 'Нишони Суди Олии Ҷумҳурии Тоҷикистон'
+                    : language === 'en'
+                      ? 'Emblem of the Supreme Court of the Republic of Tajikistan'
+                      : 'Эмблема Верховного Суда Республики Таджикистан'
+                }
                 className="w-full h-full object-contain rounded-full drop-shadow-sm"
               />
             </div>
@@ -346,7 +352,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={() => revealToggle()}
-            className="hidden sm:flex p-1.5 rounded-xl border border-theme-border hover:border-theme-borderHover hover:text-theme-text transition-colors bg-theme-bg/60 text-theme-textSec items-center justify-center shadow-xs"
+            className="hidden sm:flex tap-target p-1.5 rounded-xl border border-theme-border hover:border-theme-borderHover hover:text-theme-text transition-colors bg-theme-bg/60 text-theme-textSec items-center justify-center shadow-xs"
             title={isDark ? t('nav.themeLight') : t('nav.themeDark')}
             aria-label={isDark ? t('nav.themeLight') : t('nav.themeDark')}
           >
@@ -361,7 +367,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={onToggleContrast}
-            className={`hidden sm:flex p-1.5 rounded-xl border transition-colors items-center gap-1 shadow-xs ${
+            className={`hidden sm:flex tap-target p-1.5 rounded-xl border transition-colors items-center gap-1 shadow-xs ${
               isHighContrast
                 ? 'border-yellow-400 text-yellow-400 bg-black/60'
                 : 'border-theme-border hover:border-theme-borderHover hover:text-theme-text bg-theme-bg/60 text-theme-textSec'
@@ -426,7 +432,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               type="button"
               onClick={onOpenESud}
-              className="btn-primary tap-target text-xs h-9 px-3 sm:px-4 hidden sm:inline-flex"
+              className="btn-primary tap-target text-xs px-3 sm:px-4 hidden sm:inline-flex"
             >
               <Lock size={12} />
               <span>{language === 'tj' ? 'Воридшавӣ' : language === 'en' ? 'Sign In' : 'Войти'}</span>
@@ -438,11 +444,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               type="button"
               onClick={() => setMenuPopoverOpen(!menuPopoverOpen)}
-              className={`p-2.5 glass glass-chip transition-colors flex items-center gap-1.5 text-xs font-mono ${
-                menuPopoverOpen ? 'border-theme-gold text-theme-gold shadow-theme-gold/20' : 'border-theme-border text-theme-text hover:border-theme-gold'
+              className={`btn-ghost tap-target px-2.5 sm:px-3 text-xs font-mono flex items-center gap-1.5 ${
+                menuPopoverOpen ? 'border-theme-gold text-theme-gold' : ''
               }`}
             >
-              <Compass size={16} />
+              <Compass size={14} />
               <span>{language === 'tj' ? 'Мундариҷа' : language === 'en' ? 'Explore' : 'Навигация'}</span>
             </button>
 

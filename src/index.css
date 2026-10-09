@@ -514,6 +514,10 @@ html.is-morphing-theme ::view-transition-new(root) {
 
   [data-theme="light"] .liquid-glass-title-pod::before {
     background: radial-gradient(circle, color-mix(in srgb, var(--gold-500) 16%, transparent) 0%, transparent 70%);
+    /* v2.19.2: the gold orb read as a dirty beige stain on the near-white
+       light pod over a bright sky, so it is hidden in light mode only.
+       Dark mode keeps the glow. */
+    opacity: 0;
   }
 
   .public-readable {

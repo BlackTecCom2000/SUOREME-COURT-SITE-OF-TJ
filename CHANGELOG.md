@@ -10,6 +10,28 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.19.2 - Unified navbar row and clean light hero pod
+- Released: 2026-10-09 13:29
+- Previous: v2.19.1
+- Navbar right row used four button systems at three heights (44/44/44/44/38):
+  the "Мундариҷа" menu trigger was a raw `glass-chip` (38px) next to
+  `btn-base` buttons (44px). It now uses `btn-ghost` + `tap-target` with the
+  same padding and a 14px icon like its siblings — measured 44px in dark and
+  light, open-state gold indication preserved.
+- Removed a dead `h-9` override on the sign-in button (the `btn-base`
+  `min-height: 44px` already governed the height; no visual change, less
+  confusion).
+- Theme and accessibility icon buttons (~27px visual) gained `tap-target`:
+  visually neutral on desktop, 44px hit area on touch.
+- Light-theme hero pod: the gold `::before` orb rendered as a beige stain on
+  the near-white pod over a bright sky, so it is now `opacity: 0` in light
+  mode only — dark mode keeps the glow.
+- Emblem `alt` is language-aware (tj/ru/en) instead of Russian-only.
+- Left the `( 0x ) [ 00x / 007 ]` badge numbering untouched: it is a
+  consistent system across six section pods, changing one would break it.
+- QA: `tsc 0`, build 0, smoke 11/11 HTTP 200, Playwright header geometry
+  (dark+light) and screenshots, no horizontal overflow at 375px.
+
 ## v2.19.1 - Symmetric card grids and aligned split columns
 - Released: 2026-10-09 12:54
 - Previous: v2.19.0
