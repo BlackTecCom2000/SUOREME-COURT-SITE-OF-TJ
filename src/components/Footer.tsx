@@ -5,6 +5,7 @@ import { APP_VERSION, APP_VERSION_LABEL } from '../version';
 import { useNavigate } from 'react-router-dom';
 import { PRESIDENT_MESSAGE, USEFUL_LINKS } from '../data/portalLinks';
 import { REGIONAL_CLUSTERS } from '../data/sudTjData';
+import { TajikistanMap } from './map/TajikistanMap';
 import type { ModalTab } from './JudicialModal';
 
 interface FooterProps {
@@ -149,31 +150,21 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                   <Map size={12} /> {language === 'en' ? 'Judicial Map' : language === 'tj' ? 'Харита' : 'Карта'}
                 </div>
                 <div className="relative flex-1 min-h-[200px] rounded-[20px] overflow-hidden border border-theme-border bg-theme-bg/60 backdrop-blur-md flex items-center justify-center p-4">
-                  {/* Subtle glass map placeholder — real Tajikistan outline stylized */}
-                  <svg viewBox="0 0 200 120" className="w-full h-full max-h-[160px]" aria-label="Карта Таджикистана">
-                    {/* Simplified Tajikistan silhouette */}
-                    <path d="M20 60 L45 35 L75 30 L110 25 L150 40 L175 55 L165 85 L120 95 L80 90 L40 80 Z" fill="rgba(223,190,126,0.06)" stroke="rgba(223,190,126,0.55)" strokeWidth="1.8" />
-                    {REGIONAL_CLUSTERS.map((rc) => {
-                      const pos: Record<string, { x: number; y: number; color: string }> = {
-                        gbao: { x: 150, y: 50, color: '#38bdf8' },
-                        khatlon: { x: 60, y: 75, color: '#34d399' },
-                        sugd: { x: 70, y: 38, color: '#a78bfa' },
-                        dushanbe_rrp: { x: 95, y: 58, color: '#f472b6' },
-                      };
-                      const p = pos[rc.id] ?? { x: 95, y: 60, color: '#dfbe7e' };
-                      const active = selectedRegion === rc.id;
-                      return (
-                        <g key={rc.id} onClick={() => setSelectedRegion(rc.id)} style={{ cursor: 'pointer' }}>
-                          <circle cx={p.x} cy={p.y} r={active ? 10 : 7} fill={active ? p.color : 'rgba(148,163,184,0.35)'} stroke={p.color} strokeWidth={active ? 2 : 1.5} opacity={active ? 1 : 0.95} />
-                          <text x={p.x} y={p.y + 18} textAnchor="middle" fontSize="6" fill="currentColor" className="text-theme-text font-mono">{rc.shortNameRu.slice(0, 6)}</text>
-                        </g>
-                      );
-                    })}
-                  </svg>
+                  {/* Real Tajikistan: GADM ADM1 polygons, simplified locally.
+                      Dushanbe + RRP are separate shapes selecting one cluster. */}
+                  <TajikistanMap
+                    selected={selectedRegion}
+                    onSelect={(id) => setSelectedRegion(selectedRegion === id ? null : id)}
+                    clusters={REGIONAL_CLUSTERS.map((rc) => ({ id: rc.id, label: rc.shortNameRu, count: rc.courts.length }))}
+                    language={language}
+                  />
                   <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-2xs font-mono text-theme-textMuted">
                     <span>{language === 'en' ? 'Select region' : language === 'tj' ? 'Минтақаро интихоб кунед' : 'Выберите регион'}</span>
                     <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-theme-gold animate-pulse" /> LIVE</span>
                   </div>
+                </div>
+                <div className="mt-1.5 text-right font-mono text-2xs text-theme-textMuted opacity-70">
+                  {language === 'en' ? 'Boundaries: GADM' : language === 'tj' ? 'Сарҳадҳо: GADM' : 'Границы: GADM'}
                 </div>
                 {/* Accessible alternative list for keyboard/screen reader */}
                 <nav aria-label="Regions" className="mt-3 flex flex-wrap gap-1.5">

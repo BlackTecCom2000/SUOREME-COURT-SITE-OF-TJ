@@ -10,6 +10,29 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.23.0 - Real interactive map of Tajikistan (GADM ADM1, zero dependencies)
+- Released: 2026-10-10 13:23
+- Previous: v2.22.0
+- The footer placeholder (hand-drawn silhouette + fixed dots) is replaced by
+  five true administrative polygons from GADM v4.1 level-1, simplified locally
+  (Douglas-Peucker ~0.015 deg, 3191 -> 647 points, ~8.5KB) and stored in
+  `src/data/tajikistanGeo.ts` — no tiles, no keys, no network, works offline.
+- Units: GBAO, Khatlon, Sughd, RRP and Dushanbe city as a SEPARATE enclave
+  polygon (not mixed with RRP). Both select the single `dushanbe_rrp`
+  catalog cluster — inventing a split of court counts is forbidden, and the
+  mapping is documented in the data file.
+- Interaction: hover lift (no geometry jumps), native tooltips with real
+  catalog counts (10/27/20/19 from `courts.length`, nothing invented),
+  click toggles selection synced both ways with the region list + chips,
+  keyboard Enter/Space with gold focus ring, `aria-pressed` states.
+- Style: neutral fills, single gold accent for the selected cluster,
+  haloed labels, theme-aware via CSS vars; `Границы: GADM` attribution.
+- License note: GADM boundaries used with attribution (government,
+  non-commercial use).
+- QA: `tsc 0`, build 0, smoke 11/11 HTTP 200, Playwright functional
+  (5 units, click/keyboard sync, counts), dark+light screenshots, 375px
+  clean, console only pre-existing hydration notes.
+
 ## v2.22.0 - Homepage refinement: footer composition and map legibility (Phase 2a)
 - Released: 2026-10-10 13:04
 - Previous: v2.21.0

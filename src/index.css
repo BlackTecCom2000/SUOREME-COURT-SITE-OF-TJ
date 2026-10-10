@@ -1025,6 +1025,32 @@ html.is-morphing-theme ::view-transition-new(root) {
       background: var(--glass-surface);
     }
   }
+  /* v2.23.0: real Tajikistan map units. Neutral fills (single gold accent
+     for the selected cluster only), hover lift without geometry jumps,
+     visible keyboard focus. Labels never intercept pointer events. */
+  .tjk-unit {
+    cursor: pointer;
+    outline: none;
+  }
+  .tjk-unit path {
+    transition: fill 0.25s ease, stroke 0.25s ease, filter 0.25s ease;
+  }
+  .tjk-unit:hover path {
+    filter: brightness(1.4);
+  }
+  .tjk-unit:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+  .tjk-label {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    pointer-events: none;
+    user-select: none;
+    paint-order: stroke;
+    stroke-width: 2.5px;
+  }
   /* Premium/ultra tiers: modals, dropdowns, popovers, nav shells. */
   .glass-premium {
     border-radius: var(--glass-radius-panel);
