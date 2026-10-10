@@ -10,6 +10,30 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.22.0 - Homepage refinement: footer composition and map legibility (Phase 2a)
+- Released: 2026-10-10 13:04
+- Previous: v2.21.0
+- Footer-local veil: soft `transparent -> theme-bg/20 -> theme-bg/50`
+  gradient behind the columns (plain background layer, no blur) so the
+  facade never competes with card text while staying recognizable.
+- Four columns unified: all `flex flex-col` with `flex-1` content
+  (distributed nav links, growing court list, growing map box, spread
+  contact rows) — tops and bottoms align; `gap-*` minimums keep mobile
+  stacking tight. Same `p-5`, same gold `text-xs` titles (were `text-2xs`).
+- Contacts lightened: 4 dense `glass` rows -> `glass-nest`; even rhythm.
+- Map less pale: silhouette stroke 1.2->1.8 at 0.55 + faint gold fill,
+  markers filled slate (were near-invisible white 0.08), box min-h 200.
+  Real geography stays scheduled for the dedicated map release.
+- Readability: directory court links 11px -> 12px; president + marquee
+  titles `text-xs`.
+- QA: `tsc 0`, build 0, smoke 11/11 HTTP 200, Playwright footer dark+light
+  (+ network/courts sections as bonus), 375px no overflow, console only
+  pre-existing hydration notes.
+- Tooling note: two `<footer>` elements exist in DOM (site footer is the
+  last); single-`querySelector` screenshot scripts must target accordingly.
+  Page height grows on scroll (lazy mounting) — stepper scrolling for
+  bottom captures.
+
 ## v2.21.0 - Typography audit: H1 discipline and verified trilingual type
 - Released: 2026-10-09 17:04
 - Previous: v2.20.0
