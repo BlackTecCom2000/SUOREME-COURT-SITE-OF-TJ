@@ -53,8 +53,8 @@ export const DutyAdminManager: React.FC = () => {
       header: 'Категория иска / Требования',
       accessor: (row) => (
         <div className="flex flex-col text-left">
-          <span className="font-serif font-bold text-sm text-white">{row.name_ru}</span>
-          <span className="font-sans text-[11px] text-slate-400 mt-0.5">{row.name_tj || ''}</span>
+          <span className="font-serif font-bold text-sm text-theme-text">{row.name_ru}</span>
+          <span className="font-sans text-[11px] text-theme-textMuted mt-0.5">{row.name_tj || ''}</span>
         </div>
       ),
     },
@@ -74,7 +74,7 @@ export const DutyAdminManager: React.FC = () => {
       accessor: (row) => {
         const rule = config.rules.find((r) => r.category_id === row.id);
         return (
-          <span className="font-mono text-[11px] text-slate-400 truncate max-w-xs block">
+          <span className="font-mono text-[11px] text-theme-textMuted truncate max-w-xs block">
             {rule?.legal_basis || 'Закон РТ "О государственной пошлине"'}
           </span>
         );
@@ -87,12 +87,12 @@ export const DutyAdminManager: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif font-bold text-2xl text-white">Тарифы государственной пошлины</h2>
-          <p className="font-sans text-xs text-slate-400 mt-1">
+          <h2 className="font-serif font-bold text-2xl text-theme-text">Тарифы государственной пошлины</h2>
+          <p className="font-sans text-xs text-theme-textMuted mt-1">
             Управление ставками, формулами расчета и льготами для граждан и юридических лиц
           </p>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-300 font-mono text-xs font-semibold">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-theme-gold/30 bg-theme-gold/10 text-theme-gold font-mono text-xs font-semibold">
           <Scale size={14} />
           <span>ПОКАЗАТЕЛЬ ДЛЯ РАСЧЕТОВ: 72 TJS</span>
         </div>
@@ -116,19 +116,19 @@ export const DutyAdminManager: React.FC = () => {
             config.exemptions.map((ex: any, idx: number) => (
               <div
                 key={idx}
-                className="p-3.5 rounded-xl border border-slate-800 bg-[#091124] flex items-start gap-3"
+                className="p-3.5 rounded-xl border border-theme-border bg-theme-surface flex items-start gap-3"
               >
                 <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-serif font-bold text-xs text-white">{ex.title_ru}</h4>
-                  <p className="font-mono text-[11px] text-slate-400 mt-0.5">
+                  <h4 className="font-serif font-bold text-xs text-theme-text">{ex.title_ru}</h4>
+                  <p className="font-mono text-[11px] text-theme-textMuted mt-0.5">
                     {ex.legal_basis} • {ex.description}
                   </p>
                 </div>
               </div>
             ))
           ) : (
-            <div className="py-4 text-slate-500 text-xs font-mono">Льготы загружаются...</div>
+            <div className="py-4 text-theme-textMuted text-xs font-mono">Льготы загружаются...</div>
           )}
         </div>
       </AdminCard>

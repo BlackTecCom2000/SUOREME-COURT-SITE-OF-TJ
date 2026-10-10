@@ -139,7 +139,7 @@ export const AdminLogin: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-slate-400 hover:text-white transition-colors"
+                  className="text-theme-textMuted hover:text-theme-text transition-colors"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -148,12 +148,12 @@ export const AdminLogin: React.FC = () => {
 
             {/* Remember Me & Forgot Password */}
             <div className="flex items-center justify-between pt-1 text-xs">
-              <label className="flex items-center gap-2 text-slate-400 cursor-pointer select-none">
+              <label className="flex items-center gap-2 text-theme-textMuted cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="rounded border-slate-700 bg-slate-900 text-amber-500 focus:ring-0 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold focus:ring-0 w-4 h-4 cursor-pointer"
                 />
                 <span>Запомнить устройство</span>
               </label>
@@ -164,7 +164,7 @@ export const AdminLogin: React.FC = () => {
                   e.preventDefault();
                   alert('Для восстановления доступа обратитесь в Административное управление Верховного суда РТ.');
                 }}
-                className="font-mono text-amber-400/80 hover:text-amber-300 hover:underline"
+                className="font-mono text-theme-gold/80 hover:text-theme-gold hover:underline"
               >
                 Забыли пароль?
               </a>
@@ -184,8 +184,8 @@ export const AdminLogin: React.FC = () => {
           </form>
 
           {/* Institutional Compliance Notice */}
-          <div className="mt-8 pt-4 border-t border-slate-800/80 text-center">
-            <span className="font-mono text-2xs text-slate-500 uppercase tracking-widest block">
+          <div className="mt-8 pt-4 border-t border-theme-border text-center">
+            <span className="font-mono text-2xs text-theme-textMuted uppercase tracking-widest block">
               ОФИЦИАЛЬНАЯ ИНФОРМАЦИОННАЯ СИСТЕМА ВЕРХОВНОГО СУДА РТ
             </span>
           </div>

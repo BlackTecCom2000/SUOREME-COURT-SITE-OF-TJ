@@ -47,34 +47,34 @@ export const UsefulSitesManager: React.FC = () => {
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="flex items-center justify-between">
-        <h2 className="font-serif text-xl font-bold text-white">Полезные сайты — СОМОНАҲОИ МУФИД</h2>
-        <span className="font-mono text-xs text-slate-400">Marquee • CMS data-driven • single source</span>
+        <h2 className="font-serif text-xl font-bold text-theme-text">Полезные сайты — СОМОНАҲОИ МУФИД</h2>
+        <span className="font-mono text-xs text-theme-textMuted">Marquee • CMS data-driven • single source</span>
       </div>
 
       <AdminCard title="Бегущая строка — настройки" subtitle="Скорость, направление, автозапуск, пауза, размер, интервал, порядок">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <label className="flex flex-col gap-1">
-            <span className="font-mono text-xs text-slate-400">Скорость (сек, 5-120)</span>
+            <span className="font-mono text-xs text-theme-textMuted">Скорость (сек, 5-120)</span>
             <AdminInput type="number" value={String(marquee.speed)} onChange={e=> setMarquee({...marquee, speed: Number(e.target.value)||36})} />
           </label>
           <label className="flex flex-col gap-1">
-            <span className="font-mono text-xs text-slate-400">Направление</span>
+            <span className="font-mono text-xs text-theme-textMuted">Направление</span>
             <AdminSelect value={marquee.direction} onChange={e=> setMarquee({...marquee, direction: (e.target as HTMLSelectElement).value as any})} options={[{value:'left',label:'Влево'},{value:'right',label:'Вправо'}]} />
           </label>
-          <label className="flex items-center gap-2 font-mono text-xs text-slate-300"><input type="checkbox" checked={marquee.autoplay} onChange={e=> setMarquee({...marquee, autoplay:e.target.checked})} /> Автозапуск</label>
-          <label className="flex items-center gap-2 font-mono text-xs text-slate-300"><input type="checkbox" checked={marquee.pause_on_hover} onChange={e=> setMarquee({...marquee, pause_on_hover:e.target.checked})} /> PauseOnHover</label>
-          <label className="flex items-center gap-2 font-mono text-xs text-slate-300"><input type="checkbox" checked={marquee.pause_on_focus} onChange={e=> setMarquee({...marquee, pause_on_focus:e.target.checked})} /> PauseOnFocus</label>
+          <label className="flex items-center gap-2 font-mono text-xs text-theme-textSec"><input type="checkbox" checked={marquee.autoplay} onChange={e=> setMarquee({...marquee, autoplay:e.target.checked})} /> Автозапуск</label>
+          <label className="flex items-center gap-2 font-mono text-xs text-theme-textSec"><input type="checkbox" checked={marquee.pause_on_hover} onChange={e=> setMarquee({...marquee, pause_on_hover:e.target.checked})} /> PauseOnHover</label>
+          <label className="flex items-center gap-2 font-mono text-xs text-theme-textSec"><input type="checkbox" checked={marquee.pause_on_focus} onChange={e=> setMarquee({...marquee, pause_on_focus:e.target.checked})} /> PauseOnFocus</label>
           <label className="flex flex-col gap-1">
-            <span className="font-mono text-xs text-slate-400">Размер логотипов (40-200)</span>
+            <span className="font-mono text-xs text-theme-textMuted">Размер логотипов (40-200)</span>
             <AdminInput type="number" value={String(marquee.logo_size)} onChange={e=> setMarquee({...marquee, logo_size: Number(e.target.value)||84})} />
           </label>
           <label className="flex flex-col gap-1">
-            <span className="font-mono text-xs text-slate-400">Интервал (4-48)</span>
+            <span className="font-mono text-xs text-theme-textMuted">Интервал (4-48)</span>
             <AdminInput type="number" value={String(marquee.gap)} onChange={e=> setMarquee({...marquee, gap: Number(e.target.value)||12})} />
           </label>
           <div className="flex items-end"><AdminButton onClick={saveMarquee} leftIcon={<Save size={14}/>}>Сохранить (Draft→Version)</AdminButton></div>
         </div>
-        <p className="font-mono text-[11px] text-slate-500 mt-3">Бесшовный loop: дублированный трек, без скачка, скорость/direction из админки, пауза при наведении/focus, touch/swipe на mobile, Liquid Glass сохранен.</p>
+        <p className="font-mono text-[11px] text-theme-textMuted mt-3">Бесшовный loop: дублированный трек, без скачка, скорость/direction из админки, пауза при наведении/focus, touch/swipe на mobile, Liquid Glass сохранен.</p>
       </AdminCard>
 
       <AdminCard title="Добавить полезный сайт" subtitle="title, subtitle, description, image, icon, link, category, language, status, sortOrder, publishedAt — TJ/RU/EN">
@@ -90,25 +90,25 @@ export const UsefulSitesManager: React.FC = () => {
       <AdminCard title="Список — управление" subtitle="создавать, редактировать, удалять, активировать, перемещать, сортировать, дублировать, публиковать, drag & drop">
         <div className="space-y-2">
           {items.map((it, idx)=> (
-            <div key={it.id} className="flex items-center gap-2 p-2 rounded-xl border border-white/10 glass">
-              <button className="cursor-grab p-1 text-slate-500" draggable onDragStart={e=> e.dataTransfer.setData('idx', String(idx))} onDragOver={e=> e.preventDefault()} onDrop={e=> { const from=Number(e.dataTransfer.getData('idx')); if(!isNaN(from)) reorder(from, idx); }}> <GripVertical size={14}/> </button>
-              <img src={it.image || `https://www.google.com/s2/favicons?domain=${(() => { try { return new URL(it.url).hostname } catch { return 'example.com' } })()}&sz=32`} alt="" className="w-6 h-6 rounded object-contain bg-white/10" loading="lazy" />
+            <div key={it.id} className="flex items-center gap-2 p-2 rounded-xl border border-theme-border glass">
+              <button className="cursor-grab p-1 text-theme-textMuted" draggable onDragStart={e=> e.dataTransfer.setData('idx', String(idx))} onDragOver={e=> e.preventDefault()} onDrop={e=> { const from=Number(e.dataTransfer.getData('idx')); if(!isNaN(from)) reorder(from, idx); }}> <GripVertical size={14}/> </button>
+              <img src={it.image || `https://www.google.com/s2/favicons?domain=${(() => { try { return new URL(it.url).hostname } catch { return 'example.com' } })()}&sz=32`} alt="" className="w-6 h-6 rounded object-contain bg-theme-bg/10" loading="lazy" />
               <div className="flex-1 min-w-0">
-                <div className="text-xs text-white truncate">{it.label_ru} <span className="text-slate-500">• {it.url}</span></div>
-                <div className="text-2xs font-mono text-slate-500 truncate">{it.label_tj} / {it.label_en}</div>
+                <div className="text-xs text-theme-text truncate">{it.label_ru} <span className="text-theme-textMuted">• {it.url}</span></div>
+                <div className="text-2xs font-mono text-theme-textMuted truncate">{it.label_tj} / {it.label_en}</div>
               </div>
-              <span className={`px-2 py-0.5 rounded-full text-2xs font-mono border ${it.status==='published'?'bg-emerald-500/20 text-emerald-300 border-emerald-500/30':'bg-amber-500/20 text-amber-300 border-amber-500/30'}`}>{it.status}</span>
+              <span className={`px-2 py-0.5 rounded-full text-2xs font-mono border ${it.status==='published'?'bg-emerald-500/20 text-emerald-300 border-emerald-500/30':'bg-theme-gold/20 text-theme-gold border-theme-gold/30'}`}>{it.status}</span>
               <AdminButton size="sm" variant="ghost" onClick={()=> setEditing(editing===it.id?null:it.id)}>{editing===it.id?'Закрыть':' Edit'}</AdminButton>
               <AdminButton size="sm" variant="ghost" onClick={()=> dup(it.id)}><Copy size={12}/></AdminButton>
-              <button onClick={()=> update(it.id, {status: it.status==='published'?'draft':'published'})} className="p-1.5 rounded-lg border border-white/10 text-slate-400 hover:text-white" title="активировать/деактивировать">{it.status==='published'?<EyeOff size={14}/>:<Eye size={14}/>}</button>
+              <button onClick={()=> update(it.id, {status: it.status==='published'?'draft':'published'})} className="p-1.5 rounded-lg border border-theme-border text-theme-textMuted hover:text-theme-text" title="активировать/деактивировать">{it.status==='published'?<EyeOff size={14}/>:<Eye size={14}/>}</button>
               <button onClick={()=> del(it.id)} className="p-1.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10"><Trash2 size={14}/></button>
-              <a href={it.url} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg border border-white/10 text-slate-400 hover:text-[var(--court-gold)]"><ExternalLink size={14}/></a>
+              <a href={it.url} target="_blank" rel="noreferrer" className="p-1.5 rounded-lg border border-theme-border text-theme-textMuted hover:text-[var(--court-gold)]"><ExternalLink size={14}/></a>
             </div>
           ))}
-          {items.length===0 && <div className="py-8 text-center font-mono text-xs text-slate-500">Нет элементов — добавьте выше.</div>}
+          {items.length===0 && <div className="py-8 text-center font-mono text-xs text-theme-textMuted">Нет элементов — добавьте выше.</div>}
         </div>
         {editing && (
-          <div className="mt-4 p-3 rounded-xl border border-amber-400/20 bg-amber-500/5">
+          <div className="mt-4 p-3 rounded-xl border border-theme-gold/20 bg-theme-gold/5">
             {(() => { const it=items.find(x=>x.id===editing); if(!it) return null; return (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <AdminInput label="URL" value={it.url} onChange={e=> update(it.id, {url:e.target.value})} />

@@ -372,15 +372,15 @@ export const NewsEditor: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/admin/news')}
-            className="p-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 hover:text-white hover:border-amber-400/40 transition-colors"
+            className="p-2 rounded-xl border border-theme-border bg-theme-bg text-theme-textMuted hover:text-theme-text hover:border-amber-400/40 transition-colors"
           >
             <ArrowLeft size={18} />
           </button>
           <div>
-            <h2 className="font-serif font-bold text-2xl text-white">
+            <h2 className="font-serif font-bold text-2xl text-theme-text">
               {isEditing ? 'Редактирование публикации' : 'Новая публикация'}
             </h2>
-            <p className="font-mono text-xs text-slate-400">
+            <p className="font-mono text-xs text-theme-textMuted">
               {formData.slug ? `slug: ${formData.slug}` : 'Черновик материала'}
             </p>
           </div>
@@ -410,16 +410,16 @@ export const NewsEditor: React.FC = () => {
         <div className="space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto pr-2 custom-scrollbar xl:col-span-2">
           <AdminCard title="Основной контент">
             {/* Magic composer + auto-translate */}
-            <div className="mb-5 rounded-xl border border-amber-400/30 bg-amber-400/5 p-3.5 space-y-3">
+            <div className="mb-5 rounded-xl border border-theme-gold/30 bg-theme-gold/5 p-3.5 space-y-3">
               <div className="flex flex-col lg:flex-row gap-2">
                 <div className="relative flex-1">
-                  <Sparkles size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-400 pointer-events-none" />
+                  <Sparkles size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-gold pointer-events-none" />
                   <input
                     value={magicTopic}
                     onChange={(e) => setMagicTopic(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') runMagic(false); }}
                     placeholder="Волшебство: тема («празднование дня независимости…») — или пусто, чтобы обработать текущий текст"
-                    className="w-full h-10 pl-9 pr-3 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 border border-slate-700/80 font-sans text-xs focus:outline-none focus:border-amber-400"
+                    className="w-full h-10 pl-9 pr-3 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-xs focus:outline-none focus:border-amber-400"
                   />
                 </div>
                 <div className="flex gap-2">
@@ -454,22 +454,22 @@ export const NewsEditor: React.FC = () => {
                     ]}
                   />
                   <div className="w-full flex flex-col gap-1.5 text-left">
-                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-slate-400">
+                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-theme-textMuted">
                       Контекст (факты)
                     </label>
                     <input
                       value={pubContext}
                       onChange={(e) => setPubContext(e.target.value)}
                       placeholder="Даты, имена, цифры — попадут как есть"
-                      className="w-full h-11 px-4 rounded-xl font-sans text-sm bg-slate-900/90 text-white placeholder-slate-500 border border-slate-700/80 focus:outline-none focus:border-amber-400"
+                      className="w-full h-11 px-4 rounded-xl font-sans text-sm bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border focus:outline-none focus:border-amber-400"
                     />
                   </div>
                 </div>
               )}
               {magicResult && (
-                <div className="rounded-xl border border-amber-400/40 bg-slate-900/90 p-3.5 space-y-2">
+                <div className="rounded-xl border border-amber-400/40 bg-theme-bg p-3.5 space-y-2">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="font-mono text-[11px] uppercase tracking-widest text-amber-300">
+                    <span className="font-mono text-[11px] uppercase tracking-widest text-theme-gold">
                       Черновик ({magicResult.lang.toUpperCase()}) — проверьте
                     </span>
                     <div className="flex gap-2">
@@ -484,15 +484,15 @@ export const NewsEditor: React.FC = () => {
                       </AdminButton>
                     </div>
                   </div>
-                  <div className="font-sans font-bold text-sm text-white">{magicResult.title}</div>
-                  <div className="font-sans text-xs text-slate-300 italic">{magicResult.excerpt}</div>
-                  <div className="font-sans text-xs text-slate-400 whitespace-pre-line max-h-40 overflow-y-auto pr-1">
+                  <div className="font-sans font-bold text-sm text-theme-text">{magicResult.title}</div>
+                  <div className="font-sans text-xs text-theme-textSec italic">{magicResult.excerpt}</div>
+                  <div className="font-sans text-xs text-theme-textMuted whitespace-pre-line max-h-40 overflow-y-auto pr-1">
                     {magicResult.body}
                   </div>
                 </div>
               )}
               <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-[11px] text-slate-400 uppercase tracking-wider">
+                <span className="font-mono text-[11px] text-theme-textMuted uppercase tracking-wider">
                   Перевести {activeLang.toUpperCase()} →
                 </span>
                 <AdminButton size="sm" variant="outline" leftIcon={<Languages size={13} />} onClick={translateToOthers} isLoading={transBusy}>
@@ -512,13 +512,13 @@ export const NewsEditor: React.FC = () => {
                   </span>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-2xs text-slate-400">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-2xs text-theme-textMuted">
                 {(['tj', 'ru', 'en'] as const).map((l) => {
                   const filled = ['title', 'excerpt', 'body'].filter((f) => String((formData as any)[f + '_' + l] || '').trim()).length;
                   const aiN = ['title', 'excerpt', 'body'].filter((f) => (aiMeta[f + '_' + l]?.s === 'ai')).length;
                   const dirtyN = ['title', 'excerpt', 'body'].filter((f) => fieldStatus(f, l)?.dirty).length;
                   const revN = ['title', 'excerpt', 'body'].filter((f) => (aiMeta[f + '_' + l]?.s === 'reviewed')).length;
-                  const dot = dirtyN > 0 ? 'bg-red-400' : aiN > 0 ? 'bg-amber-400' : revN > 0 ? 'bg-emerald-400' : filled > 0 ? 'bg-slate-400' : 'bg-transparent border border-slate-600';
+                  const dot = dirtyN > 0 ? 'bg-red-400' : aiN > 0 ? 'bg-amber-400' : revN > 0 ? 'bg-emerald-400' : filled > 0 ? 'bg-theme-textMuted' : 'bg-transparent border border-theme-border';
                   return (
                     <span key={l} className="inline-flex items-center gap-1.5" title={dirtyN > 0 ? 'Изменено после AI' : aiN > 0 ? 'AI-версия' : revN > 0 ? 'Проверено' : filled > 0 ? 'Заполнено' : 'Пусто'}>
                       <span className={'w-2 h-2 rounded-full ' + dot} />
@@ -550,7 +550,7 @@ export const NewsEditor: React.FC = () => {
                     placeholder="Например: Пленум Верховного суда рассмотрел практику применения..."
                   />
                   <div className="flex flex-col gap-1.5 text-left">
-                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-slate-400">
+                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-theme-textMuted">
                       Краткое описание / Лид (RU)
                     </label>
                     <textarea
@@ -558,11 +558,11 @@ export const NewsEditor: React.FC = () => {
                       value={formData.excerpt_ru}
                       onChange={(e) => setFormData({ ...formData, excerpt_ru: e.target.value })}
                       placeholder="Краткая суть публикации для новостной ленты и поисковиков..."
-                      className="w-full p-3.5 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 border border-slate-700/80 font-sans text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
+                      className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5 text-left">
-                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-slate-400">
+                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-theme-textMuted">
                       Полный текст публикации (RU)
                     </label>
                     <textarea
@@ -570,7 +570,7 @@ export const NewsEditor: React.FC = () => {
                       value={formData.body_ru}
                       onChange={(e) => setFormData({ ...formData, body_ru: e.target.value })}
                       placeholder="Введите официальный текст публикации..."
-                      className="w-full p-4 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 border border-slate-700/80 font-sans text-sm leading-relaxed focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
+                      className="w-full p-4 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm leading-relaxed focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
                     />
                   </div>
                 </>
@@ -585,7 +585,7 @@ export const NewsEditor: React.FC = () => {
                     placeholder="Сарлавҳа бо забони тоҷикӣ..."
                   />
                   <div className="flex flex-col gap-1.5 text-left">
-                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-slate-400">
+                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-theme-textMuted">
                       Тавзеҳи кӯтоҳ (TJ)
                     </label>
                     <textarea
@@ -593,11 +593,11 @@ export const NewsEditor: React.FC = () => {
                       value={formData.excerpt_tj}
                       onChange={(e) => setFormData({ ...formData, excerpt_tj: e.target.value })}
                       placeholder="Матни мухтасари хабар..."
-                      className="w-full p-3.5 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 border border-slate-700/80 font-sans text-sm focus:outline-none focus:border-amber-400"
+                      className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-amber-400"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5 text-left">
-                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-slate-400">
+                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-theme-textMuted">
                       Матни пурра (TJ)
                     </label>
                     <textarea
@@ -605,7 +605,7 @@ export const NewsEditor: React.FC = () => {
                       value={formData.body_tj}
                       onChange={(e) => setFormData({ ...formData, body_tj: e.target.value })}
                       placeholder="Матни расмии хабар бо забони тоҷикӣ..."
-                      className="w-full p-4 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 border border-slate-700/80 font-sans text-sm leading-relaxed focus:outline-none focus:border-amber-400"
+                      className="w-full p-4 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm leading-relaxed focus:outline-none focus:border-amber-400"
                     />
                   </div>
                 </>
@@ -620,7 +620,7 @@ export const NewsEditor: React.FC = () => {
                     placeholder="English headline..."
                   />
                   <div className="flex flex-col gap-1.5 text-left">
-                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-slate-400">
+                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-theme-textMuted">
                       Short Excerpt (EN)
                     </label>
                     <textarea
@@ -628,11 +628,11 @@ export const NewsEditor: React.FC = () => {
                       value={formData.excerpt_en}
                       onChange={(e) => setFormData({ ...formData, excerpt_en: e.target.value })}
                       placeholder="Summary in English..."
-                      className="w-full p-3.5 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 border border-slate-700/80 font-sans text-sm focus:outline-none focus:border-amber-400"
+                      className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-amber-400"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5 text-left">
-                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-slate-400">
+                    <label className="font-mono text-xs font-medium uppercase tracking-wider text-theme-textMuted">
                       Full Article Body (EN)
                     </label>
                     <textarea
@@ -640,7 +640,7 @@ export const NewsEditor: React.FC = () => {
                       value={formData.body_en}
                       onChange={(e) => setFormData({ ...formData, body_en: e.target.value })}
                       placeholder="Full press release in English..."
-                      className="w-full p-4 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 border border-slate-700/80 font-sans text-sm leading-relaxed focus:outline-none focus:border-amber-400"
+                      className="w-full p-4 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm leading-relaxed focus:outline-none focus:border-amber-400"
                     />
                   </div>
                 </>
@@ -668,7 +668,7 @@ export const NewsEditor: React.FC = () => {
                 />
                 {(formData.status === 'rejected' || (canReview && isEditing)) && (
                   <div className="flex flex-col gap-1.5">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">
                       Причина возврата / review notes
                     </span>
                     <textarea
@@ -677,7 +677,7 @@ export const NewsEditor: React.FC = () => {
                       rows={3}
                       disabled={!canReview}
                       placeholder="Обязательно при отклонении: что исправить…"
-                      className="w-full rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 p-3 leading-relaxed disabled:opacity-50"
+                      className="w-full rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-400 p-3 leading-relaxed disabled:opacity-50"
                     />
                   </div>
                 )}
@@ -725,12 +725,12 @@ export const NewsEditor: React.FC = () => {
                 )}
 
                 <div className="pt-2">
-                  <label className="flex items-center gap-2.5 text-xs text-slate-300 cursor-pointer select-none">
+                  <label className="flex items-center gap-2.5 text-xs text-theme-textSec cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={formData.featured}
                       onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                      className="rounded border-slate-700 bg-slate-900 text-amber-500 w-4 h-4 cursor-pointer"
+                      className="rounded border-theme-border bg-theme-bg text-amber-500 w-4 h-4 cursor-pointer"
                     />
                     <span>Закрепить на главной (Главная новость)</span>
                   </label>
@@ -766,8 +766,8 @@ export const NewsEditor: React.FC = () => {
 
       {/* STICKY BOTTOM ACTION BAR */}
       <div className="fixed bottom-0 left-0 right-0 z-40 h-16 glass-navigation !rounded-none border-t px-6 flex items-center justify-between shadow-2xl">
-        <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-          <Clock size={14} className="text-amber-400" />
+        <div className="flex items-center gap-2 text-xs font-mono text-theme-textMuted">
+          <Clock size={14} className="text-theme-gold" />
           <span>Все изменения фиксируются в журнале ревизий</span>
         </div>
 
@@ -833,7 +833,7 @@ export const NewsEditor: React.FC = () => {
               Опубликовать сейчас
             </AdminButton>
           ) : (
-            <span className="font-mono text-[11px] text-slate-500" title="Нужна привилегия content.publish">
+            <span className="font-mono text-[11px] text-theme-textMuted" title="Нужна привилегия content.publish">
               Нет права публикации
             </span>
           )}

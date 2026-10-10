@@ -58,12 +58,12 @@ export const AuditLogViewer: React.FC = () => {
       width: '180px',
       accessor: (row) => (
         <div className="flex items-center gap-2 text-left">
-          <Activity size={14} className="text-amber-400 shrink-0" />
+          <Activity size={14} className="text-theme-gold shrink-0" />
           <div className="flex flex-col">
-            <span className="font-mono font-bold text-xs text-amber-300 uppercase">
+            <span className="font-mono font-bold text-xs text-theme-gold uppercase">
               {row.action}
             </span>
-            <span className="font-mono text-2xs text-slate-500 uppercase">
+            <span className="font-mono text-2xs text-theme-textMuted uppercase">
               {row.object_type} {row.object_id ? `ID #${row.object_id}` : ''}
             </span>
           </div>
@@ -74,11 +74,11 @@ export const AuditLogViewer: React.FC = () => {
       header: 'Объект / Описание',
       accessor: (row) => (
         <div className="flex flex-col text-left">
-          <span className="font-serif font-bold text-sm text-white">
+          <span className="font-serif font-bold text-sm text-theme-text">
             {row.object_title || row.object_type}
           </span>
           {row.old_status && row.new_status && (
-            <span className="font-mono text-2xs text-slate-400 mt-0.5">
+            <span className="font-mono text-2xs text-theme-textMuted mt-0.5">
               Статус: {row.old_status} → {row.new_status}
             </span>
           )}
@@ -89,7 +89,7 @@ export const AuditLogViewer: React.FC = () => {
       header: 'Сотрудник',
       width: '180px',
       accessor: (row) => (
-        <span className="font-mono text-xs text-slate-300">
+        <span className="font-mono text-xs text-theme-textSec">
           {row.user_name || 'System Admin'}
         </span>
       ),
@@ -98,7 +98,7 @@ export const AuditLogViewer: React.FC = () => {
       header: 'IP Адрес',
       width: '130px',
       accessor: (row) => (
-        <span className="font-mono text-xs text-slate-400">{row.ip_address || '127.0.0.1'}</span>
+        <span className="font-mono text-xs text-theme-textMuted">{row.ip_address || '127.0.0.1'}</span>
       ),
     },
     {
@@ -106,7 +106,7 @@ export const AuditLogViewer: React.FC = () => {
       width: '160px',
       className: 'text-right',
       accessor: (row) => (
-        <span className="font-mono text-xs text-slate-400">
+        <span className="font-mono text-xs text-theme-textMuted">
           {new Date(row.created_at).toLocaleString()}
         </span>
       ),
@@ -118,8 +118,8 @@ export const AuditLogViewer: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif font-bold text-2xl text-white">Журнал аудита безопасности</h2>
-          <p className="font-sans text-xs text-slate-400 mt-1">
+          <h2 className="font-serif font-bold text-2xl text-theme-text">Журнал аудита безопасности</h2>
+          <p className="font-sans text-xs text-theme-textMuted mt-1">
             Неизменяемый протокол всех действий администраторов и изменений в системе
           </p>
         </div>
@@ -138,8 +138,8 @@ export const AuditLogViewer: React.FC = () => {
               onClick={() => setActionFilter(act)}
               className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-colors uppercase ${
                 actionFilter === act
-                  ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/20'
-                  : 'bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-theme-gold text-theme-bg font-bold shadow-md shadow-theme-gold/20'
+                  : 'bg-theme-bg border border-theme-border text-theme-textMuted hover:text-theme-text'
               }`}
             >
               {act === 'all' ? 'Все действия' : act}
@@ -148,13 +148,13 @@ export const AuditLogViewer: React.FC = () => {
         </div>
 
         <div className="relative w-full sm:w-72">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-textMuted" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск по журналу..."
-            className="w-full h-10 pl-10 pr-4 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+            className="w-full h-10 pl-10 pr-4 rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
           />
         </div>
       </div>

@@ -395,16 +395,16 @@ export const Slider3DManager: React.FC = () => {
   return (
     <div className="space-y-6 text-left animate-fadeIn pb-12">
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-2 border-b border-theme-border">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-500 dark:text-amber-400">
+          <div className="p-3 rounded-2xl bg-theme-gold/10 border border-theme-gold/30 text-theme-gold">
             <Sparkles size={24} />
           </div>
           <div>
-            <h2 className="font-serif font-bold text-2xl text-black dark:text-white">
+            <h2 className="font-serif font-bold text-2xl text-theme-text">
               3D Слайдер (Карусель новостей)
             </h2>
-            <p className="font-sans text-xs text-black dark:text-white mt-0.5">
+            <p className="font-sans text-xs text-theme-text mt-0.5">
               Управление слайдами, параметрами 3D-геометрии, автопрокруткой и визуальным стилем
             </p>
           </div>
@@ -497,14 +497,14 @@ export const Slider3DManager: React.FC = () => {
                       p-4 rounded-xl border cursor-pointer transition-all duration-200 flex flex-col justify-between
                       ${
                         config.sourceMode === mode.id
-                          ? 'border-amber-500 bg-amber-500/10 shadow-md'
-                          : 'border-slate-200 bg-slate-50/80 hover:border-slate-300 hover:bg-white text-slate-900 dark:border-slate-800 dark:bg-slate-900/50 dark:hover:border-slate-700 dark:hover:bg-slate-900'
+                          ? 'border-theme-gold bg-theme-gold/10 shadow-md'
+                          : 'border-theme-border bg-theme-surface hover:border-theme-border hover:bg-theme-bg/60 text-theme-text dark:border-theme-border dark:bg-theme-surface dark:hover:border-theme-border dark:hover:bg-theme-surface'
                       }
                     `}
                   >
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="font-serif font-bold text-sm text-black dark:text-white">{mode.title}</span>
+                        <span className="font-serif font-bold text-sm text-theme-text">{mode.title}</span>
                         <AdminBadge
                           variant={config.sourceMode === mode.id ? 'active' : 'draft'}
                           size="sm"
@@ -512,10 +512,10 @@ export const Slider3DManager: React.FC = () => {
                           {mode.tag}
                         </AdminBadge>
                       </div>
-                      <p className="font-sans text-xs text-black dark:text-white leading-relaxed">{mode.desc}</p>
+                      <p className="font-sans text-xs text-theme-text leading-relaxed">{mode.desc}</p>
                     </div>
-                    <div className="mt-3 pt-2 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between text-[11px] font-mono">
-                      <span className={config.sourceMode === mode.id ? 'text-amber-600 dark:text-amber-400 font-bold' : 'text-black dark:text-white font-medium'}>
+                    <div className="mt-3 pt-2 border-t border-theme-border/60 flex items-center justify-between text-[11px] font-mono">
+                      <span className={config.sourceMode === mode.id ? 'text-theme-gold font-bold' : 'text-theme-text font-medium'}>
                         {config.sourceMode === mode.id ? '✓ Активен' : 'Выбрать'}
                       </span>
                     </div>
@@ -552,7 +552,7 @@ export const Slider3DManager: React.FC = () => {
             }
           >
             {slides.length === 0 ? (
-              <div className="p-8 text-center text-black dark:text-white font-sans text-sm">
+              <div className="p-8 text-center text-theme-text font-sans text-sm">
                 Список слайдов пуст. Нажмите «Добавить слайд» или «Импорт из новостей».
               </div>
             ) : (
@@ -564,18 +564,18 @@ export const Slider3DManager: React.FC = () => {
                       p-3.5 sm:p-4 rounded-xl border transition-all duration-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4
                       ${
                         slide.isActive
-                          ? 'border-slate-200 bg-slate-50/80 hover:bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900/60 dark:hover:border-slate-700 shadow-sm dark:shadow-none'
-                          : 'border-slate-200/60 bg-slate-100/40 opacity-60 dark:border-slate-800/40 dark:bg-slate-950/40'
+                          ? 'border-theme-border bg-theme-surface hover:bg-theme-bg/60 hover:border-theme-border dark:bg-theme-surface dark:hover:border-theme-border shadow-sm dark:shadow-none'
+                          : 'border-theme-border/60 bg-theme-bg/40 opacity-60 dark:border-theme-border/40 dark:bg-theme-surface'
                       }
                     `}
                   >
                     {/* Left: Thumbnail & Info */}
                     <div className="flex items-start sm:items-center gap-3.5 min-w-0">
-                      <span className="font-mono text-xs text-black dark:text-white w-5 shrink-0 text-center font-bold">
+                      <span className="font-mono text-xs text-theme-text w-5 shrink-0 text-center font-bold">
                         #{idx + 1}
                       </span>
 
-                      <div className="w-20 h-14 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shrink-0 bg-slate-100 dark:bg-slate-950 relative group shadow-sm">
+                      <div className="w-20 h-14 rounded-lg overflow-hidden border border-theme-border shrink-0 bg-theme-bg relative group shadow-sm">
                         <img
                           src={slide.imageUrl}
                           alt={slide.titleRu || slide.titleTj}
@@ -585,10 +585,10 @@ export const Slider3DManager: React.FC = () => {
 
                       <div className="min-w-0 text-left">
                         <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <span className="px-2 py-0.5 rounded text-2xs font-mono font-bold uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                          <span className="px-2 py-0.5 rounded text-2xs font-mono font-bold uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-theme-gold/30">
                             {slide.categoryTj || slide.categoryRu}
                           </span>
-                          <span className="text-[11px] font-mono text-black dark:text-white">
+                          <span className="text-[11px] font-mono text-theme-text">
                             {slide.dateText}
                           </span>
                           {slide.linkUrl && (
@@ -598,12 +598,12 @@ export const Slider3DManager: React.FC = () => {
                           )}
                         </div>
 
-                        <h4 className="font-serif font-bold text-sm text-black dark:text-white truncate max-w-lg">
+                        <h4 className="font-serif font-bold text-sm text-theme-text truncate max-w-lg">
                           {slide.titleTj || slide.titleRu}
                         </h4>
 
                         {slide.titleRu && slide.titleTj && (
-                          <p className="font-sans text-xs text-black dark:text-white truncate max-w-lg mt-0.5">
+                          <p className="font-sans text-xs text-theme-text truncate max-w-lg mt-0.5">
                             RU: {slide.titleRu}
                           </p>
                         )}
@@ -618,7 +618,7 @@ export const Slider3DManager: React.FC = () => {
                         onClick={() => handleMoveSlide(idx, 'up')}
                         disabled={idx === 0}
                         title="Поднять выше"
-                        className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                        className="p-1.5 rounded-lg border border-theme-border text-theme-textMuted hover:text-theme-text hover:bg-theme-bg/60 disabled:opacity-30 disabled:pointer-events-none transition-colors"
                       >
                         <MoveUp size={14} />
                       </button>
@@ -627,7 +627,7 @@ export const Slider3DManager: React.FC = () => {
                         onClick={() => handleMoveSlide(idx, 'down')}
                         disabled={idx === slides.length - 1}
                         title="Опустить ниже"
-                        className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                        className="p-1.5 rounded-lg border border-theme-border text-theme-textMuted hover:text-theme-text hover:bg-theme-bg/60 disabled:opacity-30 disabled:pointer-events-none transition-colors"
                       >
                         <MoveDown size={14} />
                       </button>
@@ -640,7 +640,7 @@ export const Slider3DManager: React.FC = () => {
                         className={`p-1.5 rounded-lg border transition-colors ${
                           slide.isActive
                             ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20'
-                            : 'border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                            : 'border-theme-border text-theme-textMuted hover:text-theme-textSec'
                         }`}
                       >
                         {slide.isActive ? <Eye size={14} /> : <EyeOff size={14} />}
@@ -651,7 +651,7 @@ export const Slider3DManager: React.FC = () => {
                         type="button"
                         onClick={() => handleOpenEdit(slide)}
                         title="Редактировать слайд"
-                        className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        className="p-1.5 rounded-lg border border-theme-border text-theme-textSec hover:text-theme-gold hover:bg-theme-bg/60 transition-colors"
                       >
                         <Edit2 size={14} />
                       </button>
@@ -661,7 +661,7 @@ export const Slider3DManager: React.FC = () => {
                         type="button"
                         onClick={() => handleDeleteSlide(slide.id)}
                         title="Удалить слайд"
-                        className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                        className="p-1.5 rounded-lg border border-theme-border text-theme-textMuted hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -681,12 +681,12 @@ export const Slider3DManager: React.FC = () => {
           <AdminCard title="Автовоспроизведение и сенсорное управление">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Autoplay switch */}
-              <label className="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
+              <label className="flex items-center justify-between gap-3 p-4 rounded-xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
                 <div>
-                  <span className="block text-sm text-black dark:text-white font-medium">
+                  <span className="block text-sm text-theme-text font-medium">
                     Автоматическая прокрутка слайдов
                   </span>
-                  <span className="block font-sans text-xs text-black dark:text-white mt-1">
+                  <span className="block font-sans text-xs text-theme-text mt-1">
                     Слайды будут автоматически перелистываться с заданным интервалом
                   </span>
                 </div>
@@ -694,17 +694,17 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.autoplay}
                   onChange={(e) => setConfig({ ...config, autoplay: e.target.checked })}
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
 
               {/* Pause on hover */}
-              <label className="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
+              <label className="flex items-center justify-between gap-3 p-4 rounded-xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
                 <div>
-                  <span className="block text-sm text-black dark:text-white font-medium">
+                  <span className="block text-sm text-theme-text font-medium">
                     Пауза при наведении мыши
                   </span>
-                  <span className="block font-sans text-xs text-black dark:text-white mt-1">
+                  <span className="block font-sans text-xs text-theme-text mt-1">
                     Останавливать таймер автопрокрутки, когда курсор находится над слайдером
                   </span>
                 </div>
@@ -712,17 +712,17 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.pauseOnHover}
                   onChange={(e) => setConfig({ ...config, pauseOnHover: e.target.checked })}
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
 
               {/* 3D Tilt on hover */}
-              <label className="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
+              <label className="flex items-center justify-between gap-3 p-4 rounded-xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
                 <div>
-                  <span className="block text-sm text-black dark:text-white font-medium">
+                  <span className="block text-sm text-theme-text font-medium">
                     3D-наклон за курсором (Tilt Parallax)
                   </span>
-                  <span className="block font-sans text-xs text-black dark:text-white mt-1">
+                  <span className="block font-sans text-xs text-theme-text mt-1">
                     Живой интерактивный эффект наклона центральной карточки вслед за курсором
                   </span>
                 </div>
@@ -730,17 +730,17 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.tiltEnabled}
                   onChange={(e) => setConfig({ ...config, tiltEnabled: e.target.checked })}
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
 
               {/* Drag & swipe */}
-              <label className="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
+              <label className="flex items-center justify-between gap-3 p-4 rounded-xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
                 <div>
-                  <span className="block text-sm text-black dark:text-white font-medium">
+                  <span className="block text-sm text-theme-text font-medium">
                     Свайп и перетаскивание мышью
                   </span>
-                  <span className="block font-sans text-xs text-black dark:text-white mt-1">
+                  <span className="block font-sans text-xs text-theme-text mt-1">
                     Поддержка свайпов на тачскринах и перетаскивания левой кнопкой мыши
                   </span>
                 </div>
@@ -748,18 +748,18 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.dragEnabled}
                   onChange={(e) => setConfig({ ...config, dragEnabled: e.target.checked })}
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
             </div>
 
             {/* Slider Interval Slider */}
-            <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 space-y-2">
+            <div className="mt-6 pt-5 border-t border-theme-border space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-black dark:text-white">
+                <span className="text-sm font-bold text-theme-text">
                   Интервал смены слайдов
                 </span>
-                <span className="font-mono text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-500/30">
+                <span className="font-mono text-xs font-bold text-theme-gold bg-theme-gold/10 px-2.5 py-1 rounded-md border border-theme-gold/30">
                   {config.interval || 6} секунд
                 </span>
               </div>
@@ -770,9 +770,9 @@ export const Slider3DManager: React.FC = () => {
                 step="1"
                 value={config.interval || 6}
                 onChange={(e) => setConfig({ ...config, interval: Number(e.target.value) })}
-                className="w-full accent-amber-500 dark:accent-amber-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
               />
-              <div className="flex justify-between text-2xs font-mono text-black dark:text-white">
+              <div className="flex justify-between text-2xs font-mono text-theme-text">
                 <span>Быстро (2 сек)</span>
                 <span>Стандарт (6 сек)</span>
                 <span>Медленно (15 сек)</span>
@@ -780,9 +780,9 @@ export const Slider3DManager: React.FC = () => {
             </div>
 
             {/* Max Slides Limit */}
-            <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 space-y-2">
+            <div className="mt-6 pt-5 border-t border-theme-border space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-black dark:text-white">
+                <span className="text-sm font-bold text-theme-text">
                   Максимальное количество отображаемых слайдов
                 </span>
                 <span className="font-mono text-xs font-bold text-sky-600 dark:text-cyan-400 bg-sky-500/10 px-2.5 py-1 rounded-md border border-sky-500/30">
@@ -796,7 +796,7 @@ export const Slider3DManager: React.FC = () => {
                 step="1"
                 value={config.maxSlides || 10}
                 onChange={(e) => setConfig({ ...config, maxSlides: Number(e.target.value) })}
-                className="w-full accent-sky-500 dark:accent-cyan-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                className="w-full accent-sky-500 dark:accent-cyan-400 bg-theme-border rounded-lg cursor-pointer h-2"
               />
             </div>
           </AdminCard>
@@ -804,12 +804,12 @@ export const Slider3DManager: React.FC = () => {
           {/* Header Badge Customization */}
           <AdminCard title="Верхняя плашка (Бейдж)">
             <div className="space-y-4">
-              <label className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
+              <label className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border cursor-pointer select-none shadow-sm dark:shadow-none transition-colors">
                 <div>
-                  <span className="block text-sm text-black dark:text-white font-medium">
+                  <span className="block text-sm text-theme-text font-medium">
                     Показывать верхний бейдж
                   </span>
-                  <span className="block font-sans text-xs text-black dark:text-white mt-0.5">
+                  <span className="block font-sans text-xs text-theme-text mt-0.5">
                     Отображать плашку с иконкой Sparkles и названием секции
                   </span>
                 </div>
@@ -817,7 +817,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.showBadge}
                   onChange={(e) => setConfig({ ...config, showBadge: e.target.checked })}
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
 
@@ -846,63 +846,63 @@ export const Slider3DManager: React.FC = () => {
           {/* Visible Controls & Buttons */}
           <AdminCard title="Видимость элементов управления и кнопок">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <label className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer shadow-sm dark:shadow-none transition-colors">
-                <span className="text-xs text-black dark:text-white font-medium">Счетчик (04 / 11)</span>
+              <label className="flex items-center justify-between p-3.5 rounded-xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border cursor-pointer shadow-sm dark:shadow-none transition-colors">
+                <span className="text-xs text-theme-text font-medium">Счетчик (04 / 11)</span>
                 <input
                   type="checkbox"
                   checked={config.showCounter}
                   onChange={(e) => setConfig({ ...config, showCounter: e.target.checked })}
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer shadow-sm dark:shadow-none transition-colors">
-                <span className="text-xs text-black dark:text-white font-medium">Кнопка Play / Pause</span>
+              <label className="flex items-center justify-between p-3.5 rounded-xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border cursor-pointer shadow-sm dark:shadow-none transition-colors">
+                <span className="text-xs text-theme-text font-medium">Кнопка Play / Pause</span>
                 <input
                   type="checkbox"
                   checked={config.showPlayPause}
                   onChange={(e) => setConfig({ ...config, showPlayPause: e.target.checked })}
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer shadow-sm dark:shadow-none transition-colors">
-                <span className="text-xs text-black dark:text-white font-medium">Стрелки (Prev / Next)</span>
+              <label className="flex items-center justify-between p-3.5 rounded-xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border cursor-pointer shadow-sm dark:shadow-none transition-colors">
+                <span className="text-xs text-theme-text font-medium">Стрелки (Prev / Next)</span>
                 <input
                   type="checkbox"
                   checked={config.showArrows}
                   onChange={(e) => setConfig({ ...config, showArrows: e.target.checked })}
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer shadow-sm dark:shadow-none transition-colors">
-                <span className="text-xs text-black dark:text-white font-medium">Точки-индикаторы снизу</span>
+              <label className="flex items-center justify-between p-3.5 rounded-xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border cursor-pointer shadow-sm dark:shadow-none transition-colors">
+                <span className="text-xs text-theme-text font-medium">Точки-индикаторы снизу</span>
                 <input
                   type="checkbox"
                   checked={config.showDots}
                   onChange={(e) => setConfig({ ...config, showDots: e.target.checked })}
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
                 />
               </label>
             </div>
 
             {/* Action Buttons customization */}
-            <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 space-y-4">
-              <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-black dark:text-white">
+            <div className="mt-6 pt-5 border-t border-theme-border space-y-4">
+              <h4 className="text-xs font-sans font-bold uppercase tracking-wider text-theme-text">
                 Кнопки перехода на активном слайде
               </h4>
 
-              <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none space-y-3">
+              <div className="p-4 rounded-xl bg-theme-surface dark:bg-theme-surface border border-theme-border shadow-sm dark:shadow-none space-y-3">
                 <label className="flex items-center justify-between cursor-pointer">
-                  <span className="text-xs text-black dark:text-white font-medium">
+                  <span className="text-xs text-theme-text font-medium">
                     Кнопка «Подробнее / Муфассал хондан»
                   </span>
                   <input
                     type="checkbox"
                     checked={config.showReadMore}
                     onChange={(e) => setConfig({ ...config, showReadMore: e.target.checked })}
-                    className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                    className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
                   />
                 </label>
                 {config.showReadMore && (
@@ -926,16 +926,16 @@ export const Slider3DManager: React.FC = () => {
                 )}
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none space-y-3">
+              <div className="p-4 rounded-xl bg-theme-surface dark:bg-theme-surface border border-theme-border shadow-sm dark:shadow-none space-y-3">
                 <label className="flex items-center justify-between cursor-pointer">
-                  <span className="text-xs text-black dark:text-white font-medium">
+                  <span className="text-xs text-theme-text font-medium">
                     Кнопка «Все новости / Ҳамаи хабарҳо»
                   </span>
                   <input
                     type="checkbox"
                     checked={config.showAllNews}
                     onChange={(e) => setConfig({ ...config, showAllNews: e.target.checked })}
-                    className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                    className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
                   />
                 </label>
                 {config.showAllNews && (
@@ -973,7 +973,7 @@ export const Slider3DManager: React.FC = () => {
                 <div
                   key={preset.id}
                   onClick={() => handleApplyPreset(preset)}
-                  className="p-4 rounded-xl border border-slate-200 bg-slate-50/80 hover:bg-white hover:border-amber-400/80 dark:border-slate-800 dark:bg-slate-900/50 dark:hover:bg-slate-900 dark:hover:border-slate-700 cursor-pointer transition-all duration-200 group flex items-start gap-3 shadow-sm dark:shadow-none"
+                  className="p-4 rounded-xl border border-theme-border bg-theme-surface hover:bg-theme-bg/60 hover:border-amber-400/80 dark:border-theme-border dark:bg-theme-surface dark:hover:bg-theme-surface dark:hover:border-theme-border cursor-pointer transition-all duration-200 group flex items-start gap-3 shadow-sm dark:shadow-none"
                 >
                   <div
                     className="w-9 h-9 rounded-lg shrink-0 flex items-center justify-center border border-white/40 shadow-md group-hover:scale-105 transition-transform"
@@ -983,9 +983,9 @@ export const Slider3DManager: React.FC = () => {
                   </div>
                   <div className="text-left min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-serif font-bold text-sm text-black dark:text-white">{preset.name}</span>
+                      <span className="font-serif font-bold text-sm text-theme-text">{preset.name}</span>
                     </div>
-                    <p className="font-sans text-xs text-black dark:text-white mt-1 leading-relaxed">
+                    <p className="font-sans text-xs text-theme-text mt-1 leading-relaxed">
                       {preset.desc}
                     </p>
                   </div>
@@ -1000,8 +1000,8 @@ export const Slider3DManager: React.FC = () => {
               {/* Perspective */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">3D Перспектива сцены</span>
-                  <span className="font-mono text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/30">
+                  <span className="text-theme-text font-bold">3D Перспектива сцены</span>
+                  <span className="font-mono text-xs font-bold text-theme-gold bg-theme-gold/10 px-2.5 py-0.5 rounded-md border border-theme-gold/30">
                     {config.perspective || 1200}px
                   </span>
                 </div>
@@ -1012,15 +1012,15 @@ export const Slider3DManager: React.FC = () => {
                   step="50"
                   value={config.perspective || 1200}
                   onChange={(e) => setConfig({ ...config, perspective: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
               {/* Stage Height */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Высота сцены карусели</span>
-                  <span className="font-mono text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/30">
+                  <span className="text-theme-text font-bold">Высота сцены карусели</span>
+                  <span className="font-mono text-xs font-bold text-theme-gold bg-theme-gold/10 px-2.5 py-0.5 rounded-md border border-theme-gold/30">
                     {config.stageHeight || 400}px
                   </span>
                 </div>
@@ -1031,15 +1031,15 @@ export const Slider3DManager: React.FC = () => {
                   step="10"
                   value={config.stageHeight || 400}
                   onChange={(e) => setConfig({ ...config, stageHeight: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
               {/* Card Width */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Ширина карточки</span>
-                  <span className="font-mono text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/30">
+                  <span className="text-theme-text font-bold">Ширина карточки</span>
+                  <span className="font-mono text-xs font-bold text-theme-gold bg-theme-gold/10 px-2.5 py-0.5 rounded-md border border-theme-gold/30">
                     {config.cardWidth || 660}px
                   </span>
                 </div>
@@ -1050,15 +1050,15 @@ export const Slider3DManager: React.FC = () => {
                   step="10"
                   value={config.cardWidth || 660}
                   onChange={(e) => setConfig({ ...config, cardWidth: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
               {/* Card Height */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Высота карточки</span>
-                  <span className="font-mono text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/30">
+                  <span className="text-theme-text font-bold">Высота карточки</span>
+                  <span className="font-mono text-xs font-bold text-theme-gold bg-theme-gold/10 px-2.5 py-0.5 rounded-md border border-theme-gold/30">
                     {config.cardHeight || 370}px
                   </span>
                 </div>
@@ -1069,14 +1069,14 @@ export const Slider3DManager: React.FC = () => {
                   step="10"
                   value={config.cardHeight || 370}
                   onChange={(e) => setConfig({ ...config, cardHeight: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
               {/* Side Offset X */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Смещение боковых слайдов (Translate X)</span>
+                  <span className="text-theme-text font-bold">Смещение боковых слайдов (Translate X)</span>
                   <span className="font-mono text-xs font-bold text-sky-600 dark:text-cyan-400 bg-sky-500/10 px-2.5 py-0.5 rounded-md border border-sky-500/30">
                     {config.sideOffsetX || 280}px
                   </span>
@@ -1088,14 +1088,14 @@ export const Slider3DManager: React.FC = () => {
                   step="10"
                   value={config.sideOffsetX || 280}
                   onChange={(e) => setConfig({ ...config, sideOffsetX: Number(e.target.value) })}
-                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
               {/* Side Offset Z */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Глубина боковых слайдов (Translate Z)</span>
+                  <span className="text-theme-text font-bold">Глубина боковых слайдов (Translate Z)</span>
                   <span className="font-mono text-xs font-bold text-sky-600 dark:text-cyan-400 bg-sky-500/10 px-2.5 py-0.5 rounded-md border border-sky-500/30">
                     {config.sideOffsetZ || -120}px
                   </span>
@@ -1107,14 +1107,14 @@ export const Slider3DManager: React.FC = () => {
                   step="10"
                   value={config.sideOffsetZ || -120}
                   onChange={(e) => setConfig({ ...config, sideOffsetZ: Number(e.target.value) })}
-                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
               {/* Side Rotate Y */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Угол разворота боковых слайдов (Rotate Y)</span>
+                  <span className="text-theme-text font-bold">Угол разворота боковых слайдов (Rotate Y)</span>
                   <span className="font-mono text-xs font-bold text-sky-600 dark:text-cyan-400 bg-sky-500/10 px-2.5 py-0.5 rounded-md border border-sky-500/30">
                     {config.sideRotateY || 18}°
                   </span>
@@ -1126,14 +1126,14 @@ export const Slider3DManager: React.FC = () => {
                   step="1"
                   value={config.sideRotateY || 18}
                   onChange={(e) => setConfig({ ...config, sideRotateY: Number(e.target.value) })}
-                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
               {/* Side Scale */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Масштаб боковых слайдов (Scale)</span>
+                  <span className="text-theme-text font-bold">Масштаб боковых слайдов (Scale)</span>
                   <span className="font-mono text-xs font-bold text-sky-600 dark:text-cyan-400 bg-sky-500/10 px-2.5 py-0.5 rounded-md border border-sky-500/30">
                     {Math.round((config.sideScale || 0.85) * 100)}%
                   </span>
@@ -1145,14 +1145,14 @@ export const Slider3DManager: React.FC = () => {
                   step="0.05"
                   value={config.sideScale || 0.85}
                   onChange={(e) => setConfig({ ...config, sideScale: Number(e.target.value) })}
-                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
               {/* Side Opacity */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Прозрачность боковых слайдов</span>
+                  <span className="text-theme-text font-bold">Прозрачность боковых слайдов</span>
                   <span className="font-mono text-xs font-bold text-sky-600 dark:text-cyan-400 bg-sky-500/10 px-2.5 py-0.5 rounded-md border border-sky-500/30">
                     {Math.round((config.sideOpacity || 0.45) * 100)}%
                   </span>
@@ -1164,15 +1164,15 @@ export const Slider3DManager: React.FC = () => {
                   step="0.05"
                   value={config.sideOpacity || 0.45}
                   onChange={(e) => setConfig({ ...config, sideOpacity: Number(e.target.value) })}
-                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-sky-500 dark:accent-cyan-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
               {/* Card Radius */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Скругление углов (Border Radius)</span>
-                  <span className="font-mono text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/30">
+                  <span className="text-theme-text font-bold">Скругление углов (Border Radius)</span>
+                  <span className="font-mono text-xs font-bold text-theme-gold bg-theme-gold/10 px-2.5 py-0.5 rounded-md border border-theme-gold/30">
                     {config.cardRadius || 24}px
                   </span>
                 </div>
@@ -1183,7 +1183,7 @@ export const Slider3DManager: React.FC = () => {
                   step="2"
                   value={config.cardRadius || 24}
                   onChange={(e) => setConfig({ ...config, cardRadius: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
             </div>
@@ -1221,7 +1221,7 @@ export const Slider3DManager: React.FC = () => {
 
               {/* Active Border Color with Picker */}
               <div className="space-y-2">
-                <label className="block text-xs font-sans font-bold text-black dark:text-white uppercase tracking-wider">
+                <label className="block text-xs font-sans font-bold text-theme-text uppercase tracking-wider">
                   Цвет рамки активного слайда
                 </label>
                 <div className="flex items-center gap-3">
@@ -1229,13 +1229,13 @@ export const Slider3DManager: React.FC = () => {
                     type="color"
                     value={config.activeBorderColor || '#dfbe7e'}
                     onChange={(e) => setConfig({ ...config, activeBorderColor: e.target.value })}
-                    className="w-10 h-10 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 cursor-pointer p-0.5 shrink-0 shadow-sm"
+                    className="w-10 h-10 rounded-lg border border-theme-border bg-theme-bg cursor-pointer p-0.5 shrink-0 shadow-sm"
                   />
                   <input
                     type="text"
                     value={config.activeBorderColor || '#dfbe7e'}
                     onChange={(e) => setConfig({ ...config, activeBorderColor: e.target.value })}
-                    className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-black dark:text-white focus:outline-none focus:border-amber-500 shadow-sm dark:shadow-none"
+                    className="w-full bg-theme-bg border border-theme-border rounded-lg px-3 py-2 text-xs font-mono text-theme-text focus:outline-none focus:border-amber-500 shadow-sm dark:shadow-none"
                   />
                 </div>
               </div>
@@ -1243,8 +1243,8 @@ export const Slider3DManager: React.FC = () => {
               {/* Image Darkness Overlay */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-black dark:text-white font-bold">Затемнение фотографии (Overlay)</span>
-                  <span className="font-mono text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/30">
+                  <span className="text-theme-text font-bold">Затемнение фотографии (Overlay)</span>
+                  <span className="font-mono text-xs font-bold text-theme-gold bg-theme-gold/10 px-2.5 py-0.5 rounded-md border border-theme-gold/30">
                     {config.imageOverlayOpacity ?? 60}%
                   </span>
                 </div>
@@ -1257,7 +1257,7 @@ export const Slider3DManager: React.FC = () => {
                   onChange={(e) =>
                     setConfig({ ...config, imageOverlayOpacity: Number(e.target.value) })
                   }
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-slate-200 dark:bg-slate-800 rounded-lg cursor-pointer h-2"
+                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
             </div>
@@ -1269,12 +1269,12 @@ export const Slider3DManager: React.FC = () => {
       {activeTab === 'preview' && (
         <div className="space-y-6 animate-fadeIn">
           {/* Controls toolbar */}
-          <div className="p-4 rounded-2xl bg-slate-50/80 hover:bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4 shadow-sm dark:shadow-none transition-colors">
+          <div className="p-4 rounded-2xl bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface border border-theme-border flex flex-wrap items-center justify-between gap-4 shadow-sm dark:shadow-none transition-colors">
             <div className="flex items-center gap-3">
-              <span className="font-sans text-xs font-bold text-black dark:text-white uppercase tracking-wider">
+              <span className="font-sans text-xs font-bold text-theme-text uppercase tracking-wider">
                 Язык предпросмотра:
               </span>
-              <div className="flex items-center gap-1 bg-slate-200/60 dark:bg-slate-950 p-1 rounded-lg border border-slate-300 dark:border-slate-800">
+              <div className="flex items-center gap-1 bg-theme-bg/60 p-1 rounded-lg border border-theme-border">
                 {(['tj', 'ru', 'en'] as const).map((lang) => (
                   <button
                     key={lang}
@@ -1282,8 +1282,8 @@ export const Slider3DManager: React.FC = () => {
                     onClick={() => setPreviewLang(lang)}
                     className={`px-3 py-1 rounded-md text-xs font-mono uppercase transition-colors ${
                       previewLang === lang
-                        ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
-                        : 'text-black dark:text-white hover:text-amber-600 dark:hover:text-amber-400'
+                        ? 'bg-theme-gold text-theme-bg font-bold shadow-sm'
+                        : 'text-theme-text hover:text-theme-gold'
                     }`}
                   >
                     {lang}
@@ -1293,15 +1293,15 @@ export const Slider3DManager: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="font-sans text-xs font-bold text-black dark:text-white uppercase tracking-wider">
+              <span className="font-sans text-xs font-bold text-theme-text uppercase tracking-wider">
                 Тема оформления:
               </span>
               <button
                 type="button"
                 onClick={() => setPreviewDark(!previewDark)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-mono text-black dark:text-white hover:border-slate-400 dark:hover:border-slate-700 shadow-sm dark:shadow-none"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-theme-border bg-theme-bg text-xs font-mono text-theme-text hover:border-theme-border shadow-sm dark:shadow-none"
               >
-                {previewDark ? <Moon size={14} className="text-amber-500" /> : <Sun size={14} className="text-amber-500" />}
+                {previewDark ? <Moon size={14} className="text-theme-gold" /> : <Sun size={14} className="text-theme-gold" />}
                 <span>{previewDark ? 'Тёмная тема' : 'Светлая тема'}</span>
               </button>
             </div>
@@ -1314,7 +1314,7 @@ export const Slider3DManager: React.FC = () => {
               ${
                 previewDark
                   ? 'bg-[#030712] border-slate-800 shadow-[0_25px_60px_rgba(0,0,0,0.8)]'
-                  : 'bg-slate-100 border-slate-300 text-slate-900 shadow-2xl'
+                  : 'bg-theme-bg border-theme-border text-theme-text shadow-2xl'
               }
             `}
           >
@@ -1334,7 +1334,7 @@ export const Slider3DManager: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80 text-xs text-black dark:text-white flex items-center justify-between shadow-sm dark:shadow-none">
+          <div className="p-4 rounded-xl bg-theme-surface dark:bg-theme-surface border border-theme-border/80 text-xs text-theme-text flex items-center justify-between shadow-sm dark:shadow-none">
             <span>
               💡 Все изменения в размерах, углах и цветах отображаются в реальном времени. Нажмите «Сохранить настройки», чтобы опубликовать их на сайте.
             </span>
@@ -1371,8 +1371,8 @@ export const Slider3DManager: React.FC = () => {
         >
           <div className="space-y-5">
             {/* Language tabs for slide contents */}
-            <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
-              <span className="font-sans text-xs font-bold text-black dark:text-white mr-2">Язык контента:</span>
+            <div className="flex items-center gap-2 border-b border-theme-border pb-2">
+              <span className="font-sans text-xs font-bold text-theme-text mr-2">Язык контента:</span>
               {(['tj', 'ru', 'en'] as const).map((lang) => (
                 <button
                   key={lang}
@@ -1380,8 +1380,8 @@ export const Slider3DManager: React.FC = () => {
                   onClick={() => setSlideLangTab(lang)}
                   className={`px-3 py-1 rounded-md text-xs font-mono uppercase transition-colors ${
                     slideLangTab === lang
-                      ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
-                      : 'text-black dark:text-white hover:text-amber-600 dark:hover:text-amber-400 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-transparent'
+                      ? 'bg-theme-gold text-theme-bg font-bold shadow-sm'
+                      : 'text-theme-text hover:text-theme-gold bg-theme-bg dark:bg-theme-surface border border-theme-border dark:border-transparent'
                   }`}
                 >
                   {lang === 'tj' ? 'Тоҷикӣ' : lang === 'ru' ? 'Русский' : 'English'}
@@ -1399,7 +1399,7 @@ export const Slider3DManager: React.FC = () => {
                   onChange={(e) => setEditingSlide({ ...editingSlide, titleTj: e.target.value })}
                 />
                 <div className="space-y-1">
-                  <label className="block text-xs font-sans font-bold text-black dark:text-white uppercase tracking-wider">
+                  <label className="block text-xs font-sans font-bold text-theme-text uppercase tracking-wider">
                     Шарҳи кӯтоҳ (Краткое описание на таджикском)
                   </label>
                   <textarea
@@ -1407,7 +1407,7 @@ export const Slider3DManager: React.FC = () => {
                     placeholder="Матни мухтасари хабар барои намоиш дар слайд..."
                     value={editingSlide.summaryTj || ''}
                     onChange={(e) => setEditingSlide({ ...editingSlide, summaryTj: e.target.value })}
-                    className="w-full rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 px-3.5 py-2.5 text-xs text-black dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 transition-colors shadow-sm dark:shadow-none"
+                    className="w-full rounded-xl bg-theme-bg border border-theme-border px-3.5 py-2.5 text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 transition-colors shadow-sm dark:shadow-none"
                   />
                 </div>
                 <AdminInput
@@ -1428,7 +1428,7 @@ export const Slider3DManager: React.FC = () => {
                   onChange={(e) => setEditingSlide({ ...editingSlide, titleRu: e.target.value })}
                 />
                 <div className="space-y-1">
-                  <label className="block text-xs font-sans font-bold text-black dark:text-white uppercase tracking-wider">
+                  <label className="block text-xs font-sans font-bold text-theme-text uppercase tracking-wider">
                     Краткое описание (RU)
                   </label>
                   <textarea
@@ -1436,7 +1436,7 @@ export const Slider3DManager: React.FC = () => {
                     placeholder="Краткое содержание новости для отображения на слайде..."
                     value={editingSlide.summaryRu || ''}
                     onChange={(e) => setEditingSlide({ ...editingSlide, summaryRu: e.target.value })}
-                    className="w-full rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 px-3.5 py-2.5 text-xs text-black dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 transition-colors shadow-sm dark:shadow-none"
+                    className="w-full rounded-xl bg-theme-bg border border-theme-border px-3.5 py-2.5 text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 transition-colors shadow-sm dark:shadow-none"
                   />
                 </div>
                 <AdminInput
@@ -1457,7 +1457,7 @@ export const Slider3DManager: React.FC = () => {
                   onChange={(e) => setEditingSlide({ ...editingSlide, titleEn: e.target.value })}
                 />
                 <div className="space-y-1">
-                  <label className="block text-xs font-sans font-bold text-black dark:text-white uppercase tracking-wider">
+                  <label className="block text-xs font-sans font-bold text-theme-text uppercase tracking-wider">
                     Summary (EN)
                   </label>
                   <textarea
@@ -1465,7 +1465,7 @@ export const Slider3DManager: React.FC = () => {
                     placeholder="Short summary for the slide display..."
                     value={editingSlide.summaryEn || ''}
                     onChange={(e) => setEditingSlide({ ...editingSlide, summaryEn: e.target.value })}
-                    className="w-full rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 px-3.5 py-2.5 text-xs text-black dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 transition-colors shadow-sm dark:shadow-none"
+                    className="w-full rounded-xl bg-theme-bg border border-theme-border px-3.5 py-2.5 text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 transition-colors shadow-sm dark:shadow-none"
                   />
                 </div>
                 <AdminInput
@@ -1478,7 +1478,7 @@ export const Slider3DManager: React.FC = () => {
             )}
 
             {/* General parameters */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-slate-200 dark:border-slate-800">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-theme-border">
               <AdminInput
                 label="Ссылка перехода (URL)"
                 placeholder="/news/slug-name или /acts"
@@ -1494,14 +1494,14 @@ export const Slider3DManager: React.FC = () => {
             </div>
 
             {/* Image Selection */}
-            <div className="space-y-3 pt-3 border-t border-slate-200 dark:border-slate-800">
-              <label className="block text-xs font-sans font-bold text-black dark:text-white uppercase tracking-wider">
+            <div className="space-y-3 pt-3 border-t border-theme-border">
+              <label className="block text-xs font-sans font-bold text-theme-text uppercase tracking-wider">
                 Фоновое изображение карточки
               </label>
 
               {/* Current preview + URL input */}
               <div className="flex items-center gap-3">
-                <div className="w-24 h-16 rounded-xl border border-slate-300 dark:border-slate-800 overflow-hidden bg-slate-100 dark:bg-slate-950 shrink-0 shadow-sm">
+                <div className="w-24 h-16 rounded-xl border border-theme-border overflow-hidden bg-theme-bg shrink-0 shadow-sm">
                   {editingSlide.imageUrl ? (
                     <img
                       src={editingSlide.imageUrl}
@@ -1509,7 +1509,7 @@ export const Slider3DManager: React.FC = () => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-slate-400 dark:text-slate-600">
+                    <div className="w-full h-full flex items-center justify-center text-theme-textMuted">
                       <ImageIcon size={20} />
                     </div>
                   )}
@@ -1523,7 +1523,7 @@ export const Slider3DManager: React.FC = () => {
                   />
 
                   {/* Upload button */}
-                  <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 text-xs font-mono text-black dark:text-white hover:text-amber-600 dark:hover:text-amber-400 font-bold cursor-pointer transition-colors shadow-sm dark:shadow-none">
+                  <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-theme-border bg-theme-bg dark:bg-theme-surface text-xs font-mono text-theme-text hover:text-theme-gold font-bold cursor-pointer transition-colors shadow-sm dark:shadow-none">
                     <Upload size={13} />
                     <span>{isUploading ? 'Загрузка...' : 'Загрузить файл с компьютера'}</span>
                     <input
@@ -1539,7 +1539,7 @@ export const Slider3DManager: React.FC = () => {
 
               {/* Quick Preset Images */}
               <div className="space-y-1 pt-1">
-                <span className="text-[11px] font-mono font-bold text-black dark:text-white">
+                <span className="text-[11px] font-mono font-bold text-theme-text">
                   Быстрый выбор из системных изображений:
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -1550,8 +1550,8 @@ export const Slider3DManager: React.FC = () => {
                       onClick={() => setEditingSlide({ ...editingSlide, imageUrl: img.path })}
                       className={`px-2.5 py-1 rounded-lg border text-xs font-mono transition-colors ${
                         editingSlide.imageUrl === img.path
-                          ? 'border-amber-500 bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold'
-                          : 'border-slate-300 dark:border-slate-800 text-black dark:text-white hover:text-amber-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-900'
+                          ? 'border-amber-500 bg-amber-500/10 text-theme-gold font-bold'
+                          : 'border-theme-border text-theme-text hover:text-theme-gold hover:bg-theme-bg dark:hover:bg-theme-surface'
                       }`}
                     >
                       {img.label}
@@ -1570,9 +1570,9 @@ export const Slider3DManager: React.FC = () => {
                   onChange={(e) =>
                     setEditingSlide({ ...editingSlide, isActive: e.target.checked ? 1 : 0 })
                   }
-                  className="rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
                 />
-                <span className="text-xs text-black dark:text-white font-medium">
+                <span className="text-xs text-theme-text font-medium">
                   Отображать этот слайд в карусели на сайте
                 </span>
               </label>
@@ -1592,24 +1592,24 @@ export const Slider3DManager: React.FC = () => {
         >
           <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
             {recentNews.length === 0 ? (
-              <div className="p-8 text-center text-black dark:text-white font-sans text-xs">
+              <div className="p-8 text-center text-theme-text font-sans text-xs">
                 Опубликованных новостей не найдено.
               </div>
             ) : (
               recentNews.map((news) => (
                 <div
                   key={news.id}
-                  className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 hover:bg-white dark:bg-slate-900/60 dark:hover:bg-slate-900 flex items-center justify-between gap-4 transition-colors shadow-sm dark:shadow-none"
+                  className="p-3 rounded-xl border border-theme-border bg-theme-surface hover:bg-theme-bg/60 dark:bg-theme-surface dark:hover:bg-theme-surface flex items-center justify-between gap-4 transition-colors shadow-sm dark:shadow-none"
                 >
                   <div className="min-w-0 text-left">
-                    <span className="text-2xs font-mono text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30 uppercase font-bold">
+                    <span className="text-2xs font-mono text-theme-gold bg-theme-gold/10 px-2 py-0.5 rounded border border-theme-gold/30 uppercase font-bold">
                       {news.category || 'НОВОСТЬ'}
                     </span>
-                    <h5 className="font-serif font-bold text-sm text-black dark:text-white truncate mt-1">
+                    <h5 className="font-serif font-bold text-sm text-theme-text truncate mt-1">
                       {news.title_tj || news.title_ru}
                     </h5>
                     {news.title_ru && (
-                      <p className="font-sans text-xs text-black dark:text-white truncate mt-0.5">
+                      <p className="font-sans text-xs text-theme-text truncate mt-0.5">
                         {news.title_ru}
                       </p>
                     )}

@@ -49,7 +49,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
       group: 'Быстрые действия',
       items: [
         {
-          icon: <PlusCircle size={16} className="text-amber-400" />,
+          icon: <PlusCircle size={16} className="text-theme-gold" />,
           title: 'Создать новость',
           category: 'Контент',
           action: () => {
@@ -181,7 +181,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
       <div className="relative w-full max-w-xl glass glass-premium overflow-hidden flex flex-col">
         {/* Search Header — same as public */}
         <div className="flex items-center px-4 py-3.5 border-b border-[var(--glass-border)] gap-3">
-          <Search size={18} className="text-amber-400 shrink-0" />
+          <Search size={18} className="text-theme-gold shrink-0" />
           <input
             autoFocus
             type="text"
@@ -201,13 +201,13 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
         {/* Results Stream */}
         <div className="max-h-96 overflow-y-auto p-2 divide-y divide-[var(--glass-border)]/40">
           {filteredGroups.length === 0 ? (
-            <div className="py-8 text-center text-slate-500 font-mono text-xs">
+            <div className="py-8 text-center text-theme-textMuted font-mono text-xs">
               Ничего не найдено по запросу "{query}"
             </div>
           ) : (
             filteredGroups.map((g, gIdx) => (
               <div key={gIdx} className="py-2 first:pt-0 last:pb-0">
-                <div className="px-3 py-1 font-mono text-2xs uppercase tracking-wider text-slate-500 font-semibold">
+                <div className="px-3 py-1 font-mono text-2xs uppercase tracking-wider text-theme-textMuted font-semibold">
                   {g.group}
                 </div>
                 <div className="flex flex-col gap-0.5 mt-1">
@@ -215,15 +215,15 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
                     <button
                       key={idx}
                       onClick={it.action}
-                      className="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-slate-800/80 text-left transition-colors group"
+                      className="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-theme-bg/60 text-left transition-colors group"
                     >
-                      <div className="flex items-center gap-3 text-slate-200 group-hover:text-white">
-                        <span className="shrink-0 text-slate-400 group-hover:text-amber-400 transition-colors">
+                      <div className="flex items-center gap-3 text-theme-textSec group-hover:text-theme-text">
+                        <span className="shrink-0 text-theme-textMuted group-hover:text-theme-gold transition-colors">
                           {it.icon}
                         </span>
                         <span className="font-sans text-sm font-medium">{it.title}</span>
                       </div>
-                      <span className="font-mono text-2xs text-slate-500 uppercase px-2 py-0.5 rounded bg-slate-900 border border-slate-800">
+                      <span className="font-mono text-2xs text-theme-textMuted uppercase px-2 py-0.5 rounded bg-theme-bg border border-theme-border">
                         {it.category}
                       </span>
                     </button>
@@ -235,17 +235,17 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
         </div>
 
         {/* Footer shortcuts */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-t border-slate-800 bg-[#050914] text-[11px] font-mono text-slate-500">
+        <div className="flex items-center justify-between px-4 py-2.5 border-t border-theme-border bg-theme-bg/60 text-[11px] font-mono text-theme-textMuted">
           <div className="flex items-center gap-2">
-            <Sparkles size={12} className="text-amber-400" />
+            <Sparkles size={12} className="text-theme-gold" />
             <span>COMMAND CONTROL</span>
           </div>
           <div className="flex items-center gap-3">
             <span>
-              <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">ESC</kbd> Закрыть
+              <kbd className="px-1.5 py-0.5 rounded bg-theme-bg border border-theme-border text-theme-textSec">ESC</kbd> Закрыть
             </span>
             <span>
-              <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">↵</kbd> Выбрать
+              <kbd className="px-1.5 py-0.5 rounded bg-theme-bg border border-theme-border text-theme-textSec">↵</kbd> Выбрать
             </span>
           </div>
         </div>

@@ -58,16 +58,16 @@ export const SettingsManager: React.FC = () => {
   };
 
   const aiToggleRow = (key: 'ai_writer_enabled' | 'ai_translate_enabled' | 'ai_improve_enabled', title: string, desc: string) => (
-    <label className="flex items-center justify-between gap-3 p-3 rounded-lg bg-slate-900 border border-slate-800 cursor-pointer select-none">
+    <label className="flex items-center justify-between gap-3 p-3 rounded-lg bg-theme-bg border border-theme-border cursor-pointer select-none">
       <span>
-        <span className="block text-xs text-slate-200 font-medium">{title}</span>
-        <span className="block font-mono text-2xs text-slate-500 mt-0.5">{desc}</span>
+        <span className="block text-xs text-theme-text font-medium">{title}</span>
+        <span className="block font-mono text-2xs text-theme-textMuted mt-0.5">{desc}</span>
       </span>
       <input
         type="checkbox"
         checked={aiSettings[key] !== '0'}
         onChange={(e) => saveAiSetting(key, e.target.checked ? '1' : '0')}
-        className="rounded border-slate-700 bg-slate-900 text-amber-500 w-4 h-4 cursor-pointer shrink-0"
+        className="rounded border-theme-border bg-theme-bg text-theme-gold w-4 h-4 cursor-pointer shrink-0"
       />
     </label>
   );
@@ -106,8 +106,8 @@ export const SettingsManager: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif font-bold text-2xl text-white">Системные настройки</h2>
-          <p className="font-sans text-xs text-slate-400 mt-1">
+          <h2 className="font-serif font-bold text-2xl text-theme-text">Системные настройки</h2>
+          <p className="font-sans text-xs text-theme-textMuted mt-1">
             Конфигурация портала, контактов канцелярии, параметров безопасности и базы данных
           </p>
         </div>
@@ -169,20 +169,20 @@ export const SettingsManager: React.FC = () => {
       {activeTab === 'slider3d' && (
         <div className="space-y-5 animate-fadeIn">
           <AdminCard title="Управление 3D-слайдером главной страницы">
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 via-slate-900 to-slate-950 border border-amber-500/30 space-y-4">
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-theme-gold/10 via-theme-surface to-theme-bg border border-theme-gold/30 space-y-4">
               <div className="flex items-start gap-4">
-                <div className="p-3.5 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/40 shrink-0">
+                <div className="p-3.5 rounded-xl bg-theme-gold/20 text-theme-gold border border-theme-gold/40 shrink-0">
                   <Layers size={28} />
                 </div>
                 <div>
-                  <h3 className="font-serif font-bold text-lg text-white">Интерактивный 3D Слайдер (Карусель)</h3>
-                  <p className="font-sans text-xs text-slate-300 mt-1 leading-relaxed">
+                  <h3 className="font-serif font-bold text-lg text-theme-text">Интерактивный 3D Слайдер (Карусель)</h3>
+                  <p className="font-sans text-xs text-theme-textSec mt-1 leading-relaxed">
                     Для детальной настройки 3D-геометрии (перспективы, угла наклона, масштабов), автопрокрутки, редактирования слайдов и живого предпросмотра в реальном времени перейдите в специализированный раздел управления.
                   </p>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-800/80 flex flex-wrap items-center gap-3">
+              <div className="pt-3 border-t border-theme-border/80 flex flex-wrap items-center gap-3">
                 <AdminButton
                   variant="primary"
                   size="md"
@@ -231,14 +231,14 @@ export const SettingsManager: React.FC = () => {
                 onChange={(e) => setSettings({ ...settings, seoTitleRu: e.target.value })}
               />
               <div className="flex flex-col gap-1.5 text-left">
-                <label className="font-mono text-xs font-medium uppercase tracking-wider text-slate-400">
+                <label className="font-mono text-xs font-medium uppercase tracking-wider text-theme-textMuted">
                   Мета-описание (Description)
                 </label>
                 <textarea
                   rows={3}
                   value={settings.seoDescRu}
                   onChange={(e) => setSettings({ ...settings, seoDescRu: e.target.value })}
-                  className="w-full p-3.5 rounded-xl bg-slate-900 text-white placeholder-slate-500 border border-slate-700 font-sans text-sm focus:outline-none focus:border-amber-400"
+                  className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-theme-gold"
                 />
               </div>
             </div>
@@ -260,8 +260,8 @@ export const SettingsManager: React.FC = () => {
                   { value: '24', label: '24 часа' },
                 ]}
               />
-              <div className="p-4 rounded-xl border border-slate-800 bg-[#091124] text-xs font-mono text-slate-400 space-y-1">
-                <div className="flex items-center gap-2 text-amber-400 font-bold mb-1">
+              <div className="p-4 rounded-xl border border-theme-border bg-theme-surface text-xs font-mono text-theme-textMuted space-y-1">
+                <div className="flex items-center gap-2 text-theme-gold font-bold mb-1">
                   <Lock size={14} />
                   <span>ШИФРОВАНИЕ И ХЕШИРОВАНИЕ</span>
                 </div>
@@ -296,7 +296,7 @@ export const SettingsManager: React.FC = () => {
                   onChange={(e) => saveAiSetting('ai_max_length', e.target.value.replace(/[^0-9]/g, '').slice(0, 4) || '2000')}
                 />
               </div>
-              <p className="font-mono text-2xs text-slate-500">
+              <p className="font-mono text-2xs text-theme-textMuted">
                 Настройки применяются сразу. Отключенные функции возвращают 403 с пояснением.
               </p>
             </div>
@@ -307,18 +307,18 @@ export const SettingsManager: React.FC = () => {
       {activeTab === 'system' && (
         <div className="space-y-5">
           <AdminCard title="Состояние базы данных и хранилища">
-            <div className="space-y-3 font-mono text-xs text-slate-300">
-              <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 flex justify-between">
-                <span className="text-slate-400">Файл базы данных:</span>
+            <div className="space-y-3 font-mono text-xs text-theme-textSec">
+              <div className="p-3 rounded-lg bg-theme-bg border border-theme-border flex justify-between">
+                <span className="text-theme-textMuted">Файл базы данных:</span>
                 <span className="text-emerald-400">data/sudtj.sqlite</span>
               </div>
-              <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 flex justify-between">
-                <span className="text-slate-400">Режим транзакций:</span>
+              <div className="p-3 rounded-lg bg-theme-bg border border-theme-border flex justify-between">
+                <span className="text-theme-textMuted">Режим транзакций:</span>
                 <span className="text-emerald-400">WAL (Write-Ahead Logging)</span>
               </div>
-              <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 flex justify-between">
-                <span className="text-slate-400">Папка медиа хранилища:</span>
-                <span className="text-slate-200">data/uploads/</span>
+              <div className="p-3 rounded-lg bg-theme-bg border border-theme-border flex justify-between">
+                <span className="text-theme-textMuted">Папка медиа хранилища:</span>
+                <span className="text-theme-text">data/uploads/</span>
               </div>
             </div>
           </AdminCard>

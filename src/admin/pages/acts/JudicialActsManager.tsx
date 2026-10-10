@@ -123,10 +123,10 @@ export const JudicialActsManager: React.FC = () => {
       width: '180px',
       accessor: (row) => (
         <div className="flex flex-col text-left">
-          <span className="font-mono font-bold text-xs text-amber-400">
+          <span className="font-mono font-bold text-xs text-theme-gold">
             {row.doc_number || `№ ${row.id}`}
           </span>
-          <span className="font-sans text-[11px] text-slate-400 mt-0.5">
+          <span className="font-sans text-[11px] text-theme-textMuted mt-0.5">
             {row.doc_type}
           </span>
         </div>
@@ -136,8 +136,8 @@ export const JudicialActsManager: React.FC = () => {
       header: 'Наименование судебного акта',
       accessor: (row) => (
         <div className="flex flex-col text-left">
-          <span className="font-serif font-bold text-sm text-white">{row.title_ru}</span>
-          <span className="font-mono text-[11px] text-slate-400 mt-0.5">
+          <span className="font-serif font-bold text-sm text-theme-text">{row.title_ru}</span>
+          <span className="font-mono text-[11px] text-theme-textMuted mt-0.5">
             {row.collegium} {row.case_number ? `• Дело ${row.case_number}` : ''}
           </span>
         </div>
@@ -147,7 +147,7 @@ export const JudicialActsManager: React.FC = () => {
       header: 'Дата акта',
       width: '130px',
       accessor: (row) => (
-        <span className="font-mono text-xs text-slate-400">{row.act_date || '2026-06-15'}</span>
+        <span className="font-mono text-xs text-theme-textMuted">{row.act_date || '2026-06-15'}</span>
       ),
     },
     {
@@ -178,7 +178,7 @@ export const JudicialActsManager: React.FC = () => {
               });
               setIsModalOpen(true);
             }}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800"
+            className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-gold hover:bg-theme-bg/60"
             title="Редактировать"
           >
             <Edit size={15} />
@@ -193,8 +193,8 @@ export const JudicialActsManager: React.FC = () => {
       {/* Top Action Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif font-bold text-2xl text-white">База судебных актов</h2>
-          <p className="font-sans text-xs text-slate-400 mt-1">
+          <h2 className="font-serif font-bold text-2xl text-theme-text">База судебных актов</h2>
+          <p className="font-sans text-xs text-theme-textMuted mt-1">
             Постановления пленума, определения судебных коллегий и официальные судебные прецеденты
           </p>
         </div>
@@ -218,8 +218,8 @@ export const JudicialActsManager: React.FC = () => {
                 onClick={() => setSelectedCollegium(col)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-colors ${
                   selectedCollegium === col
-                    ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/20'
-                    : 'bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white'
+                    ? 'bg-theme-gold text-theme-bg font-bold shadow-md shadow-theme-gold/20'
+                    : 'bg-theme-bg border border-theme-border text-theme-textMuted hover:text-theme-text'
                 }`}
               >
                 {col === 'all' ? 'Все коллегии' : col.replace(' коллегия', '')}
@@ -229,13 +229,13 @@ export const JudicialActsManager: React.FC = () => {
         </div>
 
         <div className="relative w-full sm:w-72">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-textMuted" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск по номеру, делу, названию..."
-            className="w-full h-10 pl-10 pr-4 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+            className="w-full h-10 pl-10 pr-4 rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
           />
         </div>
       </div>

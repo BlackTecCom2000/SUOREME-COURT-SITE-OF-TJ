@@ -103,10 +103,10 @@ export const AppealsManager: React.FC = () => {
       header: 'Заявитель / Номер',
       accessor: (row) => (
         <div className="flex flex-col text-left">
-          <span className="font-serif font-bold text-sm text-white group-hover:text-amber-300 transition-colors">
+          <span className="font-serif font-bold text-sm text-theme-text group-hover:text-theme-gold transition-colors">
             {row.full_name}
           </span>
-          <span className="font-mono text-[11px] text-slate-400 mt-0.5">
+          <span className="font-mono text-[11px] text-theme-textMuted mt-0.5">
             {row.ref_number || `№ ОБ-${row.id}`} • {row.phone}
           </span>
         </div>
@@ -116,10 +116,10 @@ export const AppealsManager: React.FC = () => {
       header: 'Тема обращения',
       accessor: (row) => (
         <div className="flex flex-col text-left max-w-md">
-          <span className="font-sans text-xs font-semibold text-slate-200">
+          <span className="font-sans text-xs font-semibold text-theme-textSec">
             {row.subject || 'Электронное обращение гражданина'}
           </span>
-          <p className="font-sans text-[11px] text-slate-400 truncate mt-0.5">
+          <p className="font-sans text-[11px] text-theme-textMuted truncate mt-0.5">
             {row.message}
           </p>
         </div>
@@ -129,7 +129,7 @@ export const AppealsManager: React.FC = () => {
       header: 'Дата подачи',
       width: '130px',
       accessor: (row) => (
-        <span className="font-mono text-xs text-slate-400">
+        <span className="font-mono text-xs text-theme-textMuted">
           {new Date(row.created_at).toLocaleDateString()}
         </span>
       ),
@@ -155,8 +155,8 @@ export const AppealsManager: React.FC = () => {
     <div className="space-y-6 text-left animate-fadeIn">
       {/* Top Header */}
       <div>
-        <h2 className="font-serif font-bold text-2xl text-white">Обращения граждан</h2>
-        <p className="font-sans text-xs text-slate-400 mt-1">
+        <h2 className="font-serif font-bold text-2xl text-theme-text">Обращения граждан</h2>
+        <p className="font-sans text-xs text-theme-textMuted mt-1">
           Электронная приемная, запросы по судебным делам и официальные заявления
         </p>
       </div>
@@ -165,13 +165,13 @@ export const AppealsManager: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <AdminTabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
         <div className="relative w-full sm:w-72">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-textMuted" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск по ФИО, номеру, теме..."
-            className="w-full h-10 pl-10 pr-4 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+            className="w-full h-10 pl-10 pr-4 rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
           />
         </div>
       </div>
@@ -211,9 +211,9 @@ export const AppealsManager: React.FC = () => {
         {selectedAppeal && (
           <div className="space-y-6">
             {/* Citizen Details Box */}
-            <div className="p-4 rounded-xl border border-slate-800 bg-[#091124] space-y-2">
+            <div className="p-4 rounded-xl border border-theme-border bg-theme-surface space-y-2">
               <div className="flex items-center justify-between">
-                <span className="font-serif font-bold text-base text-white">
+                <span className="font-serif font-bold text-base text-theme-text">
                   {selectedAppeal.full_name}
                 </span>
                 <AdminBadge
@@ -222,9 +222,9 @@ export const AppealsManager: React.FC = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-xs font-mono text-slate-400 pt-2 border-t border-slate-800">
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono text-theme-textMuted pt-2 border-t border-theme-border">
                 <div className="flex items-center gap-1.5">
-                  <Phone size={13} className="text-amber-400" />
+                  <Phone size={13} className="text-theme-gold" />
                   <span>{selectedAppeal.phone}</span>
                 </div>
                 {selectedAppeal.email && (
@@ -238,10 +238,10 @@ export const AppealsManager: React.FC = () => {
 
             {/* Appeal Message */}
             <div className="space-y-2">
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-slate-400">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-theme-textMuted">
                 Тема: {selectedAppeal.subject || 'Электронное обращение'}
               </span>
-              <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/90 text-slate-200 text-sm leading-relaxed whitespace-pre-wrap">
+              <div className="p-4 rounded-xl border border-theme-border bg-theme-bg text-theme-textSec text-sm leading-relaxed whitespace-pre-wrap">
                 {selectedAppeal.message}
               </div>
             </div>
@@ -261,14 +261,14 @@ export const AppealsManager: React.FC = () => {
             />
 
             {/* INTERNAL NOTES (STRICTLY PRIVATE VISUAL DISTINCTION) */}
-            <div className="p-4 rounded-xl border border-amber-400/40 bg-amber-950/20 space-y-2">
-              <div className="flex items-center gap-2 text-amber-400">
+            <div className="p-4 rounded-xl border border-theme-gold/40 bg-theme-gold/10 space-y-2">
+              <div className="flex items-center gap-2 text-theme-gold">
                 <Lock size={14} />
                 <span className="font-mono text-xs font-bold uppercase tracking-wider">
                   Служебные заметки канцелярии (Конфиденциально)
                 </span>
               </div>
-              <p className="text-[11px] font-sans text-slate-400">
+              <p className="text-[11px] font-sans text-theme-textMuted">
                 Данные заметки видны только судьям и администраторам аппарата Верховного суда.
               </p>
               <textarea
@@ -276,7 +276,7 @@ export const AppealsManager: React.FC = () => {
                 value={internalNote}
                 onChange={(e) => setInternalNote(e.target.value)}
                 placeholder="Укажите регистрационный входящий номер, судью-докладчика или резолюцию..."
-                className="w-full p-3 rounded-lg bg-slate-950/90 text-white placeholder-slate-600 border border-slate-800 text-xs font-sans focus:outline-none focus:border-amber-400"
+                className="w-full p-3 rounded-lg bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border text-xs font-sans focus:outline-none focus:border-theme-gold"
               />
             </div>
           </div>

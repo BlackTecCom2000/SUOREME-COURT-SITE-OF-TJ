@@ -154,16 +154,16 @@ export const JudicialSystemVisualEditor: React.FC = () => {
     <div className="space-y-6 animate-fadeIn text-left select-none">
       
       {/* 1. TOP HEADER & CMS ACTION TOOLBAR */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-6 rounded-3xl border border-slate-800 bg-[#070d1a] shadow-2xl">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-6 rounded-3xl border border-theme-border bg-theme-surface shadow-2xl">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-amber-400 font-bold uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-2 text-xs font-mono text-theme-gold font-bold uppercase tracking-wider mb-1">
             <Sparkles size={14} />
             <span>ВИЗУАЛЬНЫЙ РЕДАКТОР СТРУКТУРЫ // СУДИ ҶУМҲУРИИ ТОҶИКИСТОН</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-theme-text tracking-tight">
             Низоми иттилоотии sud.tj — Сохтор ва Ҳайатҳо
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-theme-textMuted mt-0.5">
             Управление каждым элементом, коллегией, текстом на 3-х языках и параметрами структуры без изменения кода.
           </p>
         </div>
@@ -171,13 +171,13 @@ export const JudicialSystemVisualEditor: React.FC = () => {
         {/* Global Toolbar: Undo, Redo, Language, Publish */}
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Undo / Redo */}
-          <div className="flex items-center rounded-xl bg-slate-900 border border-slate-800 p-1">
+          <div className="flex items-center rounded-xl bg-theme-bg border border-theme-border p-1">
             <button
               type="button"
               onClick={handleUndo}
               disabled={historyIndex === 0}
               title="Undo"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30"
+              className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-text hover:bg-theme-bg/60 disabled:opacity-30"
             >
               <Undo2 size={16} />
             </button>
@@ -186,14 +186,14 @@ export const JudicialSystemVisualEditor: React.FC = () => {
               onClick={handleRedo}
               disabled={historyIndex >= history.length - 1}
               title="Redo"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 disabled:opacity-30"
+              className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-text hover:bg-theme-bg/60 disabled:opacity-30"
             >
               <Redo2 size={16} />
             </button>
           </div>
 
           {/* Multilingual Switcher */}
-          <div className="flex items-center rounded-xl bg-slate-900 border border-slate-800 p-1 font-mono text-xs">
+          <div className="flex items-center rounded-xl bg-theme-bg border border-theme-border p-1 font-mono text-xs">
             {(['tj', 'ru', 'en'] as const).map((lang) => (
               <button
                 key={lang}
@@ -201,8 +201,8 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                 onClick={() => setActiveLang(lang)}
                 className={`px-3 py-1.5 rounded-lg uppercase font-bold transition-colors ${
                   activeLang === lang
-                    ? 'bg-amber-400 text-slate-950 shadow-md'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-theme-gold text-theme-bg shadow-md'
+                    : 'text-theme-textMuted hover:text-theme-text'
                 }`}
               >
                 {lang}
@@ -214,7 +214,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
           <button
             type="button"
             onClick={handlePublish}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-mono text-xs font-bold uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all active:scale-95"
+            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-theme-gold to-theme-gold/80 hover:from-theme-gold/90 hover:to-theme-gold/70 text-theme-bg font-mono text-xs font-bold uppercase tracking-wider shadow-lg shadow-theme-gold/20 transition-all active:scale-95"
           >
             <Save size={14} />
             <span>Опубликовать</span>
@@ -236,9 +236,9 @@ export const JudicialSystemVisualEditor: React.FC = () => {
         
         {/* LEFT COLUMN: Entity Tree & Hierarchy Reordering */}
         <div className="xl:col-span-3 space-y-4">
-          <div className="p-4 rounded-2xl bg-[#070d1a] border border-slate-800 space-y-3">
+          <div className="p-4 rounded-2xl bg-theme-surface border border-theme-border space-y-3">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-xs text-amber-400 font-bold uppercase tracking-wider">
+              <span className="font-mono text-xs text-theme-gold font-bold uppercase tracking-wider">
                 ПОДРАЗДЕЛЕНИЯ ({filteredList.length})
               </span>
               <button
@@ -263,7 +263,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   pushState([...entities, newItem]);
                   setSelectedId(newId);
                 }}
-                className="p-1.5 rounded-lg bg-amber-400/10 text-amber-400 hover:bg-amber-400 hover:text-black transition-colors"
+                className="p-1.5 rounded-lg bg-theme-gold/10 text-theme-gold hover:bg-theme-gold hover:text-theme-bg transition-colors"
                 title="Добавить подразделение"
               >
                 <Plus size={14} />
@@ -272,13 +272,13 @@ export const JudicialSystemVisualEditor: React.FC = () => {
 
             {/* Quick Search in left tree */}
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-textMuted" />
               <input
                 type="text"
                 value={searchFilter}
                 onChange={(e) => setSearchFilter(e.target.value)}
                 placeholder="Фильтр элементов..."
-                className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-400"
               />
             </div>
 
@@ -292,14 +292,14 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                     onClick={() => setSelectedId(item.id)}
                     className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-2 group ${
                       isSelected
-                        ? 'border-amber-400 bg-amber-400/15 text-white shadow-md'
-                        : 'border-slate-800/80 bg-slate-900/60 text-slate-300 hover:border-slate-700 hover:bg-slate-900'
+                        ? 'border-amber-400 bg-amber-400/15 text-theme-text shadow-md'
+                        : 'border-theme-border/80 bg-theme-bg/60 text-theme-textSec hover:border-theme-textMuted hover:bg-theme-bg'
                     }`}
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1.5 mb-0.5">
-                        <span className="font-mono text-2xs text-amber-400 font-bold">{item.code}</span>
-                        <span className="text-2xs font-mono text-slate-500 uppercase truncate">
+                        <span className="font-mono text-2xs text-theme-gold font-bold">{item.code}</span>
+                        <span className="text-2xs font-mono text-theme-textMuted uppercase truncate">
                           [{item.category}]
                         </span>
                       </div>
@@ -317,7 +317,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                           moveEntity(index, 'up');
                         }}
                         disabled={index === 0}
-                        className="p-1 rounded text-slate-400 hover:text-white disabled:opacity-20"
+                        className="p-1 rounded text-theme-textMuted hover:text-theme-text disabled:opacity-20"
                       >
                         <MoveUp size={12} />
                       </button>
@@ -328,7 +328,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                           moveEntity(index, 'down');
                         }}
                         disabled={index === entities.length - 1}
-                        className="p-1 rounded text-slate-400 hover:text-white disabled:opacity-20"
+                        className="p-1 rounded text-theme-textMuted hover:text-theme-text disabled:opacity-20"
                       >
                         <MoveDown size={12} />
                       </button>
@@ -342,9 +342,9 @@ export const JudicialSystemVisualEditor: React.FC = () => {
 
         {/* CENTER COLUMN: Visual Properties Editor */}
         <div className="xl:col-span-5 space-y-4">
-          <div className="p-6 rounded-3xl bg-[#070d1a] border border-slate-800 shadow-xl space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div className="flex items-center gap-2 font-mono text-xs text-amber-400 font-bold uppercase">
+          <div className="p-6 rounded-3xl bg-theme-surface border border-theme-border shadow-xl space-y-5">
+            <div className="flex items-center justify-between border-b border-theme-border pb-3">
+              <div className="flex items-center gap-2 font-mono text-xs text-theme-gold font-bold uppercase">
                 <Sliders size={15} />
                 <span>РЕДАКТИРОВАНИЕ ПОДРАЗДЕЛЕНИЯ ({activeEntity.code})</span>
               </div>
@@ -353,7 +353,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   type="button"
                   onClick={() => duplicateEntity(activeEntity)}
                   title="Дублировать"
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                  className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-text hover:bg-theme-bg/60 transition-colors"
                 >
                   <Copy size={14} />
                 </button>
@@ -369,16 +369,16 @@ export const JudicialSystemVisualEditor: React.FC = () => {
             </div>
 
             {/* Language Tag Indicator */}
-            <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs font-mono">
-              <span className="text-slate-400">АКТИВНЫЙ ЯЗЫК РЕДАКТИРОВАНИЯ:</span>
-              <span className="text-amber-400 font-bold uppercase px-2 py-0.5 rounded bg-amber-400/20">
+            <div className="p-2.5 rounded-xl bg-theme-bg border border-theme-border flex items-center justify-between text-xs font-mono">
+              <span className="text-theme-textMuted">АКТИВНЫЙ ЯЗЫК РЕДАКТИРОВАНИЯ:</span>
+              <span className="text-theme-gold font-bold uppercase px-2 py-0.5 rounded bg-theme-gold/20">
                 {activeLang === 'tj' ? 'Тоҷикӣ (TJ)' : activeLang === 'en' ? 'English (EN)' : 'Русский (RU)'}
               </span>
             </div>
 
             {/* Field: Title */}
             <div className="space-y-1.5">
-              <label className="text-xs font-mono text-slate-400 uppercase tracking-wider block">
+              <label className="text-xs font-mono text-theme-textMuted uppercase tracking-wider block">
                 Заголовок подразделения ({activeLang.toUpperCase()}):
               </label>
               <input
@@ -388,13 +388,13 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   const key = activeLang === 'tj' ? 'titleTj' : activeLang === 'en' ? 'titleEn' : 'titleRu';
                   updateField(key, e.target.value);
                 }}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white focus:outline-none focus:border-amber-400 font-serif font-bold"
+                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-sm text-theme-text focus:outline-none focus:border-amber-400 font-serif font-bold"
               />
             </div>
 
             {/* Field: Subtitle */}
             <div className="space-y-1.5">
-              <label className="text-xs font-mono text-slate-400 uppercase tracking-wider block">
+              <label className="text-xs font-mono text-theme-textMuted uppercase tracking-wider block">
                 Подзаголовок / Юрисдикция ({activeLang.toUpperCase()}):
               </label>
               <input
@@ -404,13 +404,13 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   const key = activeLang === 'tj' ? 'subtitleTj' : activeLang === 'en' ? 'subtitleEn' : 'subtitleRu';
                   updateField(key, e.target.value);
                 }}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-amber-400 font-mono"
+                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-amber-400 font-mono"
               />
             </div>
 
             {/* Field: Leader / Head */}
             <div className="space-y-1.5">
-              <label className="text-xs font-mono text-slate-400 uppercase tracking-wider block">
+              <label className="text-xs font-mono text-theme-textMuted uppercase tracking-wider block">
                 Руководитель / Председатель ({activeLang.toUpperCase()}):
               </label>
               <input
@@ -427,13 +427,13 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   updateField(key, e.target.value);
                 }}
                 placeholder="ФИО руководителя..."
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-amber-400 font-medium"
+                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-amber-400 font-medium"
               />
             </div>
 
             {/* Field: Description */}
             <div className="space-y-1.5">
-              <label className="text-xs font-mono text-slate-400 uppercase tracking-wider block">
+              <label className="text-xs font-mono text-theme-textMuted uppercase tracking-wider block">
                 Полное описание полномочий ({activeLang.toUpperCase()}):
               </label>
               <textarea
@@ -443,18 +443,18 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   const key = activeLang === 'tj' ? 'descTj' : activeLang === 'en' ? 'descEn' : 'descRu';
                   updateField(key, e.target.value);
                 }}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-amber-400 leading-relaxed resize-none"
+                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-amber-400 leading-relaxed resize-none"
               />
             </div>
 
             {/* Technical attributes: Category & Code */}
-            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800/80">
+            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-theme-border/80">
               <div className="space-y-1">
-                <label className="text-2xs font-mono text-slate-500 uppercase block">Категория:</label>
+                <label className="text-2xs font-mono text-theme-textMuted uppercase block">Категория:</label>
                 <select
                   value={activeEntity.category}
                   onChange={(e) => updateField('category', e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-amber-400 font-mono"
+                  className="w-full px-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-amber-400 font-mono"
                 >
                   <option value="leadership">Роҳбарият (Leadership)</option>
                   <option value="central_organs">Мақомоти марказӣ (Central Organs)</option>
@@ -465,12 +465,12 @@ export const JudicialSystemVisualEditor: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="text-2xs font-mono text-slate-500 uppercase block">Системный код:</label>
+                <label className="text-2xs font-mono text-theme-textMuted uppercase block">Системный код:</label>
                 <input
                   type="text"
                   value={activeEntity.code}
                   onChange={(e) => updateField('code', e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-amber-400 font-mono font-bold focus:outline-none focus:border-amber-400"
+                  className="w-full px-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-gold font-mono font-bold focus:outline-none focus:border-amber-400"
                 />
               </div>
             </div>
@@ -480,8 +480,8 @@ export const JudicialSystemVisualEditor: React.FC = () => {
 
         {/* RIGHT COLUMN: Live Interactive Realistic Preview */}
         <div className="xl:col-span-4 space-y-4">
-          <div className="p-4 rounded-2xl bg-[#070d1a] border border-slate-800 flex items-center justify-between">
-            <span className="font-mono text-xs text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+          <div className="p-4 rounded-2xl bg-theme-surface border border-theme-border flex items-center justify-between">
+            <span className="font-mono text-xs text-theme-gold font-bold uppercase tracking-wider flex items-center gap-1.5">
               <Eye size={14} />
               <span>ЖИВОЙ ПРЕДПРОСМОТР</span>
             </span>
@@ -491,7 +491,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPreviewDevice('desktop')}
-                className={`p-1.5 rounded-lg ${previewDevice === 'desktop' ? 'bg-amber-400 text-black' : 'text-slate-400 hover:text-white'}`}
+                className={`p-1.5 rounded-lg ${previewDevice === 'desktop' ? 'bg-amber-400 text-black' : 'text-theme-textMuted hover:text-theme-text'}`}
                 title="Desktop"
               >
                 <Monitor size={14} />
@@ -499,7 +499,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPreviewDevice('tablet')}
-                className={`p-1.5 rounded-lg ${previewDevice === 'tablet' ? 'bg-amber-400 text-black' : 'text-slate-400 hover:text-white'}`}
+                className={`p-1.5 rounded-lg ${previewDevice === 'tablet' ? 'bg-amber-400 text-black' : 'text-theme-textMuted hover:text-theme-text'}`}
                 title="Tablet"
               >
                 <Tablet size={14} />
@@ -507,16 +507,16 @@ export const JudicialSystemVisualEditor: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPreviewDevice('mobile')}
-                className={`p-1.5 rounded-lg ${previewDevice === 'mobile' ? 'bg-amber-400 text-black' : 'text-slate-400 hover:text-white'}`}
+                className={`p-1.5 rounded-lg ${previewDevice === 'mobile' ? 'bg-amber-400 text-black' : 'text-theme-textMuted hover:text-theme-text'}`}
                 title="Mobile"
               >
                 <Smartphone size={14} />
               </button>
-              <div className="w-[1px] h-4 bg-slate-800 mx-1" />
+              <div className="w-[1px] h-4 bg-theme-border mx-1" />
               <button
                 type="button"
                 onClick={() => setPreviewTheme(previewTheme === 'dark' ? 'light' : 'dark')}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white"
+                className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-text"
                 title="Переключить тему"
               >
                 {previewTheme === 'dark' ? <Moon size={14} /> : <Sun size={14} />}
@@ -535,10 +535,10 @@ export const JudicialSystemVisualEditor: React.FC = () => {
             {/* Rendered Live Card Preview */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-2xs text-amber-500 font-bold uppercase tracking-wider">
+                <span className="font-mono text-2xs text-theme-gold font-bold uppercase tracking-wider">
                   {activeEntity.code} // {activeEntity.category.toUpperCase()}
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-2xs font-mono text-amber-400">
+                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-2xs font-mono text-theme-gold">
                   {activeLang.toUpperCase()} PREVIEW
                 </span>
               </div>
@@ -547,24 +547,24 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                 {activeLang === 'tj' ? activeEntity.titleTj : activeLang === 'en' ? activeEntity.titleEn : activeEntity.titleRu}
               </h3>
 
-              <p className="font-mono text-xs text-amber-500/90 font-medium">
+              <p className="font-mono text-xs text-theme-gold/90 font-medium">
                 {activeLang === 'tj' ? activeEntity.subtitleTj : activeLang === 'en' ? activeEntity.subtitleEn : activeEntity.subtitleRu}
               </p>
 
               {activeEntity.leaderTj && (
-                <div className={`p-3 rounded-xl border text-xs ${previewTheme === 'dark' ? 'bg-[#070e20] border-slate-800' : 'bg-white border-slate-200'}`}>
-                  <span className="text-2xs font-mono text-slate-400 uppercase block">Руководитель:</span>
+                <div className={`p-3 rounded-xl border text-xs ${previewTheme === 'dark' ? 'bg-[#070e20] border-theme-border' : 'bg-white border-slate-200'}`}>
+                  <span className="text-2xs font-mono text-theme-textMuted uppercase block">Руководитель:</span>
                   <span className="font-serif font-bold mt-0.5 block">
                     {activeLang === 'tj' ? activeEntity.leaderTj : activeLang === 'en' ? activeEntity.leaderEn : activeEntity.leaderRu}
                   </span>
                 </div>
               )}
 
-              <p className={`text-xs leading-relaxed p-3 rounded-xl border ${previewTheme === 'dark' ? 'bg-[#070e20]/60 border-slate-800 text-slate-300' : 'bg-white border-slate-200 text-slate-700'}`}>
+              <p className={`text-xs leading-relaxed p-3 rounded-xl border ${previewTheme === 'dark' ? 'bg-[#070e20]/60 border-theme-border text-theme-textSec' : 'bg-white border-slate-200 text-slate-700'}`}>
                 {activeLang === 'tj' ? activeEntity.descTj : activeLang === 'en' ? activeEntity.descEn : activeEntity.descRu}
               </p>
 
-              <div className="pt-2 border-t border-slate-800/50 flex items-center justify-between text-2xs font-mono text-slate-500">
+              <div className="pt-2 border-t border-theme-border/50 flex items-center justify-between text-2xs font-mono text-theme-textMuted">
                 <span>sud.tj // LIVE REPLICA</span>
                 <span className="text-emerald-400">✓ SYNCED</span>
               </div>

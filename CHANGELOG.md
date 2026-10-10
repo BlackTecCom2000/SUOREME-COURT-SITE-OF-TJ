@@ -10,6 +10,30 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.24.0 - Admin glass parity: full tokenisation of admin UI colours
+- Released: 2026-10-10
+- Previous: v2.23.0
+- Every admin surface, input, button, badge, table cell, sidebar item and
+  notification now reads from the shared theme tokens (`theme-text`,
+  `theme-textSec`, `theme-textMuted`, `theme-bg`, `theme-surface`,
+  `theme-border`, `theme-gold`) instead of hardcoded slate/amber hex values.
+- Amber accent colours replaced with `theme-gold` across active tabs, status
+  badges, focus rings, hover states, avatar gradients, sidebar active items,
+  topbar labels, command-palette icons and dashboard section headers.
+- Dark-only `bg-[#091124]`/`bg-[#040813]` panels replaced with `theme-surface`
+  so they respond to light/dark theme switching.
+- AdminBadge `pending`/`pending_review`/`role` variants now use gold-tinted
+  token classes that adapt to both themes.
+- Demo swatch previews in JudicialSystemVisualEditor (lines 531-532) and the
+  dark tree-preview mockup intentionally retain their fixed dark palette —
+  they simulate a target render, not live admin chrome.
+- Files touched: AdminLogin, AdminSidebar, AdminTopbar, AdminProfileMenu,
+  AdminNotificationMenu, CommandPalette, AdminTable, AdminTabs, AdminBadge,
+  AdminEmptyState, Dashboard, CourtsManager, AppealsManager, SettingsManager,
+  DutyAdminManager, JudicialActsManager, AuditLogViewer, NewsList, NewsEditor,
+  JudicialSystemVisualEditor, ShelfBooksManager, MediaLibrary, UsersManager,
+  UsefulSitesManager, Slider3DManager, AiDashboard, LivePreviewEngine.
+
 ## v2.23.0 - Real interactive map of Tajikistan (GADM ADM1, zero dependencies)
 - Released: 2026-10-10 13:23
 - Previous: v2.22.0

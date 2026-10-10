@@ -62,7 +62,7 @@ const { revealToggle } = useThemeReveal();
       {!compact && (
         <span className="flex items-center gap-1.5 shrink-0">
           <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
-          <span className="w-2.5 h-2.5 rounded-full bg-amber-400/70" />
+          <span className="w-2.5 h-2.5 rounded-full bg-theme-gold/70" />
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/70" />
         </span>
       )}

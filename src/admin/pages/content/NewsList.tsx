@@ -77,10 +77,10 @@ export const NewsList: React.FC = () => {
       header: 'Заголовок публикации',
       accessor: (row) => (
         <div className="flex flex-col text-left max-w-md">
-          <span className="font-serif font-bold text-sm text-black dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
+          <span className="font-serif font-bold text-sm text-theme-text group-hover:text-theme-gold transition-colors">
             {row.title_ru}
           </span>
-          <span className="font-mono text-[11px] text-black dark:text-white mt-0.5">
+          <span className="font-mono text-[11px] text-theme-text mt-0.5">
             /{row.slug} {row.category ? `• ${row.category}` : ''}
           </span>
         </div>
@@ -95,7 +95,7 @@ export const NewsList: React.FC = () => {
       header: 'Автор',
       width: '150px',
       accessor: (row) => (
-        <span className="font-mono text-xs text-black dark:text-white">
+        <span className="font-mono text-xs text-theme-text">
           {row.author_name || 'Администратор'}
         </span>
       ),
@@ -104,7 +104,7 @@ export const NewsList: React.FC = () => {
       header: 'Дата публикации',
       width: '140px',
       accessor: (row) => (
-        <span className="font-mono text-xs text-black dark:text-white">
+        <span className="font-mono text-xs text-theme-text">
           {row.published_at
             ? new Date(row.published_at).toLocaleDateString()
             : 'Не опубликовано'}
@@ -119,14 +119,14 @@ export const NewsList: React.FC = () => {
         <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
           <button
             onClick={() => navigate(`/admin/news/${row.id}`)}
-            className="p-1.5 rounded-lg text-black dark:text-white hover:text-amber-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-theme-text hover:text-theme-gold hover:bg-theme-bg/60 transition-colors"
             title="Редактировать"
           >
             <Edit size={15} />
           </button>
           <button
             onClick={(e) => handleDelete(row.id, e)}
-            className="p-1.5 rounded-lg text-black dark:text-white hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+            className="p-1.5 rounded-lg text-theme-text hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
             title="Удалить"
           >
             <Trash2 size={15} />
@@ -141,8 +141,8 @@ export const NewsList: React.FC = () => {
       {/* Top Action Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif font-bold text-2xl text-black dark:text-white">Публикации и пресс-релизы</h2>
-          <p className="font-sans text-xs text-black dark:text-white mt-1">
+          <h2 className="font-serif font-bold text-2xl text-theme-text">Публикации и пресс-релизы</h2>
+          <p className="font-sans text-xs text-theme-text mt-1">
             Управление официальными новостями, судебными хрониками и анонсами Верховного суда
           </p>
         </div>
@@ -160,13 +160,13 @@ export const NewsList: React.FC = () => {
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <AdminTabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
         <div className="relative w-full md:w-72">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-textMuted" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск по новостям..."
-            className="w-full h-10 pl-10 pr-4 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-800 text-xs font-sans text-black dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-amber-500"
+            className="w-full h-10 pl-10 pr-4 rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
           />
         </div>
       </div>

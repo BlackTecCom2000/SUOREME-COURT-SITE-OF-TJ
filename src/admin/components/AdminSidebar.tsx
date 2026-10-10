@@ -190,10 +190,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </div>
           {!isCollapsed && (
             <div className="flex flex-col text-left overflow-hidden">
-              <span className="font-serif font-bold text-xs text-amber-700 dark:text-[#e8c679] leading-tight tracking-wider uppercase truncate">
+              <span className="font-serif font-bold text-xs text-theme-gold leading-tight tracking-wider uppercase truncate">
                 СУДИ ОЛИИ ҶТ
               </span>
-              <span className="font-mono text-2xs text-black dark:text-white font-bold tracking-widest uppercase">
+              <span className="font-mono text-2xs text-theme-text font-bold tracking-widest uppercase">
                 CONTROL CENTER
               </span>
             </div>
@@ -202,7 +202,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
         <button
           onClick={onToggleCollapse}
-          className="hidden md:flex p-1.5 rounded-lg text-black dark:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800 transition-colors"
+          className="hidden md:flex p-1.5 rounded-lg text-theme-text hover:bg-theme-bg/60 transition-colors"
           title={isCollapsed ? 'Развернуть меню' : 'Свернуть меню'}
         >
           {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
@@ -217,7 +217,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           .map((group, gIdx) => (
           <div key={gIdx} className="space-y-1">
             {!isCollapsed && (
-              <div className="px-3 py-1 font-mono text-2xs uppercase tracking-widest text-black dark:text-white font-bold text-left">
+              <div className="px-3 py-1 font-mono text-2xs uppercase tracking-widest text-theme-text font-bold text-left">
                 {group.title}
               </div>
             )}
@@ -232,8 +232,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                   transition-all duration-200 group relative
                   ${
                     isActive
-                      ? 'bg-amber-500/15 text-amber-700 dark:text-[var(--court-gold)] border border-amber-500/30 shadow-[var(--glass-shadow)] font-bold'
-                      : 'text-black dark:text-white hover:bg-slate-200/60 dark:hover:bg-[var(--glass-surface-hover)] border border-transparent font-medium'
+                      ? 'bg-theme-gold/15 text-theme-gold border border-theme-gold/30 shadow-[var(--glass-shadow)] font-bold'
+                      : 'text-theme-text hover:bg-theme-bg/60 dark:hover:bg-[var(--glass-surface-hover)] border border-transparent font-medium'
                   }
                   ${isCollapsed ? 'justify-center px-0' : ''}
                 `}
@@ -253,10 +253,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       {/* Footer — same glass, no dark */}
       <div className="p-3 border-t border-[var(--glass-border)] bg-transparent">
         {!isCollapsed ? (
-          <div className="flex items-center justify-between text-2xs font-mono text-black dark:text-slate-400 font-bold px-1">
+          <div className="flex items-center justify-between text-2xs font-mono text-theme-textMuted font-bold px-1">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-black dark:text-white uppercase font-bold">SECURE NODE</span>
+              <span className="text-theme-text uppercase font-bold">SECURE NODE</span>
             </div>
             <span>v2.6.4</span>
           </div>

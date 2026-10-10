@@ -71,31 +71,31 @@ export const AdminNotificationMenu: React.FC = () => {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white hover:border-amber-400/40 transition-colors"
+        className="relative p-2 rounded-xl border border-theme-border bg-theme-surface text-theme-textSec hover:text-theme-text hover:border-amber-400/40 transition-colors"
         aria-label="Уведомления"
       >
         <Bell size={18} />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 text-slate-950 text-2xs font-mono font-bold flex items-center justify-center shadow-md animate-pulse">
+          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-theme-gold text-theme-bg text-2xs font-mono font-bold flex items-center justify-center shadow-md animate-pulse">
             {unreadCount}
           </span>
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 rounded-2xl border border-amber-400/30 bg-[#070d1a] shadow-2xl shadow-black/90 p-3 z-50 animate-fadeIn text-left">
-          <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 px-1">
-            <span className="font-mono text-xs font-bold text-slate-300 uppercase tracking-wider">
+        <div className="absolute right-0 mt-2 w-80 rounded-2xl border border-amber-400/30 bg-theme-surface shadow-2xl shadow-black/90 p-3 z-50 animate-fadeIn text-left">
+          <div className="flex items-center justify-between pb-2 mb-2 border-b border-theme-border px-1">
+            <span className="font-mono text-xs font-bold text-theme-textSec uppercase tracking-wider">
               Системные события
             </span>
-            <span className="text-2xs font-mono text-amber-400">
+            <span className="text-2xs font-mono text-theme-gold">
               {unreadCount} новых
             </span>
           </div>
 
-          <div className="max-h-64 overflow-y-auto divide-y divide-slate-800/40">
+          <div className="max-h-64 overflow-y-auto divide-y divide-theme-border">
             {notifications.length === 0 ? (
-              <div className="py-6 text-center text-slate-500 font-mono text-xs">
+              <div className="py-6 text-center text-theme-textMuted font-mono text-xs">
                 <CheckCircle2 size={24} className="mx-auto mb-1 text-emerald-400/60" />
                 Все задачи обработаны
               </div>
@@ -107,9 +107,9 @@ export const AdminNotificationMenu: React.FC = () => {
                     navigate(n.path);
                     setIsOpen(false);
                   }}
-                  className="p-2.5 rounded-xl hover:bg-slate-800/80 cursor-pointer transition-colors flex items-start gap-2.5"
+                  className="p-2.5 rounded-xl hover:bg-theme-bg/60 cursor-pointer transition-colors flex items-start gap-2.5"
                 >
-                  <span className="shrink-0 mt-0.5 text-amber-400">
+                  <span className="shrink-0 mt-0.5 text-theme-gold">
                     {n.type === 'appeal' ? (
                       <Send size={14} />
                     ) : n.type === 'news' ? (
@@ -119,8 +119,8 @@ export const AdminNotificationMenu: React.FC = () => {
                     )}
                   </span>
                   <div className="flex-1">
-                    <p className="text-xs font-medium text-slate-200 leading-snug">{n.title}</p>
-                    <span className="text-2xs font-mono text-slate-500">{n.time}</span>
+                    <p className="text-xs font-medium text-theme-text leading-snug">{n.title}</p>
+                    <span className="text-2xs font-mono text-theme-textMuted">{n.time}</span>
                   </div>
                 </div>
               ))

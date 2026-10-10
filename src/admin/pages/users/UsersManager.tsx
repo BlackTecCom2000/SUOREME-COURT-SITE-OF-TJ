@@ -92,12 +92,12 @@ export const UsersManager: React.FC = () => {
       header: 'Сотрудник / Пользователь',
       accessor: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 font-serif font-bold text-sm flex items-center justify-center shadow-md shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-theme-gold to-theme-gold/80 text-theme-bg font-serif font-bold text-sm flex items-center justify-center shadow-md shrink-0">
             {row.name?.[0] || 'U'}
           </div>
           <div className="flex flex-col text-left">
-            <span className="font-serif font-bold text-sm text-white">{row.name}</span>
-            <span className="font-mono text-[11px] text-slate-400">{row.email}</span>
+            <span className="font-serif font-bold text-sm text-theme-text">{row.name}</span>
+            <span className="font-mono text-[11px] text-theme-textMuted">{row.email}</span>
           </div>
         </div>
       ),
@@ -108,7 +108,7 @@ export const UsersManager: React.FC = () => {
       accessor: (row) => (
         <div className="flex flex-col text-left">
           <AdminBadge variant="role" label={roleLabelMap[row.role] || row.role} />
-          <span className="font-mono text-2xs text-slate-500 mt-1 uppercase">
+          <span className="font-mono text-2xs text-theme-textMuted mt-1 uppercase">
             {row.role}
           </span>
         </div>
@@ -118,7 +118,7 @@ export const UsersManager: React.FC = () => {
       header: 'Последний вход',
       width: '160px',
       accessor: (row) => (
-        <span className="font-mono text-xs text-slate-400">
+        <span className="font-mono text-xs text-theme-textMuted">
           {row.last_login ? new Date(row.last_login).toLocaleString() : 'Не зафиксирован'}
         </span>
       ),
@@ -127,7 +127,7 @@ export const UsersManager: React.FC = () => {
       header: 'Сайт',
       width: '200px',
       accessor: (row) => (
-        <span className="font-mono text-[11px] text-amber-300/90">{siteLabel(row.site_id)}</span>
+        <span className="font-mono text-[11px] text-theme-gold/90">{siteLabel(row.site_id)}</span>
       ),
     },
     {
@@ -157,7 +157,7 @@ export const UsersManager: React.FC = () => {
             });
             setIsModalOpen(true);
           }}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800"
+          className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-gold hover:bg-theme-bg/60"
           title="Редактировать"
         >
           <Edit size={15} />
@@ -171,8 +171,8 @@ export const UsersManager: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif font-bold text-2xl text-white">Пользователи и роли</h2>
-          <p className="font-sans text-xs text-slate-400 mt-1">
+          <h2 className="font-serif font-bold text-2xl text-theme-text">Пользователи и роли</h2>
+          <p className="font-sans text-xs text-theme-textMuted mt-1">
             Разграничение прав доступа сотрудников аппарата Верховного суда
           </p>
         </div>

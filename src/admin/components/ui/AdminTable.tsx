@@ -25,11 +25,11 @@ export function AdminTable<T>({
   onRowClick,
 }: AdminTableProps<T>) {
   return (
-    <div className="w-full rounded-2xl overflow-hidden border border-slate-200/90 bg-white/95 shadow-md dark:border-slate-800/80 dark:bg-slate-900/90 dark:shadow-none">
+    <div className="w-full rounded-2xl overflow-hidden border border-theme-border bg-theme-surface shadow-md dark:shadow-none">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/60 text-black dark:text-white font-sans text-xs font-bold uppercase tracking-wider">
+              <tr className="border-b border-theme-border bg-theme-bg/60 text-theme-text font-sans text-xs font-bold uppercase tracking-wider">
               {columns.map((col, idx) => (
                 <th
                   key={idx}
@@ -41,19 +41,19 @@ export function AdminTable<T>({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-sans text-sm text-black dark:text-white">
+          <tbody className="divide-y divide-theme-border font-sans text-sm text-theme-text">
             {isLoading ? (
               <tr>
-                <td colSpan={columns.length} className="py-12 text-center text-slate-800 dark:text-slate-300 font-mono text-xs">
+                <td colSpan={columns.length} className="py-12 text-center text-theme-textSec font-mono text-xs">
                   <div className="flex items-center justify-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                    <span className="w-2 h-2 rounded-full bg-theme-gold animate-ping" />
                     Загрузка данных...
                   </div>
                 </td>
               </tr>
             ) : data.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="py-12 text-center text-slate-800 dark:text-slate-300 font-sans text-xs font-medium">
+                <td colSpan={columns.length} className="py-12 text-center text-theme-textSec font-sans text-xs font-medium">
                   {emptyMessage}
                 </td>
               </tr>
@@ -64,7 +64,7 @@ export function AdminTable<T>({
                   onClick={() => onRowClick?.(row)}
                   className={`
                     transition-colors duration-150
-                    ${onRowClick ? 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50' : 'hover:bg-slate-50/60 dark:hover:bg-slate-800/30'}
+                    ${onRowClick ? 'cursor-pointer hover:bg-theme-bg/60' : 'hover:bg-theme-bg/40'}
                   `}
                 >
                   {columns.map((col, colIdx) => (

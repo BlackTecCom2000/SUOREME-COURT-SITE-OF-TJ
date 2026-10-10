@@ -166,7 +166,7 @@ export const CourtsManager: React.FC = () => {
         const cluster = REGIONAL_CLUSTERS.find((r) => r.id === row.regionId);
         return (
           <div className="flex flex-col text-left">
-            <span className="font-serif font-bold text-sm text-white group-hover:text-amber-300 transition-colors">
+            <span className="font-serif font-bold text-sm text-theme-text group-hover:text-theme-gold transition-colors">
               {row.nameRu}
             </span>
             <div className="flex items-center gap-2 mt-0.5">
@@ -176,8 +176,8 @@ export const CourtsManager: React.FC = () => {
               >
                 {cluster?.shortNameRu || row.regionId}
               </span>
-              <span className="text-slate-600">•</span>
-              <span className="font-mono text-[11px] text-slate-400">
+              <span className="text-theme-textMuted">•</span>
+              <span className="font-mono text-[11px] text-theme-textMuted">
                 {row.website || `${row.id}.sud.tj`}
               </span>
             </div>
@@ -189,7 +189,7 @@ export const CourtsManager: React.FC = () => {
       header: 'Тип органа',
       width: '140px',
       accessor: (row) => (
-        <span className="font-mono text-xs text-slate-300 uppercase">
+        <span className="font-mono text-xs text-theme-textSec uppercase">
           {row.courtType === 'regional'
             ? 'Областной'
             : row.courtType === 'city'
@@ -204,7 +204,7 @@ export const CourtsManager: React.FC = () => {
       header: 'Контакты / Телефон',
       width: '160px',
       accessor: (row) => (
-        <span className="font-mono text-xs text-slate-400">{row.phone || '+992 (37) 221-00-00'}</span>
+        <span className="font-mono text-xs text-theme-textMuted">{row.phone || '+992 (37) 221-00-00'}</span>
       ),
     },
     {
@@ -220,14 +220,14 @@ export const CourtsManager: React.FC = () => {
         <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
           <button
             onClick={() => handleOpenEdit(row)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-gold hover:bg-theme-bg/60 transition-colors"
             title="Редактировать"
           >
             <Edit size={15} />
           </button>
           <button
             onClick={() => handleDeleteCourt(row)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-theme-textMuted hover:text-red-400 hover:bg-theme-bg/60 transition-colors"
             title="Удалить"
           >
             <Trash2 size={15} />
@@ -242,8 +242,8 @@ export const CourtsManager: React.FC = () => {
       {/* Top Action Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif font-bold text-2xl text-white">Судебная сеть Таджикистана</h2>
-          <p className="font-sans text-xs text-slate-400 mt-1">
+          <h2 className="font-serif font-bold text-2xl text-theme-text">Судебная сеть Таджикистана</h2>
+          <p className="font-sans text-xs text-theme-textMuted mt-1">
             Координация 80 судебных органов, региональных коллегий и военных гарнизонов
           </p>
         </div>
@@ -264,8 +264,8 @@ export const CourtsManager: React.FC = () => {
             onClick={() => setSelectedRegion('all')}
             className={`px-3 py-1.5 rounded-xl text-xs font-mono whitespace-nowrap transition-colors ${
               selectedRegion === 'all'
-                ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/20'
-                : 'bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white'
+                ? 'bg-theme-gold text-theme-bg font-bold shadow-md shadow-theme-gold/20'
+                : 'bg-theme-bg border border-theme-border text-theme-textMuted hover:text-theme-text'
             }`}
           >
             Все регионы ({courts.length})
@@ -276,8 +276,8 @@ export const CourtsManager: React.FC = () => {
               onClick={() => setSelectedRegion(cl.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-mono whitespace-nowrap transition-colors ${
                 selectedRegion === cl.id
-                  ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/20'
-                  : 'bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-theme-gold text-theme-bg font-bold shadow-md shadow-theme-gold/20'
+                  : 'bg-theme-bg border border-theme-border text-theme-textMuted hover:text-theme-text'
               }`}
             >
               {cl.shortNameRu}
@@ -286,13 +286,13 @@ export const CourtsManager: React.FC = () => {
         </div>
 
         <div className="relative w-full sm:w-72">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-textMuted" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск по названию суда..."
-            className="w-full h-10 pl-10 pr-4 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+            className="w-full h-10 pl-10 pr-4 rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
           />
         </div>
       </div>

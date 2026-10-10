@@ -506,10 +506,10 @@ export const ShelfBooksManager: React.FC = () => {
       accessor: (row) => (
         <div className="flex items-center gap-2">
           <span
-            className="inline-block w-8 h-11 rounded-[3px] border border-amber-200/40 shrink-0"
+            className="inline-block w-8 h-11 rounded-[3px] border border-theme-gold/40 shrink-0"
             style={{ background: BOOK_THEMES[(row.cover_theme ?? 0) % BOOK_THEMES.length] }}
           />
-          <span className="font-mono text-[11px] text-slate-500">#{row.sort_order}</span>
+          <span className="font-mono text-[11px] text-theme-textMuted">#{row.sort_order}</span>
         </div>
       ),
     },
@@ -517,9 +517,9 @@ export const ShelfBooksManager: React.FC = () => {
       header: 'Название книги',
       accessor: (row) => (
         <div className="flex flex-col text-left">
-          <span className="font-serif font-bold text-sm text-white">{row.title_ru}</span>
+          <span className="font-serif font-bold text-sm text-theme-text">{row.title_ru}</span>
           {row.title_tj && (
-            <span className="font-sans text-[11px] text-slate-400 mt-0.5">{row.title_tj}</span>
+            <span className="font-sans text-[11px] text-theme-textMuted mt-0.5">{row.title_tj}</span>
           )}
         </div>
       ),
@@ -529,10 +529,10 @@ export const ShelfBooksManager: React.FC = () => {
       width: '200px',
       accessor: (row) => (
         <div className="flex flex-col text-left gap-1">
-          <span className="font-mono text-2xs text-amber-400 border border-amber-400/40 rounded px-1.5 py-0.5 w-fit">
+          <span className="font-mono text-2xs text-theme-gold border border-theme-gold/40 rounded px-1.5 py-0.5 w-fit">
             {row.badge || 'PDF'}
           </span>
-          <span className="font-mono text-2xs text-slate-500 truncate max-w-[180px]" title={row.url || ''}>
+          <span className="font-mono text-2xs text-theme-textMuted truncate max-w-[180px]" title={row.url || ''}>
             {row.url || '— нет ссылки —'}
           </span>
         </div>
@@ -542,7 +542,7 @@ export const ShelfBooksManager: React.FC = () => {
       header: 'Категория',
       width: '130px',
       accessor: (row) => (
-        <span className="font-mono text-[11px] text-amber-300/90 uppercase">
+        <span className="font-mono text-[11px] text-theme-gold/90 uppercase">
           {kindLabel(row.kind || detectKind(row.title_ru || ''))}
         </span>
       ),
@@ -551,7 +551,7 @@ export const ShelfBooksManager: React.FC = () => {
       header: 'Язык',
       width: '90px',
       accessor: (row) => (
-        <span className="font-mono text-[11px] text-amber-200 border border-amber-400/30 bg-amber-400/10 rounded px-1.5 py-0.5 uppercase">
+        <span className="font-mono text-[11px] text-theme-gold border border-theme-gold/30 bg-theme-gold/10 rounded px-1.5 py-0.5 uppercase">
           {(row.doc_lang || 'auto').toUpperCase()}
         </span>
       ),
@@ -573,14 +573,14 @@ export const ShelfBooksManager: React.FC = () => {
             <>
               <button
                 onClick={() => handleMove(row, -1)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800"
+                className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-gold hover:bg-theme-bg/60"
                 title="Выше"
               >
                 <ChevronUp size={15} />
               </button>
               <button
                 onClick={() => handleMove(row, 1)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800"
+                className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-gold hover:bg-theme-bg/60"
                 title="Ниже"
               >
                 <ChevronDown size={15} />
@@ -590,7 +590,7 @@ export const ShelfBooksManager: React.FC = () => {
           <button
             onClick={() => handleToggleVisible(row)}
             disabled={!canEdit}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800 disabled:opacity-30"
+            className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-gold hover:bg-theme-bg/60 disabled:opacity-30"
             title={row.is_visible ? 'Скрыть с полки' : 'Показать на полке'}
           >
             {row.is_visible ? <Eye size={15} /> : <EyeOff size={15} />}
@@ -598,7 +598,7 @@ export const ShelfBooksManager: React.FC = () => {
           <button
             onClick={() => handleOpenEdit(row)}
             disabled={!canEdit}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800 disabled:opacity-30"
+            className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-gold hover:bg-theme-bg/60 disabled:opacity-30"
             title="Редактировать"
           >
             <Edit size={15} />
@@ -606,7 +606,7 @@ export const ShelfBooksManager: React.FC = () => {
           <button
             onClick={() => handleDelete(row)}
             disabled={!canEdit}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800 disabled:opacity-30"
+            className="p-1.5 rounded-lg text-theme-textMuted hover:text-red-400 hover:bg-theme-bg/60 disabled:opacity-30"
             title="Удалить"
           >
             <Trash2 size={15} />
@@ -620,12 +620,12 @@ export const ShelfBooksManager: React.FC = () => {
     <div className="space-y-6 text-left animate-fadeIn">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif font-bold text-2xl text-white">Книги и библиотека</h2>
-          <p className="font-sans text-xs text-slate-400 mt-1">
+          <h2 className="font-serif font-bold text-2xl text-theme-text">Книги и библиотека</h2>
+          <p className="font-sans text-xs text-theme-textMuted mt-1">
             Электронная библиотека суда: категории, порядок, обложки, видимость.
           </p>
           {!canEdit && (
-            <p className="font-mono text-[11px] text-amber-300/90 mt-2 inline-flex items-center gap-1.5">
+            <p className="font-mono text-[11px] text-theme-gold/90 mt-2 inline-flex items-center gap-1.5">
               <Lock size={12} /> Режим чтения — ваша роль ({user?.role}): изменение библиотеки недоступно
             </p>
           )}
@@ -646,13 +646,13 @@ export const ShelfBooksManager: React.FC = () => {
 
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         <div className="relative w-full sm:w-72">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-textMuted" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск по названию или ссылке..."
-            className="w-full h-10 pl-10 pr-4 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+            className="w-full h-10 pl-10 pr-4 rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
           />
         </div>
         <div className="flex items-center gap-2 overflow-x-auto">
@@ -662,8 +662,8 @@ export const ShelfBooksManager: React.FC = () => {
               onClick={() => setKindFilter(k)}
               className={`px-3 py-1.5 rounded-xl text-xs font-mono whitespace-nowrap transition-colors ${
                 kindFilter === k
-                  ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/20'
-                  : 'bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-theme-gold text-theme-bg font-bold shadow-md shadow-theme-gold/20'
+                  : 'bg-theme-bg/80 border border-theme-border text-theme-textMuted hover:text-theme-text'
               }`}
             >
               {k === 'all' ? 'Все категории' : pickTri(DOC_KIND_LABEL[k], 'ru')}
@@ -719,21 +719,21 @@ export const ShelfBooksManager: React.FC = () => {
               placeholder="Civil Code of RT, Part 1"
             />
             <div className="space-y-3">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-300">Файлы документа — раздельно по языкам</span>
+              <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textSec">Файлы документа — раздельно по языкам</span>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {(['ru','tj','en'] as const).map(lang => {
                   const urlVal = (formData as any)[`url_${lang}`] as string | undefined;
                   const label = lang==='ru' ? 'Русский' : lang==='tj' ? 'Таджикский' : 'English';
-                  const color = lang==='ru' ? 'border-amber-400/30 text-amber-300 bg-amber-400/10' : lang==='tj' ? 'border-emerald-400/30 text-emerald-300 bg-emerald-400/10' : 'border-sky-400/30 text-sky-300 bg-sky-400/10';
+                  const color = lang==='ru' ? 'border-theme-gold/30 text-theme-gold bg-theme-gold/10' : lang==='tj' ? 'border-emerald-400/30 text-emerald-300 bg-emerald-400/10' : 'border-sky-400/30 text-sky-300 bg-sky-400/10';
                   return (
-                    <div key={lang} className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex flex-col gap-2.5">
+                    <div key={lang} className="p-3 rounded-xl bg-theme-bg border border-theme-border flex flex-col gap-2.5">
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-bold border w-fit ${color}`}>{lang.toUpperCase()} · {label}</span>
                       {urlVal ? (
                         <>
-                          <a href={urlVal} target="_blank" rel="noreferrer" className="text-xs font-mono text-slate-300 truncate hover:text-amber-400" title={urlVal}>{urlVal.split('/').pop()}</a>
+                          <a href={urlVal} target="_blank" rel="noreferrer" className="text-xs font-mono text-theme-textSec truncate hover:text-theme-gold" title={urlVal}>{urlVal.split('/').pop()}</a>
                           <div className="flex gap-1.5">
                             <AdminButton variant="outline" size="sm" onClick={() => triggerFilePicker(lang)}>Заменить</AdminButton>
-                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, [`url_${lang}`]: '' } as any))} className="px-2.5 py-1.5 rounded-lg border border-slate-700 text-slate-400 hover:text-red-400 hover:border-red-400/40 text-xs">Удалить</button>
+                            <button type="button" onClick={() => setFormData(prev => ({ ...prev, [`url_${lang}`]: '' } as any))} className="px-2.5 py-1.5 rounded-lg border border-theme-border text-theme-textMuted hover:text-red-400 hover:border-red-400/40 text-xs">Удалить</button>
                           </div>
                         </>
                       ) : (
@@ -744,8 +744,8 @@ export const ShelfBooksManager: React.FC = () => {
                 })}
               </div>
               <input ref={libFileRef} type="file" accept=".pdf,.doc,.docx,.txt,.md,.png,.jpg,.jpeg,.webp,.gif" className="hidden" aria-hidden="true" tabIndex={-1} onChange={handleLibFile} />
-              {uploadStatus && <span className="font-mono text-[11px] text-amber-300/90">{uploadStatus}</span>}
-              <span className="text-[11px] text-slate-500">Каждый язык — отдельный файл. В библиотеке показывается только файл текущего языка.</span>
+              {uploadStatus && <span className="font-mono text-[11px] text-theme-gold/90">{uploadStatus}</span>}
+              <span className="text-[11px] text-theme-textMuted">Каждый язык — отдельный файл. В библиотеке показывается только файл текущего языка.</span>
             </div>
             <AdminSelect
               label="Язык документа (важно для смены языка в читалке)"
@@ -755,19 +755,19 @@ export const ShelfBooksManager: React.FC = () => {
             />
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">
                   Полный текст книги — язык: {contentTab.toUpperCase()} {(() => { const cur = contentTab==='tj'? formData.content_tj : contentTab==='en'? formData.content_en : formData.content_ru; return cur ? `(${String(cur).length} символов)` : '(пусто)'; })()}
                 </span>
-                <span className="text-2xs font-mono text-slate-500">При смене языка в библиотеке читалка покажет текст для этого языка (fallback → RU → legacy)</span>
+                <span className="text-2xs font-mono text-theme-textMuted">При смене языка в библиотеке читалка покажет текст для этого языка (fallback → RU → legacy)</span>
               </div>
               <div className="flex items-center gap-1.5">
                 {(['ru','tj','en'] as const).map(l => (
                   <button key={l} type="button" onClick={() => setContentTab(l)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono border ${contentTab===l ? 'bg-amber-400 text-slate-900 border-amber-400 font-bold' : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'}`}>
+                    className={`px-3 py-1.5 rounded-lg text-xs font-mono border ${contentTab===l ? 'bg-theme-gold text-theme-bg border-theme-gold font-bold' : 'bg-theme-bg border-theme-border text-theme-textMuted hover:text-theme-text'}`}>
                     {l.toUpperCase()} {(() => { const v = l==='tj'? formData.content_tj : l==='en'? formData.content_en : formData.content_ru; return v ? `· ${String(v).length}` : ''; })()}
                   </button>
                 ))}
-                <span className="text-[11px] text-slate-500 ml-2">Выбранный язык заполняется, остальные — опционально (многоязычный документ)</span>
+                <span className="text-[11px] text-theme-textMuted ml-2">Выбранный язык заполняется, остальные — опционально (многоязычный документ)</span>
               </div>
               <textarea
                 value={contentTab==='tj' ? formData.content_tj : contentTab==='en' ? formData.content_en : formData.content_ru}
@@ -787,26 +787,26 @@ export const ShelfBooksManager: React.FC = () => {
                 }}
                 rows={7}
                 placeholder={contentTab==='tj' ? 'Матни китоб ба тоҷикӣ (HTML дастгирӣ мешавад: <a>, <table> ...)' : contentTab==='en' ? 'Book text in English (HTML supported: <a>, <table> ...)' : 'Вставьте текст кодекса/закона на русском или HTML ( <a>, <b>, <ul>, <table> — покажется как есть)'}
-                className="w-full rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 p-3 leading-relaxed"
+                className="w-full rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold p-3 leading-relaxed"
               />
-              <span className="text-[11px] text-slate-500">HTML «как есть» — ссылки/таблицы кликабельны. Текст текущего языка сохраняется отдельно; при смене языка в читалке автоматически подставится нужный.</span>
+              <span className="text-[11px] text-theme-textMuted">HTML «как есть» — ссылки/таблицы кликабельны. Текст текущего языка сохраняется отдельно; при смене языка в читалке автоматически подставится нужный.</span>
               <div className="flex items-center gap-2">
                 <input
                   value={formData.importUrl}
                   onChange={(e) => setFormData({ ...formData, importUrl: e.target.value })}
                   placeholder="URL страницы документа (adliya.tj, sud.tj...)"
                   disabled={!editing}
-                  className="flex-1 h-9 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 disabled:opacity-40"
+                  className="flex-1 h-9 px-3 rounded-xl bg-theme-bg border border-theme-border text-xs font-mono text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold disabled:opacity-40"
                 />
                 <AdminButton variant="outline" size="sm" onClick={handleImportDoc} disabled={!editing || !formData.importUrl.trim()}>
                   Импорт текста
                 </AdminButton>
                 {formData.importStatus && (
-                  <span className="font-mono text-[11px] text-amber-300/90">{formData.importStatus}</span>
+                  <span className="font-mono text-[11px] text-theme-gold/90">{formData.importStatus}</span>
                 )}
               </div>
               {!editing && (
-                <span className="text-[11px] text-slate-500">Импорт по URL доступен после создания книги.</span>
+                <span className="text-[11px] text-theme-textMuted">Импорт по URL доступен после создания книги.</span>
               )}
               {editing && (
                 <div className="flex items-center gap-2 flex-wrap pt-1">
@@ -814,7 +814,7 @@ export const ShelfBooksManager: React.FC = () => {
                     Синхронизировать с источником
                   </AdminButton>
                   {syncStatus && (
-                    <span className="font-mono text-[11px] text-amber-300/90">{syncStatus}</span>
+                    <span className="font-mono text-[11px] text-theme-gold/90">{syncStatus}</span>
                   )}
                   <AdminButton variant="outline" size="sm" onClick={() => loadVersions(editing.id)}>
                     История версий ({versions.length})
@@ -822,11 +822,11 @@ export const ShelfBooksManager: React.FC = () => {
                 </div>
               )}
               {editing && versions.length > 0 && (
-                <div className="flex flex-col gap-1 p-2 rounded-xl bg-slate-900/60 border border-slate-800 max-h-32 overflow-y-auto">
+                <div className="flex flex-col gap-1 p-2 rounded-xl bg-theme-bg/60 border border-theme-border max-h-32 overflow-y-auto">
                   {versions.map((v: any) => (
-                    <div key={v.version_number} className="flex items-center justify-between gap-2 font-mono text-[11px] text-slate-400">
+                    <div key={v.version_number} className="flex items-center justify-between gap-2 font-mono text-[11px] text-theme-textMuted">
                       <span>v{v.version_number} · {String(v.created_at || '').slice(0, 19).replace('T', ' ')} · {v.commit_message || ''}</span>
-                      <button type="button" onClick={() => handleRollback(v.version_number)} className="px-2 py-0.5 rounded-lg border border-slate-700 text-amber-300 hover:border-amber-400">
+                      <button type="button" onClick={() => handleRollback(v.version_number)} className="px-2 py-0.5 rounded-lg border border-theme-border text-theme-gold hover:border-theme-gold">
                         Откатить
                       </button>
                     </div>
@@ -875,21 +875,21 @@ export const ShelfBooksManager: React.FC = () => {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">Видимость</span>
+              <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Видимость</span>
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, is_visible: formData.is_visible ? 0 : 1 })}
                   className={`h-10 px-3 rounded-xl border text-xs font-mono transition-colors ${
                     formData.is_visible
-                      ? 'border-amber-400/60 text-amber-400 bg-amber-400/10'
-                      : 'border-slate-800 text-slate-500 bg-slate-900/90'
+                      ? 'border-theme-gold/60 text-theme-gold bg-theme-gold/10'
+                      : 'border-theme-border text-theme-textMuted bg-theme-bg'
                   }`}
                 >
                   {formData.is_visible ? 'На полке' : 'Скрыта'}
                 </button>
               </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">Цвет обложки</span>
+              <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Цвет обложки</span>
               <div className="flex items-center gap-2">
                 {BOOK_THEMES.map((g, i) => (
                   <button
@@ -898,7 +898,7 @@ export const ShelfBooksManager: React.FC = () => {
                     onClick={() => setFormData({ ...formData, cover_theme: i })}
                     title={`Обложка ${i + 1}`}
                     className={`w-10 h-14 rounded-[3px] border-2 transition-all ${
-                      formData.cover_theme === i ? 'border-amber-400 scale-105' : 'border-slate-700 hover:border-slate-500'
+                      formData.cover_theme === i ? 'border-theme-gold scale-105' : 'border-theme-border hover:border-theme-textMuted'
                     }`}
                     style={{ background: g }}
                   />
@@ -906,7 +906,7 @@ export const ShelfBooksManager: React.FC = () => {
               </div>
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">Дизайн обложки</span>
+              <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Дизайн обложки</span>
               <AdminInput
                 label="Текст на обложке (пусто — название книги)"
                 value={formData.cover_text}
@@ -921,26 +921,26 @@ export const ShelfBooksManager: React.FC = () => {
                   options={COVER_EMBLEM_OPTIONS}
                 />
                 <div className="flex flex-col gap-1.5">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">Свой фон (цвет)</span>
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Свой фон (цвет)</span>
                   <div className="flex items-center gap-2">
                     <input
                       type="color"
                       value={/^#[0-9a-fA-F]{6}$/.test(formData.cover_bg || '') ? formData.cover_bg : '#17233d'}
                       onChange={(e) => setFormData({ ...formData, cover_bg: e.target.value })}
-                      className="w-10 h-10 rounded-lg border border-slate-700 bg-transparent cursor-pointer shrink-0"
+                      className="w-10 h-10 rounded-lg border border-theme-border bg-transparent cursor-pointer shrink-0"
                       title="Выбрать цвет фона"
                     />
                     <input
                       value={formData.cover_bg}
                       onChange={(e) => setFormData({ ...formData, cover_bg: e.target.value })}
                       placeholder="#17233d или gradient(...)"
-                      className="flex-1 h-10 px-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                      className="flex-1 h-10 px-3 rounded-xl bg-theme-bg border border-theme-border text-xs font-mono text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
                     />
                     {formData.cover_bg && (
                       <button
                         type="button"
                         onClick={() => setFormData({ ...formData, cover_bg: '' })}
-                        className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800"
+                        className="p-2 rounded-lg text-theme-textMuted hover:text-red-400 hover:bg-theme-bg/60"
                         title="Убрать фон"
                       >
                         <Trash2 size={14} />
@@ -950,7 +950,7 @@ export const ShelfBooksManager: React.FC = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-1.5">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">Своя картинка обложки</span>
+                <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Своя картинка обложки</span>
                 <div className="flex items-center gap-2 flex-wrap">
                   <input
                     ref={coverFileRef}
@@ -966,11 +966,11 @@ export const ShelfBooksManager: React.FC = () => {
                   </AdminButton>
                   {formData.cover_image && (
                     <>
-                      <img src={formData.cover_image} alt="" className="w-10 h-14 rounded-[3px] border border-amber-200/40 object-cover" />
+                      <img src={formData.cover_image} alt="" className="w-10 h-14 rounded-[3px] border border-theme-gold/40 object-cover" />
                       <button
                         type="button"
                         onClick={() => setFormData({ ...formData, cover_image: '' })}
-                        className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800"
+                        className="p-2 rounded-lg text-theme-textMuted hover:text-red-400 hover:bg-theme-bg/60"
                         title="Убрать картинку"
                       >
                         <Trash2 size={14} />
@@ -978,7 +978,7 @@ export const ShelfBooksManager: React.FC = () => {
                     </>
                   )}
                   {coverUploadStatus && (
-                    <span className="font-mono text-[11px] text-amber-300/90">{coverUploadStatus}</span>
+                    <span className="font-mono text-[11px] text-theme-gold/90">{coverUploadStatus}</span>
                   )}
                 </div>
               </div>
@@ -986,8 +986,8 @@ export const ShelfBooksManager: React.FC = () => {
           </div>
 
           {/* Live mini preview */}
-          <div className="flex flex-col items-center gap-3 p-4 rounded-xl bg-slate-950/60 border border-slate-800 h-fit">
-            <span className="text-2xs font-mono uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+          <div className="flex flex-col items-center gap-3 p-4 rounded-xl bg-theme-surface border border-theme-border h-fit">
+            <span className="text-2xs font-mono uppercase tracking-wider text-theme-textMuted flex items-center gap-1.5">
               <BookOpen size={12} /> Предпросмотр
             </span>
             <span className="leglib-book" style={{ opacity: 1 }}>
@@ -1000,7 +1000,7 @@ export const ShelfBooksManager: React.FC = () => {
                 </span>
               </span>
             </span>
-            <span className="font-mono text-2xs text-amber-400 border border-amber-400/40 rounded px-1.5 py-0.5">
+            <span className="font-mono text-2xs text-theme-gold border border-theme-gold/40 rounded px-1.5 py-0.5">
               {formData.badge || 'PDF'}
             </span>
           </div>
