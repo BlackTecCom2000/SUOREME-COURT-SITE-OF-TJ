@@ -108,7 +108,10 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
 
         <TopCourtNavigation onSelectSupreme={onSelectSupreme} supremeSelected={supremeSelected} />
 
-        <DigitalConnectorNetwork activeRegionId={effectiveActiveRegion} />
+        {/* Connector band: own scrim zone so circuit lines never collide with the photo behind */}
+        <div className="judmap-panel rounded-2xl px-2 sm:px-3 pt-1 pb-0 -my-1">
+          <DigitalConnectorNetwork activeRegionId={effectiveActiveRegion} />
+        </div>
 
         <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 items-start">
           {hydratedClusters.map((cluster, idx) => (

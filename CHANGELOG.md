@@ -10,6 +10,21 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.25.2 - Judicial-map hero fixes: connector band, card contrast, header targets
+- Released: 2026-10-12
+- Previous: v2.25.1
+- Connector network wrapped in its own `.judmap-panel` scrim band —
+  circuit lines no longer collide with the building photo / portico sign.
+- Supreme-card title `text-white` → `text-[var(--jm-text)]` (was unreadable
+  on light glass); economic-card hardcoded `#38BDF8` unified to
+  `var(--jm-cyan)` so both themes get the correct accent.
+- Header controls to 44px targets (search `h-10` → `h-11`, menu button
+  `h-10 w-10` → `h-11 w-11`); dropdown hover wash `white/5` → `jm-gold/10`
+  so it is visible in light theme too.
+- Grid check: top cards already share `cardBase` + `min-h-[118px]` with
+  `items-stretch`; region panels keep deliberate `items-start` (variable
+  court counts) — no change needed.
+
 ## v2.25.1 - Denser court-map card: solid glass well, visible frame
 - Released: 2026-10-12
 - Previous: v2.25.0

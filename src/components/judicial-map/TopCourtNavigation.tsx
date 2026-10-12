@@ -89,7 +89,7 @@ export const TopCourtNavigation: React.FC<TopCourtNavigationProps> = ({
           className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(232,199,106,0.5)]"
           loading="lazy"
         />
-        <span className="font-bold text-[15px] sm:text-base tracking-[0.08em] uppercase text-white leading-snug">
+        <span className="font-bold text-[15px] sm:text-base tracking-[0.08em] uppercase text-[var(--jm-text)] leading-snug">
           {strings.supreme.title}
         </span>
         <span className="font-mono text-2xs tracking-[0.14em] uppercase text-[var(--jm-gold)] leading-snug">
@@ -102,18 +102,18 @@ export const TopCourtNavigation: React.FC<TopCourtNavigationProps> = ({
         href="https://sud.tj"
         target="_blank"
         rel="noreferrer"
-        className={`${cardBase} border-[var(--jm-border)] hover:border-[#38BDF8] hover:-translate-y-[1px] hover:shadow-[0_0_25px_rgba(56,189,248,0.12)] group`}
+        className={`${cardBase} border-[var(--jm-border)] hover:border-[var(--jm-cyan)] hover:-translate-y-[1px] hover:shadow-[0_0_25px_rgba(56,189,248,0.12)] group`}
       >
-        <span className="p-2 rounded-full border border-[#38BDF8]/40 bg-[#38BDF8]/10 text-[#38BDF8]">
+        <span className="p-2 rounded-full border border-[var(--jm-cyan)]/40 bg-[var(--jm-cyan)]/10 text-[var(--jm-cyan)]">
           <TrendingUp size={17} strokeWidth={1.75} />
         </span>
         <span className="font-bold text-[13px] sm:text-sm tracking-[0.06em] uppercase text-[var(--jm-text)] leading-snug">
           {strings.economic.title}
         </span>
-        <span className="font-mono text-2xs tracking-[0.08em] uppercase text-[var(--jm-muted)] group-hover:text-[#38BDF8] transition-colors leading-snug">
+        <span className="font-mono text-2xs tracking-[0.08em] uppercase text-[var(--jm-muted)] group-hover:text-[var(--jm-cyan)] transition-colors leading-snug">
           {strings.economic.sub}
         </span>
-        <ExternalLink size={11} className="absolute top-2.5 right-2.5 text-[var(--jm-muted)] group-hover:text-[#38BDF8] transition-colors" />
+        <ExternalLink size={11} className="absolute top-2.5 right-2.5 text-[var(--jm-muted)] group-hover:text-[var(--jm-cyan)] transition-colors" />
       </a>
     </div>
   );

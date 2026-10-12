@@ -82,7 +82,7 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
               aria-label={menuLabel}
-              className="tap-target h-10 w-10 rounded-[10px] border border-[var(--jm-border)] bg-[var(--jm-surface)] text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:border-[var(--jm-gold)] transition-colors flex items-center justify-center"
+              className="tap-target h-11 w-11 rounded-[10px] border border-[var(--jm-border)] bg-[var(--jm-surface)] text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:border-[var(--jm-gold)] transition-colors flex items-center justify-center"
             >
               <LayoutGrid size={16} />
             </button>
@@ -93,7 +93,7 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
                   <button
                     type="button"
                     onClick={menuAction(onResetFilters)}
-                    className="w-full text-left px-4 py-2.5 font-mono text-xs text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:bg-white/5 transition-colors flex items-center gap-2 border-b border-[var(--jm-border)]"
+                    className="w-full text-left px-4 py-2.5 font-mono text-xs text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:bg-[var(--jm-gold)]/10 transition-colors flex items-center gap-2 border-b border-[var(--jm-border)]"
                   >
                     <RotateCcw size={13} />
                     <span>{resetLabel}</span>
@@ -101,7 +101,7 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
                   <button
                     type="button"
                     onClick={menuAction(onOpenImmersive)}
-                    className="w-full text-left px-4 py-2.5 font-mono text-xs text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:bg-white/5 transition-colors flex items-center gap-2 border-b border-[var(--jm-border)]"
+                    className="w-full text-left px-4 py-2.5 font-mono text-xs text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:bg-[var(--jm-gold)]/10 transition-colors flex items-center gap-2 border-b border-[var(--jm-border)]"
                   >
                     <Maximize2 size={13} />
                     <span>{fullscreenLabel}</span>
@@ -109,7 +109,7 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
                   <button
                     type="button"
                     onClick={menuAction(() => window.scrollTo({ top: 0, behavior: 'smooth' }))}
-                    className="w-full text-left px-4 py-2.5 font-mono text-xs text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:bg-white/5 transition-colors flex items-center gap-2"
+                    className="w-full text-left px-4 py-2.5 font-mono text-xs text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:bg-[var(--jm-gold)]/10 transition-colors flex items-center gap-2"
                   >
                     <ArrowUp size={13} />
                     <span>{topLabel}</span>

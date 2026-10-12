@@ -20,7 +20,7 @@ export const SearchControl: React.FC<SearchControlProps> = ({ value, onChange, i
         onChange={(e) => onChange(e.target.value)}
         placeholder={t('network.searchPlaceholder')}
         aria-label={t('network.searchPlaceholder')}
-        className="w-full h-10 pl-9 pr-8 rounded-[10px] text-xs text-[var(--jm-text)] placeholder:text-[var(--jm-muted)] bg-[var(--jm-surface)] border border-[var(--jm-border)] focus:outline-none focus:border-[var(--jm-gold)] transition-colors"
+        className="w-full h-11 pl-9 pr-8 rounded-[10px] text-xs text-[var(--jm-text)] placeholder:text-[var(--jm-muted)] bg-[var(--jm-surface)] border border-[var(--jm-border)] focus:outline-none focus:border-[var(--jm-gold)] transition-colors"
       />
       {value && (
         <button
