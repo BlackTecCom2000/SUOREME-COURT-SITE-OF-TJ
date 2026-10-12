@@ -10,6 +10,29 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.25.3 - Homepage layout diagnostics: navbar wrap, measured audit
+- Released: 2026-10-12
+- Previous: v2.25.2
+- UI-01 lines/markers identified as `DigitalConnectorNetwork` (functional
+  circuit viz with active-region dimming, aria-hidden) — kept, contained in
+  `.judmap-panel` scrim band; `-my-1` dropped (no negative margins).
+- UI-02 connector band measured: 136px desktop / 246px mobile — slim scrim
+  strip, no empty-for-decoration area.
+- UI-03 region panels measured: tops equal + widths equal on desktop
+  (816/1864/1433/1371 heights reflect real court counts, items-start by
+  design); single-column stack on mobile — verify-only, no change.
+- UI-04 footers in normal flow (`static` + `relative`, no absolute/fixed);
+  contrast verified on screenshots — no change.
+- UI-05 mobile navbar root-caused by measurement: right cluster 166px vs
+  122px reserved → brand content clipped 108px (390px) / 138px (360px).
+  Fixed by wrapping navbar to two rows on mobile (`flex-wrap`, brand
+  `max-w-full`, actions `ml-auto`); all controls preserved, zero overflow.
+- UI-06 glass readability verified both themes; center-card `text-white`
+  and hardcoded sky already fixed in v2.25.2.
+- UI-07 no horizontal overflow at 1920/1600/1366/768/390/360 dark+light;
+  hydration #418/#422 are pre-existing (no Math.random/Date in judmap
+  render paths; count unchanged by class-only diff).
+
 ## v2.25.2 - Judicial-map hero fixes: connector band, card contrast, header targets
 - Released: 2026-10-12
 - Previous: v2.25.1

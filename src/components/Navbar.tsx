@@ -273,10 +273,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none select-none">
-      <div className="site-container px-4 sm:px-6 md:px-8 pt-3 sm:pt-4 flex items-center justify-between">
+      <div className="site-container px-4 sm:px-6 md:px-8 pt-3 sm:pt-4 flex flex-wrap items-center justify-between gap-y-2">
         
         {/* Top Left: Emblem, Title & Quick Controls */}
-        <div className="navbar-brand-shell pointer-events-auto flex min-w-0 max-w-[calc(100vw-122px)] items-center gap-2 glass glass-card p-1.5 sm:gap-3 sm:p-2">
+        <div className="navbar-brand-shell pointer-events-auto flex min-w-0 max-w-full sm:max-w-[calc(100vw-122px)] items-center gap-2 glass glass-card p-1.5 sm:gap-3 sm:p-2">
           <a
             href="#hero"
             className="flex items-center gap-3 px-2 py-1 rounded-xl hover:bg-white/10 transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-gold group"
@@ -380,7 +380,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Top Right: Compact Action Buttons & Menu Button */}
-        <div className="pointer-events-auto flex items-center gap-2 relative">
+        <div className="pointer-events-auto ml-auto sm:ml-0 flex items-center gap-2 relative">
           
           {/* Universal Search trigger */}
           {onOpenSearch && (
