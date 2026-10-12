@@ -10,6 +10,19 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.25.0 - Dedup: single card implementation for portal and admin
+- Released: 2026-10-10
+- Previous: v2.24.0
+- `src/components/ui/Card.tsx` is now a thin wrapper around `AdminCard`
+  (same prop API: title / subtitle / headerAction / hoverEffect / className).
+  One glass surface, one header layout, one corner accent for both the
+  public portal and the admin panel — no more divergent card markup.
+- `AdminCard` gained an `as?: 'div' | 'section'` prop so the portal card
+  keeps its `<section>` landmark semantics while sharing all styling.
+- DB audit: `glass_saturation` / `bg_saturation` keys in
+  `site_design_settings` are live (read by `cssVars.ts`, `SiteBuilder`,
+  `LiquidGlassKit`) — no dead rows to remove.
+
 ## v2.24.0 - Admin glass parity: full tokenisation of admin UI colours
 - Released: 2026-10-10
 - Previous: v2.23.0

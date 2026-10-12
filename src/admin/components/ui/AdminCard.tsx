@@ -6,6 +6,8 @@ interface AdminCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'tit
   headerAction?: React.ReactNode;
   children: React.ReactNode;
   hoverEffect?: boolean;
+  /** Root element tag — 'div' (admin default) or 'section' (portal landmark). */
+  as?: 'div' | 'section';
 }
 
 /**
@@ -20,11 +22,12 @@ export const AdminCard: React.FC<AdminCardProps> = ({
   headerAction,
   children,
   hoverEffect = false,
+  as: Tag = 'div',
   className = '',
   ...props
 }) => {
   return (
-    <div
+    <Tag
       className={`
         relative rounded-2xl p-5 sm:p-6
         text-left transition-all duration-300
@@ -58,6 +61,6 @@ export const AdminCard: React.FC<AdminCardProps> = ({
         </div>
       )}
       {children}
-    </div>
+    </Tag>
   );
 };
