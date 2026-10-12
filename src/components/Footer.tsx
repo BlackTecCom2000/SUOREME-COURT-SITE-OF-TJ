@@ -149,7 +149,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 <div className="text-xs uppercase tracking-widest text-theme-gold mb-3 font-mono flex items-center gap-2 font-bold">
                   <Map size={12} /> {language === 'en' ? 'Judicial Map' : language === 'tj' ? 'Харита' : 'Карта'}
                 </div>
-                <div className="relative flex-1 min-h-[200px] rounded-[20px] overflow-hidden border border-theme-border bg-theme-bg/60 backdrop-blur-md flex items-center justify-center p-4">
+                {/* v2.25.1: denser map well — was too transparent with a weak frame.
+                    Solid glass surface + visible border so the map reads as a card. */}
+                <div className="relative flex-1 min-h-[200px] rounded-[20px] overflow-hidden border-2 border-theme-borderHover bg-theme-surface backdrop-blur-xl shadow-inner flex items-center justify-center p-4">
                   {/* Real Tajikistan: GADM ADM1 polygons, simplified locally.
                       Dushanbe + RRP are separate shapes selecting one cluster. */}
                   <TajikistanMap

@@ -93,10 +93,10 @@ export const TajikistanMap: React.FC<TajikistanMapProps> = ({
               d={u.d}
               style={{
                 fill: isActive
-                  ? 'color-mix(in srgb, var(--accent-gold) 32%, transparent)'
-                  : 'color-mix(in srgb, var(--text-muted) 20%, transparent)',
-                stroke: isActive ? 'var(--accent-gold)' : 'color-mix(in srgb, var(--text-muted) 48%, transparent)',
-                strokeWidth: isActive ? 1.2 : 0.8,
+                  ? 'color-mix(in srgb, var(--accent-gold) 38%, transparent)'
+                  : 'color-mix(in srgb, var(--text-secondary) 26%, transparent)',
+                stroke: isActive ? 'var(--accent-gold)' : 'color-mix(in srgb, var(--text-secondary) 62%, transparent)',
+                strokeWidth: isActive ? 1.3 : 0.9,
               }}
             />
             {u.id === 'Dushanbe' && (
@@ -104,7 +104,7 @@ export const TajikistanMap: React.FC<TajikistanMapProps> = ({
                 cx={u.cx}
                 cy={u.cy}
                 r={1.8}
-                style={{ fill: isActive ? 'var(--accent-gold)' : 'var(--text-muted)' }}
+                style={{ fill: isActive ? 'var(--accent-gold)' : 'var(--text-secondary)' }}
               />
             )}
             <text
@@ -114,7 +114,7 @@ export const TajikistanMap: React.FC<TajikistanMapProps> = ({
               fontSize="6.5"
               className="tjk-label"
               style={{
-                fill: isActive ? 'var(--accent-gold)' : 'var(--text-muted)',
+                fill: isActive ? 'var(--accent-gold)' : 'var(--text-secondary)',
                 stroke: 'var(--bg-primary)',
               }}
             >

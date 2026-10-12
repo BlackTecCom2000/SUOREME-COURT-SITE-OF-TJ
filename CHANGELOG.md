@@ -10,6 +10,16 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.25.1 - Denser court-map card: solid glass well, visible frame
+- Released: 2026-10-12
+- Previous: v2.25.0
+- Footer map well: flat `bg-theme-bg/60` + weak 1px frame replaced with
+  `bg-theme-surface`, `border-2 border-theme-borderHover`, stronger blur and
+  inner shadow — the card now reads as a card in both themes.
+- Map fills strengthened (`--text-muted` 20% → `--text-secondary` 26%,
+  strokes 48% → 62%) so regions stay legible on the denser background;
+  labels and the Dushanbe dot use `--text-secondary`.
+
 ## v2.25.0 - Dedup: single card implementation for portal and admin
 - Released: 2026-10-10
 - Previous: v2.24.0
