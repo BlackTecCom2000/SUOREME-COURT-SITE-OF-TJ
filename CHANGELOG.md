@@ -10,6 +10,38 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.26.0 - Silk choreography: unified motion personality for the homepage
+- Released: 2026-10-13
+- Previous: v2.25.3
+- One motion personality (Silk): new `silk-rise` entrance, gold `sheen`
+  hover sweep (transform-only pseudo-element), `press-tactile` scale via
+  the independent `scale` property (never fights Tailwind translates).
+- Hero choreography: header priority-reveal, 3 court cards staggered
+  0/100/200ms with sheen + press, connector band IO-fades at 200ms, region
+  panels cascade at 90ms steps via existing `index` prop + `jm-enter`.
+- Root-cause fix (found by this release's own QA): `dist/server/entry-server.js`
+  was stale since Oct 7, so every page SSR'd ancient HTML under fresh client
+  bundles — 20+ hydration #418 mismatches and stale visible content (e.g. the
+  admin password toggle rendered pre-2.24.0 classes). Full `pnpm run build`
+  (client + server) is now part of verification; post-fix console shows
+  1 pre-existing note (WASM CSP) instead of 25-31 errors.
+- Ticker a11y: removed invalid `role="listitem"` from links (axe
+  aria-required-parent critical resolved; `listitem` is not an allowed
+  role on links — marquee landmark already labels the region).
+- Admin login password toggle: added `aria-label` + `aria-pressed`
+  (axe button-name; live-DOM re-verification pending a stale-render
+  investigation — fix itself is strictly additive).
+- Press tactile on navbar hamburger, judmap menu button and footer map
+  pills; footer pills keep existing hover states.
+- Global `prefers-reduced-motion` guard kills decorative loops
+  (silk-rise, sheen, jm-flow/pulse/enter, ticker, scans). Reveal
+  above-fold priority animation (single 0.7s, no loop) intentionally kept.
+- Method: skills `frontend-design` + `ui-motion` (Silk seed) +
+  `microinteractions` (trigger/rules/feedback scale, one signature
+  moment — the supreme-card sheen).
+- Tooling: `axe-core` 4.14.0 added as devDependency (verified audit runs
+  via Playwright + bypassCSP); no app-architecture change.
+
 ## v2.25.3 - Homepage layout diagnostics: navbar wrap, measured audit
 - Released: 2026-10-12
 - Previous: v2.25.2

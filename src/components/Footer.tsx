@@ -171,7 +171,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 {/* Accessible alternative list for keyboard/screen reader */}
                 <nav aria-label="Regions" className="mt-3 flex flex-wrap gap-1.5">
                   {REGIONAL_CLUSTERS.map((rc) => (
-                    <button key={`foot-map-${rc.id}`} type="button" onClick={() => setSelectedRegion(rc.id)} className={`tap-target px-2.5 py-1 rounded-full text-2xs font-mono border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold text-black font-semibold border-theme-gold' : 'border-theme-border text-theme-textSec hover:text-theme-text hover:border-theme-gold/40 hover:bg-theme-bg/60'}`}>{rc.shortNameRu}</button>
+                    <button key={`foot-map-${rc.id}`} type="button" onClick={() => setSelectedRegion(rc.id)} className={`tap-target press-tactile px-2.5 py-1 rounded-full text-2xs font-mono border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold text-black font-semibold border-theme-gold' : 'border-theme-border text-theme-textSec hover:text-theme-text hover:border-theme-gold/40 hover:bg-theme-bg/60'}`}>{rc.shortNameRu}</button>
                   ))}
                 </nav>
               </section>
@@ -247,7 +247,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                           target="_blank"
                           rel="noreferrer"
                           tabIndex={copy === 1 ? -1 : undefined}
-                          role="listitem"
                           className="ticker-item glass border border-theme-border hover:border-theme-gold rounded-[16px] flex flex-col items-center justify-center gap-1.5 p-2 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-gold group shrink-0"
                           style={{ width: `${Math.max(140, marquee.logo_size * 2.1)}px`, height: `${marquee.logo_size}px` } as React.CSSProperties}
                         >

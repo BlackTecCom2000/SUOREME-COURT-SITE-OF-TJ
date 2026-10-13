@@ -122,6 +122,7 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
         borderColor: selected ? accent : undefined,
         opacity: muted ? 0.45 : 1,
         boxShadow: focused || selected ? `0 0 25px ${accent}1f` : undefined,
+        animationDelay: `${Math.min(index, 5) * 90}ms`,
       }}
     >
       {/* Header */}

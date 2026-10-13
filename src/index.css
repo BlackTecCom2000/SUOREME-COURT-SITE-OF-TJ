@@ -1051,6 +1051,58 @@ html.is-morphing-theme ::view-transition-new(root) {
     paint-order: stroke;
     stroke-width: 2.5px;
   }
+  /* v2.26.0 Silk choreography — one motion personality site-wide.
+     Entrance = silk-rise (opacity + translateY, Silk ease-out). Hover =
+     sheen sweep on a pseudo-element (transform-only). Press = tactile
+     scale via the independent `scale` property, so it never fights
+     Tailwind translate utilities. Decorative loops die under the global
+     reduced-motion guard below. */
+  @keyframes silk-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .judmap-card-enter {
+    animation: silk-rise 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .sheen {
+    position: relative;
+  }
+  .sheen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(105deg, transparent 42%, color-mix(in srgb, var(--accent-gold) 20%, transparent) 50%, transparent 58%);
+    transform: translateX(-120%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .sheen:hover::after {
+    animation: sheen-sweep 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes sheen-sweep {
+    0% { transform: translateX(-120%); opacity: 0; }
+    15% { opacity: 1; }
+    100% { transform: translateX(120%); opacity: 0; }
+  }
+  .press-tactile {
+    transition: scale 0.15s ease-out;
+  }
+  .press-tactile:active {
+    scale: 0.96;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .judmap-card-enter,
+    .sheen:hover::after,
+    .jm-flow,
+    .jm-pulse-node,
+    .jm-enter,
+    .ticker-track,
+    .monument-scan,
+    .judicial-pulse {
+      animation: none !important;
+    }
+  }
   /* Premium/ultra tiers: modals, dropdowns, popovers, nav shells. */
   .glass-premium {
     border-radius: var(--glass-radius-panel);

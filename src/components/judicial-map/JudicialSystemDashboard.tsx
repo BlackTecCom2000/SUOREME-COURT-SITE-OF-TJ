@@ -7,6 +7,7 @@ import { TopCourtNavigation } from './TopCourtNavigation';
 import { DigitalConnectorNetwork } from './DigitalConnectorNetwork';
 import { RegionalCourtPanel } from './RegionalCourtPanel';
 import { JudiciaryFooter } from './JudiciaryFooter';
+import { Reveal } from '../Reveal';
 import './judicial-map.css';
 
 export interface JudicialSystemDashboardProps {
@@ -99,19 +100,23 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
       />
 
       <div className="relative w-full max-w-[1500px] mx-auto px-4 sm:px-8 py-6 sm:py-8 flex flex-col gap-5 sm:gap-6">
-        <JudiciaryHeader
-          searchQuery={searchQuery}
-          onSearchChange={onSearchChange}
-          onResetFilters={onResetFilters}
-          onOpenImmersive={onOpenImmersive}
-        />
+        <Reveal priority delay={50}>
+          <JudiciaryHeader
+            searchQuery={searchQuery}
+            onSearchChange={onSearchChange}
+            onResetFilters={onResetFilters}
+            onOpenImmersive={onOpenImmersive}
+          />
+        </Reveal>
 
         <TopCourtNavigation onSelectSupreme={onSelectSupreme} supremeSelected={supremeSelected} />
 
         {/* Connector band: own scrim zone so circuit lines never collide with the photo behind */}
-        <div className="judmap-panel rounded-2xl px-2 sm:px-3 pt-1 pb-0">
-          <DigitalConnectorNetwork activeRegionId={effectiveActiveRegion} />
-        </div>
+        <Reveal delay={200}>
+          <div className="judmap-panel rounded-2xl px-2 sm:px-3 pt-1 pb-0">
+            <DigitalConnectorNetwork activeRegionId={effectiveActiveRegion} />
+          </div>
+        </Reveal>
 
         <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 items-start">
           {hydratedClusters.map((cluster, idx) => (

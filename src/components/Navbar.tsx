@@ -575,7 +575,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? t('nav.close') : 'Menu'}
-              className="tap-target p-2 glass glass-chip text-theme-text transition-colors"
+              className="tap-target press-tactile p-2 glass glass-chip text-theme-text transition-colors"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>

@@ -8,7 +8,7 @@ interface TopCourtNavigationProps {
 }
 
 const cardBase =
-  'relative rounded-[18px] glass glass-card border p-4 sm:p-5 flex flex-col items-center justify-center text-center gap-2 transition-all duration-200 min-h-[118px]';
+  'relative rounded-[18px] glass glass-card border p-4 sm:p-5 flex flex-col items-center justify-center text-center gap-2 transition-all duration-200 min-h-[118px] judmap-card-enter sheen press-tactile overflow-hidden';
 
 export const TopCourtNavigation: React.FC<TopCourtNavigationProps> = ({
   onSelectSupreme,
@@ -60,6 +60,7 @@ export const TopCourtNavigation: React.FC<TopCourtNavigationProps> = ({
         target="_blank"
         rel="noreferrer"
         className={`${cardBase} border-[var(--jm-border)] hover:border-[var(--jm-cyan)] hover:-translate-y-[1px] hover:shadow-[0_0_25px_rgba(22,191,255,0.12)] group`}
+        style={{ animationDelay: '0ms' }}
       >
         <span className="p-2 rounded-full border border-[var(--jm-cyan)]/40 bg-[var(--jm-cyan)]/10 text-[var(--jm-cyan)]">
           <Landmark size={17} strokeWidth={1.75} />
@@ -81,6 +82,7 @@ export const TopCourtNavigation: React.FC<TopCourtNavigationProps> = ({
         className={`${cardBase} border-[var(--jm-gold)] bg-[rgba(232,199,106,0.08)] hover:-translate-y-[1px] hover:shadow-[0_0_25px_rgba(232,199,106,0.16)] ${
           supremeSelected ? 'ring-1 ring-[var(--jm-gold)] shadow-[0_0_25px_rgba(232,199,106,0.16)]' : ''
         }`}
+        style={{ animationDelay: '100ms' }}
       >
         <img
           src={`/emblems/emblem-${language}.png`}
@@ -103,6 +105,7 @@ export const TopCourtNavigation: React.FC<TopCourtNavigationProps> = ({
         target="_blank"
         rel="noreferrer"
         className={`${cardBase} border-[var(--jm-border)] hover:border-[var(--jm-cyan)] hover:-translate-y-[1px] hover:shadow-[0_0_25px_rgba(56,189,248,0.12)] group`}
+        style={{ animationDelay: '200ms' }}
       >
         <span className="p-2 rounded-full border border-[var(--jm-cyan)]/40 bg-[var(--jm-cyan)]/10 text-[var(--jm-cyan)]">
           <TrendingUp size={17} strokeWidth={1.75} />
