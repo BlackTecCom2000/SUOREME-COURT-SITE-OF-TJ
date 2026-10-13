@@ -9,8 +9,8 @@
     --bg-secondary: #ffffff;
     --surface-card: rgba(255, 255, 255, 0.88);
     --surface-card-hover: rgba(255, 255, 255, 0.96);
-    --text-primary: #000000;
-    --text-secondary: #0f172a;
+    --text-primary: #1b2436;
+    --text-secondary: #14223c;
     --text-muted: #334155;
     --border-primary: rgba(15, 23, 42, 0.12);
     --border-hover: rgba(154, 107, 18, 0.75);
@@ -20,10 +20,17 @@
     --glow-gold: 0 0 30px rgba(184, 138, 36, 0.18);
     --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
     --video-overlay: rgba(245, 247, 251, 0.92);
-    --data-token-color: #000000;
+    --data-token-color: #1b2436;
     --data-accent-color: #9a6b12;
-    --court-navy: #000000;
+    --court-navy: #1b2436;
     --court-gold: #9a6b12;
+
+    /* Soft glass halo for display type over photographs. Layered blurred
+       shadows (never a hard stroke): a bright rim lifts glyphs off the
+       photo, a deep veil grounds them. Both alphas stay low so letterforms
+       keep their shape and contrast for low-vision readers. */
+    --type-halo-rim: 0 0 1px rgba(255, 255, 255, 0.65);
+    --type-halo-veil: 0 1px 14px rgba(15, 23, 42, 0.30);
 
     /* Atmospheric field. The day photograph is already bright, so the field only
        has to take the hard edge off the lower half - it must stay translucent.
@@ -81,7 +88,7 @@
     --bg-secondary: #08111f;
     --surface-card: rgba(8, 18, 36, 0.88);
     --surface-card-hover: rgba(13, 27, 52, 0.96);
-    --text-primary: #ffffff;
+    --text-primary: #f5f7fc;
     --text-secondary: #f1f5f9;
     --text-muted: #cbd5e1;
     --border-primary: rgba(255, 255, 255, 0.14);
@@ -92,10 +99,12 @@
     --glow-gold: 0 0 35px rgba(223, 190, 126, 0.22);
     --card-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
     --video-overlay: rgba(5, 8, 15, 0.90);
-    --data-token-color: #ffffff;
+    --data-token-color: #f5f7fc;
     --data-accent-color: #dfbe7e;
-    --court-navy: #ffffff;
+    --court-navy: #f5f7fc;
     --court-gold: #dfbe7e;
+    --type-halo-rim: 0 0 1px rgba(245, 247, 252, 0.40);
+    --type-halo-veil: 0 1px 16px rgba(0, 0, 0, 0.60);
 
     /* Dark Theme Liquid Glass Surfaces.
        v2.19.3: neutral achromatic veils — the old moonlight-blue tints
@@ -1102,6 +1111,12 @@ html.is-morphing-theme ::view-transition-new(root) {
     .judicial-pulse {
       animation: none !important;
     }
+  }
+  /* v2.28.0 soft display type — glass halo instead of harsh strokes.
+     Apply only to large headings over photographs/hero (never body text:
+     shadows on small type hurt legibility). Respects the theme via vars. */
+  .type-glass {
+    text-shadow: var(--type-halo-rim), var(--type-halo-veil);
   }
   /* Premium/ultra tiers: modals, dropdowns, popovers, nav shells. */
   .glass-premium {

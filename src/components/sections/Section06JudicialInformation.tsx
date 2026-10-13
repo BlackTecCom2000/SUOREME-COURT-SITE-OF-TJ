@@ -80,7 +80,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
           <div className="lg:col-span-7 flex flex-col justify-between">
             <div className="flex-1 flex flex-col min-h-0">
               <div className="flex items-center justify-between mb-4 font-mono text-xs text-theme-textSec">
-                <span className="text-theme-gold font-semibold flex items-center gap-2 uppercase tracking-wider">
+                <span className="text-[var(--accent-gold-dark)] font-semibold flex items-center gap-2 uppercase tracking-wider">
                   <FileText size={16} />
                   <span>{t('acts.badge')}</span>
                 </span>
@@ -142,7 +142,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div className="flex-1 flex flex-col min-h-0">
               <div className="flex items-center justify-between mb-4 font-mono text-xs text-theme-textSec">
-                <span className="text-theme-gold font-semibold flex items-center gap-2 uppercase tracking-wider">
+                <span className="text-[var(--accent-gold-dark)] font-semibold flex items-center gap-2 uppercase tracking-wider">
                   <Newspaper size={16} />
                   <span>{t('contacts.pressTitle')}</span>
                 </span>

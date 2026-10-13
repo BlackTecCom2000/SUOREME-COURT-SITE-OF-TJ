@@ -89,7 +89,7 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
                   started at h2 and assistive technology had no top-level
                   heading to navigate to. Size is unaffected: the unlayered
                   .md:text-6xl utility outranks the element-level h1 rule. */}
-              <h1 className="public-section-title text-3xl font-medium leading-[1.08] tracking-tight text-theme-text drop-shadow-sm sm:text-5xl md:text-6xl">
+              <h1 className="public-section-title type-glass text-3xl font-medium leading-[1.08] tracking-tight text-theme-text sm:text-5xl md:text-6xl">
                 <Reveal delay={0} priority={true}>
                   <div>
                     {t('hero.line1')}{' '}

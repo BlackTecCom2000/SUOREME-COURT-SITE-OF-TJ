@@ -126,7 +126,7 @@ export const THEME_PRESETS: ThemePreset[] = [
         surfaceGlass: 'rgba(229, 238, 251, 0.58)',
         surfaceGlassStrong: 'rgba(224, 233, 249, 0.74)',
         textPrimary: '#0b1220',
-        textSecondary: '#1e293b',
+        textSecondary: '#14223c',
         textMuted: '#475569',
         border: 'rgba(23, 43, 77, 0.14)',
         borderStrong: 'rgba(154, 107, 18, 0.55)',

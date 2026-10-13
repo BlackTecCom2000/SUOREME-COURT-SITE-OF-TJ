@@ -56,7 +56,7 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
           loading="lazy"
         />
         <div className="text-left sm:text-center">
-          <h2 className="font-bold text-xl sm:text-2xl tracking-[0.08em] uppercase text-[var(--jm-text)] leading-tight drop-shadow-sm">
+          <h2 className="type-glass font-bold text-xl sm:text-2xl tracking-[0.08em] uppercase text-[var(--jm-text)] leading-tight">
             {title}
           </h2>
           <div className="font-semibold text-xs sm:text-sm tracking-[0.08em] uppercase text-[var(--jm-gold)] leading-tight">

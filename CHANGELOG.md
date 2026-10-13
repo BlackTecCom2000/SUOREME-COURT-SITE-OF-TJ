@@ -10,6 +10,28 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.28.0 - Soft display typography: no harsh ink, glass halo headings
+- Released: 2026-10-13
+- Previous: v2.27.0
+- Pure-black `#000000` → soft ink `#1b2436` and pure-white `#ffffff` →
+  soft paper `#f5f7fc` (`--text-primary`, `--court-navy`,
+  `--data-token-color`, both themes). Solid-surface ratios stay 13-19:1.
+- New `.type-glass`: layered blurred halo (bright rim + grounding veil,
+  theme-aware vars, never a hard stroke) for large headings over photos.
+  Applied to Section01Hero H1, CourtSitePage H1, judmap title H2 —
+  replacing `drop-shadow-sm`. Body text untouched (shadows on small type
+  hurt legibility, esp. low vision).
+- The 4.48 axe finding (textSec on glass-over-photo, light) is addressed
+  by backdrop separation via halo instead of darkening the token.
+- Root-cause chain closed: live `--text-secondary` is written inline from
+  the `glass-light` preset (`cssVars.ts`), not from the stylesheet — preset
+  `#1e293b` → `#14223c`, stylesheet synced. Small gold kickers
+  (Section06) moved to `--accent-gold-dark` for AA at 12px. axe
+  color-contrast: 0 violations both themes (verified by rerun).
+- Method: skills `web-typography` (workhorse faces kept: Inter +
+  Cormorant, pairing/tokens unchanged) + `ui-tokens`; external articles
+  unreachable from this network, user brief kept as primary source.
+
 ## v2.27.0 - Silk rollout phase A: homepage sections
 - Released: 2026-10-13
 - Previous: v2.26.0
