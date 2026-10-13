@@ -10,6 +10,18 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.27.0 - Silk rollout phase A: homepage sections
+- Released: 2026-10-13
+- Previous: v2.26.0
+- `sheen` + `press-tactile` (+ `relative overflow-hidden` where missing)
+  applied to all interactive homepage cards: QuickActionsGrid actions,
+  Section05 services, Section02 mission + collegium cards, JudicialNewsHub
+  cards, Section06 bank/press rows.
+- Static info rows (Section07Contacts) and above-fold hero text left
+  untouched — motion only where there is a trigger (microinteractions rule).
+- Sections already carrying Reveal staggers (Hero, Mission, NewsHub,
+  QuickActions) needed no new choreography.
+
 ## v2.26.0 - Silk choreography: unified motion personality for the homepage
 - Released: 2026-10-13
 - Previous: v2.25.3

@@ -92,7 +92,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
                   <Reveal key={act.id} delay={200 + i * 50} className="flex-1">
                     <div
                       onClick={onOpenActs}
-                      className="group p-4 glass glass-chip hover:border-theme-gold transition-all duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 h-full"
+                      className="group p-4 glass glass-chip sheen press-tactile hover:border-theme-gold transition-all duration-200 cursor-pointer relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-3 h-full"
                     >
                       <div>
                         <div className="flex items-center gap-2 text-2xs font-mono text-theme-textMuted mb-1">
@@ -155,7 +155,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
                   <Reveal key={item.id} delay={250 + idx * 60} className="flex-1">
                     <div
                       onClick={onOpenNews}
-                      className="group p-4 glass glass-chip hover:border-theme-gold transition-all duration-200 cursor-pointer h-full"
+                      className="group p-4 glass glass-chip sheen press-tactile hover:border-theme-gold transition-all duration-200 cursor-pointer relative overflow-hidden h-full"
                     >
                       <div className="flex items-center justify-between font-mono text-2xs text-theme-textMuted mb-1.5">
                         <span className="text-theme-gold font-semibold">ПРЕСС-ЦЕНТР</span>

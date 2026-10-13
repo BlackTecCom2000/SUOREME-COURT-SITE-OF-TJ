@@ -87,7 +87,7 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
         <Reveal delay={250}>
           <div
             onClick={onOpenAbout}
-            className="mb-12 p-6 sm:p-8 glass glass-card relative overflow-hidden cursor-pointer hover:border-theme-gold/60 transition-all"
+            className="mb-12 p-6 sm:p-8 glass glass-card sheen press-tactile relative overflow-hidden cursor-pointer hover:border-theme-gold/60 transition-all"
           >
             <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-theme-gold/5 rounded-full blur-2xl pointer-events-none" />
             <div className="font-mono text-xs text-theme-gold uppercase tracking-wider mb-2">
@@ -113,7 +113,7 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
               <Reveal key={item.id} delay={350 + idx * 60}>
                 <div
                   onClick={() => onOpenCollegium(item.id)}
-                  className="group p-5 glass glass-card hover:border-theme-borderHover transition-all cursor-pointer relative flex flex-col justify-between h-full min-h-[160px]"
+                  className="group p-5 glass glass-card sheen press-tactile hover:border-theme-borderHover transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between h-full min-h-[160px]"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">
