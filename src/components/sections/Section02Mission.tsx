@@ -66,7 +66,7 @@ export const Section02Mission: React.FC<Section02MissionProps> = ({
           <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-10">
             <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
               <span className="tracking-widest text-theme-gold font-semibold">( 02 )</span>
-              <span className="text-theme-textMuted">[ 002 / 007 ]</span>
+              <span className="text-theme-textMuted">[ 002 / 008 ]</span>
               <span className="w-1.5 h-1.5 rounded-full bg-theme-gold animate-pulse ml-1" />
               <span className="text-2xs text-theme-textMuted tracking-wider uppercase">
                 {t('mission.badge')}

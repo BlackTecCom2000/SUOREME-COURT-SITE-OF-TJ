@@ -10,6 +10,26 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.29.0 - Heroes of Tajikistan showcase window [008]
+- Released: 2026-10-14
+- Previous: v2.28.0
+- New homepage finale `Section08Heroes` (`#heroes`, kicker `( 08 )
+  [ 008 / 008 ]`): full-bleed showcase window, 6 slides (Ayni, Gafurov,
+  Tursunzoda, Rahmon, Makhsum, Shotemur), prev/next + dots + pagination
+  01/06 + swipe + keyboard-safe controls, autoplay 9s pausing on
+  hover/focus/modal (off under reduced-motion).
+- Per-slide serif name (white + gold), title, years; bottom glass card
+  with biography tab, excerpt, gold «Муфассал» button opening a full-bio
+  modal (decree callout, Esc/backdrop close, aria-modal).
+- Content: new `src/data/heroes.ts`, Tajik source verbatim, faithful
+  ru/en translations. Portraits resolve to `/images/heroes/<id>.jpg`;
+  missing files fall back to a gold monogram — drop the six photos in
+  with zero code changes.
+- Existing homepage denominators `/ 007` → `/ 008` (6 sections +
+  HomePage comments).
+- Method: skills `frontend-design` + `ui-component` conventions adapted
+  to local tokens (theme-*, glass-*, Silk motion, tap-targets).
+
 ## v2.28.0 - Soft display typography: no harsh ink, glass halo headings
 - Released: 2026-10-13
 - Previous: v2.27.0

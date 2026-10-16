@@ -39,7 +39,7 @@ export const Section03DigitalJustice: React.FC<Section03DigitalJusticeProps> = (
             <div className="flex items-center justify-between font-mono text-xs text-theme-textSec mb-4">
               <div className="flex items-center gap-3">
                 <span className="tracking-widest text-theme-gold font-semibold">( 03 )</span>
-                <span className="text-theme-textMuted">[ 003 / 007 ]</span>
+                <span className="text-theme-textMuted">[ 003 / 008 ]</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse ml-1" />
                 <span className="text-2xs text-theme-textMuted tracking-wider uppercase">
                   {language === 'tj' ? 'АДОЛАТИ РАҚАМӢ ВА САНАДҲОИ СУДӢ' : language === 'en' ? 'DIGITAL JUSTICE EXPERIENCE' : 'ЦИФРОВОЕ ПРАВОСУДИЕ'}

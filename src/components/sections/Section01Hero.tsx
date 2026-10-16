@@ -50,7 +50,7 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
           <div className="flex items-center justify-between font-mono text-theme-textSec text-xs">
             <div className="flex items-center gap-3">
               <span className="tracking-widest text-theme-gold font-semibold">( 06 )</span>
-              <span className="text-theme-textMuted">[ 006 / 007 ]</span>
+              <span className="text-theme-textMuted">[ 006 / 008 ]</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
               <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
                 {language === 'tj' ? 'ПЛАТФОРМАИ РАҚАМИИ АДОЛАТИ СУДӢ' : language === 'en' ? 'DIGITAL JUSTICE PLATFORM' : 'ЦИФРОВАЯ СУДЕБНАЯ ПЛАТФОРМА'}

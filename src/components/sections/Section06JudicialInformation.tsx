@@ -47,7 +47,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
           <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-8">
             <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
               <span className="tracking-widest text-theme-gold font-semibold">( 01 )</span>
-              <span className="text-theme-textMuted">[ 001 / 007 ]</span>
+              <span className="text-theme-textMuted">[ 001 / 008 ]</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
               <span className="text-2xs text-theme-textMuted tracking-wider uppercase hidden sm:inline">
                 {t('acts.badge')}

@@ -9,6 +9,7 @@ import { Section04JudicialSystem } from '../components/sections/Section04Judicia
 import { Section05CourtServices } from '../components/sections/Section05CourtServices';
 import { Section06JudicialInformation } from '../components/sections/Section06JudicialInformation';
 import { Section07Contacts } from '../components/sections/Section07Contacts';
+import { Section08Heroes } from '../components/sections/Section08Heroes';
 import { InViewLoad } from '../components/InViewLoad';
 
 const Section03DigitalJustice = React.lazy(() => import('../components/sections/Section03DigitalJustice').then(m => ({ default: m.Section03DigitalJustice })));
@@ -77,7 +78,7 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      {/* Section 01: Judicial Information & Bank of Acts [ 001 / 007 ] (swapped with hero) */}
+      {/* Section 01: Judicial Information & Bank of Acts [ 001 / 008 ] (swapped with hero) */}
       <Section06JudicialInformation
         onOpenActs={() => handleOpenSectionModal('acts')}
         onOpenNews={() => handleOpenSectionModal('news')}
@@ -97,25 +98,25 @@ export const HomePage: React.FC = () => {
         onNewFiling={() => setNewFilingOpen(true)} 
       />
 
-      {/* Section 02: Justice & Constitutional Values [ 002 / 007 ] */}
+      {/* Section 02: Justice & Constitutional Values [ 002 / 008 ] */}
       <Section02Mission
         onOpenAbout={() => handleOpenSectionModal('about')}
         onOpenCollegium={() => handleOpenSectionModal('about')}
       />
 
-      {/* Section 03: Digital Justice & Integrity Symbols [ 003 / 007 ] */}
+      {/* Section 03: Digital Justice & Integrity Symbols [ 003 / 008 ] */}
       <InViewLoad rootMargin="400px">
         <Section03DigitalJustice
           onOpenActs={() => handleOpenSectionModal('acts')}
         />
       </InViewLoad>
 
-      {/* Section 04: Interactive Judicial Network Tree [ 004 / 007 ] */}
+      {/* Section 04: Interactive Judicial Network Tree [ 004 / 008 ] */}
       <Section04JudicialSystem
         onOpenService={(serviceKey, court) => handleOpenSectionModal(serviceKey as ModalTab, court)}
       />
 
-      {/* Section 05: Court Services & Electronic Desk [ 005 / 007 ] */}
+      {/* Section 05: Court Services & Electronic Desk [ 005 / 008 ] */}
       <Section05CourtServices
         onOpenService={(serviceKey) => {
           if (serviceKey === 'docs') setDocumentCenterOpen(true);
@@ -130,17 +131,20 @@ export const HomePage: React.FC = () => {
         <LegislativeLibrary />
       </InViewLoad>
 
-      {/* Section 06: Hero with Live Process Pipeline [ 006 / 007 ] (swapped with information) */}
+      {/* Section 06: Hero with Live Process Pipeline [ 006 / 008 ] (swapped with information) */}
       <Section01Hero
         onOpenESud={() => handleOpenSectionModal('esud')}
         onOpenFiling={() => setNewFilingOpen(true)}
         onScrollNext={() => handleScrollToSection('contacts')}
       />
 
-      {/* Section 07: Contacts & Regional Map [ 007 / 007 ] */}
+      {/* Section 07: Contacts & Regional Map [ 007 / 008 ] */}
       <Section07Contacts
         onOpenContacts={() => handleOpenSectionModal('contacts')}
       />
+
+      {/* Section 08: Heroes of Tajikistan [ 008 / 008 ] */}
+      <Section08Heroes />
 
       {/* Modals for Modern Digital Justice Workspace */}
       <React.Suspense fallback={null}>
