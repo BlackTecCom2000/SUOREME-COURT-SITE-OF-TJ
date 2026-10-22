@@ -10,6 +10,24 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.32.0 - Fluent cinematic scroll
+- Released: 2026-10-22
+- Previous: v2.31.0
+- Wheel scrolling now runs through a critically damped spring (SmoothDamp)
+  instead of a plain lerp: the page eases out of the gesture, glides and
+  settles without overshooting, and adapts its response to the flick distance.
+- One smooth-scroll implementation: the legacy `SmoothScroll` component was
+  still mounted in `App` alongside the new hook, so two loops fought for the
+  wheel; the public app now uses only `useSmoothScroll` (admin keeps its own).
+- Lazy sections that grow the document mid-glide are handled: the queued
+  distance is not clamped to the current height, the loop parks at the
+  temporary end and a ResizeObserver resumes the same glide into the newly
+  mounted content.
+- Cinematic pass: stronger hero parallax (58px shift, 4.2% shrink, 55% fade),
+  deeper background drift (14% zoom, 108px), a stronger velocity grade with
+  subtle letterbox edges, and expo-eased dolly reveals.
+- Reduced motion, a11y mode and low-end tier still disable all of it.
+
 ## v2.31.0 - Court sites for every district and city court
 - Released: 2026-10-22
 - Previous: v2.30.1

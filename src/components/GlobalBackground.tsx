@@ -35,6 +35,7 @@ export const GlobalBackground: React.FC = () => {
   const { imageDay, imageNight } = useSiteBackground();
   const mask = useSkyMask();
   const parallaxRef = useRef<HTMLDivElement>(null);
+  const gradeRef = useRef<HTMLDivElement>(null);
   const maxScrollRef = useRef(1);
   const frameRef = useRef(0);
   const targetScrollRef = useRef(0);
@@ -47,15 +48,23 @@ export const GlobalBackground: React.FC = () => {
       frameRef.current = 0;
       const current = currentScrollRef.current;
       const target = targetScrollRef.current;
-      const next = current + (target - current) * 0.085;
+      const next = current + (target - current) * 0.07;
       currentScrollRef.current = Math.abs(target - next) < 0.1 ? target : next;
 
       // The zoom eases toward a limit instead of stopping abruptly at the page end.
       const progress = Math.max(0, currentScrollRef.current / maxScrollRef.current);
-      const zoom = 1 + 0.11 * (1 - Math.exp(-progress * 1.35));
-      const translate = 54 * (1 - Math.exp(-progress * 1.1));
+      const zoom = 1 + 0.14 * (1 - Math.exp(-progress * 1.35));
+      const translate = 108 * (1 - Math.exp(-progress * 1.1));
       if (parallaxRef.current) {
         parallaxRef.current.style.transform = `scale(${zoom.toFixed(5)}) translate3d(0, -${translate.toFixed(2)}px, 0)`;
+      }
+
+      // Cinematic speed grade: the edges darken a touch while the page is
+      // moving fast and lift again at rest. Only this overlay's opacity is
+      // written, so it stays on the compositor.
+      if (gradeRef.current) {
+        const speed = Math.min(1, Math.abs(target - currentScrollRef.current) / 360);
+        gradeRef.current.style.opacity = (speed * 0.24).toFixed(3);
       }
 
       if (Math.abs(target - currentScrollRef.current) > 0.1) {
@@ -207,6 +216,17 @@ export const GlobalBackground: React.FC = () => {
       <div
         className="absolute inset-0 pointer-events-none opacity-10"
         style={{ background: 'radial-gradient(ellipse at center, transparent 70%, rgba(0,0,0,0.08) 100%)' }}
+      />
+      {/* 5 — cinematic speed grade, opacity driven by scroll velocity */}
+      <div
+        ref={gradeRef}
+        data-cinema-grade
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 0,
+          background:
+            'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 7%, rgba(0,0,0,0) 93%, rgba(0,0,0,0.6) 100%), radial-gradient(ellipse at center, transparent 48%, rgba(0,0,0,0.55) 100%)',
+        }}
       />
     </div>
   );

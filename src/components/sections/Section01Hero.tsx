@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowUpRight, ShieldCheck, Sparkles, FileText } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
+import { useCinematicHero } from '../../hooks/useCinematicHero';
 import { InteractiveProcessFlow } from '../digital-court/InteractiveProcessFlow';
 
 interface Section01HeroProps {
@@ -16,6 +17,9 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
   onScrollNext,
 }) => {
   const { language, t } = useLanguage();
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  useCinematicHero(sectionRef, stageRef);
   // Live portal counters — real /api/stats only, never hardcoded.
   const [liveStats, setLiveStats] = useState<{ courts?: number; acts?: number; hearings?: number } | null>(null);
   useEffect(() => {
@@ -38,10 +42,16 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
       aria-label={t('nav.home')}
       className="relative min-h-[85vh] lg:min-h-[92vh] flex flex-col justify-between pt-20 lg:pt-28 pb-10 lg:pb-16 text-theme-text overflow-hidden select-none"
     >
+      <div
+        ref={stageRef}
+        className="relative flex flex-1 flex-col justify-between"
+        style={{ transformOrigin: '50% 0%' }}
+      >
       {/* Background ambient rain */}
 
       {/* Top Meta Indicator */}
@@ -210,6 +220,7 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
           <span>{language === 'tj' ? 'Ба пеш' : language === 'en' ? 'Explore' : 'Исследовать'}</span>
           <ArrowDown size={13} className="text-theme-gold animate-bounce" />
         </button>
+      </div>
       </div>
     </section>
   );

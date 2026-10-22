@@ -11,9 +11,11 @@ const GlobalSearchModal = React.lazy(() => import('./GlobalSearchModal').then(m 
 import { CourtNodeData } from '../data/sudTjData';
 import { GlobalBackground } from './GlobalBackground';
 import { useJellyScroll } from '../hooks/useJellyScroll';
+import { useSmoothScroll } from '../hooks/useSmoothScroll';
 
 export const Layout: React.FC = () => {
   useJellyScroll();
+  useSmoothScroll();
   const navigate = useNavigate();
   const location = useLocation();
   // Court sub-sites (/courts/:courtId) and the standalone e-library (/library)
