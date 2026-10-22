@@ -10,6 +10,22 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.31.0 - Court sites for every district and city court
+- Released: 2026-10-22
+- Previous: v2.30.1
+- Generated one court site for each of the 68 district/city courts from the
+  public court tree, using the Sino court layout as the template. Regional
+  ("вилоят"), garrison (military) and Supreme Court entries are deliberately
+  excluded; `dushanbe` and `sino` keep their hand-written configs.
+- Slugs are stable latin ids (`/courts/khorug`, `/courts/varzob`, ...); the
+  court map list, the court directory and the JudicialModal "site" button now
+  resolve any city/district court by name (folded ӣ/ӯ/ҳ/қ/ғ variants).
+- Contacts and leadership blocks hide themselves while a court has no data and
+  say so honestly instead of inventing officials or phone numbers; the "old
+  website" menu item is hidden when there is no URL.
+- Court pages set their own `<title>`, meta description, canonical and
+  hreflang via `usePageMeta`; `/sitemap.xml` now lists all 69 court sites.
+
 ## v2.30.1 - Scroll jelly: smooth pass
 - Released: 2026-10-22
 - Previous: v2.30.0

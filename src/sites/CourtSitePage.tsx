@@ -2,6 +2,7 @@
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { ArrowUpRight, Calendar, Clock, Landmark, Mail, MapPin, Phone, Scale, Send, ShieldCheck, Sparkles, Target, Users } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { Reveal } from "../components/Reveal";
 import { ModalTab } from "../components/JudicialModal";
 import { CourtNodeData } from "../data/sudTjData";
@@ -35,6 +36,11 @@ export const CourtSitePage: React.FC = () => {
     }, 350);
   };
   const cfg = getCourtSite(courtId);
+  usePageMeta(
+    cfg ? pickTri(cfg.name, language) : '',
+    cfg ? pickTri(cfg.about, language) : undefined
+  );
+  const contactAddress = cfg ? pickTri(cfg.contacts.address, language) : '';
 
   const [hearings, setHearings] = useState<any[]>([]);
   const [news, setNews] = useState<any[]>([]);
@@ -197,14 +203,18 @@ export const CourtSitePage: React.FC = () => {
 
           <Reveal delay={520}>
             <div className="mt-6 flex flex-wrap gap-2.5 font-mono text-xs">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-theme-border bg-theme-surface/70 text-theme-textSec">
-                <MapPin size={13} className="text-theme-gold" />
-                <span>{pickTri(cfg.contacts.address, language)}</span>
-              </span>
-              <a href={'mailto:' + cfg.contacts.email} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-theme-border bg-theme-surface/70 text-theme-textSec hover:text-theme-gold hover:border-theme-gold transition-colors">
-                <Mail size={13} className="text-theme-gold" />
-                <span>{cfg.contacts.email}</span>
-              </a>
+              {contactAddress && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-theme-border bg-theme-surface/70 text-theme-textSec">
+                  <MapPin size={13} className="text-theme-gold" />
+                  <span>{contactAddress}</span>
+                </span>
+              )}
+              {cfg.contacts.email && (
+                <a href={'mailto:' + cfg.contacts.email} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-theme-border bg-theme-surface/70 text-theme-textSec hover:text-theme-gold hover:border-theme-gold transition-colors">
+                  <Mail size={13} className="text-theme-gold" />
+                  <span>{cfg.contacts.email}</span>
+                </a>
+              )}
               {cfg.contacts.phones.map((p) => (
                 <a key={p} href={'tel:' + p.replace(/[^+\d]/g, '')} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-theme-border bg-theme-surface/70 text-theme-textSec hover:text-theme-gold hover:border-theme-gold transition-colors">
                   <Phone size={13} className="text-theme-gold" />
@@ -480,15 +490,26 @@ export const CourtSitePage: React.FC = () => {
         <section id="court-contacts" className="scroll-mt-32">
           <SectionHead
             kicker={language === 'en' ? 'Contacts' : language === 'tj' ? 'Тамос' : 'Контакты'}
-            title={pickTri(cfg.contacts.address, language)}
+            title={contactAddress || pickTri(cfg.name, language)}
           />
           <Reveal>
             <div className="p-5 sm:p-6 glass glass-panel flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-1.5 font-mono text-xs text-theme-textSec">
-                <div className="flex items-center gap-2"><Mail size={13} className="text-theme-gold" /><span>{cfg.contacts.email}</span></div>
+                {cfg.contacts.email && (
+                  <div className="flex items-center gap-2"><Mail size={13} className="text-theme-gold" /><span>{cfg.contacts.email}</span></div>
+                )}
                 {cfg.contacts.phones.map((p) => (
                   <div key={p} className="flex items-center gap-2"><Phone size={13} className="text-theme-gold" /><span>{p}</span></div>
                 ))}
+                {!cfg.contacts.email && cfg.contacts.phones.length === 0 && (
+                  <div className="text-theme-textMuted">
+                    {language === 'en'
+                      ? 'Contact details are being updated. Please use the online reception desk.'
+                      : language === 'tj'
+                        ? 'Маълумоти тамос дар ҳоли пурра кардан аст. Лутфан интернет-қабулгоҳро истифода баред.'
+                        : 'Контактные данные уточняются. Пожалуйста, используйте интернет-приёмную.'}
+                  </div>
+                )}
               </div>
               <button
                 type="button"

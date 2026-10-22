@@ -274,20 +274,22 @@ const { isDark, revealToggle } = useThemeReveal();
                           </span>
                         </Link>
                       </li>
-                      <li>
-                        <a
-                          href={config.externalUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={() => setMenuPopoverOpen(false)}
-                          className="w-full text-left p-1.5 px-2 rounded-xl hover:bg-theme-bg/80 border border-transparent hover:border-emerald-500/30 transition-all group flex items-center gap-2"
-                        >
-                          <ExternalLink size={13} className="text-theme-textSec group-hover:text-emerald-400 shrink-0" />
-                          <span className="text-xs font-medium text-theme-text">
-                            {language === 'en' ? 'Old website' : language === 'tj' ? 'Сомонаи кӯҳна' : 'Старый сайт'}
-                          </span>
-                        </a>
-                      </li>
+                      {config.externalUrl && (
+                        <li>
+                          <a
+                            href={config.externalUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={() => setMenuPopoverOpen(false)}
+                            className="w-full text-left p-1.5 px-2 rounded-xl hover:bg-theme-bg/80 border border-transparent hover:border-emerald-500/30 transition-all group flex items-center gap-2"
+                          >
+                            <ExternalLink size={13} className="text-theme-textSec group-hover:text-emerald-400 shrink-0" />
+                            <span className="text-xs font-medium text-theme-text">
+                              {language === 'en' ? 'Old website' : language === 'tj' ? 'Сомонаи кӯҳна' : 'Старый сайт'}
+                            </span>
+                          </a>
+                        </li>
+                      )}
                       <li>
                         <button
                           type="button"
@@ -300,15 +302,17 @@ const { isDark, revealToggle } = useThemeReveal();
                           </span>
                         </button>
                       </li>
-                      <li>
-                        <a
-                          href={'mailto:' + config.contacts.email}
-                          className="w-full text-left p-1.5 px-2 rounded-xl hover:bg-theme-bg/80 border border-transparent hover:border-emerald-500/30 transition-all group flex items-center gap-2"
-                        >
-                          <Mail size={13} className="text-theme-textSec group-hover:text-emerald-400 shrink-0" />
-                          <span className="text-xs font-medium text-theme-text truncate">{config.contacts.email}</span>
-                        </a>
-                      </li>
+                      {config.contacts.email && (
+                        <li>
+                          <a
+                            href={'mailto:' + config.contacts.email}
+                            className="w-full text-left p-1.5 px-2 rounded-xl hover:bg-theme-bg/80 border border-transparent hover:border-emerald-500/30 transition-all group flex items-center gap-2"
+                          >
+                            <Mail size={13} className="text-theme-textSec group-hover:text-emerald-400 shrink-0" />
+                            <span className="text-xs font-medium text-theme-text truncate">{config.contacts.email}</span>
+                          </a>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </div>

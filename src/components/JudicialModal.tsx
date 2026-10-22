@@ -34,7 +34,7 @@ import {
   LEGISLATIVE_ACTS,
 } from '../data/sudTjData';
 import { NEWS_REGIONS } from '../data/portalLinks';
-import { hasCourtSite } from '../sites/registry';
+import { courtSiteIdForCourt } from '../sites/registry';
 import { SlidingNumber } from './animate-ui/primitives/texts/sliding-number';
 import { useLanguage } from '../context/LanguageContext';
 import { StateDutyCalculator } from './calculator/StateDutyCalculator';
@@ -1119,7 +1119,9 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
 
               {/* Courts Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
-                {filteredCourts.map((court) => (
+                {filteredCourts.map((court) => {
+                  const siteId = courtSiteIdForCourt(court);
+                  return (
                   <div
                     key={court.id || court.domain}
                     role="link"
@@ -1139,9 +1141,9 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                     </div>
                     <div className="mt-3 pt-2 border-t border-theme-border font-mono text-2xs text-theme-textMuted group-hover:text-theme-gold flex items-center justify-between gap-2">
                       <span>{court.domain}</span>
-                      {hasCourtSite(court.domain.split('.')[0]) && (
+                      {siteId && (
                         <a
-                          href={'/courts/' + court.domain.split('.')[0]}
+                          href={'/courts/' + siteId}
                           onClick={(e) => e.stopPropagation()}
                           className="inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-theme-gold/50 text-theme-gold hover:bg-theme-gold hover:text-black transition-colors"
                         >
@@ -1151,7 +1153,8 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
                       )}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}

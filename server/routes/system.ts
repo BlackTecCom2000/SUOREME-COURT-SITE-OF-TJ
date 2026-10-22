@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { db, getSyncEpoch } from '../index';
 import { cache } from '../utils/cache';
+import { COURT_SITE_IDS } from '../../src/sites/registry';
 
 // Portal system routes (ARCH-01: extracted from server/index.ts).
 // Mounted at '/' — all paths below are explicit and conflict-free.
@@ -31,7 +32,8 @@ router.get('/api/stats', cache(300), (_req, res) => {
 // Dynamic sitemap.xml: static sections + published content (public URLs only).
 router.get('/sitemap.xml', cache(3600), (_req, res) => {
   const base = 'https://sud.tj';
-  const urls: string[] = ['/', '/about', '/leadership', '/library', '/sitemap', '/courts/sino', '/courts/dushanbe'];
+  const urls: string[] = ['/', '/about', '/leadership', '/library', '/sitemap'];
+  for (const id of COURT_SITE_IDS) urls.push(`/courts/${id}`);
   try {
     const rows = db
       .prepare(
