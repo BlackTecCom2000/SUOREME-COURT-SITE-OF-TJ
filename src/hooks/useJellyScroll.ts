@@ -1,36 +1,32 @@
-import { useEffect } from 'react';
+﻿import { useEffect } from 'react';
 
 /**
- * Scroll "jelly" — a spring-damped lag applied to page content blocks.
+ * Scroll "jelly" â€” a spring-damped lag applied to page content blocks.
  *
- * Every `.site-container` is driven by one shared rAF loop: a scroll delta
- * feeds a little velocity into a spring, the spring overshoots and settles,
- * and the block is translated (plus a sub-percent squash) while it moves.
- * Nothing is applied at rest, so text stays pixel-crisp and the compositor
- * does no work while the user is idle.
+ * Only `translate` is written, on visible blocks only. `translate` is handled
+ * entirely by the compositor, so glass cards keep their backdrop filters off
+ * the raster path; the previous `scale` write forced a re-raster of every
+ * backdrop-filter layer each frame, which is what made scrolling stutter.
  *
- * Deliberate constraints:
- *  - Only `translate` / `scale` (independent CSS properties) are written, so
- *    Tailwind/Framer/GSAP transforms on the same node are never clobbered.
- *  - Never touches `position: fixed` modals: sections render their modals as
- *    siblings of `.site-container`, not inside it.
- *  - Off for reduced-motion, the visually-impaired mode and low-end tiers.
+ * Values are never rounded to whole pixels (sub-pixel steps look like
+ * micro-jumps) and are removed the moment the spring settles, so text is
+ * pixel-crisp at rest and `will-change` never sticks around.
  */
 
-const MAX_LAG = 18;
-const MAX_SQUASH = 0.005;
-const STIFFNESS = 0.165;
-const DAMPING = 0.26;
-const KICK = 0.3;
-const SETTLE = 0.04;
+const MAX_LAG = 10;
+const LAG_PER_PX = 0.5;
+const SMOOTH = 0.12;
+const FOLLOW = 0.22;
+const SETTLE = 0.03;
 const MAX_DELTA = 240;
 
 interface JellyTarget {
   el: HTMLElement;
   depth: number;
   y: number;
-  vy: number;
+  visible: boolean;
   painted: boolean;
+  lastWritten: number;
 }
 
 const prefersReducedMotion = () =>
@@ -50,8 +46,10 @@ export const useJellyScroll = () => {
     let targets: JellyTarget[] = [];
     let raf = 0;
     let lastScroll = window.scrollY;
+    let smoothDelta = 0;
     let lastTime = 0;
     let collectQueued = false;
+    let observer: IntersectionObserver | null = null;
 
     const isDisabled = () =>
       prefersReducedMotion() ||
@@ -60,22 +58,31 @@ export const useJellyScroll = () => {
 
     const unpaint = (t: JellyTarget) => {
       if (!t.painted) return;
-      t.el.style.removeProperty('--jelly-y');
-      t.el.style.removeProperty('--jelly-s');
-      delete t.el.dataset.jelly;
+      t.el.style.removeProperty('translate');
+      t.el.style.removeProperty('will-change');
       t.painted = false;
+      t.lastWritten = 0;
+    };
+
+    const reset = (t: JellyTarget) => {
+      t.y = 0;
+      unpaint(t);
     };
 
     const paint = (t: JellyTarget) => {
-      const shift = Math.round(t.y * 0.7 * 2) / 2;
-      const scale = Math.min(
-        1 + MAX_SQUASH,
-        Math.max(1 - MAX_SQUASH, Math.round((1 - t.y * 0.00035) * 1000) / 1000),
-      );
-      t.el.style.setProperty('--jelly-y', `${shift}px`);
-      t.el.style.setProperty('--jelly-s', String(scale));
+      const shift = t.y * 0.7;
+      if (Math.abs(shift - t.lastWritten) < 0.01) return;
+      t.lastWritten = shift;
+      // Written inline, not via a CSS custom property: custom properties
+      // inherit, so every frame invalidated the style of the whole subtree
+      // (thousands of nodes). An inline `translate` only touches this node
+      // and is fully compositor-driven.
+      t.el.style.translate = `0 ${shift.toFixed(2)}px`;
       if (!t.painted) {
-        t.el.dataset.jelly = 'on';
+        // Kept only for the duration of a gesture: the block is promoted to its
+        // own layer once, instead of being re-composited on every frame, and
+        // the memory is handed back the moment the spring settles.
+        t.el.style.willChange = 'translate';
         t.painted = true;
       }
     };
@@ -88,25 +95,28 @@ export const useJellyScroll = () => {
       const delta = Math.max(-MAX_DELTA, Math.min(MAX_DELTA, scroll - lastScroll));
       lastScroll = scroll;
 
+      // Wheel input arrives as discrete spikes (one per notch). Feeding those
+      // straight into a spring made the spring slam into its limit and cut its
+      // own velocity â€” the visible "tick" on every notch. Low-pass the velocity
+      // first; the follow step below then glides instead of snapping.
+      smoothDelta += (delta - smoothDelta) * Math.min(1, SMOOTH * dt);
+
       let settled = true;
 
       for (const t of targets) {
-        if (Math.abs(delta) > 0.4) t.vy += delta * KICK * t.depth;
-        t.vy += (-STIFFNESS * t.y - DAMPING * t.vy) * dt;
-        t.y += t.vy * dt;
-
-        if (t.y > MAX_LAG) {
-          t.y = MAX_LAG;
-          t.vy *= 0.4;
-        } else if (t.y < -MAX_LAG) {
-          t.y = -MAX_LAG;
-          t.vy *= 0.4;
+        if (!t.visible) {
+          if (t.painted || t.y !== 0) reset(t);
+          continue;
         }
 
-        if (Math.abs(t.y) < SETTLE && Math.abs(t.vy) < SETTLE) {
-          t.y = 0;
-          t.vy = 0;
-          unpaint(t);
+        const target = Math.max(
+          -MAX_LAG,
+          Math.min(MAX_LAG, smoothDelta * LAG_PER_PX * t.depth * strength),
+        );
+        t.y += (target - t.y) * Math.min(1, FOLLOW * dt);
+
+        if (Math.abs(t.y) < SETTLE && Math.abs(target) < SETTLE) {
+          reset(t);
         } else {
           paint(t);
           settled = false;
@@ -124,6 +134,7 @@ export const useJellyScroll = () => {
     const start = () => {
       if (raf || isDisabled()) return;
       lastScroll = window.scrollY;
+      smoothDelta = 0;
       lastTime = 0;
       raf = requestAnimationFrame(tick);
     };
@@ -131,32 +142,57 @@ export const useJellyScroll = () => {
     const collect = () => {
       collectQueued = false;
       if (isDisabled()) {
-        targets.forEach(unpaint);
+        targets.forEach(reset);
         targets = [];
+        observer?.disconnect();
         return;
       }
+
       const nodes = Array.from(document.querySelectorAll<HTMLElement>('.site-container'));
+
+      // The page mutates constantly (clocks, tickers, live counters). Rebuilding
+      // the targets and the IntersectionObserver on every mutation was pure
+      // churn, so bail out when the set of containers is unchanged.
+      const same =
+        nodes.length === targets.length && nodes.every((el, i) => targets[i].el === el);
+      if (same && observer) return;
+
       const next: JellyTarget[] = nodes.map((el, i) => {
         const prev = targets.find((t) => t.el === el);
         return {
           el,
-          depth: (0.9 + (i % 5) * 0.05) * strength,
+          depth: 0.96 + (i % 4) * 0.027,
           y: prev ? prev.y : 0,
-          vy: prev ? prev.vy : 0,
+          visible: prev ? prev.visible : false,
           painted: prev ? prev.painted : false,
+          lastWritten: prev ? prev.lastWritten : 0,
         };
       });
+
       const alive = new Set(nodes);
       targets.forEach((t) => {
         if (!alive.has(t.el)) unpaint(t);
       });
       targets = next;
+
+      observer?.disconnect();
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            const t = targets.find((item) => item.el === entry.target);
+            if (t) t.visible = entry.isIntersecting;
+          }
+          if (targets.some((t) => t.visible)) start();
+        },
+        { rootMargin: '15% 0px 15% 0px' },
+      );
+      targets.forEach((t) => observer!.observe(t.el));
     };
 
     const queueCollect = () => {
       if (collectQueued) return;
       collectQueued = true;
-      window.setTimeout(collect, 120);
+      window.setTimeout(collect, 150);
     };
 
     const onScroll = () => start();
@@ -168,7 +204,7 @@ export const useJellyScroll = () => {
       if (prefersReducedMotion()) {
         if (raf) cancelAnimationFrame(raf);
         raf = 0;
-        targets.forEach(unpaint);
+        targets.forEach(reset);
       }
     };
 
@@ -180,18 +216,20 @@ export const useJellyScroll = () => {
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     motionQuery.addEventListener('change', onMotionChange);
 
-    const observer = new MutationObserver(queueCollect);
-    observer.observe(document.body, { childList: true, subtree: true });
+    const mutations = new MutationObserver(queueCollect);
+    mutations.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
       window.removeEventListener('orientationchange', onResize);
       motionQuery.removeEventListener('change', onMotionChange);
-      observer.disconnect();
+      mutations.disconnect();
+      observer?.disconnect();
       if (raf) cancelAnimationFrame(raf);
       targets.forEach(unpaint);
       targets = [];
     };
   }, []);
 };
+

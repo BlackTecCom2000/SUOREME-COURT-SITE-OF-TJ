@@ -10,6 +10,24 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.30.1 - Scroll jelly: smooth pass
+- Released: 2026-10-22
+- Previous: v2.30.0
+- Fixed the stutter v2.30.0 introduced. Root causes: the `scale` write
+  re-rasterized every glass layer with `backdrop-filter` each frame, the
+  per-frame CSS custom property was inherited so it invalidated the style
+  of the whole subtree, and a velocity impulse per wheel notch drove the
+  spring into its clamp and cut its own velocity (a visible tick).
+- Now: a low-passed scroll velocity feeds a smooth follow (no spring slam,
+  no hard limit), values are written inline as `translate` only (never a
+  variable, never `transform`/`scale`), only visible `.site-container`
+  blocks are touched, `will-change` is held just for the gesture, and the
+  target list is not rebuilt while the set of containers is unchanged.
+- Measured in headless Chromium during a sustained wheel scroll: p50 frame
+  time matches the effect-off baseline (5.6ms), peak lag ~7px, sub-pixel
+  steps, zero leftover inline styles after settling, modals still
+  viewport-anchored, reduced motion writes nothing.
+
 ## v2.30.0 - Scroll jelly
 - Released: 2026-10-22
 - Previous: v2.29.0
