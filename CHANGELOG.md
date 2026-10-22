@@ -10,6 +10,23 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.30.0 - Scroll jelly
+- Released: 2026-10-22
+- Previous: v2.29.0
+- `useJellyScroll` (mounted once in `Layout`): every public
+  `.site-container` now lags behind the scroll on a spring and settles
+  with an elastic overshoot. Peak lag ~9px, sub-percent vertical squash,
+  per-block depth variation so neighbouring blocks move out of phase.
+- Writes only the independent `translate` / `scale` CSS properties, so it
+  composes with Tailwind/Framer/GSAP transforms instead of clobbering
+  them, and clears every inline value the moment motion stops (`will-change`
+  never sticks, text stays crisp at rest).
+- One shared rAF loop driven by scroll deltas; nothing runs while idle.
+  Skipped for `prefers-reduced-motion`, visually-impaired mode and
+  `data-device-tier="low-end"`; softened on coarse pointers.
+- Fixed-position modals are unaffected (they render as siblings of
+  `.site-container`, verified viewport-anchored during motion).
+
 ## v2.29.0 - Heroes of Tajikistan showcase window [008]
 - Released: 2026-10-14
 - Previous: v2.28.0

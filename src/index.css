@@ -1994,3 +1994,26 @@ html[data-a11y="true"] .content-card::before {
     #000 92%
   );
 }
+
+/* ---------------------------------------------------------------------------
+   SCROLL JELLY
+   useJellyScroll() writes --jelly-y / --jelly-s while the page is moving and
+   removes them the moment it settles (the [data-jelly] attribute disappears
+   with them, so will-change never sticks around). Independent `translate` and
+   `scale` properties are used on purpose: they compose with any Tailwind or
+   Framer `transform` already on the node instead of overwriting it.
+   --------------------------------------------------------------------------- */
+.site-container[data-jelly="on"] {
+  translate: 0 var(--jelly-y, 0px);
+  scale: 1 var(--jelly-s, 1);
+  transform-origin: 50% 50%;
+  will-change: translate, scale;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-container[data-jelly="on"] {
+    translate: none;
+    scale: none;
+    will-change: auto;
+  }
+}

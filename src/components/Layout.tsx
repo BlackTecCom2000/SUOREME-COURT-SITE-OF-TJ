@@ -10,8 +10,10 @@ const NewFilingModal = React.lazy(() => import('./digital-court/NewFilingModal')
 const GlobalSearchModal = React.lazy(() => import('./GlobalSearchModal').then(m => ({ default: m.GlobalSearchModal })));
 import { CourtNodeData } from '../data/sudTjData';
 import { GlobalBackground } from './GlobalBackground';
+import { useJellyScroll } from '../hooks/useJellyScroll';
 
 export const Layout: React.FC = () => {
+  useJellyScroll();
   const navigate = useNavigate();
   const location = useLocation();
   // Court sub-sites (/courts/:courtId) and the standalone e-library (/library)
