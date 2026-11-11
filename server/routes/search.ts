@@ -114,6 +114,28 @@ router.get('/', cache(60), (req, res) => {
         date: r.hearing_date, category: r.category_ru,
       }));
     }
+    if (type === 'all' || type === 'hero') {
+      const where: string[] = ["status='published'"];
+      const vals: any[] = [];
+      if (q) {
+        where.push(`(name_ru LIKE ? OR name_tj LIKE ? OR name_en LIKE ? OR
+          profession_ru LIKE ? OR profession_tj LIKE ? OR profession_en LIKE ? OR
+          bio_ru LIKE ? OR bio_tj LIKE ? OR bio_en LIKE ? OR
+          achievements_ru LIKE ? OR achievements_tj LIKE ? OR achievements_en LIKE ?)`);
+        const like = `%${q}%`;
+        for (let i = 0; i < 12; i++) vals.push(like);
+      }
+      if (category) { where.push('category=?'); vals.push(category); }
+      const rows = db
+        .prepare(`SELECT id,slug,name_ru,name_tj,name_en,profession_ru,profession_tj,profession_en,category,is_official_hero,birth_date,death_date,portrait_url FROM heroes WHERE ${where.join(' AND ')} ORDER BY sort_order LIMIT ?`)
+        .all(...vals, limit) as any[];
+      push(rows, 'hero', (r) => ({
+        id: r.id, slug: r.slug, type: 'hero',
+        title_ru: r.name_ru, title_tj: r.name_tj, title_en: r.name_en,
+        excerpt: r.profession_ru, category: r.category,
+        date: r.birth_date, is_official_hero: r.is_official_hero,
+      }));
+    }
   } catch {
     return res.status(500).json({ error: 'Search failed' });
   }

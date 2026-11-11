@@ -10,6 +10,43 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.33.0 - Official content migration and historical archive
+- Released: 2026-11-11
+- Previous: v2.32.0
+- **Official news migration.** 22 publications collected verbatim from the
+  official site https://sud.tj (Tajik tree `/markazi-matbuot/khabarho/<id>/`,
+  Russian tree `/ru/press-tsentr/novosti/<id>/`) were imported into the CMS:
+  21 news items (11.11.2026 – 11.09.2026) and 1 announcement (results of the
+  competition, 19.10.2026). Tajik and Russian bodies are verbatim copies of the
+  source pages; the English title and excerpt are editorial translations and
+  are marked as pending in `ai_meta` until the full English text is signed off.
+  Every imported item keeps its origin: `source_url`, `source_name`,
+  `original_date` (the date as printed by the source), `keywords`,
+  `seo_title`, `seo_description` and the photo `gallery`.
+- **Provenance columns.** `content` gained `source_url`, `source_name`,
+  `original_date`, `keywords`, `seo_title`, `seo_description`, `gallery`
+  (additive, idempotent migrations applied on boot and by the importer).
+- **Historical archive (Қаҳрамонони Тоҷикистон).** New CMS table `heroes`
+  (trilingual, with birth/death dates, profession, biography, education,
+  career, achievements, contribution, awards, decree, timeline, sources,
+  confidence and an editorial note) plus public API `/api/heroes`,
+  `/api/heroes/:slug`, `/api/heroes/categories` and admin CRUD
+  `/api/admin/heroes`. The six curated personalities of the portal data file
+  were migrated into the archive; the curated file stays as the offline
+  fallback of the showcase.
+- **New pages.** `/heroes` (archive with category filters, "official heroes"
+  toggle and search) and `/heroes/:slug` (biography with timeline, sources and
+  related personalities). The homepage showcase section now reads the CMS and
+  links to the biographies; the main menu gained an archive entry.
+- **News page.** Source attribution with a link to the original publication,
+  photo gallery and a related-publications block.
+- **Search.** The global search covers the archive (`kind: "hero"`).
+- **Admin.** New "Герои и архив биографий" section (`/admin/heroes`) with
+  create/edit/delete, confidence level and editorial note.
+- **Importers.** `scripts/seedOfficialContent.mjs` (news, idempotent,
+  `--dry-run` / `--force`, never overwrites an editorial change) and
+  `scripts/seedHeroes.mts` (migrates the curated data file into the CMS).
+
 ## v2.32.0 - Fluent cinematic scroll
 - Released: 2026-10-22
 - Previous: v2.31.0

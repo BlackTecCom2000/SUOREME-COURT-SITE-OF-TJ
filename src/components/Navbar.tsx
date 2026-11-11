@@ -130,6 +130,20 @@ export const Navbar: React.FC<NavbarProps> = ({
       },
     },
     {
+      id: 'heroes',
+      titleTj: 'Қаҳрамонони Тоҷикистон',
+      titleRu: 'Герои Таджикистана',
+      titleEn: 'Heroes of Tajikistan',
+      descTj: 'Биографии шахсониятҳои таърихӣ бо манбаъҳои расмӣ',
+      descRu: 'Биографии исторических деятелей с официальными источниками',
+      descEn: 'Biographies of historical figures with official sources',
+      action: () => {
+        setMenuPopoverOpen(false);
+        setMobileMenuOpen(false);
+        window.location.href = '/heroes';
+      },
+    },
+    {
       id: 'plenum',
       titleTj: 'Пленуми Суди Олӣ',
       titleRu: 'Пленум Верховного суда',

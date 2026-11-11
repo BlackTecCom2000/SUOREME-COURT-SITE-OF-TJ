@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { BookOpen, ChevronLeft, ChevronRight, X, Landmark } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, X, Landmark, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Reveal } from '../Reveal';
-import { HEROES } from '../../data/heroes';
+import { useHeroes } from '../../hooks/useHeroes';
 import { useLanguage } from '../../context/LanguageContext';
 
 const AUTOPLAY_MS = 9000;
@@ -9,6 +10,8 @@ const SWIPE_PX = 50;
 
 export const Section08Heroes: React.FC = () => {
   const { language } = useLanguage();
+  // The archive lives in the CMS; the curated static file is the fallback.
+  const HEROES = useHeroes();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -85,6 +88,17 @@ export const Section08Heroes: React.FC = () => {
             <h2 className="public-section-title type-glass text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 text-theme-text">
               {kicker}
             </h2>
+            <Link
+              to="/heroes"
+              className="inline-flex items-center gap-2 text-sm text-theme-gold hover:underline underline-offset-4"
+            >
+              {language === 'tj'
+                ? 'Барчаи қаҳрамонон ва архиви биографиҳо'
+                : language === 'en'
+                  ? 'All heroes and the biography archive'
+                  : 'Все герои и архив биографий'}
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </Link>
           </div>
         </Reveal>
 
@@ -306,6 +320,17 @@ export const Section08Heroes: React.FC = () => {
                     </div>
                     <p className="text-xs sm:text-sm leading-relaxed text-theme-text">{L.decree}</p>
                   </div>
+                  <Link
+                    to={`/heroes/${hero.id}`}
+                    className="mt-4 inline-flex items-center gap-2 text-sm text-theme-gold hover:underline underline-offset-4"
+                  >
+                    {language === 'tj'
+                      ? 'Пурраи биография'
+                      : language === 'en'
+                        ? 'Full biography'
+                        : 'Полная биография'}
+                    <ArrowUpRight size={15} aria-hidden="true" />
+                  </Link>
                 </>
               );
             })()}

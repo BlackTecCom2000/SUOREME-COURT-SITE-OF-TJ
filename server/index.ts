@@ -16,6 +16,7 @@ import { loginLimiter, appealsLimiter, questionnaireLimiter, editorLimiter, duty
 import { requirePerm, hasPerm, permissionsFor, permForContentStatus, roleOf } from './middleware/rbac';
 import { searchRouter } from './routes/search';
 import { systemRouter } from './routes/system';
+import { heroesRouter } from './routes/heroes';
 import { cache } from './utils/cache';
 import { sanitizeRich, sanitizeRichOrNull } from './utils/sanitizeHtml';
 
@@ -99,7 +100,82 @@ try {
   const acols = db.prepare("PRAGMA table_info(audit_log)").all() as any[];
   if (!acols.some((c) => c.name === 'object_title')) db.exec("ALTER TABLE audit_log ADD COLUMN object_title TEXT");
   if (!acols.some((c) => c.name === 'ip_address')) db.exec("ALTER TABLE audit_log ADD COLUMN ip_address TEXT");
+  // v2.33.0 — official content provenance, SEO and gallery fields.
+  // Every imported publication keeps the URL it was taken from, the date the
+  // source published it, the keywords and the per-language SEO text, so an
+  // editor can always trace a page back to its origin.
+  for (const col of [
+    'source_url TEXT',        // absolute URL of the original publication
+    'source_name TEXT',       // attribution label, e.g. "Суди Олии Ҷумҳурии Тоҷикистон"
+    'original_date TEXT',     // publication date as printed by the source (YYYY-MM-DD)
+    'keywords TEXT',          // comma separated SEO keywords
+    'seo_title TEXT',         // per-language SEO title override
+    'seo_description TEXT',   // per-language SEO description override
+    'gallery TEXT',           // JSON array of media ids / urls
+  ]) {
+    const name = col.split(' ')[0];
+    if (!db.prepare("PRAGMA table_info(content)").all().some((c: any) => c.name === name)) db.exec(`ALTER TABLE content ADD COLUMN ${col}`);
+  }
 } catch { /* already migrated */ }
+
+// v2.34.0 — historical personalities ("heroes" archive).
+// One row per person, three languages side by side, plus the provenance
+// fields the archive is required to carry: timeline, sources, confidence
+// and an editorial note for anything that still needs a source check.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS heroes (
+    id            INTEGER PRIMARY KEY,
+    slug          TEXT UNIQUE NOT NULL,
+    name_ru       TEXT NOT NULL,
+    name_tj       TEXT,
+    name_en       TEXT,
+    profession_ru TEXT,
+    profession_tj TEXT,
+    profession_en TEXT,
+    category      TEXT NOT NULL DEFAULT 'other',
+    is_official_hero INTEGER NOT NULL DEFAULT 0,
+    hero_decree_ru TEXT,
+    hero_decree_tj TEXT,
+    hero_decree_en TEXT,
+    birth_date    TEXT,
+    death_date    TEXT,
+    birth_place_ru TEXT,
+    birth_place_tj TEXT,
+    birth_place_en TEXT,
+    portrait_url  TEXT,
+    bio_ru        TEXT,
+    bio_tj        TEXT,
+    bio_en        TEXT,
+    education_ru  TEXT,
+    education_tj  TEXT,
+    education_en  TEXT,
+    career_ru     TEXT,
+    career_tj     TEXT,
+    career_en     TEXT,
+    achievements_ru TEXT,
+    achievements_tj TEXT,
+    achievements_en TEXT,
+    contribution_ru TEXT,
+    contribution_tj TEXT,
+    contribution_en TEXT,
+    awards_ru     TEXT,
+    awards_tj     TEXT,
+    awards_en     TEXT,
+    timeline      TEXT,
+    sources       TEXT,
+    seo_title     TEXT,
+    seo_description TEXT,
+    confidence    TEXT NOT NULL DEFAULT 'needs-editorial-review',
+    editorial_note TEXT,
+    status        TEXT NOT NULL DEFAULT 'published',
+    published_at  TEXT,
+    sort_order    INTEGER NOT NULL DEFAULT 0,
+    created_at    TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+  CREATE INDEX IF NOT EXISTS idx_heroes_status ON heroes(status, sort_order);
+  CREATE INDEX IF NOT EXISTS idx_heroes_category ON heroes(category);
+`);
 
 // Court-site scopes: which region/court names belong to each court site id.
 // Users with site_id set (and not super_admin) are restricted to their site.
@@ -533,6 +609,7 @@ app.use('/uploads', express.static(uploadDir, { setHeaders: (res) => res.setHead
 // aiRouter is mounted AFTER the auth middleware is defined (see H2 guard below).
 app.use(systemRouter);
 app.use('/api/search', searchRouter);
+app.use('/api/heroes', heroesRouter);
 
 type Auth = express.Request & { user?: { id:number; role:string } };
 const auth = (req:Auth,res:express.Response,next:express.NextFunction) => {
@@ -641,25 +718,47 @@ app.use('/api/admin', (req, _res, next) => {
 
 
 // Content
+// v2.33.0: provenance columns (source_url / original_date / keywords / seo /
+// gallery) travel with every item so an editor can trace a publication back
+// to the official site it was taken from.
+const CONTENT_PUBLIC_COLUMNS = `c.id,c.slug,c.title_ru,c.title_tj,c.title_en,c.excerpt_ru,c.excerpt_tj,c.excerpt_en,c.body_ru,c.body_tj,c.body_en,c.published_at,c.region,c.source_url,c.source_name,c.original_date,c.keywords,c.seo_title,c.seo_description,c.gallery, m.filename as cover_image`;
 app.get('/api/news', cache(60), (req,res) => {
   const region = String(req.query.region || 'all');
-  if (region === 'all') return res.json(db.prepare("SELECT c.id,c.slug,c.title_ru,c.title_tj,c.title_en,c.excerpt_ru,c.excerpt_tj,c.excerpt_en,c.body_ru,c.body_tj,c.body_en,c.published_at,c.region, m.filename as cover_image FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type='news' AND c.status='published' AND c.deleted_at IS NULL ORDER BY c.published_at DESC").all());
-  return res.json(db.prepare("SELECT c.id,c.slug,c.title_ru,c.title_tj,c.title_en,c.excerpt_ru,c.excerpt_tj,c.excerpt_en,c.body_ru,c.body_tj,c.body_en,c.published_at,c.region, m.filename as cover_image FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type='news' AND c.status='published' AND c.deleted_at IS NULL AND c.region=? ORDER BY c.published_at DESC").all(region));
+  if (region === 'all') return res.json(db.prepare(`SELECT ${CONTENT_PUBLIC_COLUMNS} FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type='news' AND c.status='published' AND c.deleted_at IS NULL ORDER BY c.published_at DESC`).all());
+  return res.json(db.prepare(`SELECT ${CONTENT_PUBLIC_COLUMNS} FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type='news' AND c.status='published' AND c.deleted_at IS NULL AND c.region=? ORDER BY c.published_at DESC`).all(region));
 });
-const contentList = (type: string) => db.prepare("SELECT c.id,c.slug,c.title_ru,c.title_tj,c.title_en,c.excerpt_ru,c.excerpt_tj,c.excerpt_en,c.body_ru,c.body_tj,c.body_en,c.published_at,c.region,c.expires_at, m.filename as cover_image FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type=? AND c.status='published' AND c.deleted_at IS NULL ORDER BY c.published_at DESC").all(type);
+const contentList = (type: string) => db.prepare(`SELECT ${CONTENT_PUBLIC_COLUMNS}, c.expires_at FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type=? AND c.status='published' AND c.deleted_at IS NULL ORDER BY c.published_at DESC`).all(type);
 app.get('/api/announcements', cache(60), (req,res) => {
   const region = String(req.query.region || 'all');
   if (region === 'all') return res.json(contentList('announcement'));
-  return res.json(db.prepare("SELECT c.id,c.slug,c.title_ru,c.title_tj,c.title_en,c.excerpt_ru,c.excerpt_tj,c.excerpt_en,c.body_ru,c.body_tj,c.body_en,c.published_at,c.region,c.expires_at, m.filename as cover_image FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type='announcement' AND c.status='published' AND c.deleted_at IS NULL AND c.region=? ORDER BY c.published_at DESC").all(region));
+  return res.json(db.prepare(`SELECT ${CONTENT_PUBLIC_COLUMNS}, c.expires_at FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type='announcement' AND c.status='published' AND c.deleted_at IS NULL AND c.region=? ORDER BY c.published_at DESC`).all(region));
 });
 app.get('/api/vacancies', cache(60), (_req,res) => res.json(contentList('vacancy')));
 app.get('/api/journal', cache(300), (_req,res) => res.json(contentList('journal')));
 app.get('/api/content/:type/:slug', cache(120), (req,res) => {
   const allowed = ['news','announcement','vacancy','journal','page','act'];
   if (!allowed.includes(req.params.type)) return res.status(404).json({ error:'Not found' });
-  const row = db.prepare("SELECT c.id,c.slug,c.type,c.title_ru,c.title_tj,c.title_en,c.excerpt_ru,c.excerpt_tj,c.excerpt_en,c.body_ru,c.body_tj,c.body_en,c.published_at,c.region, m.filename as cover_image FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type=? AND c.slug=? AND c.status='published' AND c.deleted_at IS NULL").get(req.params.type, req.params.slug);
+  const row = db.prepare(`SELECT ${CONTENT_PUBLIC_COLUMNS} FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type=? AND c.slug=? AND c.status='published' AND c.deleted_at IS NULL`).get(req.params.type, req.params.slug);
   if (!row) return res.status(404).json({ error:'Not found' });
   res.json(row);
+});
+// Related items for a publication: same category/region first, then the most
+// recent ones of the same type.
+app.get('/api/content/:type/:slug/related', cache(120), (req,res) => {
+  const allowed = ['news','announcement','vacancy','journal'];
+  if (!allowed.includes(req.params.type)) return res.status(404).json({ error:'Not found' });
+  const row = db.prepare('SELECT id,region FROM content WHERE type=? AND slug=? AND status=\'published\' AND deleted_at IS NULL').get(req.params.type, req.params.slug) as any;
+  if (!row) return res.status(404).json({ error:'Not found' });
+  const related = db.prepare(`SELECT c.id,c.slug,c.title_ru,c.title_tj,c.title_en,c.excerpt_ru,c.excerpt_tj,c.excerpt_en,c.published_at,c.source_url, m.filename as cover_image
+    FROM content c LEFT JOIN media m ON c.cover_image_id = m.id
+    WHERE c.type=? AND c.status='published' AND c.deleted_at IS NULL AND c.id<>?
+      AND COALESCE(c.region,'')=COALESCE(?,'')
+    ORDER BY c.published_at DESC LIMIT 6`).all(req.params.type, row.id, (row as any).region) as any[];
+  const fill = related.length >= 3 ? related : db.prepare(`SELECT c.id,c.slug,c.title_ru,c.title_tj,c.title_en,c.excerpt_ru,c.excerpt_tj,c.excerpt_en,c.published_at,c.source_url, m.filename as cover_image
+    FROM content c LEFT JOIN media m ON c.cover_image_id = m.id
+    WHERE c.type=? AND c.status='published' AND c.deleted_at IS NULL AND c.id<>?
+    ORDER BY c.published_at DESC LIMIT 6`).all(req.params.type, row.id) as any[];
+  res.json(related.length >= 3 ? related : fill);
 });
 
 app.post('/api/questionnaire', questionnaireLimiter(), (req,res) => { const p=z.object({name:z.string().min(2).max(120),phone:z.string().max(40).optional(),topic:z.string().max(120).optional(),rating:z.number().int().min(1).max(5).optional(),message:z.string().max(2000).optional()}).safeParse(req.body); if(!p.success)return res.status(400).json({error:'Invalid questionnaire'}); const row=db.prepare('INSERT INTO questionnaire_responses(name,phone,topic,rating,message) VALUES(?,?,?,?,?)').run(p.data.name,p.data.phone||null,p.data.topic||null,p.data.rating??null,p.data.message||null); res.status(201).json({id:row.lastInsertRowid,status:'received'}); });
@@ -749,7 +848,7 @@ const normDateTime = (v: any) => {
   const d = new Date(String(v));
   return isNaN(d.getTime()) ? String(v) : d.toISOString();
 };
-app.post('/api/admin/content', auth, requirePerm('content.create'), (req:Auth,res) => { const b = req.body || {}; const p=z.object({type:z.enum(['news','page','act','announcement','vacancy','journal']),slug:z.string().regex(/^[a-z0-9-]+$/),titleRu:z.string().min(2).optional(),title_ru:z.string().min(2).optional(),titleTj:z.string().optional(),title_tj:z.string().optional(),titleEn:z.string().optional(),title_en:z.string().optional(),bodyRu:z.string().optional(),body_ru:z.string().optional(),bodyTj:z.string().optional(),body_tj:z.string().optional(),bodyEn:z.string().optional(),body_en:z.string().optional(),excerptRu:z.string().optional(),excerpt_ru:z.string().optional(),excerptTj:z.string().optional(),excerpt_tj:z.string().optional(),excerptEn:z.string().optional(),excerpt_en:z.string().optional(),region:z.string().max(64).optional(),ai_meta:z.record(z.string(),z.any()).optional(),status:contentStatus.default('draft'), published_at:z.string().optional(), scheduled_at:z.string().optional()}).safeParse(b); if(!p.success)return res.status(400).json({error:'Invalid content', details: p.error}); const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); const x=p.data as any; const pick = (...ks:string[]) => { for (const k of ks) { if (x[k] != null && x[k] !== '') return x[k]; } return null; };
+app.post('/api/admin/content', auth, requirePerm('content.create'), (req:Auth,res) => { const b = req.body || {}; const p=z.object({type:z.enum(['news','page','act','announcement','vacancy','journal']),slug:z.string().regex(/^[a-z0-9-]+$/),titleRu:z.string().min(2).optional(),title_ru:z.string().min(2).optional(),titleTj:z.string().optional(),title_tj:z.string().optional(),titleEn:z.string().optional(),title_en:z.string().optional(),bodyRu:z.string().optional(),body_ru:z.string().optional(),bodyTj:z.string().optional(),body_tj:z.string().optional(),bodyEn:z.string().optional(),body_en:z.string().optional(),excerptRu:z.string().optional(),excerpt_ru:z.string().optional(),excerptTj:z.string().optional(),excerpt_tj:z.string().optional(),excerptEn:z.string().optional(),excerpt_en:z.string().optional(),region:z.string().max(64).optional(),sourceUrl:z.string().max(500).optional(),source_url:z.string().max(500).optional(),sourceName:z.string().max(160).optional(),source_name:z.string().max(160).optional(),originalDate:z.string().max(32).optional(),original_date:z.string().max(32).optional(),keywords:z.string().max(500).optional(),seoTitle:z.string().max(300).optional(),seo_title:z.string().max(300).optional(),seoDescription:z.string().max(600).optional(),seo_description:z.string().max(600).optional(),gallery:z.string().max(4000).optional(),ai_meta:z.record(z.string(),z.any()).optional(),status:contentStatus.default('draft'), published_at:z.string().optional(), scheduled_at:z.string().optional()}).safeParse(b); if(!p.success)return res.status(400).json({error:'Invalid content', details: p.error}); const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); const x=p.data as any; const pick = (...ks:string[]) => { for (const k of ks) { if (x[k] != null && x[k] !== '') return x[k]; } return null; };
   const titleRu = pick('titleRu','title_ru'); if(!titleRu || titleRu.length < 2)return res.status(400).json({error:'Invalid content'});
   const status = normStatus(x.status || 'draft');
   // CMS-01: direct publication/approval on create requires the matching permission.
@@ -758,11 +857,11 @@ app.post('/api/admin/content', auth, requirePerm('content.create'), (req:Auth,re
   if ((status==='approved' || status==='archived') && !hasPerm(role,'content.approve')) return res.status(403).json({error:'Forbidden: approval requires approve permission'});
   const region = sc ? sc.region : (x.region || null);
   const pubAt = status==='published' ? (normDateTime(x.published_at) || new Date().toISOString()) : (status==='scheduled' ? (normDateTime(x.scheduled_at) || normDateTime(x.published_at)) : null);
-  const result=db.prepare('INSERT INTO content(type,slug,title_ru,title_tj,title_en,body_ru,body_tj,body_en,excerpt_ru,excerpt_tj,excerpt_en,region,ai_meta,status,published_at,author_id,published_by) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.type,x.slug,titleRu,pick('titleTj','title_tj'),pick('titleEn','title_en'),sanitizeRichOrNull(pick('bodyRu','body_ru')),sanitizeRichOrNull(pick('bodyTj','body_tj')),sanitizeRichOrNull(pick('bodyEn','body_en')),pick('excerptRu','excerpt_ru'),pick('excerptTj','excerpt_tj'),pick('excerptEn','excerpt_en'),region,x.ai_meta ? JSON.stringify(x.ai_meta) : null,status,pubAt,req.user!.id,status==='published' ? req.user!.id : null); audit(req.user!.id,'create',x.type,Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
+  const result=db.prepare('INSERT INTO content(type,slug,title_ru,title_tj,title_en,body_ru,body_tj,body_en,excerpt_ru,excerpt_tj,excerpt_en,region,ai_meta,status,published_at,author_id,published_by,source_url,source_name,original_date,keywords,seo_title,seo_description,gallery) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(x.type,x.slug,titleRu,pick('titleTj','title_tj'),pick('titleEn','title_en'),sanitizeRichOrNull(pick('bodyRu','body_ru')),sanitizeRichOrNull(pick('bodyTj','body_tj')),sanitizeRichOrNull(pick('bodyEn','body_en')),pick('excerptRu','excerpt_ru'),pick('excerptTj','excerpt_tj'),pick('excerptEn','excerpt_en'),region,x.ai_meta ? JSON.stringify(x.ai_meta) : null,status,pubAt,req.user!.id,status==='published' ? req.user!.id : null,pick('sourceUrl','source_url'),pick('sourceName','source_name'),pick('originalDate','original_date'),pick('keywords'),pick('seoTitle','seo_title'),pick('seoDescription','seo_description'),pick('gallery')); audit(req.user!.id,'create',x.type,Number(result.lastInsertRowid)); res.status(201).json({id:result.lastInsertRowid}); });
 app.delete('/api/admin/content/:id', auth, requirePerm('content.delete'), (req:Auth,res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); if(sc){ const row = db.prepare('SELECT region FROM content WHERE id=?').get(req.params.id) as any; if(!row || row.region !== sc.region)return res.status(403).json({error:'Forbidden'}); } db.prepare('UPDATE content SET deleted_at=CURRENT_TIMESTAMP WHERE id=?').run(req.params.id); audit(req.user!.id,'delete','content',Number(req.params.id)); res.sendStatus(204); });
 app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); const row = db.prepare('SELECT * FROM content WHERE id=? AND deleted_at IS NULL').get(req.params.id) as any; if(!row)return res.status(404).json({error:'Not found'}); if(sc && row.region !== sc.region)return res.status(403).json({error:'Forbidden'});
   const b = req.body || {};
-  const p=z.object({status:contentStatus.optional(),slug:z.string().regex(/^[a-z0-9-]+$/).optional(),titleRu:z.string().min(2).optional(),title_ru:z.string().min(2).optional(),titleTj:z.string().optional(),title_tj:z.string().optional(),titleEn:z.string().optional(),title_en:z.string().optional(),bodyRu:z.string().optional(),body_ru:z.string().optional(),bodyTj:z.string().optional(),body_tj:z.string().optional(),bodyEn:z.string().optional(),body_en:z.string().optional(),excerptRu:z.string().optional(),excerpt_ru:z.string().optional(),excerptTj:z.string().optional(),excerpt_tj:z.string().optional(),excerptEn:z.string().optional(),excerpt_en:z.string().optional(),ai_meta:z.record(z.string(),z.any()).optional(),published_at:z.string().optional(),scheduled_at:z.string().optional(),review_notes:z.string().max(2000).optional()}).safeParse(b); if(!p.success)return res.status(400).json({error:'Invalid content', details: p.error});
+  const p=z.object({status:contentStatus.optional(),slug:z.string().regex(/^[a-z0-9-]+$/).optional(),titleRu:z.string().min(2).optional(),title_ru:z.string().min(2).optional(),titleTj:z.string().optional(),title_tj:z.string().optional(),titleEn:z.string().optional(),title_en:z.string().optional(),bodyRu:z.string().optional(),body_ru:z.string().optional(),bodyTj:z.string().optional(),body_tj:z.string().optional(),bodyEn:z.string().optional(),body_en:z.string().optional(),excerptRu:z.string().optional(),excerpt_ru:z.string().optional(),excerptTj:z.string().optional(),excerpt_tj:z.string().optional(),excerptEn:z.string().optional(),excerpt_en:z.string().optional(),ai_meta:z.record(z.string(),z.any()).optional(),published_at:z.string().optional(),scheduled_at:z.string().optional(),review_notes:z.string().max(2000).optional(),sourceUrl:z.string().max(500).optional(),source_url:z.string().max(500).optional(),sourceName:z.string().max(160).optional(),source_name:z.string().max(160).optional(),originalDate:z.string().max(32).optional(),original_date:z.string().max(32).optional(),keywords:z.string().max(500).optional(),seoTitle:z.string().max(300).optional(),seo_title:z.string().max(300).optional(),seoDescription:z.string().max(600).optional(),seo_description:z.string().max(600).optional(),gallery:z.string().max(4000).optional()}).safeParse(b); if(!p.success)return res.status(400).json({error:'Invalid content', details: p.error});
   const x=p.data as any; const sets:string[]=[]; const vals:any[]=[];
   const role = (req as any).scoped?.role;
   const hasEdit = hasPerm(role,'content.edit');
@@ -771,11 +870,16 @@ app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf
   // M2: body_* fields are rendered with dangerouslySetInnerHTML → sanitize at write.
   const setRich = (col:string, ...ks:string[]) => { for (const k of ks) { if (x[k] !== undefined) { sets.push(col + '=?'); vals.push(x[k] === '' ? null : sanitizeRich(x[k])); break; } } };
   // CMS-01: body edits require content.edit (reviewers act on status only).
-  const fieldTouched = ['slug','titleRu','title_ru','titleTj','title_tj','titleEn','title_en','bodyRu','body_ru','bodyTj','body_tj','bodyEn','body_en','excerptRu','excerpt_ru','excerptTj','excerpt_tj','excerptEn','excerpt_en','ai_meta','published_at','scheduled_at'].some((k) => x[k] !== undefined);
+  const fieldTouched = ['slug','titleRu','title_ru','titleTj','title_tj','titleEn','title_en','bodyRu','body_ru','bodyTj','body_tj','bodyEn','body_en','excerptRu','excerpt_ru','excerptTj','excerpt_tj','excerptEn','excerpt_en','ai_meta','published_at','scheduled_at','sourceUrl','source_url','sourceName','source_name','originalDate','original_date','keywords','seoTitle','seo_title','seoDescription','seo_description','gallery'].some((k) => x[k] !== undefined);
   if (fieldTouched && !hasEdit) return res.status(403).json({error:'Forbidden: editing requires edit permission'});
   setCol('slug','slug'); setCol('title_ru','titleRu','title_ru'); setCol('title_tj','titleTj','title_tj'); setCol('title_en','titleEn','title_en');
   setRich('body_ru','bodyRu','body_ru'); setRich('body_tj','bodyTj','body_tj'); setRich('body_en','bodyEn','body_en');
   setCol('excerpt_ru','excerptRu','excerpt_ru'); setCol('excerpt_tj','excerptTj','excerpt_tj'); setCol('excerpt_en','excerptEn','excerpt_en');
+  // v2.33.0 provenance + SEO fields
+  setCol('source_url','sourceUrl','source_url'); setCol('source_name','sourceName','source_name');
+  setCol('original_date','originalDate','original_date'); setCol('keywords','keywords');
+  setCol('seo_title','seoTitle','seo_title'); setCol('seo_description','seoDescription','seo_description');
+  setCol('gallery','gallery');
   if (x.ai_meta && typeof x.ai_meta === 'object') {
     const curRow = db.prepare('SELECT ai_meta FROM content WHERE id=?').get(req.params.id) as any;
     let cur: Record<string, any> = {};
@@ -1380,6 +1484,75 @@ app.get('/api/admin/content/:id/versions', auth, (req:Auth, res) => {
   if (denyScoped(req,res)) return;
   res.json(db.prepare('SELECT id, version_number, created_by, created_at, commit_message FROM content_versions WHERE content_id = ? ORDER BY version_number DESC').all(req.params.id));
 });
+// ── Historical personalities (heroes archive) — admin CRUD ────────────────
+// The archive is editorial data: every row keeps its sources, the confidence
+// level of the research and a note for anything that still needs checking.
+const HERO_CATEGORIES = ['official-hero', 'statesman', 'scientist', 'writer', 'artist', 'military', 'other'];
+const heroText = (max = 8000) => z.string().max(max).optional();
+const heroPayload = z.object({
+  slug: z.string().regex(/^[a-z0-9-]+$/),
+  name_ru: z.string().min(2).max(160),
+  name_tj: z.string().max(160).optional(),
+  name_en: z.string().max(160).optional(),
+  profession_ru: heroText(200), profession_tj: heroText(200), profession_en: heroText(200),
+  category: z.string().max(64).optional(),
+  is_official_hero: z.union([z.literal(0), z.literal(1)]).optional(),
+  hero_decree_ru: heroText(2000), hero_decree_tj: heroText(2000), hero_decree_en: heroText(2000),
+  birth_date: z.string().max(32).optional(),
+  death_date: z.string().max(32).optional(),
+  birth_place_ru: heroText(200), birth_place_tj: heroText(200), birth_place_en: heroText(200),
+  portrait_url: z.string().max(500).optional(),
+  bio_ru: heroText(8000), bio_tj: heroText(8000), bio_en: heroText(8000),
+  education_ru: heroText(4000), education_tj: heroText(4000), education_en: heroText(4000),
+  career_ru: heroText(4000), career_tj: heroText(4000), career_en: heroText(4000),
+  achievements_ru: heroText(4000), achievements_tj: heroText(4000), achievements_en: heroText(4000),
+  contribution_ru: heroText(4000), contribution_tj: heroText(4000), contribution_en: heroText(4000),
+  awards_ru: heroText(4000), awards_tj: heroText(4000), awards_en: heroText(4000),
+  timeline: z.string().max(12000).optional(),
+  sources: z.string().max(12000).optional(),
+  seo_title: z.string().max(300).optional(),
+  seo_description: z.string().max(600).optional(),
+  confidence: z.string().max(40).optional(),
+  editorial_note: z.string().max(2000).optional(),
+  status: z.string().max(20).optional(),
+  published_at: z.string().max(32).optional(),
+  sort_order: z.number().int().min(0).max(9999).optional(),
+});
+const HERO_FIELDS = Object.keys(heroPayload.shape);
+app.get('/api/admin/heroes', auth, requirePerm('content.edit'), (_req:Auth,res) => {
+  res.json(db.prepare('SELECT * FROM heroes ORDER BY sort_order, id').all());
+});
+app.post('/api/admin/heroes', auth, requirePerm('content.create'), (req:Auth,res) => {
+  const p = heroPayload.safeParse(req.body || {});
+  if (!p.success) return res.status(400).json({ error: 'Invalid hero', details: p.error });
+  const x: any = p.data;
+  if (x.category && !HERO_CATEGORIES.includes(x.category)) return res.status(400).json({ error: 'Invalid category' });
+  const cols = HERO_FIELDS.filter(k => x[k] !== undefined && x[k] !== null);
+  const vals = cols.map(k => (x[k] === '' ? null : x[k]));
+  const info = db.prepare(`INSERT INTO heroes(${cols.join(',')}) VALUES(${cols.map(() => '?').join(',')})`).run(...vals);
+  audit(req.user!.id, 'create', 'hero', Number(info.lastInsertRowid));
+  res.status(201).json({ id: info.lastInsertRowid });
+});
+app.patch('/api/admin/heroes/:id', auth, requirePerm('content.edit'), (req:Auth,res) => {
+  const p = heroPayload.partial().safeParse(req.body || {});
+  if (!p.success) return res.status(400).json({ error: 'Invalid hero', details: p.error });
+  const x: any = p.data;
+  const row = db.prepare('SELECT id FROM heroes WHERE id=?').get(req.params.id) as any;
+  if (!row) return res.status(404).json({ error: 'Not found' });
+  const cols = HERO_FIELDS.filter(k => x[k] !== undefined);
+  if (!cols.length) return res.status(400).json({ error: 'Nothing to update' });
+  const vals = cols.map(k => (x[k] === '' ? null : x[k]));
+  db.prepare(`UPDATE heroes SET ${cols.map(c => `${c}=?`).join(', ')}, updated_at=CURRENT_TIMESTAMP WHERE id=?`).run(...vals, req.params.id);
+  audit(req.user!.id, 'update', 'hero', Number(req.params.id));
+  res.json({ ok: true });
+});
+app.delete('/api/admin/heroes/:id', auth, requirePerm('content.delete'), (req:Auth,res) => {
+  const info = db.prepare('DELETE FROM heroes WHERE id=?').run(req.params.id);
+  if (!info.changes) return res.status(404).json({ error: 'Not found' });
+  audit(req.user!.id, 'delete', 'hero', Number(req.params.id));
+  res.sendStatus(204);
+});
+
 app.post('/api/admin/content/:id/versions', auth, requirePerm('content.edit'), (req:Auth, res) => {
   if (denyScoped(req,res)) return;
   const content = db.prepare('SELECT * FROM content WHERE id=?').get(req.params.id);

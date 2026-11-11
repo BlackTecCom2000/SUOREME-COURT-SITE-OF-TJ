@@ -96,6 +96,12 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           path: '/admin/useful',
           anyOf: ['content.edit', 'settings.manage'],
         },
+        {
+          icon: Sparkles,
+          label: 'Герои и архив биографий',
+          path: '/admin/heroes',
+          anyOf: ['content.edit'],
+        },
       ],
     },
     {

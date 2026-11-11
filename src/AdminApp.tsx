@@ -20,6 +20,7 @@ import { AiDashboard } from './admin/pages/AiDashboard';
 import { UsefulSitesManager } from './admin/pages/useful/UsefulSitesManager';
 import { SiteBuilder } from './admin/pages/siteBuilder/SiteBuilder';
 import { Slider3DManager } from './admin/pages/slider/Slider3DManager';
+import { HeroesManager } from './admin/pages/heroes/HeroesManager';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { SmoothScroll } from './components/SmoothScroll';
@@ -86,6 +87,7 @@ const AdminRoutes: React.FC = () => {
           <Route path="useful" element={<UsefulSitesManager />} />
           <Route path="site-builder" element={<SiteBuilder />} />
           <Route path="slider-3d" element={<Slider3DManager />} />
+          <Route path="heroes" element={<HeroesManager />} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Routes>
