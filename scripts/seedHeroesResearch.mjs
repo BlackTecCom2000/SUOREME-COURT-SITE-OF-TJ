@@ -136,7 +136,7 @@ const localizeGallery = async (entries, slug) => {
         if (!DRY) fs.writeFileSync(target, Buffer.from(await res.arrayBuffer()));
       }
       out.push({
-        file: `/uploads/portraits/${filename}`,
+        file: `/api/portraits/${filename}`,
         caption_ru: entry.caption_ru || '',
         caption_tj: entry.caption_tj || '',
         caption_en: entry.caption_en || '',
@@ -189,7 +189,7 @@ const localizePortrait = async (url, slug) => {
     if (!type.startsWith('image/')) throw new Error('not an image: ' + type);
     if (!DRY) fs.writeFileSync(target, Buffer.from(await res.arrayBuffer()));
   }
-  return `/uploads/portraits/${filename}`;
+  return `/api/portraits/${filename}`;
 };
 
 const items = load();

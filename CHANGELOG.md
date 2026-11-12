@@ -10,6 +10,21 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.3 - Archive images served through the API
+- Released: 2026-11-12
+- Previous: v2.35.2
+- The static deployment (Cloudflare Pages) proxies only `/api/*` to the origin, so
+  the 24 archive images were unreachable there: a request for
+  `/uploads/portraits/*.jpg` fell through to the SPA shell and returned the
+  index page instead of the image.
+- The images are now served by the origin through `GET /api/portraits/:file` -
+  a strict file-name pattern (no path traversal), `nosniff`, one month of
+  cache - and the archive stores that path. The same URLs work on the portal
+  itself and through the static deployment.
+- Verified on the live deployment: the portraits and gallery images answer
+  200 `image/jpeg`, and the biography page shows the portrait, its caption
+  and the gallery with no broken image.
+
 ## v2.35.2 - Portraits, image galleries and the fixed "Home" button
 - Released: 2026-11-12
 - Previous: v2.35.1

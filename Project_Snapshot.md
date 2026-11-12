@@ -342,3 +342,9 @@ Antigravity (AI Orchestrator)
   - Navigation: "Home" (menu button and the header emblem) now means the top of the portal — from an inner page it navigates home, on the home page it glides back to the first screen; the section anchors keep their behaviour and fall back to the top when the target is missing.
 - Verify: browser on the production build — /heroes/gafurov shows the bust with its caption, the badge, the decree block and four gallery images with captions and licence links, no broken image; all 24 files served 200 (image/jpeg); tsc 0 errors.
 - Packaging: backup 2.35.2 → commit "v2.35.2: portraits, image galleries and the fixed home button" → tag v2.35.2 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed and verified.
+
+## v2.35.3 ARCHIVE IMAGES THROUGH THE API 2026-11-12 → v2.35.3
+- BEFORE: the static deployment (Cloudflare Pages) proxies only /api/* to the origin, so the 24 archive images were unreachable there - a request for /uploads/portraits/*.jpg fell through to the SPA shell and returned the index page instead of the image.
+- AFTER: GET /api/portraits/:file serves them from the origin (strict file-name pattern, no path traversal, nosniff, one month of cache). The archive stores that path, the importer writes it, and the same URL works on the portal and through the static deployment.
+- Verify (live): /api/portraits/hero-gafurov.jpg, hero-makhsum.jpg and hero-ayni-g1.jpg answer 200 image/jpeg; /heroes/gafurov shows the bust with its caption and four gallery images, no broken image.
+- Packaging: backup 2.35.3 → commit "v2.35.3: serve the archive images through the API" → tag v2.35.3 → push release-2.0 + main mirror + tag. Cloudflare Pages redeployed with the new client.

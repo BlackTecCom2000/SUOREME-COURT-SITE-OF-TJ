@@ -620,6 +620,20 @@ app.use((_req, res, next) => {
   next();
 });
 app.use('/uploads', express.static(uploadDir, { setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff') }));
+// The static deployment (Cloudflare Pages) only proxies /api/* to this origin,
+// so the archive images are served through the API as well. The file name is
+// restricted to a safe pattern - no path traversal, no directory listing.
+app.get('/api/portraits/:file', (req, res) => {
+  const name = String(req.params.file || '');
+  if (!/^[A-Za-z0-9._-]+\.(jpg|jpeg|png|webp|gif)$/.test(name)) {
+    return res.status(400).json({ error: 'Bad file name' });
+  }
+  const file = path.join(uploadDir, 'portraits', name);
+  if (!fs.existsSync(file)) return res.status(404).json({ error: 'Not found' });
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Cache-Control', 'public, max-age=2592000');
+  res.sendFile(file);
+});
 // ARCH-01: extracted routers (system: health/sync/stats/sitemap; search: global search)
 // aiRouter is mounted AFTER the auth middleware is defined (see H2 guard below).
 app.use(systemRouter);
