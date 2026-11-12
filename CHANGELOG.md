@@ -10,6 +10,28 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.1 - Heroes archive reduced to the officially titled holders
+- Released: 2026-11-12
+- Previous: v2.35.0
+- The archive of Қаҳрамони Тоҷикистон now lists only the people the state
+  itself titled. Eight researched figures were removed from it at the
+  client's request: Mumin Qanoat, Kamoliddin Mas'ud Khujandi, Abu Ali ibn
+  Sina, Ismail Somoni, Nisar Muhammad Yousafzai, Abulqosim Lahuti,
+  Muhammadjon Shakuri and Mahmudhoja Behbudiy.
+- The reason is the section itself: «Қаҳрамони Тоҷикистон» is the archive of
+  the highest state title, and none of the removed figures holds it. Two of
+  them had been flagged for editorial review for exactly that reason
+  (Yousafzai — asserted only by English Wikipedia; Lahuti — a Wikipedia
+  category error). The six that remain are the ones the state news agency
+  itself enumerates, plus Emomali Rahmon, whose title and year are
+  confirmed by the official biography of the President.
+- The hero grid now shows the six holders (4 state figures, 2 writers); the
+  portraits of the removed entries were deleted with them, so no orphaned
+  media is left behind.
+- The research file `scripts/seed/heroes-research-others.json` was removed
+  with the entries, so a re-run of the importer cannot bring them back.
+  `scripts/pruneHeroes.mjs` performs the removal and is idempotent.
+
 ## v2.35.0 - Fluent cinematic scroll across the whole site
 - Released: 2026-11-12
 - Previous: v2.34.1
