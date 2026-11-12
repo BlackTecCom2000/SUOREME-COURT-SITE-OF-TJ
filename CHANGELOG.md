@@ -10,6 +10,18 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.6 - The heroes showcase keeps whole portraits
+- Released: 2026-11-13
+- Previous: v2.35.5
+- On the home page the heroes showcase used each portrait as a full-bleed
+  background with `object-cover`. The portraits are 3:4 photographs;
+  across a ~1700x870 window they were zoomed more than twice and the
+  visitor saw a forehead instead of a face.
+- The portrait is now contained and anchored to the right edge
+  (`object-contain`, `object-right-bottom`): the whole photograph is
+  visible, the palace backdrop fills the letterbox, and the top and bottom
+  scrims keep the name and the glass card readable.
+
 ## v2.35.5 - Balanced card sizes across /heroes
 - Released: 2026-11-13
 - Previous: v2.35.4

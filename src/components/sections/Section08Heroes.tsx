@@ -149,7 +149,11 @@ export const Section08Heroes: React.FC = () => {
                       loading="lazy"
                       onLoad={() => setPhotoOk((p) => ({ ...p, [hero.id]: true }))}
                       onError={() => setPhotoOk((p) => ({ ...p, [hero.id]: false }))}
-                      className="absolute inset-0 w-full h-full object-cover object-top"
+                      /* The portraits are 3:4 photographs; covering this wide
+                         window would zoom them into a forehead. Contained and
+                         anchored to the right edge, the whole portrait is
+                         visible and the palace backdrop fills the letterbox. */
+                      className="absolute inset-0 w-full h-full object-contain object-right-bottom"
                       style={{ opacity: photoOk[hero.id] ? 1 : 0, transition: 'opacity 0.8s ease' }}
                     />
                   )}

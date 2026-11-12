@@ -360,3 +360,9 @@ Antigravity (AI Orchestrator)
 - AFTER: the archive grid steps to 4 columns from 1280 px (xl:grid-cols-4, card ≈381 px wide, 476 px portrait frame); skeleton cards use the same aspect-[4/5] shape (8 instead of 9, no CLS on data landing). The biography portrait column is 360 px so the identity and decree cards keep their proportions.
 - Verify: 1920 px - 4 columns, no broken images; mobile 390 px - single column, no horizontal overflow; tsc 0; smoke endpoints 200.
 - Packaging: backup 2.35.5 → commit "v2.35.5: balanced card sizes across /heroes" → tag v2.35.5 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed and verified.
+
+## v2.35.6 HEROES SHOWCASE KEEPS WHOLE PORTRAITS 2026-11-13 → v2.35.6
+- BEFORE: Section08Heroes on the home page stretched each portrait over the full 82vh showcase window with object-cover object-top; 3:4 portraits were zoomed 2x+ and showed a forehead.
+- AFTER: the portrait is object-contain anchored object-right-bottom - the whole photograph is visible on the right, the palace backdrop fills the letterbox, scrims keep the name and glass card readable.
+- Verify: browser on the production build - whole bust/portrait visible, no zoom crop; tsc 0; smoke 200.
+- Packaging: backup 2.35.6 → commit "v2.35.6: the heroes showcase keeps whole portraits" → tag v2.35.6 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed.
