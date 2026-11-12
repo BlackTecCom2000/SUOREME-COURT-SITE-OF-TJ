@@ -366,3 +366,9 @@ Antigravity (AI Orchestrator)
 - AFTER: the portrait is object-contain anchored object-right-bottom - the whole photograph is visible on the right, the palace backdrop fills the letterbox, scrims keep the name and glass card readable.
 - Verify: browser on the production build - whole bust/portrait visible, no zoom crop; tsc 0; smoke 200.
 - Packaging: backup 2.35.6 → commit "v2.35.6: the heroes showcase keeps whole portraits" → tag v2.35.6 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed.
+
+## v2.35.7 ADAPTIVE 16:9 HEROES SHOWCASE 2026-11-13 → v2.35.7
+- BEFORE: the showcase window was min-h-[82vh] (height followed the viewport); at narrow widths the type collided and photos could crop unpredictably.
+- AFTER: aspect-video (exact 16:9 at any width), min-h-[440px] guard on mobile, responsive type scale (h3 text-3xl/4xl/6xl, excerpt line-clamp-2 until lg) so name block and glass card never overlap; portraits stay object-contain right-anchored so they never disappear.
+- Verify: 1920 px ratio 1.78 no overlap; 1024 px ratio 1.78 no overlap; mobile guard 440 px active, no horizontal overflow; tsc 0; smoke 200.
+- Packaging: backup 2.35.7 → commit "v2.35.7: adaptive 16:9 heroes showcase" → tag v2.35.7 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed.

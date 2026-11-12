@@ -105,7 +105,7 @@ export const Section08Heroes: React.FC = () => {
         {/* Showcase window */}
         <Reveal delay={200}>
           <div
-            className="relative rounded-[24px] overflow-hidden border border-theme-border glass shadow-lg min-h-[82vh] flex flex-col"
+            className="relative rounded-[24px] overflow-hidden border border-theme-border glass shadow-lg aspect-video min-h-[440px] sm:min-h-0 flex flex-col"
             onTouchStart={(e) => {
               touchX.current = e.touches[0].clientX;
             }}
@@ -178,10 +178,11 @@ export const Section08Heroes: React.FC = () => {
                     aria-hidden="true"
                   />
 
-                  {/* Name block */}
-                  <div className="absolute top-6 left-6 sm:top-10 sm:left-10 max-w-[80%]">
+                  {/* Name block — type steps up only when the 16:9 window
+                      is tall enough to hold it without collision. */}
+                  <div className="absolute top-6 left-6 sm:top-8 sm:left-10 max-w-[80%]">
                     <div className="w-10 h-0.5 bg-theme-gold mb-3" aria-hidden="true" />
-                    <h3 className="type-glass font-serif font-medium leading-[1.04] tracking-tight text-4xl sm:text-6xl">
+                    <h3 className="type-glass font-serif font-medium leading-[1.04] tracking-tight text-3xl sm:text-4xl lg:text-6xl">
                       <span className="text-white">{first}</span>{' '}
                       <span className="text-theme-gold">{rest.join(' ')}</span>
                     </h3>
@@ -224,7 +225,7 @@ export const Section08Heroes: React.FC = () => {
                           </button>
                         </div>
                       </div>
-                      <p className="text-xs sm:text-sm leading-relaxed text-theme-textSec line-clamp-3 mb-3">
+                      <p className="text-xs sm:text-sm leading-relaxed text-theme-textSec line-clamp-2 lg:line-clamp-3 mb-3">
                         {L.excerpt}
                       </p>
                       <div className="flex items-center justify-between gap-3 flex-wrap">

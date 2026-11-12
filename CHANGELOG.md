@@ -10,6 +10,21 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.7 - Adaptive 16:9 heroes showcase on the home page
+- Released: 2026-11-13
+- Previous: v2.35.6
+- The heroes showcase window was `min-h-[82vh]` - its height followed the
+  viewport, so the slides changed shape with the browser chrome and the
+  composition drifted. The window is now `aspect-video` (16:9) and keeps
+  the exact 1.78 ratio at any width.
+- On narrow screens 16:9 would collapse below the content, so a
+  `min-h-[440px]` guard takes over on mobile and the type steps down
+  (name 3xl/4xl/6xl, excerpt clamped to 2 lines until lg) so the name
+  block and the glass card never collide.
+- Verified at 1920 px (ratio 1.78, no overlap), at 1024 px (ratio 1.78,
+  no overlap) and at mobile width (the 440 px guard active, portrait
+  visible, no horizontal overflow).
+
 ## v2.35.6 - The heroes showcase keeps whole portraits
 - Released: 2026-11-13
 - Previous: v2.35.5
