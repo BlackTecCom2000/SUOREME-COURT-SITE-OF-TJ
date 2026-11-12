@@ -72,7 +72,7 @@ export const SitemapPage: React.FC = () => {
   return (
     <div className="site-container px-4 sm:px-8 md:px-12 py-10 text-theme-text">
       <Breadcrumbs items={[{ label: L(language, 'Харитаи сомона', 'Карта сайта', 'Sitemap') }]} />
-      <div className="flex items-center gap-3 mb-2">
+      <div data-cinematic-stage="page" className="flex items-center gap-3 mb-2">
         <span className="p-2.5 rounded-xl bg-theme-gold/15 border border-theme-gold/30 text-theme-gold">
           <Map size={20} />
         </span>

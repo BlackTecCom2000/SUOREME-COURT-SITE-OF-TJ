@@ -147,7 +147,10 @@ export const HeroProfilePage: React.FC = () => {
         ]}
       />
 
-      <article className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
+        {/* The biography arrives from the API after the first paint; the
+            reserved height keeps the footer from jumping when it lands. */}
+        <div className="min-h-[70vh]">
+          <article className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
         {/* Portrait / identity */}
         <aside className="space-y-4">
           <div className="glass glass-card rounded-2xl border overflow-hidden">
@@ -222,7 +225,7 @@ export const HeroProfilePage: React.FC = () => {
 
         {/* Biography */}
         <div className="min-w-0 space-y-8">
-          <header className="liquid-glass-title-pod p-6 sm:p-8">
+          <header data-cinematic-stage="page" className="liquid-glass-title-pod p-6 sm:p-8">
             <h1 className="public-section-title type-glass text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight">
               {name}
             </h1>
@@ -335,8 +338,9 @@ export const HeroProfilePage: React.FC = () => {
             <ArrowLeft size={15} />
             {L(language, 'Бозгашт ба архив', 'Вернуться в архив', 'Back to the archive')}
           </Link>
+          </div>
+        </article>
         </div>
-      </article>
     </div>
   );
 };

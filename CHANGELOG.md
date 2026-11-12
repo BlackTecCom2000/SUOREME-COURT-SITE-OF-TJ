@@ -10,6 +10,45 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.0 - Fluent cinematic scroll across the whole site
+- Released: 2026-11-12
+- Previous: v2.34.1
+- The cinematic camera is now a site-wide engine instead of a home-page
+  effect. `useCinematicScroll` (new, mounted once in `Layout`) drives every
+  element that declares itself a stage:
+  `data-cinematic-stage="hero"` for the full-bleed home hero,
+  `data-cinematic-stage="page"` for the header of every inner page.
+- **Inner pages now recede like a filmed shot**: the title block of the
+  archive, the biography page, the court page, the news article, "About the
+  Court", the leadership page and the sitemap drift back, shrink slightly and
+  fade as the content comes up, and they return crisp the moment the page is
+  scrolled back to the top.
+- Two profiles, so the small page headers stay readable: the hero keeps the
+  strong move (58 px lag, 4.2% shrink, 55% fade over 85% of its height),
+  the page headers get a gentler one (18 px, 2%, 45% over one header
+  height) that completes while the header is still on screen — nothing pops
+  back.
+- The superseded per-component hook `useCinematicHero` was removed: two
+  implementations writing the same transform is exactly the conflict that
+  broke the wheel handling in v2.32.0.
+- Implementation rules kept in line with the animation budget: one rAF loop
+  for the whole document, reads before writes so a frame never thrashes
+  layout, `transform` and `opacity` written straight to the element (never
+  through React state, never through an inherited CSS variable), `will-change`
+  held only while a stage is moving and dropped the moment it settles, and a
+  full switch-off for reduced motion, a11y mode, the low-end device tier and
+  an open modal.
+- The engine re-collects its stages when React replaces a node (the home page
+  re-renders with live counters), otherwise it would keep writing to a
+  detached element.
+- Layout shift on the archive page fixed: the hero grid is filled from the
+  API after the first paint, which pushed the footer down and cost 0.42 CLS.
+  Skeleton cards now hold the place - CLS 0.00, LCP 126 ms.
+- Verified in the browser: home hero (continuous 0 -> 50 px lag, 1.00 -> 0.52
+  opacity over the scroll), inner pages (0 -> 9 px, 1.00 -> 0.76 over the
+  header height), reduced motion (nothing written at all), Lighthouse
+  accessibility 100 / SEO 100 on the archive page.
+
 ## v2.34.0 - Historical personalities archive: 14 researched biographies
 - Released: 2026-11-11
 - Previous: v2.33.1

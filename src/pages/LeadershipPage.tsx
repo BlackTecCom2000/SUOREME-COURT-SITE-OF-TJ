@@ -91,7 +91,7 @@ export const LeadershipPage: React.FC = () => {
         <Breadcrumbs
           items={[{ label: language === 'en' ? 'Leadership' : language === 'tj' ? 'Роҳбарият' : 'Руководство' }]}
         />
-        <header className="border-b border-theme-border/30 pb-10">
+        <header data-cinematic-stage="page" className="border-b border-theme-border/30 pb-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

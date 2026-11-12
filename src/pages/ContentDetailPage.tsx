@@ -89,7 +89,7 @@ export const ContentDetailPage: React.FC = () => {
       ) : (
         <Reveal delay={100}>
           <article className="content-card relative overflow-hidden">
-            <div className="border-l-2 border-theme-gold pl-4 py-1 mb-5">
+            <div data-cinematic-stage="page" className="border-l-2 border-theme-gold pl-4 py-1 mb-5">
               <span className="font-mono text-xs text-theme-gold tracking-widest uppercase flex items-center gap-1.5">
                 <Newspaper size={13} />
                 <span>{language === 'en' ? ALLOWED[type].en : language === 'tj' ? ALLOWED[type].tj : ALLOWED[type].ru}</span>

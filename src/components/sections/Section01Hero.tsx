@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowUpRight, ShieldCheck, Sparkles, FileText } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
-import { useCinematicHero } from '../../hooks/useCinematicHero';
 import { InteractiveProcessFlow } from '../digital-court/InteractiveProcessFlow';
 
 interface Section01HeroProps {
@@ -19,7 +18,8 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
   const { language, t } = useLanguage();
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
-  useCinematicHero(sectionRef, stageRef);
+  // The cinematic camera is driven site-wide by useCinematicScroll (mounted in
+  // Layout); the hero simply declares itself as the full-bleed stage.
   // Live portal counters — real /api/stats only, never hardcoded.
   const [liveStats, setLiveStats] = useState<{ courts?: number; acts?: number; hearings?: number } | null>(null);
   useEffect(() => {
@@ -49,6 +49,7 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
     >
       <div
         ref={stageRef}
+        data-cinematic-stage="hero"
         className="relative flex flex-1 flex-col justify-between"
         style={{ transformOrigin: '50% 0%' }}
       >

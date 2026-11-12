@@ -133,7 +133,7 @@ export const CourtSitePage: React.FC = () => {
             </div>
           </Reveal>
 
-          <h1 className="type-glass text-3xl font-medium uppercase leading-[1.06] tracking-tight text-theme-text sm:text-5xl md:text-6xl">
+          <h1 data-cinematic-stage="page" className="type-glass text-3xl font-medium uppercase leading-[1.06] tracking-tight text-theme-text sm:text-5xl md:text-6xl">
             <Reveal delay={0} priority={true} as="span" className="block">
               <span className="block">{pickTri(cfg.name, language)}</span>
             </Reveal>

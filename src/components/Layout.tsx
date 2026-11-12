@@ -12,12 +12,16 @@ import { CourtNodeData } from '../data/sudTjData';
 import { GlobalBackground } from './GlobalBackground';
 import { useJellyScroll } from '../hooks/useJellyScroll';
 import { useSmoothScroll } from '../hooks/useSmoothScroll';
+import { useCinematicScroll } from '../hooks/useCinematicScroll';
 
 export const Layout: React.FC = () => {
+  const location = useLocation();
   useJellyScroll();
   useSmoothScroll();
+  // The cinematic camera runs on every page; the route key makes it adopt
+  // the stages of the page that was just mounted.
+  useCinematicScroll(location.pathname);
   const navigate = useNavigate();
-  const location = useLocation();
   // Court sub-sites (/courts/:courtId) and the standalone e-library (/library)
   // render their own attached navigation — the main portal navigation
   // must not appear there.

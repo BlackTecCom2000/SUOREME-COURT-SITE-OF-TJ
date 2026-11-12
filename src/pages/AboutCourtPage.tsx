@@ -13,7 +13,7 @@ export const AboutCourtPage: React.FC = () => {
         <Breadcrumbs
           items={[{ label: language === 'en' ? 'About' : language === 'tj' ? 'Маълумот' : 'О суде' }]}
         />
-        <header className="border-b border-theme-border pb-8">
+        <header data-cinematic-stage="page" className="border-b border-theme-border pb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2.5 h-2.5 rounded-full bg-theme-gold" />
             <span className="font-mono text-xs text-theme-gold tracking-widest uppercase">

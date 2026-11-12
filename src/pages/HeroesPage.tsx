@@ -97,7 +97,7 @@ export const HeroesPage: React.FC = () => {
         items={[{ label: L(language, 'Қаҳрамонони Тоҷикистон', 'Герои Таджикистана', 'Heroes of Tajikistan') }]}
       />
 
-      <div className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-8">
+      <div data-cinematic-stage="page" className="liquid-glass-title-pod p-6 sm:p-8 md:p-10 max-w-4xl mb-8">
         <div className="flex items-center gap-3 font-mono text-xs text-theme-textSec mb-4">
           <span className="tracking-widest text-theme-gold font-semibold">( 09 )</span>
           <span className="text-theme-textMuted">[ 009 / 009 ]</span>
@@ -230,7 +230,25 @@ export const HeroesPage: React.FC = () => {
         </div>
       )}
 
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {loading && rows.length === 0 && (
+        /* Skeleton cards keep the footer below the fold while the archive is
+           fetched, so the page does not jump when the real cards arrive
+           (that jump was worth 0.42 CLS). */
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <li key={i} className="glass glass-card rounded-2xl border overflow-hidden animate-pulse">
+              <div className="h-52 bg-theme-surface/40" />
+              <div className="p-5 space-y-2">
+                <div className="h-3 w-2/3 rounded bg-theme-surface/50" />
+                <div className="h-3 w-full rounded bg-theme-surface/40" />
+                <div className="h-3 w-1/2 rounded bg-theme-surface/30" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 min-h-[60vh] content-start">
         {rows.map((row) => {
           const name =
             (language === 'tj' ? row.name_tj : language === 'en' ? row.name_en : row.name_ru) || row.name_ru;
