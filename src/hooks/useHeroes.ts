@@ -31,6 +31,9 @@ export interface HeroRow {
   hero_decree_tj?: string | null;
   hero_decree_en?: string | null;
   portrait_url?: string | null;
+  portrait_note_ru?: string | null;
+  portrait_note_tj?: string | null;
+  portrait_note_en?: string | null;
   confidence?: string | null;
   sources?: string | null;
 }

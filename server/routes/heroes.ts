@@ -26,6 +26,7 @@ const parseJsonArray = (raw: unknown): any[] => {
 
 const LIST_COLUMNS = `id,slug,name_ru,name_tj,name_en,profession_ru,profession_tj,profession_en,
   category,is_official_hero,birth_date,death_date,portrait_url,
+  portrait_note_ru,portrait_note_tj,portrait_note_en,
   hero_decree_ru,hero_decree_tj,hero_decree_en,seo_title,seo_description,
   confidence,published_at,sort_order`;
 
@@ -84,6 +85,7 @@ router.get('/:slug', cache(120), (req, res) => {
     ...row,
     timeline: parseJsonArray(row.timeline),
     sources: parseJsonArray(row.sources),
+    gallery: parseJsonArray(row.gallery),
     related,
   });
 });

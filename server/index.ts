@@ -143,6 +143,10 @@ db.exec(`
     birth_place_tj TEXT,
     birth_place_en TEXT,
     portrait_url  TEXT,
+    portrait_note_ru TEXT,
+    portrait_note_tj TEXT,
+    portrait_note_en TEXT,
+    gallery       TEXT,
     bio_ru        TEXT,
     bio_tj        TEXT,
     bio_en        TEXT,
@@ -176,6 +180,15 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_heroes_status ON heroes(status, sort_order);
   CREATE INDEX IF NOT EXISTS idx_heroes_category ON heroes(category);
 `);
+// Portrait captions: a portrait can be a photograph, a bust or a depiction on
+// a banknote, and the page must say which it is instead of implying a photo.
+try {
+  const hcols = db.prepare('PRAGMA table_info(heroes)').all() as any[];
+  for (const col of ['portrait_note_ru TEXT', 'portrait_note_tj TEXT', 'portrait_note_en TEXT', 'gallery TEXT']) {
+    const name = col.split(' ')[0];
+    if (!hcols.some((c) => c.name === name)) db.exec(`ALTER TABLE heroes ADD COLUMN ${col}`);
+  }
+} catch { /* already migrated */ }
 
 // Court-site scopes: which region/court names belong to each court site id.
 // Users with site_id set (and not super_admin) are restricted to their site.

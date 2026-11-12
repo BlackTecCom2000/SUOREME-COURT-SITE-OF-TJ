@@ -10,6 +10,40 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.2 - Portraits, image galleries and the fixed "Home" button
+- Released: 2026-11-12
+- Previous: v2.35.1
+- **Every personality now has a real image.** The two entries that had none
+  were filled from the Wikimedia archive after a licence check: Bobojon
+  Ghafurov survives as a bust in Khujand (photograph by Shuhrat Sa'diyev,
+  2015, CC BY-SA 4.0), and Nusratullo Maksum on the 200 somoni banknote of
+  2010 (public domain). All six portraits are downloaded into the site's own
+  media library (24 files), never hotlinked, and served from
+  `/uploads/portraits`.
+- **The archive says what each image is.** A new `portrait_note` per entry
+  (three languages) states whether it is a photograph, a bust or a depiction
+  on a banknote, so nobody is shown a statue while the page claims a photo.
+- **Image galleries.** 18 further images were researched and localised: the
+  house-museum of Sadriddin Ayni in Samarkand and its study room, the 1968
+  USSR commemorative stamp for his 90th birthday, the museum of academician
+  B. Ghafurov in Ghafurov town including the painted panel in its hall, the
+  monument to Mirzo Tursunzoda in Dushanbe, his grave at the Luchob memorial
+  and the Writers' Union building, the Emomali Rahmon photographs of April
+  2025 and March 2026, the common grave of N. Maksum and Sh. Shotemur at the
+  Novodevichy Cemetery in Moscow, the 200 and 3 somoni banknotes, and the
+  Shirinsho Shotemur memorial in Gorno-Badakhshan. Every gallery entry keeps
+  its caption in three languages, the licence and a link to the source file.
+- **The "Home" button is fixed.** It pointed at `#hero`, which is the
+  narrative hero deep inside the home page (the first screen is
+  `#information`), so the visitor was dropped into the middle of the page -
+  and on an inner page the anchor did not exist at all. "Home" now means the
+  top of the portal: from another page it navigates home, on the home page it
+  glides back to the first screen. The emblem in the header does the same.
+- The importer resolves Wikimedia files through the thumbnail pipeline (1200 px
+  instead of multi-megabyte originals) and falls back to `Special:FilePath`
+  when the API refuses an anonymous request, so the import survives rate
+  limiting.
+
 ## v2.35.1 - Heroes archive reduced to the officially titled holders
 - Released: 2026-11-12
 - Previous: v2.35.0

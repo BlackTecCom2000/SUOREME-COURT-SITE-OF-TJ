@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Award, BookOpen, Calendar, Landmark, MapPin, ScrollText, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowLeft, Award, BookOpen, Calendar, Images, Landmark, MapPin, ScrollText, ShieldCheck, Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { Breadcrumbs } from '../components/Breadcrumbs';
@@ -32,6 +32,7 @@ interface HeroDetail extends Omit<HeroRow, 'sources'> {
   awards_tj?: string | null;
   awards_en?: string | null;
   editorial_note?: string | null;
+  gallery?: { file?: string; caption_ru?: string; caption_tj?: string; caption_en?: string; source?: string; license?: string }[];
   timeline?: { year?: string; event?: string }[];
   sources?: { label?: string; url?: string; level?: string }[];
   related?: HeroRow[];
@@ -123,10 +124,17 @@ export const HeroProfilePage: React.FC = () => {
   const death = hero.death_date || '';
   const years = birth && death ? `${birth} — ${death}` : birth;
   const birthPlace = pick(hero, 'birth_place', language);
+  const portraitNote =
+    (language === 'tj'
+      ? hero.portrait_note_tj
+      : language === 'en'
+        ? hero.portrait_note_en
+        : hero.portrait_note_ru) || '';
   const decree = pick(hero, 'hero_decree', language);
   const official = !!hero.is_official_hero;
   const sources = Array.isArray(hero.sources) ? hero.sources : [];
   const timeline = Array.isArray(hero.timeline) ? hero.timeline : [];
+  const gallery = Array.isArray(hero.gallery) ? hero.gallery : [];
   const related = Array.isArray(hero.related) ? hero.related : [];
 
   const blocks = [
@@ -184,6 +192,9 @@ export const HeroProfilePage: React.FC = () => {
                   <Sparkles size={12} aria-hidden="true" />
                   {L(language, 'Қаҳрамони Тоҷикистон', 'Герой Таджикистана', 'Hero of Tajikistan')}
                 </span>
+              )}
+              {portraitNote && (
+                <p className="text-[11px] leading-snug text-theme-textMuted">{portraitNote}</p>
               )}
               <p className="text-sm text-theme-textSec">{heroCategoryLabel(hero.category || 'other', language)}</p>
               {years && (
@@ -252,6 +263,46 @@ export const HeroProfilePage: React.FC = () => {
               </section>
             );
           })}
+
+          {gallery.length > 0 && (
+            <section aria-label={L(language, 'Галерея', 'Галерея', 'Gallery')}>
+              <div className="flex items-center gap-2.5 mb-3">
+                <span className="p-2 rounded-lg bg-theme-gold/15 border border-theme-gold/30 text-theme-gold">
+                  <Images size={15} />
+                </span>
+                <h2 className="text-lg sm:text-xl font-medium">{L(language, 'Галерея', 'Галерея', 'Gallery')}</h2>
+              </div>
+              <ul className="grid gap-4 sm:grid-cols-2">
+                {gallery.map((g: any, i: number) => (
+                  <li key={i} className="glass glass-card rounded-2xl border overflow-hidden">
+                    <a href={g.file} target="_blank" rel="noopener noreferrer" className="block">
+                      <img
+                        src={g.file}
+                        alt={g.caption_ru || ''}
+                        loading="lazy"
+                        className="w-full h-44 object-cover"
+                      />
+                    </a>
+                    <div className="p-3">
+                      <p className="text-xs leading-snug text-theme-textSec">
+                        {language === 'tj' ? g.caption_tj : language === 'en' ? g.caption_en : g.caption_ru}
+                      </p>
+                      {g.source && (
+                        <a
+                          href={g.source}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-block mt-1.5 font-mono text-[10px] uppercase tracking-wider text-theme-gold/80 hover:text-theme-gold"
+                        >
+                          {g.license || 'Wikimedia Commons'}
+                        </a>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {timeline.length > 0 && (
             <section aria-label={L(language, 'Хронология', 'Хронология', 'Chronology')}>

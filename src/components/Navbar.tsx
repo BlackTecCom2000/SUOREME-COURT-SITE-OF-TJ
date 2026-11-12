@@ -90,7 +90,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   }, [isHome, location.pathname]);
 
   const navLinks: NavItem[] = [
-    { key: 'home', nameKey: 'nav.home', href: '#hero' },
+    // "Home" is the top of the portal. The #hero section is the narrative
+    // hero far down the home page (the first screen is #information), so
+    // linking it to #hero dropped the visitor into the middle of the page.
+    { key: 'home', nameKey: 'nav.home', href: '/' },
     { key: 'caseSearch', nameKey: 'nav.search', href: '#case-search' },
     { key: 'myCases', nameKey: 'nav.myCases', href: '#my-cases' },
     { key: 'digitalJustice', nameKey: 'nav.digitalJustice', href: '#digital-justice' },
@@ -263,6 +266,19 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, item: NavItem) => {
     setMobileMenuOpen(false);
     setMenuPopoverOpen(false);
+
+    // "Home" always means the top of the portal: from another page it
+    // navigates home, on the home page it glides back to the first screen.
+    if (item.href === '/') {
+      e.preventDefault();
+      if (location.pathname !== '/') {
+        navigate('/');
+        return;
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     if (item.href.startsWith('#')) {
       e.preventDefault();
       const targetEl = document.querySelector(item.href);
@@ -274,7 +290,9 @@ export const Navbar: React.FC<NavbarProps> = ({
       // menu buttons on /about, /leadership, /news/*, /sitemap, …).
       navigate('/');
       window.setTimeout(() => {
-        document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+        const el = document.querySelector(item.href);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        else window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 450);
       return;
     }
@@ -292,7 +310,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Top Left: Emblem, Title & Quick Controls */}
         <div className="navbar-brand-shell pointer-events-auto flex min-w-0 max-w-full sm:max-w-[calc(100vw-122px)] items-center gap-2 glass glass-card p-1.5 sm:gap-3 sm:p-2">
           <a
-            href="#hero"
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              setMobileMenuOpen(false);
+              setMenuPopoverOpen(false);
+              if (location.pathname !== '/') {
+                navigate('/');
+                return;
+              }
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             className="flex items-center gap-3 px-2 py-1 rounded-xl hover:bg-white/10 transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-theme-gold group"
           >
             <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full p-0.5 border border-theme-gold/40 bg-theme-bg/80 shadow-md shadow-theme-gold/15 group-hover:scale-105 group-hover:border-theme-gold transition-all duration-300 flex items-center justify-center shrink-0">

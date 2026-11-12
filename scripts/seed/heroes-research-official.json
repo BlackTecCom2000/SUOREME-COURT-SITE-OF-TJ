@@ -40,29 +40,125 @@
       "awards_tj": "«Қаҳрамони Тоҷикистон» (соли фармон ба куллӣ мувофиқ нест — 1996/1997/1998, таҳрирӣ бояд аниқ кунад) · Сталинская премияи дараҷаи дуюм (1950) · Ордени Ленин (сеш маротба) · Ордени «Красное знамя труда» (1953) · Медали «За доблестный труд в Великой Отечественной войне 1941–1945 гг.» · Ордени Ҷумҳурии Узбекистон «За выдающиеся заслуги» (баъди маргӣ, 2001)",
       "awards_en": "Hero of Tajikistan (the year of the decree is disputed — 1996/1997/1998, editorial review required) · Stalin Prize, second degree (1950) · Order of Lenin (three times) · Order of the Red Banner of Labour (1953) · Medal \"For Valiant Labour in the Great Patriotic War 1941–1945\" · Order of the Republic of Uzbekistan \"For Outstanding Services\" (posthumous, 2001)",
       "timeline": [
-        { "year": "1878", "event": "Родился 15 апреля в деревне Соктари Гиждуванского района Бухарского эмирата" },
-        { "year": "1890", "event": "Умерли оба родителя; переехал в Бухару, поступил в медресе Кукелдаш" },
-        { "year": "1908", "event": "Начал преподавать в новометодных школах Бухары, в том числе в первой таджикской школе Мирзы Абдувохида Мунзима" },
-        { "year": "1917", "event": "Избит и заключён в тюрьму Обхона за отказ участвовать в демонстрации в защиту эмира" },
-        { "year": "1926", "event": "Советник и литературный редактор Государственного издательства Таджикистана" },
-        { "year": "1927", "event": "Организатор Самаркандской академии" },
-        { "year": "1934", "event": "Участник Первого съезда советских писателей" },
-        { "year": "1950", "event": "Сталинская премия II степени за «Воспоминания»" },
-        { "year": "1951", "event": "Избран первым президентом Академии наук Таджикской ССР" },
-        { "year": "1954", "event": "Скончался 15 июля в Сталинобаде" },
-        { "year": "1996/1997/1998", "event": "Посмертно присвоено звание «Герой Таджикистана» (год в источниках расходится)" }
+        {
+          "year": "1878",
+          "event": "Родился 15 апреля в деревне Соктари Гиждуванского района Бухарского эмирата"
+        },
+        {
+          "year": "1890",
+          "event": "Умерли оба родителя; переехал в Бухару, поступил в медресе Кукелдаш"
+        },
+        {
+          "year": "1908",
+          "event": "Начал преподавать в новометодных школах Бухары, в том числе в первой таджикской школе Мирзы Абдувохида Мунзима"
+        },
+        {
+          "year": "1917",
+          "event": "Избит и заключён в тюрьму Обхона за отказ участвовать в демонстрации в защиту эмира"
+        },
+        {
+          "year": "1926",
+          "event": "Советник и литературный редактор Государственного издательства Таджикистана"
+        },
+        {
+          "year": "1927",
+          "event": "Организатор Самаркандской академии"
+        },
+        {
+          "year": "1934",
+          "event": "Участник Первого съезда советских писателей"
+        },
+        {
+          "year": "1950",
+          "event": "Сталинская премия II степени за «Воспоминания»"
+        },
+        {
+          "year": "1951",
+          "event": "Избран первым президентом Академии наук Таджикской ССР"
+        },
+        {
+          "year": "1954",
+          "event": "Скончался 15 июля в Сталинобаде"
+        },
+        {
+          "year": "1996/1997/1998",
+          "event": "Посмертно присвоено звание «Герой Таджикистана» (год в источниках расходится)"
+        }
       ],
       "sources": [
-        { "label": "Институт языка и литературы им. Абуабдулло Рудакӣ АН РТ — «Садриддин Айнӣ: маълумоти мухтасар» (дата рождения)", "url": "https://izar.tj/tj/dobavit-informaciya-v-blog-123/sadriddin-ayni-malumoti-muhtasari-sharkhikholi", "level": "official" },
-        { "label": "Институт языка и литературы им. Абуабдулло Рудакӣ АН РТ — документальный фильм «Садриддин Айнӣ — Национальный герой Таджикистана»", "url": "https://izar.tj/tj/dobavit-informaciya-v-blog-123/sadriddin-ayni-nacionalnyy-geroy-tadzhikistana-dokumentalnyy-film", "level": "official" },
-        { "label": "AMIIT «Ховар» (21.05.2026) — перечень лиц, удостоенных звания «Қаҳрамони Тоҷикистон»", "url": "https://khovar.tj/2026/05/uviyati-mill-va-adoi-e-tirom-ba-a-ramonon-dar-robita-ba-ovardani-hoki-oromgo-i-a-ramononi-to-ikiston-ba-vatan/", "level": "official" },
-        { "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка «Heroes»", "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=kahramonen", "level": "official" },
-        { "label": "Русская Википедия — даты, произведения, награды", "url": "https://ru.wikipedia.org/wiki/Айни,_Садриддин", "level": "wikipedia" },
-        { "label": "Таджикская Википедия — биография и карьера", "url": "https://tg.wikipedia.org/wiki/Садриддин_Айнӣ", "level": "wikipedia" },
-        { "label": "Wikimedia Commons — фотография С. Айни (общественное достояние)", "url": "https://upload.wikimedia.org/wikipedia/commons/7/70/AyniSadriddin.jpg", "level": "wikipedia" }
+        {
+          "label": "Институт языка и литературы им. Абуабдулло Рудакӣ АН РТ — «Садриддин Айнӣ: маълумоти мухтасар» (дата рождения)",
+          "url": "https://izar.tj/tj/dobavit-informaciya-v-blog-123/sadriddin-ayni-malumoti-muhtasari-sharkhikholi",
+          "level": "official"
+        },
+        {
+          "label": "Институт языка и литературы им. Абуабдулло Рудакӣ АН РТ — документальный фильм «Садриддин Айнӣ — Национальный герой Таджикистана»",
+          "url": "https://izar.tj/tj/dobavit-informaciya-v-blog-123/sadriddin-ayni-nacionalnyy-geroy-tadzhikistana-dokumentalnyy-film",
+          "level": "official"
+        },
+        {
+          "label": "AMIIT «Ховар» (21.05.2026) — перечень лиц, удостоенных звания «Қаҳрамони Тоҷикистон»",
+          "url": "https://khovar.tj/2026/05/uviyati-mill-va-adoi-e-tirom-ba-a-ramonon-dar-robita-ba-ovardani-hoki-oromgo-i-a-ramononi-to-ikiston-ba-vatan/",
+          "level": "official"
+        },
+        {
+          "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка «Heroes»",
+          "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=kahramonen",
+          "level": "official"
+        },
+        {
+          "label": "Русская Википедия — даты, произведения, награды",
+          "url": "https://ru.wikipedia.org/wiki/Айни,_Садриддин",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Таджикская Википедия — биография и карьера",
+          "url": "https://tg.wikipedia.org/wiki/Садриддин_Айнӣ",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Wikimedia Commons — фотография С. Айни (общественное достояние)",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/70/AyniSadriddin.jpg",
+          "level": "wikipedia"
+        }
       ],
       "confidence": "partial",
-      "editorial_note": "Личность, даты, карьера, произведения и сам факт присвоения звания подтверждены государственным информационным агентством и институтом Академии наук. Не подтверждён ГОД указа: источники дают 8 сентября 1998 (ru.wikipedia), 1997 (tg.wikipedia) и 8 сентября 1996 (en.wikipedia); текст указа открыть не удалось. Требуется сверка с текстом президентского указа. Портрет — подлинная фотография (общественное достояние)."
+      "editorial_note": "Личность, даты, карьера, произведения и сам факт присвоения звания подтверждены государственным информационным агентством и институтом Академии наук. Не подтверждён ГОД указа: источники дают 8 сентября 1998 (ru.wikipedia), 1997 (tg.wikipedia) и 8 сентября 1996 (en.wikipedia); текст указа открыть не удалось. Требуется сверка с текстом президентского указа. Портрет — подлинная фотография (общественное достояние).",
+      "portrait_note": {
+        "ru": "Фотография 1940-х годов",
+        "tj": "Сурати давраи 1940-ум",
+        "en": "Photograph from the 1940s"
+      },
+      "gallery": [
+        {
+          "file": "File:Sadriddin Ayni byusti 4.jpg",
+          "caption_ru": "Бюст Садриддина Айни в Самарканде",
+          "caption_tj": "Нимпайкараи Садриддин Айнӣ дар Самарқанд",
+          "caption_en": "Bust of Sadriddin Ayni in Samarkand",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "file": "File:Museum Sadriddin Ayni 094.jpg",
+          "caption_ru": "Дом-музей Садриддина Айни в Самарканде",
+          "caption_tj": "Хона-музеи Садриддин Айнӣ дар Самарқанд",
+          "caption_en": "House-museum of Sadriddin Ayni in Samarkand",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "file": "File:Study room of Sadriddin Ayni (Samarkand).jpg",
+          "caption_ru": "Рабочий кабинет в доме-музее",
+          "caption_tj": "Кабинет дар хона-музеӣ",
+          "caption_en": "Study room in the house-museum",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "file": "File:The Soviet Union 1968 CPA 3637 stamp (Sadriddin Ayni and Scene from Story 'Bukhara Executioner') (cropped).png",
+          "caption_ru": "Юбилейная марка СССР 1968 года к 90-летию А. С. Айни",
+          "caption_tj": "Маркаи СССР соли 1968 ба муҳоси барои 90-солагии А. Айнӣ",
+          "caption_en": "USSR commemorative stamp of 1968 for the 90th anniversary of A. S. Ayni",
+          "license": "Public domain"
+        }
+      ]
     },
     {
       "slug": "gafurov",
@@ -80,7 +176,7 @@
       "birth_place_ru": "Деревня Исфисар, Худжандский район Самаркандской области (ныне Сырдарьинская область); по воспоминаниям родственников — дом семьи в квартале Хожа Камол, Худжанд",
       "birth_place_tj": "Дехаи Исфисар, ноҳияи Худжонди вилояти Самарқанд (ҳозир вилояти Суғд)",
       "birth_place_en": "Village of Isfisar, Khujand district, Samarkand region (now Sughd region)",
-      "portrait_url": null,
+      "portrait_url": "https://upload.wikimedia.org/wikipedia/commons/6/65/%D0%91%D0%BE%D0%B1%D0%BE%D0%B4%D0%B6%D0%B0%D0%BD_%D0%93%D0%B0%D1%84%D1%83%D1%80%D0%BE%D0%B2.JPG",
       "hero_decree_ru": "Высшее звание «Герой Таджикистана» присвоено Бобоҷону Ғафурову; титул и год (1997) подтверждены государственным информационным агентством AMIIT «Ховар» (21 мая 2026) и согласуются во всех трёх Википедиях. Текст президентского указа открыть не удалось — требуется сверка.",
       "hero_decree_tj": "Унвони олӣ «Қаҳрамони Тоҷикистон» ба Бобоҷон Ғафуров дода шудааст; унвон ва соли (1997) тасдиқ шудаанд аз рӯи АМИИТ «Ховар» (21 майи соли 2026) ва дар ҳамаи се Википедияҳо мувофиқанд. Матни фармон боз нашуд — таҳрирӣ бояд аниқ кунад.",
       "hero_decree_en": "The supreme title \"Hero of Tajikistan\" was conferred on Bobojon Ghafurov; the title and the year (1997) are confirmed by the state news agency AMIIT \"Khovar\" (21 May 2026) and agree across all three Wikipedias. The decree text could not be opened — editorial review required.",
@@ -103,28 +199,125 @@
       "awards_tj": "«Қаҳрамони Тоҷикистон» (баъди маргӣ, 1997) · Ордени Ленин (панч маротба) · Ордени Инқилоби Октябр · Ордени «Красное знамя труда»",
       "awards_en": "Hero of Tajikistan (posthumous, 1997) · Order of Lenin (five times) · Order of the October Revolution · Order of the Red Banner of Labour",
       "timeline": [
-        { "year": "1908", "event": "Родился 18 декабря (31 декабря по ст. ст.) в Исфисаре Худжандского района" },
-        { "year": "1928–1929", "event": "Учился в Самарканде у Садриддина Айни и Гафура Ғулома" },
-        { "year": "1935", "event": "Окончил Всесоюзный коммунистический институт журналистики в Москве" },
-        { "year": "1936", "event": "Заместитель главного редактора «Кыл Таджикистан»" },
-        { "year": "1946", "event": "16 августа избран первым секретарём ЦК Компартии Таджикистана" },
-        { "year": "1949", "event": "Доктор исторических наук" },
-        { "year": "1951", "event": "Академик Академии наук Таджикской ССР" },
-        { "year": "1956", "event": "Переведён в Москву, директор Института востоковедения" },
-        { "year": "1968", "event": "Избран академиком Академии наук СССР" },
-        { "year": "1977", "event": "Скончался 12 июля в Душанбе" },
-        { "year": "1997", "event": "Посмертно присвоено звание «Герой Таджикистана»" }
+        {
+          "year": "1908",
+          "event": "Родился 18 декабря (31 декабря по ст. ст.) в Исфисаре Худжандского района"
+        },
+        {
+          "year": "1928–1929",
+          "event": "Учился в Самарканде у Садриддина Айни и Гафура Ғулома"
+        },
+        {
+          "year": "1935",
+          "event": "Окончил Всесоюзный коммунистический институт журналистики в Москве"
+        },
+        {
+          "year": "1936",
+          "event": "Заместитель главного редактора «Кыл Таджикистан»"
+        },
+        {
+          "year": "1946",
+          "event": "16 августа избран первым секретарём ЦК Компартии Таджикистана"
+        },
+        {
+          "year": "1949",
+          "event": "Доктор исторических наук"
+        },
+        {
+          "year": "1951",
+          "event": "Академик Академии наук Таджикской ССР"
+        },
+        {
+          "year": "1956",
+          "event": "Переведён в Москву, директор Института востоковедения"
+        },
+        {
+          "year": "1968",
+          "event": "Избран академиком Академии наук СССР"
+        },
+        {
+          "year": "1977",
+          "event": "Скончался 12 июля в Душанбе"
+        },
+        {
+          "year": "1997",
+          "event": "Посмертно присвоено звание «Герой Таджикистана»"
+        }
       ],
       "sources": [
-        { "label": "AMIIT «Ховар» (21.05.2026) — перечень лиц, удостоенных звания «Қаҳрамони Тоҷикистон»", "url": "https://khovar.tj/2026/05/uviyati-mill-va-adoi-e-tirom-ba-a-ramonon-dar-robita-ba-ovardani-hoki-oromgo-i-a-ramononi-to-ikiston-ba-vatan/", "level": "official" },
-        { "label": "AMIIT «Ховар» — «День района Бобоҷона Ғафурова» в Душанбе", "url": "https://khovar.tj/2026/06/21/dar-dushanbe-r-zi-far-angi-no-iyai-bobo-on-afurov-doir-gardid/", "level": "official" },
-        { "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка", "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=boboen", "level": "official" },
-        { "label": "Русская Википедия — даты, партийная карьера, академические посты, награды", "url": "https://ru.wikipedia.org/wiki/Гафуров,_Бободжан_Гафурович", "level": "wikipedia" },
-        { "label": "Таджикская Википедия — звание «Герой Таджикистана», книга «Тоҷикон»", "url": "https://tg.wikipedia.org/wiki/Бобоҷон_Ғафуров", "level": "wikipedia" },
-        { "label": "English Wikipedia — даты рождения и смерти", "url": "https://en.wikipedia.org/wiki/Bobojon_Ghafurov", "level": "wikipedia" }
+        {
+          "label": "AMIIT «Ховар» (21.05.2026) — перечень лиц, удостоенных звания «Қаҳрамони Тоҷикистон»",
+          "url": "https://khovar.tj/2026/05/uviyati-mill-va-adoi-e-tirom-ba-a-ramonon-dar-robita-ba-ovardani-hoki-oromgo-i-a-ramononi-to-ikiston-ba-vatan/",
+          "level": "official"
+        },
+        {
+          "label": "AMIIT «Ховар» — «День района Бобоҷона Ғафурова» в Душанбе",
+          "url": "https://khovar.tj/2026/06/21/dar-dushanbe-r-zi-far-angi-no-iyai-bobo-on-afurov-doir-gardid/",
+          "level": "official"
+        },
+        {
+          "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка",
+          "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=boboen",
+          "level": "official"
+        },
+        {
+          "label": "Русская Википедия — даты, партийная карьера, академические посты, награды",
+          "url": "https://ru.wikipedia.org/wiki/Гафуров,_Бободжан_Гафурович",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Таджикская Википедия — звание «Герой Таджикистана», книга «Тоҷикон»",
+          "url": "https://tg.wikipedia.org/wiki/Бобоҷон_Ғафуров",
+          "level": "wikipedia"
+        },
+        {
+          "label": "English Wikipedia — даты рождения и смерти",
+          "url": "https://en.wikipedia.org/wiki/Bobojon_Ghafurov",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Фотография бюста в Худжанде — Wikimedia Commons, CC BY-SA 4.0 (Шухрат Саъдиев, 2015)",
+          "url": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%BE%D0%B1%D0%BE%D0%B4%D0%B6%D0%B0%D0%BD_%D0%93%D0%B0%D1%84%D1%83%D1%80%D0%BE%D0%B2.JPG",
+          "level": "image"
+        }
       ],
       "confidence": "partial",
-      "editorial_note": "Титул, год 1997, партийная карьера и академические посты согласуются в трёх Википедиях и подтверждены государственным агентством. Расхождение по месту рождения (Исфисар или Худжанд) отмечено в самой русской статье как «нужна ссылка» — не разрешено. ПОРОТРЕТ НЕ НАЙДЕН: в Wikimedia Commons есть только изображение банкноты, марки, памятники и мечети; фотографии Ғафурова нет — портрет оставлен пустым, пока редакция не найдёт музейный или архивный снимок."
+      "editorial_note": "Титул, год 1997, партийная карьера и академические посты согласуются в трёх Википедиях и подтверждены государственным агентством. Расхождение по месту рождения (Исфисар или Худжанд) отмечено в самой русской статье как «нужна ссылка» — не разрешено. ПОРОТРЕТ НЕ НАЙДЕН: в Wikimedia Commons есть только изображение банкноты, марки, памятники и мечети; фотографии Ғафурова нет — портрет оставлен пустым, пока редакция не найдёт музейный или архивный снимок.",
+      "portrait_note": {
+        "ru": "Бюст в Худжанде (фотография Шухрата Саъдиева, 2015)",
+        "tj": "Нимпайкара дар Худжанд (сурати Шухрата Саъдиев, соли 2015)",
+        "en": "Bust in Khujand (photo by Shuhrat Sa'diyev, 2015)"
+      },
+      "gallery": [
+        {
+          "file": "File:Панно в музее.JPG",
+          "caption_ru": "Живописное панно в музее академика Б. Ғафурова",
+          "caption_tj": "Паннои нақшқори дар музеи академики Б. Ғафуров",
+          "caption_en": "Painted panel in the museum of academician B. Ghafurov",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "file": "File:Музей академика Б. Гафурова 01.jpg",
+          "caption_ru": "Музей академика Бободжана Гафурова (город Ғафуров)",
+          "caption_tj": "Музеи академики Бобоҷон Ғафуров (шаҳри Ғафуров)",
+          "caption_en": "Museum of academician Bobojon Ghafurov (Ghafurov town)",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "file": "File:Музей академика Б. Гафурова 04.jpg",
+          "caption_ru": "Экспозиция музея академика Б. Ғафурова",
+          "caption_tj": "Намоиши музеи академики Б. Ғафуров",
+          "caption_en": "Exhibition hall of the Ghafurov museum",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "file": "File:Здание музея академика Б. Гафурова.jpg",
+          "caption_ru": "Здание музея академика Б. Ғафурова",
+          "caption_tj": "Бинои музеи академики Б. Ғафуров",
+          "caption_en": "The building of the Ghafurov museum",
+          "license": "CC BY-SA 3.0"
+        }
+      ]
     },
     {
       "slug": "tursunzoda",
@@ -165,33 +358,141 @@
       "awards_tj": "«Қаҳрамони Тоҷикистон» (баъди маргӣ, 2001) · Қаҳрамони Меънатии Ҷамҳои Шӯравӣ (1967) · Шоири халқии Ҷумҳурии Тоҷикистон (1961) · Ленинская премия (1960) · Сталинская премияи дараҷаи дуюм (1948) · Ордени Ленин (чор маротба), Инқилоби Октябр, «Красное знамя труда» (сеш маротба), «Нишони фахрӣ» (ду маротба) · Премияи Неру ва Ленинская премияи комсомоли Тоҷикистон",
       "awards_en": "Hero of Tajikistan (posthumous, 2001) · Hero of Socialist Labour (1967) · People's Poet of the Tajik SSR (1961) · Lenin Prize (1960) · Stalin Prize, second degree (1948) · Order of Lenin (four times), Order of the October Revolution, Order of the Red Banner of Labour (three times), Order of the Badge of Honour (twice) · Nehru Prize and the Lenin Komsomol Prize of Tajikistan",
       "timeline": [
-        { "year": "1911", "event": "Родился 19 апреля (2 мая) в Каратаге" },
-        { "year": "1930", "event": "Окончил Таджикский институт образования в Ташкенте" },
-        { "year": "1932", "event": "Вышла первая книга стихов «Знамя победы»" },
-        { "year": "1935", "event": "Работает в Союзе писателей Таджикской ССР" },
-        { "year": "1939", "event": "Избран председателем правления Союза писателей" },
-        { "year": "1942", "event": "Возглавил Главлит" },
-        { "year": "1948", "event": "Сталинская премия II степени" },
-        { "year": "1951", "event": "Член Академии наук Таджикской ССР" },
-        { "year": "1959", "event": "Секретарь правления Союза писателей СССР" },
-        { "year": "1960", "event": "Ленинская премия" },
-        { "year": "1961", "event": "Народный поэт Таджикской ССР" },
-        { "year": "1967", "event": "Герой Социалистического Труда" },
-        { "year": "1977", "event": "Скончался 24 сентября в Душанбе, похоронен на Лучобе" },
-        { "year": "2001", "event": "Посмертно присвоено звание «Герой Таджикистана»" },
-        { "year": "2011", "event": "ЮНЕСКО отметила 100-летие поэта в Таджикистане и мире" }
+        {
+          "year": "1911",
+          "event": "Родился 19 апреля (2 мая) в Каратаге"
+        },
+        {
+          "year": "1930",
+          "event": "Окончил Таджикский институт образования в Ташкенте"
+        },
+        {
+          "year": "1932",
+          "event": "Вышла первая книга стихов «Знамя победы»"
+        },
+        {
+          "year": "1935",
+          "event": "Работает в Союзе писателей Таджикской ССР"
+        },
+        {
+          "year": "1939",
+          "event": "Избран председателем правления Союза писателей"
+        },
+        {
+          "year": "1942",
+          "event": "Возглавил Главлит"
+        },
+        {
+          "year": "1948",
+          "event": "Сталинская премия II степени"
+        },
+        {
+          "year": "1951",
+          "event": "Член Академии наук Таджикской ССР"
+        },
+        {
+          "year": "1959",
+          "event": "Секретарь правления Союза писателей СССР"
+        },
+        {
+          "year": "1960",
+          "event": "Ленинская премия"
+        },
+        {
+          "year": "1961",
+          "event": "Народный поэт Таджикской ССР"
+        },
+        {
+          "year": "1967",
+          "event": "Герой Социалистического Труда"
+        },
+        {
+          "year": "1977",
+          "event": "Скончался 24 сентября в Душанбе, похоронен на Лучобе"
+        },
+        {
+          "year": "2001",
+          "event": "Посмертно присвоено звание «Герой Таджикистана»"
+        },
+        {
+          "year": "2011",
+          "event": "ЮНЕСКО отметила 100-летие поэта в Таджикистане и мире"
+        }
       ],
       "sources": [
-        { "label": "Институт языка и литературы им. Абуабдулло Рудакӣ АН РТ — «Мирзо Турсунзода — „Кахрамони Точикистон“»", "url": "https://izar.tj/tj/dobavit-informaciya-v-blog-123/mirzo-tursunzoda-kahramoni-tochikiston", "level": "official" },
-        { "label": "AMIIT «Ховар» (21.05.2026) — перечень лиц, удостоенных звания «Қаҳрамони Тоҷикистон»", "url": "https://khovar.tj/2026/05/uviyati-mill-va-adoi-e-tirom-ba-a-ramonon-dar-robita-ba-ovardani-hoki-oromgo-i-a-ramononi-to-ikiston-ba-vatan/", "level": "official" },
-        { "label": "AMIIT «Ховар» (октябрь 2026) — серия банкнот сомани с изображениями выдающихся деятелей", "url": "https://khovar.tj/2026/10/puli-mill-somon-banknota-oi-on-na-tan-o-vositai-pardoht-balki-boztobi-tarih-far-ang-dastovard-o-va-uviyati-millii-to-ikiston-meboshand/", "level": "official" },
-        { "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка", "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=mirzoen", "level": "official" },
-        { "label": "Русская Википедия — даты, карьера, награды, письмо в «Правду» 1973 года", "url": "https://ru.wikipedia.org/wiki/Турсун-Заде,_Мирзо", "level": "wikipedia" },
-        { "label": "Таджикская Википедия — звание «Герой Таджикистана» 2001 года", "url": "https://tg.wikipedia.org/wiki/Мирзо_Турсунзода", "level": "wikipedia" },
-        { "label": "Wikimedia Commons — подлинный фотопортрет 1947–1949 годов (общественное достояние)", "url": "https://upload.wikimedia.org/wikipedia/commons/2/27/Mirzo_Tursunzoda_portrait.jpg", "level": "wikipedia" }
+        {
+          "label": "Институт языка и литературы им. Абуабдулло Рудакӣ АН РТ — «Мирзо Турсунзода — „Кахрамони Точикистон“»",
+          "url": "https://izar.tj/tj/dobavit-informaciya-v-blog-123/mirzo-tursunzoda-kahramoni-tochikiston",
+          "level": "official"
+        },
+        {
+          "label": "AMIIT «Ховар» (21.05.2026) — перечень лиц, удостоенных звания «Қаҳрамони Тоҷикистон»",
+          "url": "https://khovar.tj/2026/05/uviyati-mill-va-adoi-e-tirom-ba-a-ramonon-dar-robita-ba-ovardani-hoki-oromgo-i-a-ramononi-to-ikiston-ba-vatan/",
+          "level": "official"
+        },
+        {
+          "label": "AMIIT «Ховар» (октябрь 2026) — серия банкнот сомани с изображениями выдающихся деятелей",
+          "url": "https://khovar.tj/2026/10/puli-mill-somon-banknota-oi-on-na-tan-o-vositai-pardoht-balki-boztobi-tarih-far-ang-dastovard-o-va-uviyati-millii-to-ikiston-meboshand/",
+          "level": "official"
+        },
+        {
+          "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка",
+          "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=mirzoen",
+          "level": "official"
+        },
+        {
+          "label": "Русская Википедия — даты, карьера, награды, письмо в «Правду» 1973 года",
+          "url": "https://ru.wikipedia.org/wiki/Турсун-Заде,_Мирзо",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Таджикская Википедия — звание «Герой Таджикистана» 2001 года",
+          "url": "https://tg.wikipedia.org/wiki/Мирзо_Турсунзода",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Wikimedia Commons — подлинный фотопортрет 1947–1949 годов (общественное достояние)",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/2/27/Mirzo_Tursunzoda_portrait.jpg",
+          "level": "wikipedia"
+        }
       ],
       "confidence": "partial",
-      "editorial_note": "Портрет — подлинная фотография 1947–1949 годов. Титул и год 2001 согласуются в трёх Википедиях и подтверждены Институтом Академии наук и государственным агентством; сам указ не открыт. Событие 1973 года (подпись под письмом в «Правду» в отношении Солженицына и Сахарова) — документированный факт, но политически чувствительный: перед публикацией требуется сверка с первоисточником и решение редакции о подаче."
+      "editorial_note": "Портрет — подлинная фотография 1947–1949 годов. Титул и год 2001 согласуются в трёх Википедиях и подтверждены Институтом Академии наук и государственным агентством; сам указ не открыт. Событие 1973 года (подпись под письмом в «Правду» в отношении Солженицына и Сахарова) — документированный факт, но политически чувствительный: перед публикацией требуется сверка с первоисточником и решение редакции о подаче.",
+      "portrait_note": {
+        "ru": "Фотография 1947–1949 годов",
+        "tj": "Сурати солҳои 1947–1949",
+        "en": "Photograph from 1947–1949"
+      },
+      "gallery": [
+        {
+          "file": "File:Мирзо Турсунзаде в Душанбе.jpg",
+          "caption_ru": "Памятник Мирзо Турсунзаде в Душанбе",
+          "caption_tj": "Нимпайкараи Мирзо Турсунзода дар Душанбе",
+          "caption_en": "Monument to Mirzo Tursunzoda in Dushanbe",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "file": "File:Могила Турсун-заде.jpg",
+          "caption_ru": "Могила Мирзо Турсунзаде на Лучобском мемориале в Душанбе",
+          "caption_tj": "Қабри Мирзо Турсунзода дар мавзои Лучоб дар Душанбе",
+          "caption_en": "The grave of Mirzo Tursunzoda at the Luchob memorial, Dushanbe",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "file": "File:Tursunzoda,Mirzo.jpg",
+          "caption_ru": "Памятник Мирзо Турсунзаде у вокзала Регар",
+          "caption_tj": "Нимпайкараи Мирзо Турсунзода назди вокзали Регар",
+          "caption_en": "Monument to Mirzo Tursunzoda at Regar station square",
+          "license": "CC BY-SA 3.0"
+        },
+        {
+          "file": "File:TJ-Tajik Writers Union building, Dushanbe (8).JPG",
+          "caption_ru": "Здание Союза писателей Таджикистана с портретом поэта",
+          "caption_tj": "Бинои Иттиҳоди нависандон-советӣ бо портрети шоир",
+          "caption_en": "The Tajik Writers’ Union building with the poet’s portrait",
+          "license": "CC BY-SA 3.0"
+        }
+      ]
     },
     {
       "slug": "rahmon",
@@ -232,30 +533,114 @@
       "awards_tj": "«Қаҳрамони Тоҷикистон» (1999) · Ордени «Пешвои миллат — Эмомалӣ Раҳмон» — ордени давлатӣ (моддаи 13 Қонуни мукофотҳои давлатӣ)",
       "awards_en": "Hero of Tajikistan (1999) · Order «Пешвои миллат — Эмомалӣ Раҳмон», state order under Article 13 of the Law on State Awards",
       "timeline": [
-        { "year": "1952", "event": "Родился 5 октября в Дангарском районе Кулябской области" },
-        { "year": "1969", "event": "По окончании техникума № 40 начал работать электриком" },
-        { "year": "1971", "event": "Поступил на Тихоокеанский флот" },
-        { "year": "1974", "event": "Демобилизован" },
-        { "year": "1982", "event": "Окончил экономический факультет Таджикского государственного университета" },
-        { "year": "1990", "event": "Избран народным депутатом Верховного Совета" },
-        { "year": "1992", "event": "С 19 ноября — председатель Верховного Совета Республики Таджикистан" },
-        { "year": "1994", "event": "6 ноября избран Президентом Республики Таджикистан" },
-        { "year": "1998", "event": "Лидер Народно-демократической партии Таджикистана" },
-        { "year": "1999", "event": "Переизбран Президентом; присвоено звание «Герой Таджикистана»" },
-        { "year": "2006", "event": "Переизбран на третий срок" },
-        { "year": "2018", "event": "Председатель Совета глав государств СНГ" },
-        { "year": "2026", "event": "18 мая в московском аэропорту принял капсулы с землёй с могил Героев Таджикистана Нусратулло Махсума, Шириншо Шотемур и Нисара Мухаммада; государственные празднования 35-летия независимости" }
+        {
+          "year": "1952",
+          "event": "Родился 5 октября в Дангарском районе Кулябской области"
+        },
+        {
+          "year": "1969",
+          "event": "По окончании техникума № 40 начал работать электриком"
+        },
+        {
+          "year": "1971",
+          "event": "Поступил на Тихоокеанский флот"
+        },
+        {
+          "year": "1974",
+          "event": "Демобилизован"
+        },
+        {
+          "year": "1982",
+          "event": "Окончил экономический факультет Таджикского государственного университета"
+        },
+        {
+          "year": "1990",
+          "event": "Избран народным депутатом Верховного Совета"
+        },
+        {
+          "year": "1992",
+          "event": "С 19 ноября — председатель Верховного Совета Республики Таджикистан"
+        },
+        {
+          "year": "1994",
+          "event": "6 ноября избран Президентом Республики Таджикистан"
+        },
+        {
+          "year": "1998",
+          "event": "Лидер Народно-демократической партии Таджикистана"
+        },
+        {
+          "year": "1999",
+          "event": "Переизбран Президентом; присвоено звание «Герой Таджикистана»"
+        },
+        {
+          "year": "2006",
+          "event": "Переизбран на третий срок"
+        },
+        {
+          "year": "2018",
+          "event": "Председатель Совета глав государств СНГ"
+        },
+        {
+          "year": "2026",
+          "event": "18 мая в московском аэропорту принял капсулы с землёй с могил Героев Таджикистана Нусратулло Махсума, Шириншо Шотемур и Нисара Мухаммада; государственные празднования 35-летия независимости"
+        }
       ],
       "sources": [
-        { "label": "Сайт Президента Республики Таджикистан (архивная копия) — официальная биография: «He is the Hero of Tajikistan (1999)»", "url": "https://web.archive.org/web/20130916064343/http://president.tj/en/taxonomy/term/5/33", "level": "official" },
-        { "label": "AMIIT «Ховар» (21.05.2026) — «Қаҳрамони Тоҷикистон муҳтарам Эмомалӣ Раҳмон» и церемония передачи земли из Москвы 18 мая 2026 года", "url": "https://khovar.tj/2026/05/udrate-ki-murdahoki-zori-namro-zinda-kard-andesha-o-dar-mavridi-ba-vatan-bargardonidani-hoki-oromgo-i-farzandoni-farzonai-millat/", "level": "official" },
-        { "label": "AMIIT «Ховар» — президентское обращение с упоминанием Махсума, Шотемур и Нисара Мухаммада", "url": "https://khovar.tj/2026/05/i-domi-navbatii-sarvari-davlat-guvo-i-ar-guzorii-a-ramoni-to-ikiston-ba-a-ramonii-a-ramonon-ast/", "level": "official" },
-        { "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка", "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=prezidenten", "level": "official" },
-        { "label": "Русская Википедия — должности, даты, партийное руководство, председательство в СНГ", "url": "https://ru.wikipedia.org/wiki/Рахмон,_Эмомали_Шарипович", "level": "wikipedia" },
-        { "label": "Wikimedia Commons — фотография 22 февраля 2024 года (CC BY 4.0, Рустем Кадыров)", "url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Rahmon_February_2024.jpg", "level": "wikipedia" }
+        {
+          "label": "Сайт Президента Республики Таджикистан (архивная копия) — официальная биография: «He is the Hero of Tajikistan (1999)»",
+          "url": "https://web.archive.org/web/20130916064343/http://president.tj/en/taxonomy/term/5/33",
+          "level": "official"
+        },
+        {
+          "label": "AMIIT «Ховар» (21.05.2026) — «Қаҳрамони Тоҷикистон муҳтарам Эмомалӣ Раҳмон» и церемония передачи земли из Москвы 18 мая 2026 года",
+          "url": "https://khovar.tj/2026/05/udrate-ki-murdahoki-zori-namro-zinda-kard-andesha-o-dar-mavridi-ba-vatan-bargardonidani-hoki-oromgo-i-farzandoni-farzonai-millat/",
+          "level": "official"
+        },
+        {
+          "label": "AMIIT «Ховар» — президентское обращение с упоминанием Махсума, Шотемур и Нисара Мухаммада",
+          "url": "https://khovar.tj/2026/05/i-domi-navbatii-sarvari-davlat-guvo-i-ar-guzorii-a-ramoni-to-ikiston-ba-a-ramonii-a-ramonon-ast/",
+          "level": "official"
+        },
+        {
+          "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка",
+          "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=prezidenten",
+          "level": "official"
+        },
+        {
+          "label": "Русская Википедия — должности, даты, партийное руководство, председательство в СНГ",
+          "url": "https://ru.wikipedia.org/wiki/Рахмон,_Эмомали_Шарипович",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Wikimedia Commons — фотография 22 февраля 2024 года (CC BY 4.0, Рустем Кадыров)",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Rahmon_February_2024.jpg",
+          "level": "wikipedia"
+        }
       ],
       "confidence": "verified",
-      "editorial_note": "Единственный персонаж в наборе, чьё звание и год подтверждены официальным источником (сайт Президента), а не только вторичными. Живой человек, дата смерти отсутствует по определению. Номер указа 1999 года не установлен."
+      "editorial_note": "Единственный персонаж в наборе, чьё звание и год подтверждены официальным источником (сайт Президента), а не только вторичными. Живой человек, дата смерти отсутствует по определению. Номер указа 1999 года не установлен.",
+      "portrait_note": {
+        "ru": "Фотография 22 февраля 2024 года",
+        "tj": "Сурати 22 феврали соли 2024",
+        "en": "Photograph of 22 February 2024"
+      },
+      "gallery": [
+        {
+          "file": "File:Emomali Rahmon on April 3, 2025 (cropped).jpg",
+          "caption_ru": "Эмомали Раҳмон, 3 апреля 2025 года",
+          "caption_tj": "Эмомалӣ Раҳмон, 3 апрели соли 2025",
+          "caption_en": "Emomali Rahmon, 3 April 2025",
+          "license": "Attribution (European Union)"
+        },
+        {
+          "file": "File:Emomali Rahmon in 2026.jpg",
+          "caption_ru": "Эмомали Раҳмон, 4 марта 2026 года",
+          "caption_tj": "Эмомалӣ Раҳмон, 4 марти соли 2026",
+          "caption_en": "Emomali Rahmon, 4 March 2026",
+          "license": "CC BY 4.0"
+        }
+      ]
     },
     {
       "slug": "makhsum",
@@ -273,7 +658,7 @@
       "birth_place_ru": "Деревня Чашмаи-Кози, Гармский регион Каратегинского бекства, Бухарский эмират (ныне Раштский район, Таджикистан)",
       "birth_place_tj": "Дехаи Чашмаи-Козӣ, ноҳияи Гарм, бештории Каратегин, эмирати Бухоро (ҳозир ноҳияи Рашт)",
       "birth_place_en": "Village of Chashmai-Kozi, Garm region, Karategin bekstvo, Bukhara Emirate (now Rasht district)",
-      "portrait_url": null,
+      "portrait_url": "https://upload.wikimedia.org/wikipedia/commons/e/e9/TJS_200_2010_obverse_%28cropped%29.jpg",
       "hero_decree_ru": "Высшее звание «Герой Таджикистана» присвоено посмертно в 2006 году; титул подтверждён государственным агентством AMIIT «Ховар» (21 мая 2026), год (27 июня 2006) согласуется в трёх Википедиях. Текст указа, на который они ссылаются, в архивах не сохранился — требуется сверка.",
       "hero_decree_tj": "Унвони олӣ «Қаҳрамони Тоҷикистон» баъди маргӣ дар соли 2006 дода шудааст; унвон аз рӯи АМИИТ «Ховар» (21 майи соли 2026) тасдиқ шудааст, соли (27 июни соли 2006) дар се Википедияҳо мувофиқ аст. Матни фармон, ба он ишора мекунанд, дар нусхаҳои захираӣ намондааст — таҳрирӣ бояд аниқ кунад.",
       "hero_decree_en": "The supreme title \"Hero of Tajikistan\" was conferred posthumously in 2006; the title is confirmed by the state news agency AMIIT \"Khovar\" (21 May 2026) and the year (27 June 2006) agrees across the three Wikipedias. The decree text they cite was not preserved in any archive capture — editorial review required.",
@@ -296,28 +681,110 @@
       "awards_tj": "«Қаҳрамони Тоҷикистон» (баъди маргӣ, 2006)",
       "awards_en": "Hero of Tajikistan (posthumous, 2006)",
       "timeline": [
-        { "year": "1881", "event": "Родился 1 июля (19 июня по ст. ст.) в Чашмаи-Кози Каратегина" },
-        { "year": "1895", "event": "Переехал в Коканд, работал на фабрике" },
-        { "year": "1906", "event": "Уволен после революционных выступлений 1905–1907 годов, вернулся к земле" },
-        { "year": "1920", "event": "Вступил в РКП(б)" },
-        { "year": "1924", "event": "Председатель временного революционного комитета Таджикской АССР" },
-        { "year": "1926", "event": "Председатель ЦИК Таджикской АССР" },
-        { "year": "1929", "event": "16 октября Таджикская АССР стала Таджикской ССР; он возглавил её ЦИК" },
-        { "year": "1931", "event": "Один из председателей ЦИК СССР" },
-        { "year": "1933", "event": "5 декабря осуждён Политбюро; 27 декабря снят с должности" },
-        { "year": "1937", "event": "Расстрелян в Москве 1 ноября" },
-        { "year": "2006", "event": "Посмертно присвоено звание «Герой Таджикистана»" },
-        { "year": "2026", "event": "18 мая в Душанбе принята капсула с землёй с его могилы в Москве" }
+        {
+          "year": "1881",
+          "event": "Родился 1 июля (19 июня по ст. ст.) в Чашмаи-Кози Каратегина"
+        },
+        {
+          "year": "1895",
+          "event": "Переехал в Коканд, работал на фабрике"
+        },
+        {
+          "year": "1906",
+          "event": "Уволен после революционных выступлений 1905–1907 годов, вернулся к земле"
+        },
+        {
+          "year": "1920",
+          "event": "Вступил в РКП(б)"
+        },
+        {
+          "year": "1924",
+          "event": "Председатель временного революционного комитета Таджикской АССР"
+        },
+        {
+          "year": "1926",
+          "event": "Председатель ЦИК Таджикской АССР"
+        },
+        {
+          "year": "1929",
+          "event": "16 октября Таджикская АССР стала Таджикской ССР; он возглавил её ЦИК"
+        },
+        {
+          "year": "1931",
+          "event": "Один из председателей ЦИК СССР"
+        },
+        {
+          "year": "1933",
+          "event": "5 декабря осуждён Политбюро; 27 декабря снят с должности"
+        },
+        {
+          "year": "1937",
+          "event": "Расстрелян в Москве 1 ноября"
+        },
+        {
+          "year": "2006",
+          "event": "Посмертно присвоено звание «Герой Таджикистана»"
+        },
+        {
+          "year": "2026",
+          "event": "18 мая в Душанбе принята капсула с землёй с его могилы в Москве"
+        }
       ],
       "sources": [
-        { "label": "AMIIT «Ховар» (21.05.2026) — подтверждение звания и церемония передачи земли 18 мая 2026 года", "url": "https://khovar.tj/2026/05/udrate-ki-murdahoki-zori-namro-zinda-kard-andesha-o-dar-mavridi-ba-vatan-bargardonidani-hoki-oromgo-i-farzandoni-farzonai-millat/", "level": "official" },
-        { "label": "AMIIT «Ховар» — президентское обращение с упоминанием Нусратулло Махсума и Шириншо Шотемур как «қаҳрамони Тоҷикистон»", "url": "https://khovar.tj/2026/05/i-domi-navbatii-sarvari-davlat-guvo-i-ar-guzorii-a-ramoni-to-ikiston-ba-a-ramonii-a-ramonon-ast/", "level": "official" },
-        { "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка", "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=nusraten", "level": "official" },
-        { "label": "Русская Википедия — даты, полная хронология должностей, смещение 1933 года, звание 2006 года со ссылкой на указ", "url": "https://ru.wikipedia.org/wiki/Максум,_Нусратулло", "level": "wikipedia" },
-        { "label": "Таджикская Википедия — звание «Герой Таджикистана» 2006 года", "url": "https://tg.wikipedia.org/wiki/Нусратулло_Махсум", "level": "wikipedia" }
+        {
+          "label": "AMIIT «Ховар» (21.05.2026) — подтверждение звания и церемония передачи земли 18 мая 2026 года",
+          "url": "https://khovar.tj/2026/05/udrate-ki-murdahoki-zori-namro-zinda-kard-andesha-o-dar-mavridi-ba-vatan-bargardonidani-hoki-oromgo-i-farzandoni-farzonai-millat/",
+          "level": "official"
+        },
+        {
+          "label": "AMIIT «Ховар» — президентское обращение с упоминанием Нусратулло Махсума и Шириншо Шотемур как «қаҳрамони Тоҷикистон»",
+          "url": "https://khovar.tj/2026/05/i-domi-navbatii-sarvari-davlat-guvo-i-ar-guzorii-a-ramoni-to-ikiston-ba-a-ramonii-a-ramonon-ast/",
+          "level": "official"
+        },
+        {
+          "label": "Архив государственного телерадиокомитета (cit.tj) — биографическая справка",
+          "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=nusraten",
+          "level": "official"
+        },
+        {
+          "label": "Русская Википедия — даты, полная хронология должностей, смещение 1933 года, звание 2006 года со ссылкой на указ",
+          "url": "https://ru.wikipedia.org/wiki/Максум,_Нусратулло",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Таджикская Википедия — звание «Герой Таджикистана» 2006 года",
+          "url": "https://tg.wikipedia.org/wiki/Нусратулло_Махсум",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Портрет на банкноте 200 сомони (2010) — Wikimedia Commons, общественное достояние",
+          "url": "https://commons.wikimedia.org/wiki/File:TJS_200_2010_obverse_(cropped).jpg",
+          "level": "image"
+        }
       ],
       "confidence": "partial",
-      "editorial_note": "Титул подтверждён государственным агентством; год 2006 согласуется в трёх Википедиях, а widely cited URL указа кодирует дату 27 июня 2006, но сам текст указа ни разу не открылся. ПОРОТРЕТ: доступное изображение — гравюра на банкноте 200 сомони (не фотография); фотографии на Wikimedia Commons нет (только банкноты, марки, памятники и мечети), поэтому портрет оставлен пустым до нахождения музейного снимка. Дата смерти (1 ноября 1937 по русской Википедии против 1938 в таджикском списке) — расхождение отмечено, но не разрешено."
+      "editorial_note": "Титул подтверждён государственным агентством; год 2006 согласуется в трёх Википедиях, а widely cited URL указа кодирует дату 27 июня 2006, но сам текст указа ни разу не открылся. ПОРОТРЕТ: доступное изображение — гравюра на банкноте 200 сомони (не фотография); фотографии на Wikimedia Commons нет (только банкноты, марки, памятники и мечети), поэтому портрет оставлен пустым до нахождения музейного снимка. Дата смерти (1 ноября 1937 по русской Википедии против 1938 в таджикском списке) — расхождение отмечено, но не разрешено.",
+      "portrait_note": {
+        "ru": "Изображение на банкноте 200 сомони (2010) — это не фотография",
+        "tj": "Тасвир дар пулӣ 200 сомонӣ (соли 2010) — ин сурат нест",
+        "en": "Depiction on the 200 somoni banknote (2010) — this is not a photograph"
+      },
+      "gallery": [
+        {
+          "file": "File:Могила номер 1 на Новом Донском кладбище.jpg",
+          "caption_ru": "Братская могила на Новом Донском кладбище в Москве, где похоронены Н. Махсум и Ш. Шотемур",
+          "caption_tj": "Қабри бародарӣ дар нави ҷазаи Новом Донскӣ дар Москва, ки Н. Махсум ва Ш. Шотемур дар он дафтаранд",
+          "caption_en": "The common grave at the Novodevichy Cemetery in Moscow, where N. Maksum and Sh. Shotemur were buried",
+          "license": "CC BY-SA 4.0"
+        },
+        {
+          "file": "File:TJS 200 2010 obverse.jpg",
+          "caption_ru": "Банкнота 200 сомони (2010) с изображением Н. Махсума",
+          "caption_tj": "Пули 200 сомонӣ (соли 2010) бо тасвири Н. Махсум",
+          "caption_en": "The 200 somoni banknote (2010) depicting N. Maksum",
+          "license": "Public domain"
+        }
+      ]
     },
     {
       "slug": "shotemur",
@@ -358,31 +825,119 @@
       "awards_tj": "«Қаҳрамони Тоҷикистон» (баъди маргӣ, 2006 — санаи дар таҳрирӣ аниқ аст) · Медали ИҶМ Ҷумҳурии советӣ «барои муқобили басмачӣ» (1930) · Ордени «Красное знамя труда» (1935) · Ордени «Дустӣ» (баъди маргӣ, 27 августи соли 1999)",
       "awards_en": "Hero of Tajikistan (posthumous, 2006 — the date requires editorial review) · Medal of the CEC of the Tajik SSR \"for the fight against the basmachi\" (1930) · Order of the Red Banner of Labour (1935) · Order of Friendship, posthumous (27 August 1999)",
       "timeline": [
-        { "year": "1899", "event": "Родился 1 декабря в селении Поршинев на Памире" },
-        { "year": "1909", "event": "Один из первых учеников первой русской школы в Памире" },
-        { "year": "1921", "event": "Вступил в РКП(б); возглавил Революционный комитет Памира" },
-        { "year": "1924", "event": "Главный организатор создания Таджикской АССР" },
-        { "year": "1929", "event": "Первый секретарь Таджикского обкома; поставил вопрос о присоединении Худжандского района в Политбюро" },
-        { "year": "1930", "event": "Второй секретарь ЦК Компартии Таджикистана" },
-        { "year": "1933", "event": "В декабре избран председателем Президиума ЦИК Таджикской ССР" },
-        { "year": "1937", "event": "Арестован в Москве; приговорён 21 октября, расстрелян 27 октября; похоронен на Донском кладбище" },
-        { "year": "1956", "event": "Реабилитирован 11 августа" },
-        { "year": "1999", "event": "Посмертно награждён орденом «Дустӣ» 27 августа" },
-        { "year": "2006", "event": "Посмертно присвоено звание «Герой Таджикистана»" },
-        { "year": "2019", "event": "120-летие официально отмечено конференцией «120-солагии Қаҳрамони Тоҷикистон Шириншоҳ Шоҳтемур» в Хороге" },
-        { "year": "2026", "event": "Капсула с землёй с его могилы в Москве передана в Таджикистан" }
+        {
+          "year": "1899",
+          "event": "Родился 1 декабря в селении Поршинев на Памире"
+        },
+        {
+          "year": "1909",
+          "event": "Один из первых учеников первой русской школы в Памире"
+        },
+        {
+          "year": "1921",
+          "event": "Вступил в РКП(б); возглавил Революционный комитет Памира"
+        },
+        {
+          "year": "1924",
+          "event": "Главный организатор создания Таджикской АССР"
+        },
+        {
+          "year": "1929",
+          "event": "Первый секретарь Таджикского обкома; поставил вопрос о присоединении Худжандского района в Политбюро"
+        },
+        {
+          "year": "1930",
+          "event": "Второй секретарь ЦК Компартии Таджикистана"
+        },
+        {
+          "year": "1933",
+          "event": "В декабре избран председателем Президиума ЦИК Таджикской ССР"
+        },
+        {
+          "year": "1937",
+          "event": "Арестован в Москве; приговорён 21 октября, расстрелян 27 октября; похоронен на Донском кладбище"
+        },
+        {
+          "year": "1956",
+          "event": "Реабилитирован 11 августа"
+        },
+        {
+          "year": "1999",
+          "event": "Посмертно награждён орденом «Дустӣ» 27 августа"
+        },
+        {
+          "year": "2006",
+          "event": "Посмертно присвоено звание «Герой Таджикистана»"
+        },
+        {
+          "year": "2019",
+          "event": "120-летие официально отмечено конференцией «120-солагии Қаҳрамони Тоҷикистон Шириншоҳ Шоҳтемур» в Хороге"
+        },
+        {
+          "year": "2026",
+          "event": "Капсула с землёй с его могилы в Москве передана в Таджикистан"
+        }
       ],
       "sources": [
-        { "label": "AMIIT «Ховар» (декабрь 2019) — официальная конференция «120-солагии Қаҳрамони Тоҷикистон Шириншоҳ Шоҳтемур»", "url": "https://khovar.tj/2019/12/na-shi-shirinsho-sho-temur-dar-ta-kimi-hudshonosii-millii-to-ikon-dar-horu-amoishi-ilm-bahshida-ba-120-solagii-a-ramoni-to-ikiston-doir-gardid/", "level": "official" },
-        { "label": "AMIIT «Ховар» (21.05.2026) — подтверждение звания и церемония передачи земли 18 мая 2026 года", "url": "https://khovar.tj/2026/05/udrate-ki-murdahoki-zori-namro-zinda-kard-andesha-o-dar-mavridi-ba-vatan-bargardonidani-hoki-oromgo-i-farzandoni-farzonai-millat/", "level": "official" },
-        { "label": "Архив государственного телерадиокомитета (cit.tj) — справка с датами награжд: орден «Дустӣ» 27.08.1999 и звание «Герой Таджикистана» 09.09.2006", "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=shirinen", "level": "official" },
-        { "label": "Sputnik Таджикистан (01.12.2024) — биографический очерк к 125-летию", "url": "https://tj.sputniknews.ru/20241201/shirinsho-shotemuru-let-istoriya-zhizni-natsionalnogo-geroya-tajikistan-1065332630.html", "level": "media" },
-        { "label": "Русская Википедия — место рождения, карьера, казнь 1937 года, реабилитация, звание 2006 года", "url": "https://ru.wikipedia.org/wiki/Шотемур,_Шириншо", "level": "wikipedia" },
-        { "label": "Таджикская Википедия — звание «Герой Таджикистана» 2006 года", "url": "https://tg.wikipedia.org/wiki/Шириншо_Шотемур", "level": "wikipedia" },
-        { "label": "Wikimedia Commons — подлинный фотопортрет (CC BY-SA 4.0)", "url": "https://upload.wikimedia.org/wikipedia/commons/9/99/Shirinsho_Shotemur_portrait_from_Javohiri_garonbaho.jpg", "level": "wikipedia" }
+        {
+          "label": "AMIIT «Ховар» (декабрь 2019) — официальная конференция «120-солагии Қаҳрамони Тоҷикистон Шириншоҳ Шоҳтемур»",
+          "url": "https://khovar.tj/2019/12/na-shi-shirinsho-sho-temur-dar-ta-kimi-hudshonosii-millii-to-ikon-dar-horu-amoishi-ilm-bahshida-ba-120-solagii-a-ramoni-to-ikiston-doir-gardid/",
+          "level": "official"
+        },
+        {
+          "label": "AMIIT «Ховар» (21.05.2026) — подтверждение звания и церемония передачи земли 18 мая 2026 года",
+          "url": "https://khovar.tj/2026/05/udrate-ki-murdahoki-zori-namro-zinda-kard-andesha-o-dar-mavridi-ba-vatan-bargardonidani-hoki-oromgo-i-farzandoni-farzonai-millat/",
+          "level": "official"
+        },
+        {
+          "label": "Архив государственного телерадиокомитета (cit.tj) — справка с датами награжд: орден «Дустӣ» 27.08.1999 и звание «Герой Таджикистана» 09.09.2006",
+          "url": "https://web.archive.org/web/2018/http://www.cit.tj/tojik/indexen.php?istiklol=shirinen",
+          "level": "official"
+        },
+        {
+          "label": "Sputnik Таджикистан (01.12.2024) — биографический очерк к 125-летию",
+          "url": "https://tj.sputniknews.ru/20241201/shirinsho-shotemuru-let-istoriya-zhizni-natsionalnogo-geroya-tajikistan-1065332630.html",
+          "level": "media"
+        },
+        {
+          "label": "Русская Википедия — место рождения, карьера, казнь 1937 года, реабилитация, звание 2006 года",
+          "url": "https://ru.wikipedia.org/wiki/Шотемур,_Шириншо",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Таджикская Википедия — звание «Герой Таджикистана» 2006 года",
+          "url": "https://tg.wikipedia.org/wiki/Шириншо_Шотемур",
+          "level": "wikipedia"
+        },
+        {
+          "label": "Wikimedia Commons — подлинный фотопортрет (CC BY-SA 4.0)",
+          "url": "https://upload.wikimedia.org/wikipedia/commons/9/99/Shirinsho_Shotemur_portrait_from_Javohiri_garonbaho.jpg",
+          "level": "wikipedia"
+        }
       ],
       "confidence": "partial",
-      "editorial_note": "Портрет — подлинная фотография (CC BY-SA 4.0), а не гравюра с банкноты. Титул подтверждён государственным агентством, включая официальную конференцию с названием «120-солагии Қаҳрамони Тоҷикистон Шириншоҳ Шоҳтемур». Точная дата награждения неопределённа: 27 июня 2006 (Википедия, ссылка на недоступный указ) против 9 сентября 2006 (архив cit.tj); дата ордена «Дустӣ» (27.08.1999) подтверждается только последним источником. Дата и обстоятельства реабилитации 1956 года — по архиву."
+      "editorial_note": "Портрет — подлинная фотография (CC BY-SA 4.0), а не гравюра с банкноты. Титул подтверждён государственным агентством, включая официальную конференцию с названием «120-солагии Қаҳрамони Тоҷикистон Шириншоҳ Шоҳтемур». Точная дата награждения неопределённа: 27 июня 2006 (Википедия, ссылка на недоступный указ) против 9 сентября 2006 (архив cit.tj); дата ордена «Дустӣ» (27.08.1999) подтверждается только последним источником. Дата и обстоятельства реабилитации 1956 года — по архиву.",
+      "portrait_note": {
+        "ru": "Портрет из книги «Джавохири гаронбаҳо»",
+        "tj": "Портрет аз китоби «Джавоҳри гаронбаҳо»",
+        "en": "Portrait from the book \"Javohiri garonbaho\""
+      },
+      "gallery": [
+        {
+          "file": "File:Gorno-Badakhshan, Tajikistan (30150757268).jpg",
+          "caption_ru": "Мемориал Шириншо Шотемур в Гorno-Бадахшане",
+          "caption_tj": "Ёдгоҳи Шириншо Шотемур дар Бадахшони Болоӣ",
+          "caption_en": "Memorial to Shirinsho Shotemur in Gorno-Badakhshan",
+          "license": "CC BY 2.0"
+        },
+        {
+          "file": "File:TJS 3 2010 obverse.jpg",
+          "caption_ru": "Банкнота 3 сомони (2010) с изображением Ш. Шотемур",
+          "caption_tj": "Пули 3 сомонӣ (соли 2010) бо тасвири Ш. Шотемур",
+          "caption_en": "The 3 somoni banknote (2010) depicting Sh. Shotemur",
+          "license": "Public domain"
+        }
+      ]
     }
   ]
 }

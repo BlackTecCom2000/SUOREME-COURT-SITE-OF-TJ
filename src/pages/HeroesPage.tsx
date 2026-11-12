@@ -256,6 +256,12 @@ export const HeroesPage: React.FC = () => {
             (language === 'tj' ? row.profession_tj : language === 'en' ? row.profession_en : row.profession_ru) || '';
           const years = yearsOf(row);
           const official = !!row.is_official_hero;
+          const portraitNote =
+            (language === 'tj'
+              ? row.portrait_note_tj
+              : language === 'en'
+                ? row.portrait_note_en
+                : row.portrait_note_ru) || '';
           return (
             <li key={row.id}>
               <Link
@@ -284,6 +290,11 @@ export const HeroesPage: React.FC = () => {
                     <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 h-7 rounded-full bg-theme-gold/90 text-theme-bg text-[11px] font-semibold">
                       <Sparkles size={12} aria-hidden="true" />
                       {heroBadge}
+                    </span>
+                  )}
+                  {portraitNote && (
+                    <span className="absolute bottom-0 inset-x-0 px-3 py-2 text-[10px] leading-tight text-white/85 bg-gradient-to-t from-black/75 to-transparent">
+                      {portraitNote}
                     </span>
                   )}
                 </div>
