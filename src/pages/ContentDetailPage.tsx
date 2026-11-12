@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { ArrowLeft, Calendar, ExternalLink, Newspaper, ScrollText } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { Reveal } from '../components/Reveal';
@@ -13,29 +13,45 @@ const ALLOWED: Record<string, { tj: string; ru: string; en: string }> = {
   journal: { tj: 'Нашрия', ru: 'Журнал', en: 'Journal' },
 };
 
+// The API speaks the singular content type, the routes use the plural one.
+const API_TYPE: Record<string, string> = {
+  news: 'news',
+  announcements: 'announcement',
+  vacancies: 'vacancy',
+  journal: 'journal',
+};
+
 export const ContentDetailPage: React.FC = () => {
-  const { type = '', slug = '' } = useParams();
+  const { slug = '' } = useParams();
+  const { pathname } = useLocation();
   const { language } = useLanguage();
   const [item, setItem] = useState<any | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [related, setRelated] = useState<any[]>([]);
 
+  // The route carries the section ("news/:slug"), not a `type` param — the
+  // section is derived from the path so the page can actually resolve the
+  // publication instead of falling back to 404.
+  const section = pathname.split('/').filter(Boolean)[0] || '';
+  const type = ALLOWED[section] ? section : '';
+  const apiType = API_TYPE[type] || type;
+
   useEffect(() => {
-    if (!ALLOWED[type]) { setNotFound(true); return; }
-    fetch('/api/content/' + type + '/' + slug)
+    if (!type) { setNotFound(true); return; }
+    fetch('/api/content/' + apiType + '/' + slug)
       .then((r) => { if (!r.ok) throw new Error('nf'); return r.json(); })
       .then(setItem)
       .catch(() => setNotFound(true));
-  }, [type, slug]);
+  }, [type, apiType, slug]);
 
-  // Related publications: same category or region first.
+  // Related publications: same region first.
   useEffect(() => {
-    if (!ALLOWED[type] || !slug) return;
-    fetch(`/api/content/${type}/${slug}/related`)
+    if (!type || !slug) return;
+    fetch(`/api/content/${apiType}/${slug}/related`)
       .then((r) => (r.ok ? r.json() : []))
       .then((rows: any[]) => setRelated(Array.isArray(rows) ? rows : []))
       .catch(() => setRelated([]));
-  }, [type, slug]);
+  }, [type, apiType, slug]);
 
   const title = item
     ? language === 'en' ? (item.title_en || item.title_ru) : language === 'tj' ? (item.title_tj || item.title_ru) : item.title_ru

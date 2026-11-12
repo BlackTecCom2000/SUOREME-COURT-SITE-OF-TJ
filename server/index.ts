@@ -580,10 +580,12 @@ const CSP_POLICY =
   "default-src 'self'; " +
   "script-src 'self'; " +
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-  "img-src 'self' data: blob: https://images.unsplash.com https://www.google.com; " +
+  // sud.tj serves the photographs of the official publications that were
+  // imported into the news section; the gallery links point at that origin.
+  "img-src 'self' data: blob: https://images.unsplash.com https://www.google.com https://sud.tj; " +
   "font-src 'self' https://fonts.gstatic.com data:; " +
   "connect-src 'self' ws: wss:; " +
-  "media-src 'self' blob: data:; " +
+  "media-src 'self' blob: data: https://sud.tj; " +
   "worker-src 'self' blob:; " +
   "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'";
 app.use((_req, res, next) => {

@@ -10,6 +10,67 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.34.0 - Historical personalities archive: 14 researched biographies
+- Released: 2026-11-11
+- Previous: v2.33.1
+- **The archive now carries researched biographies with sources.** Fourteen
+  personalities were compiled from official and academic sources — AMIIT
+  «Khovar» (the state news agency), the archived official biography of the
+  President of the Republic, the Institute of Language and Literature named
+  after Abuabdullo Rudaki (Academy of Sciences), the archived state broadcaster
+  www.cit.tj, and the Law of the Republic of Tajikistan No. 1378 of
+  24.02.2017 «On State Awards»:
+  - Holders of the state title «Қаҳрамони Тоҷикистон» confirmed by the
+    state's own enumeration: Sadriddin Ayni, Bobojon Ghafurov, Mirzo
+    Tursunzoda, Emomali Rahmon (the only one whose title and year are
+    confirmed by an official government source — president.tj: "Hero of
+    Tajikistan (1999)"), Nusratullo Maksum, Shirinsho Shotemur.
+  - Outstanding personalities: Nisar Muhammad Yousafzai, Abulqosim Lahuti,
+    Muhammadjon Shakuri, Mahmudhoja Behbudiy, Kamol Khujandiy, Abu Ali ibn
+    Sina, Ismail Somoni, Mumin Qanoat.
+- **No title is asserted without documentary confirmation.** The state
+  agency's own list names only six holders. Two figures are explicitly NOT
+  marked as heroes: Nisar Muhammad Yousafzai (asserted only by English
+  Wikipedia) and Abulqosim Lahuti (present only in a Wikipedia category —
+  a categorisation error, contradicted by the title list, the Russian
+  category, his own awards list and the state agency). Both are flagged for
+  editorial review.
+- **Every entry carries its evidence.** Each biography keeps the timeline,
+  the sources with their authority level (official / academic / media /
+  wikipedia), the confidence level (verified / partial /
+  needs-editorial-review) and an editorial note stating exactly what is
+  still unconfirmed — the year of Ayni's decree (1996/1997/1998), the date
+  of Shotemur's award (27 June vs 9 September 2006), the establishment date
+  of the title itself, the birth place of Ghafurov, the birth dates of
+  Lahuti, Shakuri and Qanoat.
+- **Portraits.** Seven verified historical photographs were downloaded from
+  their cited source into `data/uploads/portraits` (Ayni, Tursunzoda, Rahmon,
+  Shotemur, Lahuti, Shakuri, Behbudiy). Where no photograph exists
+  (Somoni, Ibn Sina, Kamol Khujandiy, Qanoat, Yousafzai) and where only a
+  banknote depiction is available (Ghafurov, Maksum), the portrait is left
+  empty and the UI shows the gold monogram — no image is invented.
+- New importer `scripts/seedHeroesResearch.mjs` with the source data in
+  `scripts/seed/heroes-research-*.json` (idempotent, `--dry-run` / `--force`).
+- Archive now: 14 personalities, 6 of them titled heroes, 4 categories,
+  7 portraits.
+
+## v2.33.1 - Publication detail page fix and local photo library
+- Released: 2026-11-11
+- Previous: v2.33.0
+- **Fixed:** the publication detail page always answered 404. The routes are
+  `news/:slug`, `announcements/:slug`, `vacancies/:slug`, `journal/:slug`, but
+  the component read the content type from a `type` route parameter that does
+  not exist, so `ALLOWED[type]` was undefined and the page rendered the 404
+  state. The section is now derived from the path and the API type is mapped
+  (`announcements` → `announcement`, `vacancies` → `vacancy`).
+- **Local photo library.** The 98 photographs of the imported publications are
+  downloaded from the official server into `data/uploads/2026-11` and
+  registered in the `media` table (97 files, 18.5 MB; the original URL is kept
+  in the media row for attribution). The site no longer hotlinks sud.tj.
+  `scripts/importSourceImages.mjs` performs the import idempotently.
+- CSP allows `https://sud.tj` in `img-src`/`media-src` for the one photograph
+  that could not be downloaded (the page falls back to the original URL).
+
 ## v2.33.0 - Official content migration and historical archive
 - Released: 2026-11-11
 - Previous: v2.32.0

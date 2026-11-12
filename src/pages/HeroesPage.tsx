@@ -181,7 +181,7 @@ export const HeroesPage: React.FC = () => {
             {L(language, 'Ҳамаи', 'Все', 'All')}
             {total > 0 && <span className="ml-1.5 font-mono opacity-70">{total}</span>}
           </button>
-          {HERO_CATEGORIES.filter((c) => c.id !== 'official-hero' || officialOnly).map((c) => {
+          {HERO_CATEGORIES.filter((c) => c.id !== 'official-hero' && (counts.find((x) => x.category === c.id)?.n || 0) > 0).map((c) => {
             const count = counts.find((x) => x.category === c.id)?.n || 0;
             const active = category === c.id;
             return (
