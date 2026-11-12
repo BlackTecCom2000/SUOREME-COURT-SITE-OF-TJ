@@ -4,6 +4,7 @@ import { ArrowLeft, Award, BookOpen, Calendar, Images, Landmark, MapPin, ScrollT
 import { useLanguage } from '../context/LanguageContext';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { HeroImage } from '../components/HeroImage';
 import { heroCategoryLabel, type HeroRow } from '../hooks/useHeroes';
 
 const L = (language: string, tj: string, ru: string, en: string) =>
@@ -162,16 +163,12 @@ export const HeroProfilePage: React.FC = () => {
         {/* Portrait / identity */}
         <aside className="space-y-4">
           <div className="glass glass-card rounded-2xl border overflow-hidden">
-            <div className="relative h-72 bg-theme-bg/40">
+            <div className="relative aspect-[4/5] bg-theme-bg/40">
               {hero.portrait_url ? (
-                <img
+                <HeroImage
                   src={hero.portrait_url}
                   alt={name}
-                  loading="lazy"
                   className="w-full h-full object-cover object-top"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = 'none';
-                  }}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
@@ -276,10 +273,9 @@ export const HeroProfilePage: React.FC = () => {
                 {gallery.map((g: any, i: number) => (
                   <li key={i} className="glass glass-card rounded-2xl border overflow-hidden">
                     <a href={g.file} target="_blank" rel="noopener noreferrer" className="block">
-                      <img
+                      <HeroImage
                         src={g.file}
                         alt={g.caption_ru || ''}
-                        loading="lazy"
                         className="w-full h-44 object-cover"
                       />
                     </a>

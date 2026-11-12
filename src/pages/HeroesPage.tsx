@@ -4,6 +4,7 @@ import { Landmark, Search, ScrollText, Sparkles, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { HeroImage } from '../components/HeroImage';
 import { HERO_CATEGORIES, heroCategoryLabel, type HeroRow } from '../hooks/useHeroes';
 
 const L = (language: string, tj: string, ru: string, en: string) =>
@@ -268,16 +269,14 @@ export const HeroesPage: React.FC = () => {
                 to={`/heroes/${row.slug}`}
                 className="group block h-full glass glass-card rounded-2xl border overflow-hidden hover:border-theme-gold/50 transition-colors"
               >
-                <div className="relative h-52 overflow-hidden bg-theme-bg/40">
+                {/* Portraits are mostly 3:4 (photographs, banknote crops); a
+                    short wide frame would zoom them into the top of a head. */}
+                <div className="relative aspect-[4/5] overflow-hidden bg-theme-bg/40">
                   {row.portrait_url ? (
-                    <img
+                    <HeroImage
                       src={row.portrait_url}
-                      alt=""
-                      loading="lazy"
+                      alt={name}
                       className="w-full h-full object-cover object-top"
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.display = 'none';
-                      }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">

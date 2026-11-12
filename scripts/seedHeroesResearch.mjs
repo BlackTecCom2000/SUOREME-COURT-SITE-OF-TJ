@@ -13,6 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Database from 'better-sqlite3';
+import sharp from 'sharp';
 
 const root = process.cwd();
 const dbPath = path.join(root, 'data', 'sudtj.sqlite');
@@ -102,8 +103,9 @@ const localizeGallery = async (entries, slug) => {
   const out = [];
   for (let i = 0; i < (entries || []).length; i++) {
     const entry = entries[i];
-    const ext = (entry.file.match(/\.(jpe?g|png|webp|gif)$/i)?.[1] || 'jpg').toLowerCase();
-    const filename = `hero-${slug}-g${i + 1}.${ext}`;
+    // The library is compressed locally, so every file is stored as JPEG
+    // regardless of the source format.
+    const filename = `hero-${slug}-g${i + 1}.jpg`;
     const target = path.join(portraitDir, filename);
     try {
       if (!fs.existsSync(target)) {
@@ -111,7 +113,7 @@ const localizeGallery = async (entries, slug) => {
         await new Promise((r) => setTimeout(r, 2500));
         const api =
           'https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo' +
-          '&iiprop=url&iiurlwidth=1200&titles=' + encodeURIComponent(entry.file);
+          '&iiprop=url&iiurlwidth=1000&titles=' + encodeURIComponent(entry.file);
         const j = await fetch(api, {
           headers: { 'User-Agent': 'sud-tj-portal/2.35 (+archive importer)' },
         })
@@ -124,7 +126,7 @@ const localizeGallery = async (entries, slug) => {
         const fallback =
           'https://commons.wikimedia.org/wiki/Special:FilePath/' +
           encodeURIComponent(entry.file.replace(/^File:/, '')) +
-          '?width=1200';
+          '?width=1000';
         const imageUrl = ii ? ii.thumburl || ii.url : fallback;
         const res = await fetch(imageUrl, {
           headers: { 'User-Agent': 'sud-tj-portal/2.35 (+archive importer)' },
@@ -133,7 +135,10 @@ const localizeGallery = async (entries, slug) => {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const type = res.headers.get('content-type') || 'image/jpeg';
         if (!type.startsWith('image/')) throw new Error('not an image: ' + type);
-        if (!DRY) fs.writeFileSync(target, Buffer.from(await res.arrayBuffer()));
+        if (!DRY) {
+          fs.writeFileSync(target, Buffer.from(await res.arrayBuffer()));
+          await compress(target);
+        }
       }
       out.push({
         file: `/api/portraits/${filename}`,
@@ -159,7 +164,7 @@ const thumbnailFor = async (url) => {
   if (!/upload\.wikimedia\.org\/wikipedia\/commons\//.test(url)) return url;
   const api =
     'https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo' +
-    '&iiprop=url&iiurlwidth=1200&titles=' +
+    '&iiprop=url&iiurlwidth=1000&titles=' +
     encodeURIComponent('File:' + decodeURIComponent(url.split('/').pop()));
   try {
     const j = await fetch(api, {
@@ -174,11 +179,26 @@ const thumbnailFor = async (url) => {
   return url;
 };
 
+/**
+ * Wikimedia serves fixed anonymous thumbnail buckets (960/1280 px) and keeps
+ * the original quality, so a freshly downloaded file can still weigh half a
+ * megabyte. Everything is re-encoded locally as mozjpeg q78 — the same pass
+ * scripts/compressPortraits.mjs applies to the existing library.
+ */
+const compress = async (target) => {
+  const tmp = `${target}.tmp`;
+  const img = sharp(target).resize({ width: 1280, withoutEnlargement: true });
+  await img.jpeg({ quality: 78, mozjpeg: true }).toFile(tmp);
+  fs.rmSync(target, { force: true });
+  fs.renameSync(tmp, target);
+};
+
 /** Download the portrait into the media library and return its public path. */
 const localizePortrait = async (url, slug) => {
   if (!url || !/^https?:\/\//.test(url)) return url || null;
-  const ext = (url.match(/\.(jpe?g|png|webp|gif)$/i)?.[1] || 'jpg').toLowerCase();
-  const filename = `hero-${slug}.${ext}`;
+  // The library is compressed locally, so every file is stored as JPEG
+  // regardless of the source format.
+  const filename = `hero-${slug}.jpg`;
   const target = path.join(portraitDir, filename);
   if (!fs.existsSync(target)) {
     const res = await fetch(await thumbnailFor(url), {
@@ -187,7 +207,10 @@ const localizePortrait = async (url, slug) => {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const type = res.headers.get('content-type') || 'image/jpeg';
     if (!type.startsWith('image/')) throw new Error('not an image: ' + type);
-    if (!DRY) fs.writeFileSync(target, Buffer.from(await res.arrayBuffer()));
+    if (!DRY) {
+      fs.writeFileSync(target, Buffer.from(await res.arrayBuffer()));
+      await compress(target);
+    }
   }
   return `/api/portraits/${filename}`;
 };

@@ -348,3 +348,9 @@ Antigravity (AI Orchestrator)
 - AFTER: GET /api/portraits/:file serves them from the origin (strict file-name pattern, no path traversal, nosniff, one month of cache). The archive stores that path, the importer writes it, and the same URL works on the portal and through the static deployment.
 - Verify (live): /api/portraits/hero-gafurov.jpg, hero-makhsum.jpg and hero-ayni-g1.jpg answer 200 image/jpeg; /heroes/gafurov shows the bust with its caption and four gallery images, no broken image.
 - Packaging: backup 2.35.3 → commit "v2.35.3: serve the archive images through the API" → tag v2.35.3 → push release-2.0 + main mirror + tag. Cloudflare Pages redeployed with the new client.
+
+## v2.35.4 IMAGE SIZES FIXED, LIBRARY COMPRESSED 2026-11-13 → v2.35.4
+- BEFORE: archive cards had a short wide frame (h-52 ≈ 460x208) with object-cover; the portraits are mostly 3:4, so they were zoomed ~2x and top-cropped - Shotemur showed only the top of a head, Maksum showed banknote guilloche with no face. Wikimedia anonymous thumbnail buckets (960/1280 px, original quality) left freshly imported files at 0.4-1 MB.
+- AFTER: card and biography frames are aspect-[4/5]; images wider than tall switch to object-contain via the new adaptive HeroImage component. The library is compressed locally with sharp (mozjpeg q78, max 1280 px, second pass 960 px/q70): 8.55 MB → 3.44 MB for 24 files, heaviest 300 KB. The importer compresses every new download and stores everything as JPEG.
+- Verify: browser on the production build - full faces on all six cards, banknote whole with its caption, no broken images; tsc 0; smoke endpoints 200.
+- Packaging: backup 2.35.4 → commit "v2.35.4: image sizes fixed and the library compressed" → tag v2.35.4 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed and verified.

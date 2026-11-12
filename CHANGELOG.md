@@ -10,6 +10,27 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.4 - Image sizes fixed and the library compressed
+- Released: 2026-11-13
+- Previous: v2.35.3
+- **The frames fit the pictures now.** The archive cards used a short wide
+  frame with `object-cover`; portraits are mostly 3:4, so a 460x208 frame
+  zoomed them about twice and showed the top of a head instead of a face -
+  Shotemur was all hair and Maksum was guilloche pattern with no face at
+  all. The frames on the archive cards and on the biography page are now
+  `aspect-[4/5]`, and any image clearly wider than tall (a banknote, a
+  memorial wall) switches to `object-contain` instead of being cut up.
+- **The media library lost half its weight.** Wikimedia serves anonymous
+  thumbnail buckets of 960/1280 px at original quality, so freshly imported
+  files weighed 0.4-1 MB. They are re-encoded locally with sharp
+  (mozjpeg q78, max 1280 px; a second pass at 960 px / q70 for the stubborn
+  ones): 8.55 MB became 3.44 MB for the same 24 files, the heaviest is
+  300 KB (`scripts/compressPortraits.mjs`). The importer runs the same
+  compression on every new download and stores everything as JPEG.
+- Verified in the browser on the production build: full faces on the cards,
+  the banknote shown whole with its honest caption, no broken images,
+  tsc 0 errors, all smoke endpoints 200.
+
 ## v2.35.3 - Archive images served through the API
 - Released: 2026-11-12
 - Previous: v2.35.2
