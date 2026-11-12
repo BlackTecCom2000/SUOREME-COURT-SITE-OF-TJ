@@ -159,7 +159,7 @@ export const HeroProfilePage: React.FC = () => {
         {/* The biography arrives from the API after the first paint; the
             reserved height keeps the footer from jumping when it lands. */}
         <div className="min-h-[70vh]">
-          <article className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
+          <article className="grid gap-8 lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
         {/* Portrait / identity */}
         <aside className="space-y-4">
           <div className="glass glass-card rounded-2xl border overflow-hidden">

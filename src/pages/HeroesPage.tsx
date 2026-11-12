@@ -235,10 +235,10 @@ export const HeroesPage: React.FC = () => {
         /* Skeleton cards keep the footer below the fold while the archive is
            fetched, so the page does not jump when the real cards arrive
            (that jump was worth 0.42 CLS). */
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
-          {Array.from({ length: 9 }).map((_, i) => (
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-hidden="true">
+          {Array.from({ length: 8 }).map((_, i) => (
             <li key={i} className="glass glass-card rounded-2xl border overflow-hidden animate-pulse">
-              <div className="h-52 bg-theme-surface/40" />
+              <div className="aspect-[4/5] bg-theme-surface/40" />
               <div className="p-5 space-y-2">
                 <div className="h-3 w-2/3 rounded bg-theme-surface/50" />
                 <div className="h-3 w-full rounded bg-theme-surface/40" />
@@ -249,7 +249,7 @@ export const HeroesPage: React.FC = () => {
         </ul>
       )}
 
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 min-h-[60vh] content-start">
+      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 min-h-[60vh] content-start">
         {rows.map((row) => {
           const name =
             (language === 'tj' ? row.name_tj : language === 'en' ? row.name_en : row.name_ru) || row.name_ru;

@@ -354,3 +354,9 @@ Antigravity (AI Orchestrator)
 - AFTER: card and biography frames are aspect-[4/5]; images wider than tall switch to object-contain via the new adaptive HeroImage component. The library is compressed locally with sharp (mozjpeg q78, max 1280 px, second pass 960 px/q70): 8.55 MB → 3.44 MB for 24 files, heaviest 300 KB. The importer compresses every new download and stores everything as JPEG.
 - Verify: browser on the production build - full faces on all six cards, banknote whole with its caption, no broken images; tsc 0; smoke endpoints 200.
 - Packaging: backup 2.35.4 → commit "v2.35.4: image sizes fixed and the library compressed" → tag v2.35.4 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed and verified.
+
+## v2.35.5 BALANCED CARD SIZES ACROSS /HEROES 2026-11-13 → v2.35.5
+- BEFORE: at 1920 px the archive showed 3 columns of 515x850 px cards (643 px image area) and the biography sidebar was a fixed 320 px beside a 1232 px text column.
+- AFTER: the archive grid steps to 4 columns from 1280 px (xl:grid-cols-4, card ≈381 px wide, 476 px portrait frame); skeleton cards use the same aspect-[4/5] shape (8 instead of 9, no CLS on data landing). The biography portrait column is 360 px so the identity and decree cards keep their proportions.
+- Verify: 1920 px - 4 columns, no broken images; mobile 390 px - single column, no horizontal overflow; tsc 0; smoke endpoints 200.
+- Packaging: backup 2.35.5 → commit "v2.35.5: balanced card sizes across /heroes" → tag v2.35.5 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed and verified.

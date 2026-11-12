@@ -10,6 +10,22 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.5 - Balanced card sizes across /heroes
+- Released: 2026-11-13
+- Previous: v2.35.4
+- On a wide screen the archive showed three columns of 515 px cards with a
+  643 px image area - each card taller than one can read comfortably - and
+  the biography sidebar sat at a fixed 320 px next to a 1232 px text
+  column. The proportions did not match the rest of the portal.
+- The archive grid now steps to four columns from 1280 px
+  (`xl:grid-cols-4`): a card is about 381 px wide with a 476 px portrait
+  frame, and the loading skeletons follow the same shape, so nothing jumps
+  when the data lands.
+- The biography page gives the portrait column 360 px, which keeps the
+  identity card and the decree card in proportion with the text.
+- Verified at 1920 px (4 columns, no broken images) and at mobile width
+  (single column, no horizontal overflow).
+
 ## v2.35.4 - Image sizes fixed and the library compressed
 - Released: 2026-11-13
 - Previous: v2.35.3
