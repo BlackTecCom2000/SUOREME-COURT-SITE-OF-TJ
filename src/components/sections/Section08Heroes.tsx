@@ -141,22 +141,28 @@ export const Section08Heroes: React.FC = () => {
                     loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover opacity-40"
                   />
-                  {photoOk[hero.id] !== false && (
-                    <img
-                      src={hero.portrait}
-                      alt=""
-                      aria-hidden="true"
-                      loading="lazy"
-                      onLoad={() => setPhotoOk((p) => ({ ...p, [hero.id]: true }))}
-                      onError={() => setPhotoOk((p) => ({ ...p, [hero.id]: false }))}
-                      /* The portraits are 3:4 photographs; covering this wide
-                         window would zoom them into a forehead. Contained and
-                         anchored to the right edge, the whole portrait is
-                         visible and the palace backdrop fills the letterbox. */
-                      className="absolute inset-0 w-full h-full object-contain object-right-bottom"
-                      style={{ opacity: photoOk[hero.id] ? 1 : 0, transition: 'opacity 0.8s ease' }}
-                    />
-                  )}
+                  <img
+                    src={hero.portrait}
+                    alt=""
+                    aria-hidden="true"
+                    /* The cinematic scroll stage wraps this section in
+                       transformed ancestors and Chrome never fires the
+                       lazy-load intersection inside them, so the active
+                       portrait must load eagerly — otherwise the photo
+                       simply never appears. Hidden slides stay lazy. */
+                    loading={active ? 'eager' : 'lazy'}
+                    onLoad={() => setPhotoOk((p) => ({ ...p, [hero.id]: true }))}
+                    onError={() => setPhotoOk((p) => ({ ...p, [hero.id]: false }))}
+                    /* The portraits are 3:4 photographs; covering this wide
+                       window would zoom them into a forehead. Contained and
+                       anchored to the right edge, the whole portrait is
+                       visible and the palace backdrop fills the letterbox. */
+                    className="absolute inset-0 w-full h-full object-contain object-right-bottom"
+                    /* Hide on error but never unmount: a portrait removed
+                       from the DOM could not recover from a transient
+                       failure (origin restart, tunnel drop). */
+                    style={{ opacity: photoOk[hero.id] === false ? 0 : 1, transition: 'opacity 0.8s ease' }}
+                  />
                   {/* Fallback monogram while the portrait file is missing */}
                   {photoOk[hero.id] === false && (
                     <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">

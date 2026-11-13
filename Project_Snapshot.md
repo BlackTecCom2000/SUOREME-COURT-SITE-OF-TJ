@@ -372,3 +372,9 @@ Antigravity (AI Orchestrator)
 - AFTER: aspect-video (exact 16:9 at any width), min-h-[440px] guard on mobile, responsive type scale (h3 text-3xl/4xl/6xl, excerpt line-clamp-2 until lg) so name block and glass card never overlap; portraits stay object-contain right-anchored so they never disappear.
 - Verify: 1920 px ratio 1.78 no overlap; 1024 px ratio 1.78 no overlap; mobile guard 440 px active, no horizontal overflow; tsc 0; smoke 200.
 - Packaging: backup 2.35.7 → commit "v2.35.7: adaptive 16:9 heroes showcase" → tag v2.35.7 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed.
+
+## v2.35.8 COMPACT FOOTER SIZING 2026-11-13 → v2.35.8
+- BEFORE: the footer block was visually heavy - pt-10/pb-6 container, mb-8 gaps, p-5 cards, 260 px courts scroll, 200 px map well, py-3 bottom bar.
+- AFTER: sizes only reduced, no element added/removed/restructured - container pt-6/pb-4, mb-4 gaps, p-4 cards (contact rows p-2), mb-2 headings, grid gap 4, courts list 200 px, map well min-h 150 px radius 16, bottom bar py-2. Marquee keeps admin-configured tile size (64 px cap tried and reverted - labels crushed by flex-shrink).
+- Verify: 1920x1080 and 390x844 in browser - compact, readable, no horizontal overflow; tsc 0; build success; smoke 200.
+- Packaging: backup 2.35.8 → commit "v2.35.8: compact footer sizing" → tag v2.35.8 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed.

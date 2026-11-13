@@ -10,6 +10,22 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.8 - Compact footer sizing
+- Released: 2026-11-13
+- Previous: v2.35.7
+- The footer was too tall. Sizes only were reduced - no element was added,
+  removed or restructured: section paddings (pt-10/pb-6 -> pt-6/pb-4),
+  inter-block margins (mb-8 -> mb-4), card paddings (p-5 -> p-4, contact
+  rows p-3 -> p-2), heading gaps (mb-3 -> mb-2), grid gap (6 -> 4),
+  courts list scroll cap (260 -> 200 px), map well (min-h 200 -> 150 px,
+  radius 20 -> 16 px) and the bottom bar (py-3 -> py-2).
+- The useful-sites marquee keeps its admin-configured tile size; a
+  64 px cap was tried and reverted because flex-shrink crushed the
+  tile labels to unreadable height.
+- QA: tsc --noEmit 0 errors, build:client success, smoke endpoints 200,
+  verified at 1920x1080 and 390x844 (no horizontal overflow).
+
+
 ## v2.35.7 - Adaptive 16:9 heroes showcase on the home page
 - Released: 2026-11-13
 - Previous: v2.35.6
