@@ -384,3 +384,9 @@ Antigravity (AI Orchestrator)
 - AFTER: new scripts/github-release.mjs — idempotent publisher (token from Git credential manager, notes from CHANGELOG.md, auto-notes fallback); `--backfill` created all 90 missing Releases; AGENTS.md release protocol now has mandatory step 6: every tag must have a GitHub Release.
 - Verify: releases list on GitHub — v2.35.8 body from CHANGELOG (811 chars); backfill exit 0; tsc 0; build success; smoke 200.
 - Packaging: backup 2.35.9 → commit "v2.35.9: github releases discipline + release publisher script" → tag v2.35.9 → push release-2.0 + main mirror + tag → github-release 2.35.9.
+
+## v2.36.0 LIQUID GLASS UPGRADE 2026-11-13 → v2.36.0
+- BEFORE: glass material was four layers (tint/blur/rim/highlight); three.js chunk (946 KB) modulepreloaded on first paint via manualChunks; Static3DFallback lived inside Adaptive3DLoader (pulled R3F transitively).
+- AFTER: fifth "lens" layer (inner refraction band + chromatic dispersion hairline) on .glass/.content-card rims; interactive glass-cards lift 2px on hover / press on :active (composite-only, reduced-motion safe); 3D section lazy-loaded via React.lazy + Suspense gated by inView/shouldMount; removed `three` manualChunks entry.
+- Verify: tsc 0; build success; LCP 115 ms / CLS 0.00 / TTFB 16 ms at 1920x1080; no horizontal overflow at 390 px; smoke 200.
+- Packaging: backup 2.36.0 → commit "v2.36.0: liquid-glass upgrade + lazy 3D" → tag v2.36.0 → push release-2.0 + main mirror + tag → github-release 2.36.0.

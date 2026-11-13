@@ -799,6 +799,14 @@ html.is-morphing-theme ::view-transition-new(root) {
     border-radius: inherit;
     padding: var(--lg-rim-width);
     background: linear-gradient(
+      /* v2.36.0: chromatic dispersion hairline (top cool, bottom warm). */
+      180deg,
+      var(--lg-chroma-cool) 0%,
+      transparent 26%,
+      transparent 74%,
+      var(--lg-chroma-warm) 100%
+    ),
+    linear-gradient(
       150deg,
       var(--lg-rim-top) 0%,
       var(--lg-rim-side) 32%,
@@ -880,6 +888,16 @@ html.is-morphing-theme ::view-transition-new(root) {
     border-radius: inherit;
     padding: var(--lg-rim-width);
     background:
+      /* v2.36.0: chromatic dispersion — faint cool fringe at the top edge,
+         warm at the bottom, as if white light split at the bevel.
+         Shares the mask, so it stays a hairline. */
+      linear-gradient(
+        180deg,
+        var(--lg-chroma-cool) 0%,
+        transparent 26%,
+        transparent 74%,
+        var(--lg-chroma-warm) 100%
+      ),
       radial-gradient(
         120% 120% at var(--lg-px, 30%) var(--lg-py, 0%),
         rgba(255, 255, 255, 0.55) 0%,
@@ -982,7 +1000,9 @@ html.is-morphing-theme ::view-transition-new(root) {
     border-color: var(--glass-border-scene);
     box-shadow: var(--glass-shadow), var(--glass-highlight), inset 0 0 40px rgba(0, 0, 0, 0.12);
   }
-  /* Soft inner top highlight + edge reflection — ultra-subtle so background stays clean. */
+  /* Soft inner top highlight + edge reflection — ultra-subtle so background stays clean.
+     v2.36.0: the same layer now carries the lens — the darker compressed band
+     just inside the rim where real glass bends the background. */
   .glass::before,
   .content-card::before {
     content: "";
@@ -990,7 +1010,7 @@ html.is-morphing-theme ::view-transition-new(root) {
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
-    box-shadow: var(--glass-highlight-inner);
+    box-shadow: var(--glass-highlight-inner), var(--lg-lens-inner);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 18%);
   }
   .glass-card {
@@ -1000,13 +1020,25 @@ html.is-morphing-theme ::view-transition-new(root) {
                 box-shadow 240ms ease,
                 background-color 240ms ease;
   }
+  /* v2.36.0: liquid hover — the card rises 2px as one rigid lens (composite-
+     only transform, GPU-composited, no layout/paint) while the shadow deepens
+     below it. :active presses it back into the surface. Reduced motion gets
+     the same colour/border/shadow change with no movement. */
   a.glass-card:hover, button.glass-card:hover, div.glass-card:hover, section.glass-card:hover, article.glass-card:hover {
     background: var(--glass-surface-hover);
     border-color: var(--glass-border-hover);
     box-shadow: var(--glass-shadow-hover), var(--glass-highlight);
+    transform: var(--lg-lift);
   }
   a.glass-card:active, button.glass-card:active {
     background: var(--glass-surface-active);
+    transform: scale(var(--lg-press-scale));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    a.glass-card:hover, button.glass-card:hover, div.glass-card:hover, section.glass-card:hover, article.glass-card:hover,
+    a.glass-card:active, button.glass-card:active {
+      transform: none;
+    }
   }
   .glass-panel {
     border-radius: var(--glass-radius-panel);

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useTheme } from '../../context/ThemeContext';
 import { useDeviceCapability } from '../../context/DeviceCapabilityContext';
-import { Adaptive3DLoader, Static3DFallback } from './Adaptive3DLoader';
+import { Static3DFallback } from './Static3DFallback';
 import { getSymbolAssetPaths } from './ModelAssetRegistry';
 
 export type JusticeSymbolType = 'themis' | 'scales' | 'hammer';
+
+const Adaptive3DLoader = lazy(() => import('./Adaptive3DLoader').then(m => ({ default: m.Adaptive3DLoader })));
 
 interface JusticeScene3DProps {
   activeSymbol: JusticeSymbolType;
@@ -60,16 +62,18 @@ export const JusticeScene3D: React.FC<JusticeScene3DProps> = ({
         <Static3DFallback symbol={activeSymbol} fallbackPath={paths.fallback} />
       ) : (
         shouldMount && (
-          <Adaptive3DLoader 
-            activeSymbol={activeSymbol} 
-            inView={inView} 
-            tier={tier} 
-            isDark={isDark} 
-            isInsightMode={isInsightMode} 
-            balanceState={balanceState} 
-            triggerStrike={triggerStrike} 
-            onDecision={onDecision} 
-          />
+          <Suspense fallback={<div className="absolute inset-0 flex items-center justify-center"><div className="w-8 h-8 rounded-full border-2 border-theme-gold border-t-transparent animate-spin" /></div>}>
+            <Adaptive3DLoader
+              activeSymbol={activeSymbol}
+              inView={inView}
+              tier={tier}
+              isDark={isDark}
+              isInsightMode={isInsightMode}
+              balanceState={balanceState}
+              triggerStrike={triggerStrike}
+              onDecision={onDecision}
+            />
+          </Suspense>
         )
       )}
     </div>

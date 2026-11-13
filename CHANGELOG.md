@@ -10,6 +10,32 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.36.0 - Liquid-glass upgrade: lens, chromatic dispersion, card lift + lazy 3D
+- Released: 2026-11-13
+- Previous: v2.35.9
+- Glass material upgraded toward "liquid" (not frosted) by ADDING a fifth layer
+  (lens) on top of the existing four-layer system — blur/saturate untouched
+  (v2.19.3 hue-drift guard preserved):
+    * new tokens in src/styles/tokens.css: --lg-lens-inner (compressed darker
+      band just inside the rim), --lg-chroma-cool / --lg-chroma-warm (faint
+      chromatic dispersion fringes), --lg-lift / --lg-press-scale.
+    * .glass::before / .content-card::before now carry --lg-lens-inner.
+    * both rim ::after variants (pointer-tracked radial + card linear) gained
+      a cool-top / warm-bottom chroma hairline sharing the same mask.
+    * interactive glass-cards now lift 2px on hover and press on :active
+      (composite-only transform; reduced-motion keeps colour/border/shadow
+      change with no movement).
+- Performance: @react-three/fiber chunk no longer modulepreloaded on first
+  paint — JusticeScene3D now lazy-imports Adaptive3DLoader via React.lazy
+  + Suspense, gated by the existing inView/shouldMount logic; removed the
+  `three` manualChunks entry so Vite does not preload it. three.js (946 KB)
+  loads only when the 3D section enters the viewport. LCP 115 ms, CLS 0.00,
+  TTFB 16 ms measured via chrome-devtools trace at 1920x1080.
+- Static3DFallback extracted to its own module so the low-end tier no longer
+  pulls the R3F bundle transitively.
+- QA: tsc --noEmit 0 errors, build:client success, smoke endpoints 200,
+  no horizontal overflow at 390 px, touch targets >= 44 px preserved.
+
 ## v2.35.9 - GitHub Releases discipline + release publisher script
 - Released: 2026-11-13
 - Previous: v2.35.8

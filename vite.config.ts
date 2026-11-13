@@ -43,7 +43,6 @@ export default defineConfig({
       output: process.env.npm_lifecycle_event === 'build:server' ? undefined : {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
           editor: ['@tiptap/react', '@tiptap/starter-kit'],
         },
       },

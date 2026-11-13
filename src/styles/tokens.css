@@ -304,6 +304,23 @@
   --lg-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.30);
   --lg-highlight-edge: inset 0 1px 0 rgba(255, 255, 255, 0.55);
 
+  /* Layer 5 — lens (v2.36.0). Real glass refracts at its edge: the
+     background compresses into a slightly darker band just inside the rim
+     and splits into faint warm/cool fringes (chromatic dispersion).
+     Alphas stay tiny — the lens must sell depth without darkening content
+     or breaking the "background stays visible" rule. */
+  --lg-lens-inner:
+    inset 0 0 0 1px rgba(2, 6, 14, 0.05),
+    inset 0 0 10px -7px rgba(2, 6, 14, 0.30);
+  --lg-chroma-cool: rgba(186, 216, 255, 0.20);
+  --lg-chroma-warm: rgba(223, 190, 126, 0.14);
+
+  /* Interactive lift (v2.36.0). Composite-only motion: translateY on hover,
+     a barely-there press on :active. Reduced-motion users keep everything
+     static (the global reduce block already kills the transition). */
+  --lg-lift: translateY(-2px);
+  --lg-press-scale: 0.985;
+
   /* Elevation. Bigger surfaces read as thicker: more blur, deeper shadow. */
   --lg-shadow:
     0 1px 2px rgba(0, 0, 0, 0.06),
