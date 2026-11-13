@@ -10,6 +10,23 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.35.9 - GitHub Releases discipline + release publisher script
+- Released: 2026-11-13
+- Previous: v2.35.8
+- Bare tags were invisible on the repo front page: only one GitHub Release
+  object (v2.0) existed while 90 tags sat without one. Every release now must
+  publish a GitHub Release object, enforced by a new step 6 of the mandatory
+  release protocol in AGENTS.md.
+- New `scripts/github-release.mjs`: idempotent publisher that takes the
+  release token from the Git credential manager (no tokens in the repo) and
+  the release body from the CHANGELOG.md section of that version, with
+  auto-generated notes as fallback. `--backfill` catches up every tag that
+  lacks a Release.
+- Backfill executed: 90 GitHub Releases created (v2.1.0 ... v2.35.8), each
+  with its changelog section as the body.
+- QA: tsc --noEmit 0 errors, build:client success, smoke endpoints 200.
+
+
 ## v2.35.8 - Compact footer sizing
 - Released: 2026-11-13
 - Previous: v2.35.7

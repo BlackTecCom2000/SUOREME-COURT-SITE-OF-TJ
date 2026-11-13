@@ -31,7 +31,14 @@ no matter how small. Never skip it because a change "looks cosmetic".
    If the default branch must move: `git push -f origin main` (only ever
    `release-2.0`'s exact commit). Retry on network flakiness; do not give up
    after one failure.
-6. **Verify remote.** `git ls-remote origin refs/heads/release-2.0 refs/heads/main refs/tags/v<version>`.
+6. **GitHub Release object — MANDATORY, never optional.** Every tag must also
+   exist as a GitHub Release on the repo front page; a bare tag is invisible
+   to people and to the Releases page. Run:
+   `node scripts/github-release.mjs --version <X.Y.Z>` (notes are taken from
+   CHANGELOG.md automatically). It is idempotent and pulls its token from the
+   Git credential manager — never commit tokens. To catch up after a gap:
+   `node scripts/github-release.mjs --backfill`.
+7. **Verify remote.** `git ls-remote origin refs/heads/release-2.0 refs/heads/main refs/tags/v<version>`.
 
 Automate with:
 

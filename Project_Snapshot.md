@@ -377,4 +377,10 @@ Antigravity (AI Orchestrator)
 - BEFORE: the footer block was visually heavy - pt-10/pb-6 container, mb-8 gaps, p-5 cards, 260 px courts scroll, 200 px map well, py-3 bottom bar.
 - AFTER: sizes only reduced, no element added/removed/restructured - container pt-6/pb-4, mb-4 gaps, p-4 cards (contact rows p-2), mb-2 headings, grid gap 4, courts list 200 px, map well min-h 150 px radius 16, bottom bar py-2. Marquee keeps admin-configured tile size (64 px cap tried and reverted - labels crushed by flex-shrink).
 - Verify: 1920x1080 and 390x844 in browser - compact, readable, no horizontal overflow; tsc 0; build success; smoke 200.
-- Packaging: backup 2.35.8 → commit "v2.35.8: compact footer sizing" → tag v2.35.8 → push release-2.0 + main mirror + tag → Cloudflare Pages redeployed.
+- Packaging: backup 2.35.8 → commit "v2.35.8: compact footer sizing + heroes fallback portraits and eager/lazy photo fixes" → tag v2.35.8 → push release-2.0 + main mirror + tag → Cloudflare deploy blocked by Cloudflare "Workers API availability" incident; production rolled back to the last good deployment (v2.35.7) until the incident clears.
+
+## v2.35.9 GITHUB RELEASES DISCIPLINE 2026-11-13 → v2.35.9
+- BEFORE: only one GitHub Release object (v2.0) existed; 90 tags had no Release on the repo front page.
+- AFTER: new scripts/github-release.mjs — idempotent publisher (token from Git credential manager, notes from CHANGELOG.md, auto-notes fallback); `--backfill` created all 90 missing Releases; AGENTS.md release protocol now has mandatory step 6: every tag must have a GitHub Release.
+- Verify: releases list on GitHub — v2.35.8 body from CHANGELOG (811 chars); backfill exit 0; tsc 0; build success; smoke 200.
+- Packaging: backup 2.35.9 → commit "v2.35.9: github releases discipline + release publisher script" → tag v2.35.9 → push release-2.0 + main mirror + tag → github-release 2.35.9.
