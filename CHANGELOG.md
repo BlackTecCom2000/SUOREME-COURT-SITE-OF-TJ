@@ -10,6 +10,16 @@ for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
+## v2.36.1 - Animation polish: ease-out on legacy transitions
+- Released: 2026-11-13
+- Previous: v2.36.0
+- Animation pass on legacy minified CSS (interactive-installation, justice-hotspot,
+  network-zoom-controls): replaced default `ease` / 1s transforms with `ease-out`
+  and shorter durations; added explicit easing to `.25s`/`.2s` shorthands.
+  Composite-only (filter/transform/color), no layout thrash, reduced-motion
+  already globally enforced.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.36.0 - Liquid-glass upgrade: lens, chromatic dispersion, card lift + lazy 3D
 - Released: 2026-11-13
 - Previous: v2.35.9

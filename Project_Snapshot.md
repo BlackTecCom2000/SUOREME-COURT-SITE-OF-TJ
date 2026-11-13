@@ -390,3 +390,9 @@ Antigravity (AI Orchestrator)
 - AFTER: fifth "lens" layer (inner refraction band + chromatic dispersion hairline) on .glass/.content-card rims; interactive glass-cards lift 2px on hover / press on :active (composite-only, reduced-motion safe); 3D section lazy-loaded via React.lazy + Suspense gated by inView/shouldMount; removed `three` manualChunks entry.
 - Verify: tsc 0; build success; LCP 115 ms / CLS 0.00 / TTFB 16 ms at 1920x1080; no horizontal overflow at 390 px; smoke 200.
 - Packaging: backup 2.36.0 → commit "v2.36.0: liquid-glass upgrade + lazy 3D" → tag v2.36.0 → push release-2.0 + main mirror + tag → github-release 2.36.0.
+
+## v2.36.1 ANIMATION POLISH 2026-11-13 → v2.36.1
+- BEFORE: legacy minified CSS transitions used default ease / 1s transforms.
+- AFTER: ease-out + shorter durations on interactive-installation, justice-hotspot, network-zoom-controls; explicit easing on .25s/.2s shorthands.
+- Verify: tsc 0; build success; smoke 200.
+- Packaging: backup 2.36.1 → commit "v2.36.1: animation polish ease-out" → tag v2.36.1 → push release-2.0 + main mirror + tag → github-release 2.36.1.
