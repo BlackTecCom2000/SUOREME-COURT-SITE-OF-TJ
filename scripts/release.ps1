@@ -23,7 +23,8 @@ param(
 $ErrorActionPreference = 'Continue'
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
-$pnpm = 'C:\Users\7ims (admin)\AppData\Roaming\npm\pnpm.cmd'
+$pnpm = (Get-Command 'pnpm.cmd' -ErrorAction SilentlyContinue).Source
+if (-not $pnpm) { $pnpm = 'pnpm.cmd' }
 
 function Say($m) { Write-Host "==> $m" }
 function Ok($m) { Write-Host "    [ok] $m" }
