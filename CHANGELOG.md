@@ -9,7 +9,17 @@ UTF-8 file with `Get-Content`, which assumes the system ANSI codepage
 for a file without a BOM, then wrote the mangled text back as UTF-8.
 The damage compounded once per release and the file reached 1.3 GB, over
 GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
-
+
+
+
+
+
+## v2.36.2 - Accessibility: inert on hidden hero slides (aria-hidden-focus)
+- Released: 2026-11-14
+- Previous: v2.36.1
+- Lighthouse best-practices/a11y fix: inactive hero slides now carry inert so their focusable controls (prev/next/more/tablist) are removed from the tab order while ria-hidden is set. Resolves the ria-hidden-focus audit (5 nodes).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.36.1 - Animation polish: ease-out on legacy transitions
 - Released: 2026-11-13
 - Previous: v2.36.0

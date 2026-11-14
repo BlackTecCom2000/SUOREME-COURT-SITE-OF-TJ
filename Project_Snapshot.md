@@ -396,3 +396,9 @@ Antigravity (AI Orchestrator)
 - AFTER: ease-out + shorter durations on interactive-installation, justice-hotspot, network-zoom-controls; explicit easing on .25s/.2s shorthands.
 - Verify: tsc 0; build success; smoke 200.
 - Packaging: backup 2.36.1 → commit "v2.36.1: animation polish ease-out" → tag v2.36.1 → push release-2.0 + main mirror + tag → github-release 2.36.1.
+
+## v2.36.2 ACCESSIBILITY FIX 2026-11-14 -> v2.36.2
+- BEFORE: inactive hero slides (aria-hidden=true) still contained focusable buttons -> Lighthouse aria-hidden-focus failure (5 nodes).
+- AFTER: added inert attribute to inactive slides (React 18-safe via spread + as any).
+- Verify: tsc 0; build success; smoke 200.
+- Packaging: backup 2.36.2 -> commit "v2.36.2: accessibility inert on hidden hero slides" -> tag v2.36.2 -> push release-2.0 + main mirror + tag -> github-release 2.36.2.

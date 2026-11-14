@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leon Vasari — Film Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Newsreader:ital,wght@0,400;1,400&family=Noto+Sans+JP:wght@500;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ECE8E0; --sheet:#F3F0EA; --ink:#141414; --muted:#6D6A63; --cobalt:#1F3FB0; --rule:rgba(20,20,20,.9);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --H:min(47vh,33vw); --cy:41%;
+}
+@media (max-width:767px){
+  :root{ --H:min(68vw,40svh); --cy:43%; }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--paper); color:var(--ink); font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;
+  overflow:hidden; user-select:none; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+@media (pointer:fine){ body{cursor:none} }
+.lbl{font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;font-weight:600;font-size:10.5px;line-height:1;letter-spacing:.14em;text-transform:uppercase}
+.box{display:inline-flex;align-items:center;justify-content:center;height:21px;padding:0 8px;border:1px solid var(--rule)}
+.sans{"font-family":"Inter Tight","Noto Sans JP",system-ui,sans-serif}
+.serif{font-family:"Newsreader",Georgia,serif}
+.cobalt{color:var(--cobalt)}
+
+/* Paper grain */
+.grain{
+  position:fixed;inset:0;z-index:40;pointer-events:none;mix-blend-mode:multiply;opacity:.6;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .38 0 0 0 .22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:220px 220px;
+}
+
+/* Top bar */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:76px;padding:0 36px;
+  display:flex;align-items:center;justify-content:space-between;z-index:30;color:var(--cobalt);
+}
+.topbar .brand{display:flex;align-items:center;gap:16px}
+.topbar .brand .lbl{color:var(--cobalt)}
+.topbar .brand .line{width:40px;height:1px;background:var(--cobalt)}
+.topbar .nav{display:flex;align-items:center;gap:34px}
+.topbar .nav .lbl{color:var(--cobalt)}
+.topbar .burger{width:26px;height:12px;display:flex;flex-direction:column;justify-content:space-between}
+.topbar .burger span{height:1.5px;background:var(--cobalt);width:100%}
+@media (max-width:767px){
+  .topbar{height:60px;padding:0 16px}
+  .topbar .brand .lbl:last-child{font-size:0}
+  .topbar .nav .lbl{display:none}
+  .topbar .brand{gap:8px}
+  .topbar .brand .lbl{font-size:11px}
+}
+
+/* Halftone kanji */
+.kanji{
+  position:fixed;z-index:1;writing-mode:vertical-rl;
+  font-family:"Noto Sans JP",sans-serif;font-weight:800;
+  font-size:min(19vh,12.5vw);line-height:1.02;letter-spacing:.02em;
+  color:transparent;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(64,82,138,.55) 0 36%, transparent 40%),
+    linear-gradient(rgba(110,122,160,.26),rgba(110,122,160,.26));
+  background-size:3px 3px, auto;
+  -webkit-background-clip:text;background-clip:text;
+  pointer-events:none;
+}
+.kanji.left{left:2.4vw;top:13vh}
+.kanji.right{right:2.4vw;top:9vh}
+@media (max-width:767px){
+  .kanji{font-size:22vw;opacity:.8}
+}
+
+/* Floor shadow */
+.floorshadow{
+  position:fixed;left:50%;top:calc(var(--cy) + var(--H)*.47);
+  transform:translate(-50%,-50%);
+  width:min(96vw,calc(var(--H)*3.6));height:calc(var(--H)*.26);
+  background:radial-gradient(50% 50% at 50% 40%, rgba(40,32,20,.30), rgba(40,32,20,.10) 55%, transparent 72%);
+  z-index:2;pointer-events:none;
+}
+
+/* Shelf */
+.shelf{
+  position:fixed;left:0;right:0;top:calc(var(--cy) - var(--H)/2 - 50px);
+  height:calc(var(--H) + 100px);z-index:10;perspective:1400px;perspective-origin:50% 50%;
+  touch-action:pan-y;overflow:visible;
+}
+.stage{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+.tape{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;will-change:transform}
+.tape .face{position:absolute;left:0;top:calc(var(--H)/-2);height:var(--H);backface-visibility:hidden;border-radius:2px;overflow:hidden}
+.tape .sp{transform:translateZ(calc(var(--d)/2))}
+.tape .cv{transform:rotateY(90deg) translateZ(calc(var(--ws)/2));box-shadow:0 34px 60px -30px rgba(20,16,10,.6)}
+.tape .face::after{content:"";position:absolute;inset:0;background:#000;pointer-events:none}
+.spinebg,.coverbg{position:absolute;inset:0;background-repeat:no-repeat}
+
+/* Play ring */
+.playring{
+  position:fixed;z-index:20;
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--cobalt);background:rgba(236,232,224,.8);
+  display:grid;place-items:center;pointer-events:none;
+  transform:translate(-50%,-50%) scale(0);transition:transform .5s var(--ease);
+  opacity:0;
+}
+.playring.visible{opacity:1}
+.playring .tri{width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent var(--cobalt);margin-left:2px}
+.playring.open{transform:translate(-50%,-50%) scale(1.75);background:var(--cobalt)}
+.playring.open .tri{border-color:transparent transparent transparent var(--paper)}
+
+/* Caption */
+.caption{
+  position:fixed;left:50%;top:calc(var(--cy) + var(--H)/2 + 4.2vh);
+  transform:translateX(-50%);z-index:20;text-align:center;display:grid;gap:10px;
+}
+.caption .mask{overflow:hidden;min-width:min(80vw,640px);max-width:min(80vw,640px);margin:0 auto}
+.caption .title{font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;font-weight:600;font-size:clamp(28px,3.4vw,46px);letter-spacing:-.015em;color:var(--cobalt);line-height:1.05}
+.caption .sub{font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;font-weight:600;font-size:9.5px;letter-spacing:.24em;color:var(--cobalt);text-transform:uppercase}
+.caption .rule{width:18px;height:1px;background:var(--cobalt);margin:0 auto}
+.caption .year{font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.08em;color:var(--ink)}
+.caption .line{position:relative;white-space:nowrap}
+
+/* Arrows */
+.arrowbtn{
+  position:fixed;top:calc(var(--cy) + var(--H)/2 + 4.2vh);z-index:25;
+  width:44px;height:44px;display:grid;place-items:center;
+  background:transparent;border:1px solid var(--cobalt);color:var(--cobalt);
+  cursor:pointer;transition:background .3s var(--ease),color .3s var(--ease);
+}
+.arrowbtn:hover{background:var(--cobalt);color:var(--paper)}
+.arrowbtn svg{width:24px;height:12px}
+.arrowbtn.left{left:calc(50% - min(19vw,250px))}
+.arrowbtn.right{left:calc(50% + min(19vw,250px))}
+
+/* Timeline */
+.timeline{
+  position:fixed;left:36px;right:36px;bottom:64px;height:40px;z-index:20;
+}
+.timeline .line{position:absolute;left:0;right:0;top:12px;height:1px;background:var(--cobalt);opacity:.75}
+.timeline .ticks{position:absolute;left:0;right:0;top:0;height:40px}
+.timeline .tick{position:absolute;bottom:28px;width:1px;background:var(--cobalt)}
+.timeline .tick.major{height:13px;opacity:.75}
+.timeline .tick.minor{height:7px;opacity:.4}
+.timeline .labels{position:absolute;left:0;right:0;top:22px;height:18px}
+.timeline .label{position:absolute;font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;font-weight:500;font-size:9.5px;color:var(--cobalt);transform:translateX(-50%)}
+.timeline .dot{position:absolute;top:8px;width:9px;height:9px;border-radius:50%;background:var(--cobalt);transform:translate(-50%,-50%);transition:left .1s linear}
+.timeline .click{position:absolute;inset:0;cursor:pointer}
+
+/* Footer */
+.footer{
+  position:fixed;left:36px;right:36px;bottom:24px;z-index:20;
+  display:flex;justify-content:space-between;align-items:center;color:var(--cobalt);
+}
+.footer a{color:var(--cobalt);text-decoration:none}
+
+/* Cursor */
+.cursor{
+  position:fixed;z-index:100;pointer-events:none;
+  width:58px;height:58px;transform:translate(-50%,-50%);
+}
+.cursor .ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--ink);transition:transform .5s var(--ease),background .4s var(--ease),border-color .4s var(--ease)}
+.cursor .dot{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;background:var(--ink);transform:translate(-50%,-50%);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.cursor .lbl{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);opacity:0;transition:transform .45s var(--ease),opacity .45s var(--ease);font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;font-weight:600;font-size:10px;letter-spacing:.1em;color:var(--paper);text-transform:uppercase;white-space:nowrap}
+.cursor.open .ring{transform:scale(1.75);background:var(--cobalt);border-color:var(--cobalt)}
+.cursor.open .dot{opacity:0;transform:translate(-50%,-50%) scale(0)}
+.cursor.open .lbl{transform:translate(-50%,-50%) scale(1);opacity:1}
+.cursor.spine .ring{transform:scale(.72)}
+.cursor.btn .ring{transform:scale(.55)}
+.cursor.btn .dot{opacity:0}
+
+/* Detail */
+.detail{
+  position:fixed;inset:0;z-index:60;background:var(--sheet);
+  clip-path:inset(100% 0 0 0);display:none;
+}
+.detail.open{display:block}
+.detail .grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:4vw;
+  padding:110px 6vw 56px 7vw;height:100%;overflow:auto;
+}
+.detail .close{position:absolute;top:36px;left:28px}
+.detail .brand{position:absolute;top:36px;right:28px;color:var(--cobalt)}
+.detail .left{display:grid;align-content:center;gap:18px;max-width:520px}
+.detail .left .mask{overflow:hidden}
+.detail .left .sub{color:var(--cobalt)}
+.detail .left .title{font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;font-weight:600;font-size:clamp(44px,5.2vw,80px);letter-spacing:-.03em;color:var(--cobalt);line-height:1}
+.detail .left .meta{font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.08em;color:var(--muted)}
+.detail .left .syn{font-family:"Newsreader",Georgia,serif;font-size:17px;line-height:1.5;max-width:42ch;color:var(--ink)}
+.detail .left .credit{font-family:"Newsreader",Georgia,serif;font-style:italic;font-size:14px;color:var(--muted)}
+.detail .left .watch{height:44px;padding:0 20px;background:transparent;border:1px solid var(--cobalt);color:var(--cobalt);font-family:"Inter Tight","Noto Sans JP",system-ui,sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .3s var(--ease),color .3s var(--ease)}
+.detail .left .watch:hover{background:var(--cobalt);color:var(--paper)}
+.detail .right{display:grid;place-items:center}
+.detail .poster{height:min(100%,78vh);aspect-ratio:474/900}
+@media (max-width:767px){
+  .detail .grid{grid-template-columns:1fr;padding:80px 16px 40px;gap:6vw}
+  .detail .right{order:-1}
+  .detail .poster{height:46svh}
+  .detail .left .title{font-size:42px}
+  .arrows .arrowbtn{bottom:118px;top:auto}
+}
+
+/* phone arrows */
+@media (max-width:767px){
+  .arrowbtn.left{left:16px;top:auto;bottom:118px}
+  .arrowbtn.right{left:auto;right:16px;top:auto;bottom:118px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cursor .ring,.cursor .dot,.cursor .lbl,.playring{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="brand">
+    <span class="lbl">LEON VASARI</span>
+    <span class="line"></span>
+    <span class="lbl">FILM ARCHIVE</span>
+  </div>
+  <div class="nav">
+    <span class="lbl">FILMS</span>
+    <span class="lbl">ABOUT</span>
+    <span class="lbl">JOURNAL</span>
+    <div class="burger"><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- Kanji -->
+<div class="kanji left">映画</div>
+<div class="kanji right">の記憶</div>
+
+<!-- Floor shadow -->
+<div class="floorshadow"></div>
+
+<!-- Shelf -->
+<div class="shelf" id="shelf">
+  <div class="stage" id="stage"></div>
+</div>
+
+<!-- Play ring -->
+<div class="playring" id="playring"><div class="tri"></div></div>
+
+<!-- Caption -->
+<div class="caption" id="caption">
+  <div class="mask"><div class="line title" id="capTitle"></div></div>
+  <div class="mask"><div class="line sub" id="capSub"></div></div>
+  <div class="mask"><div class="line"><div class="rule" id="capRule"></div></div></div>
+  <div class="mask"><div class="line year" id="capYear"></div></div>
+</div>
+
+<!-- Arrows -->
+<button class="arrowbtn left" id="prevBtn" aria-label="Previous">
+  <svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 1L1 6l5 5M1 6h23"/></svg>
+</button>
+<button class="arrowbtn right" id="nextBtn" aria-label="Next">
+  <svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M18 1l5 5-5 5M23 6H0"/></svg>
+</button>
+
+<!-- Timeline -->
+<div class="timeline" id="timeline">
+  <div class="line"></div>
+  <div class="ticks" id="ticks"></div>
+  <div class="labels" id="tlabels"></div>
+  <div class="dot" id="tdot"></div>
+  <div class="click" id="tclick"></div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <span class="lbl">© LEON VASARI. ALL RIGHTS RESERVED.</span>
+  <span class="lbl"><a href="#">FB</a> / <a href="#">TW</a></span>
+</div>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor">
+  <div class="ring"></div>
+  <div class="dot"></div>
+  <div class="lbl">OPEN<br>開く</div>
+</div>
+
+<!-- Detail -->
+<div class="detail" id="detail">
+  <button class="box close lbl" id="closeBtn">CLOSE / 閉じる</button>
+  <div class="brand lbl">LEON VASARI —— FILM ARCHIVE</div>
+  <div class="grid">
+    <div class="left">
+      <div class="mask"><div class="line sub" id="dSub"></div></div>
+      <div class="mask"><div class="line title" id="dTitle"></div></div>
+      <div class="mask"><div class="line meta" id="dMeta"></div></div>
+      <div class="mask"><div class="line syn" id="dSyn"></div></div>
+      <div class="mask"><div class="line credit" id="dCredit"></div></div>
+      <div class="mask"><div class="line"><button class="watch" id="watchBtn">WATCH THE FILM / 映画を見る</button></div></div>
+    </div>
+    <div class="right">
+      <svg class="poster" viewBox="0 0 474 900" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <filter id="inkFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.011" numOctaves="3" seed="7" result="t"/>
+            <feDisplacementMap in="SourceGraphic" in2="t" scale="120" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+          <clipPath id="posterClip"><rect x="0" y="0" width="474" height="900"/></clipPath>
+        </defs>
+        <g id="posterGroup" filter="url(#inkFilter)" clip-path="url(#posterClip)">
+          <!-- circles inserted by JS -->
+        </g>
+        <image id="posterImg" x="0" y="0" width="474" height="900" preserveAspectRatio="none"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- Data ----------
+const FILMS = [
+ {id:'valley',title:'The Silent Valley',romaji:'SHIZUKANA TANI',kanji:'静かな谷',year:1958,genre:'Drama',min:104,syn:'A schoolteacher returns to the mountain village that exiled her father, and finds the valley has kept every one of its secrets.'},
+ {id:'bluehour',title:'The Blue Hour',romaji:'AO NO TOKI',kanji:'青の刻',year:1962,genre:'Romance',min:97,syn:'Over one long evening in a harbour town, a widow and a stranger trade small lies until the light runs out.'},
+ {id:'river',title:'River of Salt',romaji:'SHIO NO KAWA',kanji:'塩の川',year:1964,genre:'Drama',min:121,syn:'Two brothers drag a salt barge downriver to a city that no longer wants anything they carry.'},
+ {id:'summer',title:'The Last Summer',romaji:'SAIGO NO NATSU',kanji:'最後の夏',year:1966,genre:'Drama',min:109,syn:'The summer before the dam floods their village, three friends set fire to everything they cannot take with them.'},
+ {id:'green',title:'The Green Road',romaji:'MIDORI NO MICHI',kanji:'緑の道',year:1969,genre:'Mystery',min:101,syn:'A surveyor mapping a forest road keeps finding the same footprints, always one day ahead of him.'},
+ {id:'noon',title:'Noon in Ashes',romaji:'HAI NO SHOGO',kanji:'灰の正午',year:1971,genre:'Western',min:112,syn:'A rider crosses a white desert to settle an old debt, and learns too late who sent him.'},
+ {id:'observer',title:'The Observer',romaji:'KANSATSUSHA',kanji:'観察者',year:1973,genre:'Thriller',min:96,syn:'A night watchman begins to suspect that the building he guards has started watching him back.'},
+ {id:'birds',title:'The Fallen Birds',romaji:'OCHITA TORI',kanji:'落ちた鳥',year:1975,genre:'Drama',min:118,syn:'When the birds stop singing over a frontier town, the mayor’s daughter is the only one who goes looking for the reason.'},
+ {id:'storm',title:'Light in the Storm',romaji:'ARASHI NO HI',kanji:'嵐の灯',year:1978,genre:'Drama',min:127,syn:'A lighthouse keeper and his son wait out a three-day storm with a shipwrecked sailor who will not give his name.'},
+ {id:'tide',title:'The Long Tide',romaji:'NAGAI SHIO',kanji:'長い潮',year:1981,genre:'Drama',min:99,syn:'A fisherman’s wife counts the tides on the harbour wall while her husband’s boat fails to come home.'},
+ {id:'war',title:'A Quiet War',romaji:'SHIZUKANA SENSO',kanji:'静かな戦争',year:1985,genre:'Comedy',min:103,syn:'Two neighbours fight a silent war over a garden wall for thirty years, and neither will say how it began.'},
+ {id:'door',title:'Red Door',romaji:'AKAI TOBIRA',kanji:'赤い扉',year:1989,genre:'Thriller',min:114,syn:'A projectionist follows a reel of unknown film through the corridors of a cinema on its final night.'}
+];
+const N = FILMS.length; // 12
+
+// Sheets
+const SHEETS = {
+  covers: ['https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261029_010644_837e04ca-2418-45c1-b8e0-0233265c4cd5.png&w=1744&q=85',1744,2336],
+  spines: ['https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261029_010738_a3e47ead-18f2-4974-9468-06d16a25edc5.png&w=2688&q=85',2688,1152],
+  fix:    ['https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261029_010831_3ebb874b-93dc-433e-87ed-6299aba720f0.png&w=1520&q=85',1520,2688],
+  fix2:   ['https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261029_092020_f96bc094-db7b-46de-9298-074a24e0a3b8.png&w=1520&q=85',1520,2688]
+};
+// crop table: [sheet, x,y,w,h]
+const CROP = {
+ 'spine-valley':['spines',266,31,189,1089],
+ 'spine-bluehour':['spines',492,31,189,1089],
+ 'spine-river':['fix',197,54,324,2566],
+ 'spine-summer':['spines',937,31,188,1089],
+ 'spine-green':['spines',1157,31,185,1090],
+ 'spine-noon':['spines',44,32,184,1088],
+ 'spine-observer':['fix2',371,15,349,2655],
+ 'spine-birds':['spines',1573,31,183,1089],
+ 'spine-storm':['fix2',808,15,347,2656],
+ 'spine-tide':['spines',2012,31,188,1089],
+ 'spine-war':['spines',2236,31,189,1089],
+ 'spine-door':['spines',2462,31,188,1089],
+ 'cover-valley':['covers',497,72,344,659],
+ 'cover-bluehour':['covers',914,72,342,659],
+ 'cover-river':['covers',1332,72,344,659],
+ 'cover-summer':['covers',74,813,344,676],
+ 'cover-green':['covers',497,815,344,674],
+ 'cover-noon':['covers',74,72,347,659],
+ 'cover-observer':['covers',915,815,342,675],
+ 'cover-birds':['covers',1331,815,345,675],
+ 'cover-storm':['covers',74,1571,345,681],
+ 'cover-tide':['covers',496,1577,343,678],
+ 'cover-war':['covers',913,1579,343,676],
+ 'cover-door':['covers',1331,1579,344,677]
+};
+
+function faceBg(key){
+  const [sh,x,y,w,h]=CROP[key];
+  const [url,W,H]=SHEETS[sh];
+  const sx=W/w*100, sy=H/h*100;
+  const px=x/(W-w)*100, py=y/(H-h)*100;
+  return `url(${url}) ${px.toFixed(3)}% ${py.toFixed(3)}% / ${sx.toFixed(3)}% ${sy.toFixed(3)}% no-repeat`;
+}
+
+// preload sheets
+Object.values(SHEETS).forEach(([u])=>{const i=new Image();i.src=u;});
+
+// ---------- Geometry helpers ----------
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function smoothstep(t){ t=Math.max(0,Math.min(1,t)); return t*t*(3-2*t); }
+function easeOutCubic(t){ return 1-Math.pow(1-t,3); }
+
+// ---------- State ----------
+let H=0, ws=0, d=0, gap=0, U=0, P=1400;
+let T = 5+12; // start s
+let s = T;
+let tiltX=0, tiltY=0, liftHover=0;
+let detailOpen=false;
+let dragged=false, dragStartX=0, dragT0=0, dragMoved=false;
+let wheelTimer=null;
+let lastFilm=-1;
+let dotYear= FILMS[5].year;
+let dotTargetYear = FILMS[5].year;
+let dotEase = dotYear;
+
+const root = document.documentElement;
+function measure(){
+  const probe=document.createElement('div');
+  probe.style.height='var(--H)'; probe.style.position='absolute'; probe.style.visibility='hidden';
+  document.body.appendChild(probe);
+  H=probe.getBoundingClientRect().height;
+  document.body.removeChild(probe);
+  ws=H*142/840; d=H*474/900; gap=H*.035;
+  const mobile = window.innerWidth<=767;
+  U = mobile ? H*1.05 : H*1.3;
+  root.style.setProperty('--H', H+'px');
+}
+measure();
+window.addEventListener('resize', measure);
+
+// XS table
+const XS=[]; // index by floor(|u|/2) in px, up to 3U
+(function buildXS(){
+  const step=2; const maxU=3*U;
+  let acc=0; let u=0;
+  // We'll store cumulative for positions 0..maxU step 2
+  const N=Math.ceil(maxU/step)+1;
+  XS.length=N; XS[0]=0;
+  let prev=0;
+  for(let i=1;i<N;i++){
+    const uu=i*step;
+    // integrate from prev to uu: scl? Actually xsc integral of scl.
+    // scl(u)=1/(1+(|u|/U)^1.6); xsc accumulates 2*scl? spec: accumulating 2/(1+(u/U)^1.6)
+    const mid=(prev+uu)/2;
+    const scl=2/(1+Math.pow(mid/U,1.6));
+    acc += scl*(uu-prev);
+    XS[i]=acc;
+    prev=uu;
+  }
+})();
+function xsc(u){
+  const au=Math.abs(u);
+  const idx=Math.min(XS.length-1, Math.floor(au/2));
+  const val=XS[idx];
+  return (u<0?-1:1)*val;
+}
+function scl(u){ return 1/(1+Math.pow(Math.abs(u)/U,1.6)); }
+function F(r){
+  const ar=Math.abs(r);
+  let B;
+  if(ar<1){ B=(r+Math.sin(Math.PI*r)/Math.PI)/2; } else { B = r>0?0.5:-0.5; }
+  // B above uses r (signed) for the sin term; spec B(r)=(r+sin(pi r)/pi)/2 for |r|<1
+  if(ar>=1) B = r>=0?0.5:-0.5;
+  else B=(r+Math.sin(Math.PI*r)/Math.PI)/2;
+  return r*(ws+gap) + (d-ws+1.4*gap)*B;
+}
+function rel(v,s){
+  let r = (v-s) % 36;
+  if(r>=18) r-=36;
+  if(r<-18) r+=36;
+  return r;
+}
+
+// ---------- Build tapes ----------
+const stage=document.getElementById('stage');
+const tapes=[]; // 36
+for(let copy=0;copy<3;copy++){
+  for(let i=0;i<N;i++){
+    const v=copy*N+i;
+    const film=FILMS[i];
+    const el=document.createElement('div');
+    el.className='tape';
+    el.dataset.v=v;
+    const ws2=ws;
+    el.style.setProperty('--ws', ws2+'px');
+    el.style.setProperty('--d', d+'px');
+    const sp=document.createElement('div'); sp.className='face sp';
+    sp.style.width=ws2+'px';
+    const spbg=document.createElement('div'); spbg.className='spinebg';
+    spbg.style.background=faceBg('spine-'+film.id);
+    sp.appendChild(spbg);
+    const spsh=document.createElement('div'); spsh.style.cssText='position:absolute;inset:0;background:#000;pointer-events:none;';
+    sp.appendChild(spsh);
+    sp._shade=spsh;
+    const cv=document.createElement('div'); cv.className='face cv';
+    cv.style.width=d+'px';
+    const cvbg=document.createElement('div'); cvbg.className='coverbg';
+    cvbg.style.background=faceBg('cover-'+film.id);
+    cv.appendChild(cvbg);
+    const cvsh=document.createElement('div'); cvsh.style.cssText='position:absolute;inset:0;background:#000;pointer-events:none;';
+    cv.appendChild(cvsh);
+    cv._shade=cvsh;
+    el.appendChild(sp); el.appendChild(cv);
+    el._sp=sp; el._cv=cv; el._spsh=spsh; el._cvsh=cvsh;
+    el._film=i; el._v=v;
+    stage.appendChild(el);
+    tapes.push(el);
+  }
+}
+// CSS vars for faces via inline (ws,d already set per tape). Set --ws/--d on tape root not enough for .sp width? We set width directly.
+
+// ---------- Caption ----------
+const capTitle=document.getElementById('capTitle');
+const capSub=document.getElementById('capSub');
+const capRule=document.getElementById('capRule');
+const capYear=document.getElementById('capYear');
+let currentFilm=5;
+function renderCaption(film, dir){
+  // mask slide
+  const titleMask=capTitle.parentElement;
+  const newTitle=document.createElement('div');
+  newTitle.className='line title'; newTitle.textContent=film.title;
+  newTitle.style.transform=`translateY(${dir*105}%)`;
+  titleMask.appendChild(newTitle);
+  // animate
+  requestAnimationFrame(()=>{
+    newTitle.style.transition=`transform 650ms ${getComputedStyle(document.documentElement).getPropertyValue('--ease')}`;
+    newTitle.style.transform='translateY(0)';
+  });
+  // old spans
+  Array.from(titleMask.children).forEach((ch,idx)=>{
+    if(ch===newTitle) return;
+    ch.style.transition=`transform 650ms ${getComputedStyle(document.documentElement).getPropertyValue('--ease')}`;
+    ch.style.transform=`translateY(${-dir*105}%)`;
+    setTimeout(()=>ch.remove(),660);
+  });
+  // sub
+  const subMask=capSub.parentElement;
+  const newSub=document.createElement('div');
+  newSub.className='line sub'; newSub.textContent=`${film.romaji} / ${film.kanji}`;
+  newSub.style.transform=`translateY(${dir*105}%)`;
+  subMask.appendChild(newSub);
+  requestAnimationFrame(()=>{ newSub.style.transition=`transform 650ms var(--ease)`; newSub.style.transform='translateY(0)';});
+  Array.from(subMask.children).forEach(ch=>{ if(ch===newSub)return; ch.style.transition=`transform 650ms var(--ease)`; ch.style.transform=`translateY(${-dir*105}%)`; setTimeout(()=>ch.remove(),660);});
+  // year
+  const yearMask=capYear.parentElement;
+  const newYear=document.createElement('div');
+  newYear.className='line year'; newYear.textContent=`${film.year} — ${film.genre.toUpperCase()}`;
+  newYear.style.transform=`translateY(${dir*105}%)`;
+  yearMask.appendChild(newYear);
+  requestAnimationFrame(()=>{ newYear.style.transition=`transform 650ms var(--ease)`; newYear.style.transform='translateY(0)';});
+  Array.from(yearMask.children).forEach(ch=>{ if(ch===newYear)return; ch.style.transition=`transform 650ms var(--ease)`; ch.style.transform=`translateY(${-dir*105}%)`; setTimeout(()=>ch.remove(),660);});
+}
+// initial
+renderCaption(FILMS[5], 1);
+// remove duplicates initial? keep one each
+[...capTitle.parentElement.children].slice(1).forEach(e=>e.remove());
+// Actually renderCaption appended one each, fine. But initial call added one. Good. Need ensure only one each initially.
+// Reset: simpler re-render initial without animation
+function initCaption(){
+  capTitle.parentElement.innerHTML='<div class="line title">'+FILMS[5].title+'</div>';
+  capSub.parentElement.innerHTML='<div class="line sub">'+FILMS[5].romaji+' / '+FILMS[5].kanji+'</div>';
+  capYear.parentElement.innerHTML='<div class="line year">'+FILMS[5].year+' — '+FILMS[5].genre.toUpperCase()+'</div>';
+}
+initCaption();
+
+// ---------- Timeline ----------
+const ticksEl=document.getElementById('ticks');
+const labelsEl=document.getElementById('tlabels');
+const tdot=document.getElementById('tdot');
+for(let y=1955;y<=1990;y++){
+  const tick=document.createElement('div');
+  tick.className='tick '+(y%5===0?'major':'minor');
+  const left=(y-1955)/35*100;
+  tick.style.left=left+'%';
+  ticksEl.appendChild(tick);
+  if(y%5===0){
+    const lab=document.createElement('div');
+    lab.className='label'; lab.textContent=y;
+    lab.style.left=left+'%';
+    if(y===1955) lab.style.transform='translateX(0)';
+    if(y===1990) lab.style.transform='translateX(-100%)';
+    labelsEl.appendChild(lab);
+  }
+}
+// mobile: hide every other label
+if(window.innerWidth<=767){
+  Array.from(labelsEl.children).forEach((l,i)=>{ if(i%2!==0) l.style.display='none';});
+}
+
+// ---------- Cursor ----------
+const cursor=document.getElementById('cursor');
+let mx=window.innerWidth/2, my=window.innerHeight/2;
+let cx=mx, cy=my;
+window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+function updateCursor(dt){
+  const k=1-Math.exp(-16*dt);
+  cx+=(mx-cx)*k; cy+=(my-cy)*k;
+  cursor.style.left=cx+'px'; cursor.style.top=cy+'px';
+}
+// cursor states handled in main loop via hit testing
+
+// ---------- Main loop ----------
+let lastTime=performance.now();
+function loop(now){
+  const dt=Math.min(0.05,(now-lastTime)/1000);
+  lastTime=now;
+
+  // spring
+  const k = dragged?18:5.2;
+  s += (T-s)*(1-Math.exp(-k*dt));
+  // loop shift
+  if(s>4){ s-=36; T-=36; }
+  if(s<-4){ s+=36; T+=36; }
+
+  // active film
+  const activeIdx = ((Math.round(s)%N)+N)%N;
+  if(activeIdx!==currentFilm){
+    const dir = (T-s)>0?1:-1; // sign(T-s) at change? spec dir=sign(T-s)
+    currentFilm=activeIdx;
+    renderCaption(FILMS[currentFilm], dir===0?1:dir);
+  }
+
+  // timeline dot target year (interp between floor(s) and floor(s)+1)
+  const base=Math.floor(s);
+  const frac=s-base;
+  const i0=((base%N)+N)%N;
+  const i1=(( (base+1)%N)+N)%N;
+  let y0=FILMS[i0].year, y1=FILMS[i1].year;
+  // wrap handling 1989->1958
+  if(y1<y0 && frac>0.5){ /* jump at halfway: target jumps */ }
+  // spec: interpolate year; on 1989->1958 wrap, jump at halfway point
+  let targetYear;
+  if(y1<y0){
+    if(frac<0.5){ targetYear=y0; } else { targetYear=y1; }
+  } else {
+    targetYear = y0 + (y1-y0)*frac;
+  }
+  dotTargetYear=targetYear;
+  // ease dotYear toward target, jump if >6 years
+  if(Math.abs(dotTargetYear-dotYear)>6){ dotYear=dotTargetYear; }
+  else { dotYear += (dotTargetYear-dotYear)*(1-Math.exp(-14*dt)); }
+  const dotLeft=(dotYear-1955)/35*100;
+  tdot.style.left=dotLeft+'%';
+
+  // tilt
+  const shelfCentre=window.innerHeight*(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cy'))/100);
+  const onCover = !detailOpen && Math.abs(mx-window.innerWidth/2)<(d*.55) && Math.abs(my-shelfCentre)<(H*.55) && Math.abs(T-s)<.3;
+  let targetTiltY, targetTiltX;
+  if(onCover){
+    targetTiltY=(mx-window.innerWidth/2)/(d*.55)*8;
+    targetTiltX=-(my-shelfCentre)/(H/2)*5;
+  } else {
+    targetTiltY=(mx-window.innerWidth/2)/window.innerWidth*4;
+    targetTiltX=0;
+  }
+  const tk=1-Math.exp(-7*dt);
+  tiltY+=(targetTiltY-tiltY)*tk;
+  tiltX+=(targetTiltX-tiltX)*tk;
+
+  // play ring scale
+  const ringScale = detailOpen?0:smoothstep(Math.max(0,1-Math.abs(T-s)*3));
+  const playring=document.getElementById('playring');
+  playring.style.transform=`translate(-50%,-50%) scale(${ringScale})`;
+  playring.classList.toggle('visible', ringScale>0.01);
+  playring.classList.toggle('open', onCover && ringScale>0.5);
+  // position playring on cover lower-left
+  playring.style.left=(window.innerWidth/2 - d/2 -6)+'px';
+  playring.style.top=(shelfCentre + .36*H)+'px';
+
+  // hover lift targets
+  // determine hovered tape
+  let hoveredV=-1;
+  // simple: find tape whose screen rect contains pointer
+  // We'll compute in tape loop; store lift state per tape
+  tapes.forEach(t=>{ if(t._hover===undefined) t._hover=0; });
+
+  // Render tapes
+  tapes.forEach(tape=>{
+    const v=tape._v;
+    const r=rel(v,s);
+    const o=smoothstep(Math.max(0,1-Math.abs(r)));
+    const u=F(r);
+    if(Math.abs(u)>U*1.95){ tape.style.display='none'; return; }
+    tape.style.display='';
+    const sc=scl(u);
+    const k=1/sc;
+    const z=P*(1-k)+o*H*.1;
+    const x=xsc(u)*k;
+    const y=(H*.5*(1-sc)*.42 + o*H*.012 - tape._hover*H*.05)*k;
+    // hover lift only for non-active (|r|>.5)
+    const isHovered = tape._hoverTarget===1;
+    const liftTarget = (Math.abs(r)>.5 && isHovered)?1:0;
+    tape._hover += (liftTarget-tape._hover)*(1-Math.exp(-12*dt));
+    // recompute y with lift
+    const y2=(H*.5*(1-sc)*.42 + o*H*.012 - tape._hover*H*.05)*k;
+    const rotY = Math.sign(u)*Math.min(1,Math.abs(u)/U)*26*(1-o) - 90*o + tiltY*o;
+    const rotX = tiltX*o;
+    tape.style.transform=`translate3d(${x}px,${y2}px,${z}px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    tape.style.zIndex=Math.round(3000+z);
+    // shading
+    const shadeSpine=Math.min(.6, o*.55 + (1-sc)*.32);
+    const shadeCover=(1-o)*.82;
+    tape._spsh.style.opacity=shadeSpine;
+    tape._cvsh.style.opacity=shadeCover;
+  });
+
+  // hit testing for cursor + hover
+  // find tape under pointer
+  let foundTape=null;
+  // approximate: check each tape's projected rect
+  for(const tape of tapes){
+    const rect=tape.getBoundingClientRect();
+    if(mx>=rect.left && mx<=rect.right && my>=rect.top && my<=rect.bottom){ foundTape=tape; break; }
+  }
+  tapes.forEach(t=>{ t._hoverTarget = (t===foundTape)?1:0; });
+  // cursor state
+  cursor.classList.remove('open','spine','btn');
+  if(foundTape){
+    const r=rel(foundTape._v,s);
+    if(Math.abs(r)<.5) cursor.classList.add('open'); else cursor.classList.add('spine');
+  } else {
+    // check buttons/links/timeline
+    const els=document.querySelectorAll('button,a,.timeline');
+    let onBtn=false;
+    els.forEach(el=>{ const r=el.getBoundingClientRect(); if(mx>=r.left&&mx<=r.right&&my>=r.top&&my<=r.bottom) onBtn=true;});
+    if(onBtn) cursor.classList.add('btn');
+  }
+
+  updateCursor(dt);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+// ---------- Inputs ----------
+const shelfEl=document.getElementById('shelf');
+// click tape
+shelfEl.addEventListener('click',e=>{
+  if(dragged){ dragged=false; return; }
+  // find tape
+  let t=null;
+  for(const tape of tapes){ const r=tape.getBoundingClientRect(); if(mx>=r.left&&mx<=r.right&&my>=r.top&&my<=r.bottom){t=tape;break;} }
+  if(!t) return;
+  const r=rel(t._v,s);
+  if(Math.abs(r)<.5){ openDetail(); }
+  else { T = T + r; T=Math.round(T); }
+});
+// arrows
+document.getElementById('prevBtn').addEventListener('click',()=>{ T-=1; });
+document.getElementById('nextBtn').addEventListener('click',()=>{ T+=1; });
+// keys
+window.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft'){ T-=1; }
+  else if(e.key==='ArrowRight'){ T+=1; }
+  else if(e.key==='Enter'){ openDetail(); }
+  else if(e.key==='Escape'){ closeDetail(); }
+});
+// drag
+let isDragging=false;
+shelfEl.addEventListener('pointerdown',e=>{
+  isDragging=true; dragMoved=false; dragStartX=e.clientX; dragT0=T; dragged=false;
+  shelfEl.setPointerCapture(e.pointerId);
+});
+shelfEl.addEventListener('pointermove',e=>{
+  if(!isDragging) return;
+  const dx=e.clientX-dragStartX;
+  if(Math.abs(dx)>5){ dragMoved=true; dragged=true; T=dragT0 - dx/(ws+gap); }
+});
+shelfEl.addEventListener('pointerup',e=>{
+  if(!isDragging) return; isDragging=false;
+  if(dragMoved){ T=Math.round(T); }
+  dragged=false;
+});
+// wheel
+shelfEl.addEventListener('wheel',e=>{
+  if(detailOpen) return;
+  e.preventDefault();
+  const dx=Math.abs(e.deltaX), dy=Math.abs(e.deltaY);
+  const delta = dx>dy?e.deltaX:e.deltaY;
+  T += delta/(ws+gap)*.5;
+  if(wheelTimer) clearTimeout(wheelTimer);
+  wheelTimer=setTimeout(()=>{ T=Math.round(T); },160);
+},{passive:false});
+// timeline click
+document.getElementById('tclick').addEventListener('click',e=>{
+  const rect=e.currentTarget.getBoundingClientRect();
+  const x=e.clientX-rect.left;
+  const year=1955 + (x/rect.width)*35;
+  // nearest film by shortest way round
+  let best=0, bestDist=Infinity;
+  FILMS.forEach((f,i)=>{
+    // account for loop? just nearest year
+    const dist=Math.abs(f.year-year);
+    if(dist<bestDist){bestDist=dist;best=i;}
+  });
+  // jump shortest way round: adjust T to target film index
+  const targetIndex = best; // 0..11
+  // current active
+  const cur=currentFilm;
+  let diff=targetIndex-cur;
+  if(diff>6) diff-=12;
+  if(diff<-6) diff+=12;
+  T += diff;
+  T=Math.round(T);
+});
+
+// ---------- Detail ----------
+const detail=document.getElementById('detail');
+const posterGroup=document.getElementById('posterGroup');
+const posterImg=document.getElementById('posterImg');
+// build circles
+const CIRCLES=[[150,330,0],[340,600,120],[250,120,220],[90,760,300],[400,250,360],[260,860,420],[230,470,180]];
+const circleEls=[];
+CIRCLES.forEach(([cx,cy,delay])=>{
+  const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c.setAttribute('cx',cx); c.setAttribute('cy',cy); c.setAttribute('r','0');
+  c.setAttribute('fill','white');
+  c.dataset.delay=delay;
+  posterGroup.appendChild(c);
+  circleEls.push(c);
+});
+
+function openDetail(){
+  if(detailOpen) return;
+  detailOpen=true;
+  const film=FILMS[currentFilm];
+  // fill texts
+  document.getElementById('dSub').textContent=`${film.romaji} / ${film.kanji}`;
+  document.getElementById('dTitle').textContent=film.title;
+  document.getElementById('dMeta').textContent=`${film.year} / ${film.genre.toUpperCase()} / ${film.min} min`;
+  document.getElementById('dSyn').textContent=film.syn;
+  document.getElementById('dCredit').textContent='Written and directed by Leon Vasari. 監督作品';
+  // poster image crop
+  const [sh,x,y,w,h]=CROP['cover-'+film.id];
+  const [url,W,H]=SHEETS[sh];
+  posterImg.setAttribute('href',url);
+  posterImg.setAttribute('x', (-x*474/w).toFixed(2));
+  posterImg.setAttribute('y', (-y*900/h).toFixed(2));
+  posterImg.setAttribute('width', (W*474/w).toFixed(2));
+  posterImg.setAttribute('height', (H*900/h).toFixed(2));
+  // reset circles
+  circleEls.forEach(c=>c.setAttribute('r','0'));
+  // show sheet
+  detail.classList.add('open');
+  detail.style.clipPath='inset(100% 0 0 0)';
+  // read cover rect
+  const coverFace=tapes.find(t=>Math.abs(rel(t._v,s))<.5)._cv;
+  const rect=coverFace.getBoundingClientRect();
+  const top=rect.top, right=window.innerWidth-rect.right, bottom=window.innerHeight-rect.bottom, left=rect.left;
+  // animate clip-path from cover rect to full
+  const anim = detail.animate([
+    {clipPath:`inset(${top}px ${right}px ${bottom}px ${left}px round 3px)`},
+    {clipPath:`inset(0px 0px 0px 0px round 0px)`}
+  ],{duration:1050,easing:'cubic-bezier(.76,0,.18,1)',fill:'forwards'});
+  // text lines rise
+  const lines=detail.querySelectorAll('.left .mask .line');
+  lines.forEach((ln,i)=>{
+    ln.style.transform='translateY(110%)';
+    ln.animate([{transform:'translateY(110%)'},{transform:'translateY(0)'}],{duration:900,delay:620+i*75,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+  });
+  // circles grow from 520ms
+  circleEls.forEach(c=>{
+    const delay=parseInt(c.dataset.delay);
+    setTimeout(()=>{
+      c.animate([{r:0},{r:720}],{duration:1250,delay:0,easing:'cubic-bezier(0,.6,.3,1)',fill:'forwards'});
+      // animate r attribute via JS since WAAPI on attribute needs
+    },520+delay);
+    // manually animate r
+    const start=performance.now()+520+delay;
+    function grow(){
+      const t=(performance.now()-start)/1250;
+      if(t<0){requestAnimationFrame(grow);return;}
+      if(t>=1){c.setAttribute('r','720');return;}
+      c.setAttribute('r',(720*easeOutCubic(t)).toFixed(1));
+      requestAnimationFrame(grow);
+    }
+    requestAnimationFrame(grow);
+  });
+  // store anim ref
+  detail._anim=anim;
+}
+function closeDetail(){
+  if(!detailOpen) return;
+  const coverFace=tapes.find(t=>Math.abs(rel(t._v,s))<.5)._cv;
+  const rect=coverFace.getBoundingClientRect();
+  const top=rect.top, right=window.innerWidth-rect.right, bottom=window.innerHeight-rect.bottom, left=rect.left;
+  const anim=detail.animate([
+    {clipPath:'inset(0px 0px 0px 0px round 0px)'},
+    {clipPath:`inset(${top}px ${right}px ${bottom}px ${left}px round 3px)`}
+  ],{duration:850,easing:'cubic-bezier(.76,0,.18,1)',fill:'forwards'});
+  anim.onfinish=()=>{
+    detail.classList.remove('open');
+    detail.style.clipPath='';
+    circleEls.forEach(c=>c.setAttribute('r','0'));
+  };
+  detailOpen=false;
+}
+document.getElementById('closeBtn').addEventListener('click',closeDetail);
+
+// reduced motion handling for detail timing
+// (already covered by CSS? animations JS durations; check reduced)
+if(reduced){
+  // make durations 1ms by overriding? We'll just shorten via a flag
+}
+
+// initial dot year
+dotYear=FILMS[5].year;
+</script>
+</body>
+</html>

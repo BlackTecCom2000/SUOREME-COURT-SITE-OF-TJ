@@ -124,7 +124,8 @@ export const Section08Heroes: React.FC = () => {
                 <article
                   key={hero.id}
                   aria-hidden={!active}
-                  className="heroes-slide absolute inset-0"
+                                      {...({ inert: !active ? '' : undefined } as any)}
+                    className="heroes-slide absolute inset-0"
                   style={{
                     opacity: active ? 1 : 0,
                     transform: active ? 'none' : 'scale(1.015)',
