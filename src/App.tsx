@@ -13,6 +13,11 @@ import { CourtSitePage } from './sites/CourtSitePage';
 import { CourtSiteAdmin } from './sites/CourtSiteAdmin';
 import { LibraryPage } from './pages/LibraryPage';
 import { SitemapPage } from './pages/SitemapPage';
+import { ArchivePage } from './pages/ArchivePage';
+import { SearchPage } from './pages/SearchPage';
+import { ContactPage } from './pages/ContactPage';
+import { PrivacyPage } from './pages/PrivacyPage';
+import { AccessibilityPage } from './pages/AccessibilityPage';
 import { HeroesPage } from './pages/HeroesPage';
 import { HeroProfilePage } from './pages/HeroProfilePage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -36,6 +41,11 @@ export const App: React.FC = () => {
             <Route path="library" element={<LibraryPage />} />
             <Route path="heroes" element={<HeroesPage />} />
             <Route path="heroes/:slug" element={<HeroProfilePage />} />
+            <Route path="archive" element={<ArchivePage />} />
+            <Route path="search" element={<SearchPage />} />
+            <Route path="contact" element={<ContactPage />} />
+            <Route path="privacy" element={<PrivacyPage />} />
+            <Route path="accessibility" element={<AccessibilityPage />} />
             <Route path="sitemap" element={<SitemapPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
