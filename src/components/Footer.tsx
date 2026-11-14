@@ -64,7 +64,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
 
         {/* Glass layer — light continuance, not dark */}
         <div className="relative">
-          <div className="site-container px-4 sm:px-8 md:px-12 pt-6 pb-4">
+          <div className="site-container px-4 sm:px-8 md:px-12 pt-4 pb-2">
             {/* President message — top glass highlight */}
             <div className="mb-4">
               <a
@@ -213,20 +213,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
             </div>
 
             {/* Useful Links — СОМОНАҲОИ МУФИД — infinite marquee, Liquid Glass, admin configurable */}
-            <section aria-label="СОМОНАҲОИ МУФИД" className="glass glass-card p-4 mb-4 overflow-hidden">
-              <div className="flex items-center justify-between mb-2 gap-3">
+            <section aria-label="СОМОНАҲОИ МУФИД" className="glass glass-card p-3 mb-3 overflow-hidden">
+              <div className="flex items-center justify-between mb-1.5 gap-3">
                 <h2 className="text-xs uppercase tracking-widest text-theme-gold font-mono font-bold">СОМОНАҲОИ МУФИД</h2>
                 <div className="hidden sm:flex items-center gap-1.5">
-                  <button type="button" aria-label="Prev" onClick={() => scrollBy(-1)} className="w-8 h-8 rounded-full glass border border-theme-border hover:border-theme-gold flex items-center justify-center text-theme-textMuted hover:text-theme-text transition-colors">
+                  <button type="button" aria-label="Prev" onClick={() => scrollBy(-1)} className="w-7 h-7 rounded-full glass border border-theme-border hover:border-theme-gold flex items-center justify-center text-theme-textMuted hover:text-theme-text transition-colors">
                     <ChevronLeft size={14} />
                   </button>
-                  <button type="button" aria-label="Next" onClick={() => scrollBy(1)} className="w-8 h-8 rounded-full glass border border-theme-border hover:border-theme-gold flex items-center justify-center text-theme-textMuted hover:text-theme-text transition-colors">
+                  <button type="button" aria-label="Next" onClick={() => scrollBy(1)} className="w-7 h-7 rounded-full glass border border-theme-border hover:border-theme-gold flex items-center justify-center text-theme-textMuted hover:text-theme-text transition-colors">
                     <ChevronRight size={14} />
                   </button>
                 </div>
               </div>
               <div
-                className="ticker rounded-[16px] border border-theme-border overflow-hidden"
+                className="ticker rounded-[14px] border border-theme-border overflow-hidden"
                 role="marquee"
                 aria-label={language === 'en' ? 'Useful links marquee' : 'Бегущая лента полезных сайтов'}
                 onMouseEnter={() => { if (marquee.pause_on_hover) { const el = document.querySelector('.ticker-track') as HTMLElement; if (el) el.style.animationPlayState = 'paused'; }}}
@@ -247,10 +247,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                           target="_blank"
                           rel="noreferrer"
                           tabIndex={copy === 1 ? -1 : undefined}
-                          className="ticker-item glass border border-theme-border hover:border-theme-gold rounded-[16px] flex flex-col items-center justify-center gap-1.5 p-2 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-gold group shrink-0"
-                          style={{ width: `${Math.max(140, marquee.logo_size * 2.1)}px`, height: `${marquee.logo_size}px` } as React.CSSProperties}
+                          className="ticker-item glass border border-theme-border hover:border-theme-gold rounded-[14px] flex flex-col items-center justify-center gap-1 p-1.5 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-gold group shrink-0"
+                          style={{ width: `${Math.max(140, marquee.logo_size * 2.1)}px`, height: `${Math.max(60, marquee.logo_size - 12)}px` } as React.CSSProperties}
                         >
-                          <span className="w-9 h-9 rounded-full glass-nest border flex items-center justify-center text-2xs font-mono text-theme-textSec group-hover:text-theme-gold group-hover:bg-theme-bg transition-colors shrink-0" aria-hidden="true">
+                <span className="w-8 h-8 rounded-full glass-nest border flex items-center justify-center text-2xs font-mono text-theme-textSec group-hover:text-theme-gold group-hover:bg-theme-bg transition-colors shrink-0" aria-hidden="true">
                             {pickLink(l).slice(0, 2).toUpperCase()}
                           </span>
                           <span className="text-[11px] font-medium text-theme-text leading-tight line-clamp-2">{pickLink(l)}</span>
@@ -261,7 +261,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                   ))}
                 </div>
               </div>
-              <div className="flex justify-between items-center mt-2 text-2xs font-mono text-theme-textMuted">
+              <div className="flex justify-between items-center mt-1.5 text-2xs font-mono text-theme-textMuted">
                 <span className="sm:hidden">← swipe / touch →</span>
                 <span className="hidden sm:inline opacity-60">{marquee.autoplay ? (language === 'en' ? 'Auto • hover to pause' : 'Авто • пауза при наведении') : (language === 'en' ? 'Paused' : 'Пауза')}</span>
                 <span className="hidden sm:inline opacity-60">{marquee.speed}s • {marquee.direction}</span>
@@ -271,8 +271,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
             </section>
 
             {/* Bottom bar — GlassBottomBar */}
-            <div className="glass border-t border-theme-border !rounded-none -mx-4 sm:-mx-8 md:-mx-12 px-4 sm:px-8 md:px-12 py-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono">
-              <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-start">
+            <div className="glass border-t border-theme-border !rounded-none -mx-4 sm:-mx-8 md:-mx-12 px-4 sm:px-8 md:px-12 py-1.5 flex flex-col sm:flex-row items-center justify-between gap-1.5 text-xs font-mono">
+              <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
                 <span className="text-theme-text font-bold">SUD.TJ</span>
                 <span className="opacity-60">•</span>
                 <span className="text-theme-textSec">{t('contacts.officialPortalNotice')}</span>
@@ -281,9 +281,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 <span className="opacity-60">•</span>
                 <span className="text-theme-textMuted">{t('contacts.copyright')}</span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 {/* IT branding — GlassBrandBadge compact, only if real official element present */}
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full glass border border-theme-gold/30 text-2xs font-mono text-theme-gold font-semibold">
+                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full glass border border-theme-gold/30 text-2xs font-mono text-theme-gold font-semibold">
                   <span style={{ fontSize: '12px' }} aria-hidden="true">⚖️</span> BlackTecCom
                 </span>
                 <span className="text-theme-textMuted hidden sm:inline" title={`Build ${APP_VERSION}`}>{APP_VERSION_LABEL}</span>

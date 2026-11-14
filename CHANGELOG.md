@@ -13,7 +13,13 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 
 
-
+
+## v2.37.0 - Compact footer sizing
+- Released: 2026-11-14 22:03
+- Previous: v2.36.3
+- QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
+  `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
+  `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
 ## v2.36.3 - Remove unused justice symbol PNGs (1.9 MB) - performance
 - Released: 2026-11-14
 - Previous: v2.36.2
