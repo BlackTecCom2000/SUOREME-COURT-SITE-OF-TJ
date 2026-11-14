@@ -14,6 +14,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 
 
+## v2.36.3 - Remove unused justice symbol PNGs (1.9 MB) - performance
+- Released: 2026-11-14
+- Previous: v2.36.2
+- Deleted public/images/justice/{themis,gavel,scales}.png (1.1 MB + 556 KB + 258 KB) after verifying no code or DB references. Reduces total page weight.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.36.2 - Accessibility: inert on hidden hero slides (aria-hidden-focus)
 - Released: 2026-11-14
 - Previous: v2.36.1
