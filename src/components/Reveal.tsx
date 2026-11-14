@@ -48,7 +48,7 @@ export const Reveal: React.FC<RevealProps> = ({
     return (
       <Component
         style={{ animationDelay: `${delay}ms`, opacity: 0 }}
-        className={`animate-fade-in-up ${className}`}
+        className={`reveal animate-fade-in-up ${className}`}
       >
         {children}
       </Component>
@@ -62,7 +62,7 @@ export const Reveal: React.FC<RevealProps> = ({
     <Component
       ref={ref as any}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      className={`reveal transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
         isVisible ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-8 scale-[0.985] opacity-0 will-change-transform'
       } ${className}`}
     >

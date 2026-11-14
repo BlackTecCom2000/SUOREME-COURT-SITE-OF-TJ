@@ -13,7 +13,13 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 
 
-
+
+## v2.39.0 - Fix glass card reveal on scroll
+- Released: 2026-11-14 23:44
+- Previous: v2.38.0
+- QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
+  `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
+  `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
 ## v2.38.0 - Improve scroll rendering performance
 - Released: 2026-11-14 23:31
 - Previous: v2.37.1
