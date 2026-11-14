@@ -875,8 +875,7 @@ html.is-morphing-theme ::view-transition-new(root) {
     box-shadow: var(--lg-shadow), var(--lg-highlight);
     transition:
       background-color var(--lg-dur-hover) var(--lg-ease-out),
-      box-shadow var(--lg-dur-hover) var(--lg-ease-out),
-      backdrop-filter var(--lg-dur-press) var(--lg-ease-out);
+      box-shadow var(--lg-dur-hover) var(--lg-ease-out);
   }
   /* Specular rim: bright where light catches the bevel, dark where the
      surface turns away, and tracking the pointer on top of that. */
@@ -1496,8 +1495,7 @@ html[data-a11y="true"] .content-card::before {
     box-shadow: var(--lg-shadow), var(--lg-highlight);
     transition:
       background-color var(--lg-dur-hover) var(--lg-ease-out),
-      box-shadow var(--lg-dur-hover) var(--lg-ease-out),
-      backdrop-filter var(--lg-dur-press) var(--lg-ease-out);
+      box-shadow var(--lg-dur-hover) var(--lg-ease-out);
   }
 
   /* Layer 3 — the specular rim.

@@ -50,12 +50,16 @@ export const DeviceCapabilityProvider: React.FC<{ children: React.ReactNode }> =
         ? prev
         : { tier, isReducedMotion },
     );
+    // Keep CSS fallbacks and scroll effects in sync with the same capability
+    // decision used by React components (glass blur, scroll springs, 3D).
+    document.documentElement.dataset.deviceTier = tier;
 
     // Optional: listen to changes in reduced motion
     const listener = (e: MediaQueryListEvent) => {
       setCapability((prev) =>
         prev.isReducedMotion === e.matches ? prev : { ...prev, isReducedMotion: e.matches },
       );
+      if (e.matches) document.documentElement.dataset.deviceTier = 'low-end';
     };
     motionMatch.addEventListener('change', listener);
     return () => motionMatch.removeEventListener('change', listener);
