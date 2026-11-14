@@ -45,13 +45,13 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
 ## v2.37.0 - Compact footer sizing
 - Released: 2026-11-14 22:03
-- Previous: v2.36.3
+- Previous: v2.40.0
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
-## v2.37.0 - Batch 1: search page, archive route, contact, privacy, accessibility
+## v2.41.0 - Batch 1: search page, archive route, contact, privacy, accessibility
 - Released: 2026-11-15
-- Previous: v2.36.3
+- Previous: v2.40.0
 - New public pages: /search (consumes /api/search with filters), /archive (embeds Leon Vasari VHS archive), /contact (appeal form + court info), /privacy, /accessibility.
 - QA: tsc --noEmit 0 errors, build:client success, smoke 200.
 
