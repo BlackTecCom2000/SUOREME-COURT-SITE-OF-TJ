@@ -1,5 +1,5 @@
 ﻿import React, { useMemo } from 'react';
-import { Building2, Landmark, Mountain, Wheat } from 'lucide-react';
+import { Building2, ChevronDown, Landmark, Mountain, Wheat } from 'lucide-react';
 import type { CourtNodeData, RegionCluster } from '../../data/sudTjData';
 import { getRegionShortName } from '../../data/sudTjData';
 import { useLanguage } from '../../context/LanguageContext';
@@ -11,13 +11,14 @@ interface RegionalCourtPanelProps {
   cluster: RegionCluster & { courts: CourtNodeData[] };
   index: number;
   accent: string;
+  expanded: boolean;
+  onToggleExpanded: () => void;
   selected: boolean;
   muted: boolean;
   focused: boolean;
   selectedCourtId?: string;
   searchQuery: string;
   typeFilter: 'all' | 'city' | 'district' | 'military';
-  onSelectRegion: (id: string) => void;
   onSelectCourt: (court: CourtNodeData) => void;
   onToggleTypeFilter: (t: 'city' | 'district') => void;
   onHover: (id: string | null) => void;
@@ -43,13 +44,14 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
   cluster,
   index,
   accent,
+  expanded,
+  onToggleExpanded,
   selected,
   muted,
   focused,
   selectedCourtId,
   searchQuery,
   typeFilter,
-  onSelectRegion,
   onSelectCourt,
   onToggleTypeFilter,
   onHover,
@@ -117,7 +119,7 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
       aria-label={title}
       onMouseEnter={() => onHover(cluster.id)}
       onMouseLeave={() => onHover(null)}
-      className="w-full rounded-[18px] border judmap-panel p-4 sm:p-5 flex flex-col gap-3.5 transition-all duration-300 jm-enter"
+      className={`w-full rounded-[18px] border judmap-panel p-3.5 sm:p-4 flex flex-col gap-2.5 transition-all duration-300 jm-enter ${expanded ? '' : 'self-start'}`}
       style={{
         borderColor: selected ? accent : undefined,
         opacity: muted ? 0.45 : 1,
@@ -128,7 +130,9 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
       {/* Header */}
       <button
         type="button"
-        onClick={() => onSelectRegion(cluster.id)}
+        onClick={onToggleExpanded}
+        aria-expanded={expanded}
+        aria-controls={`judmap-courts-${cluster.id}`}
         aria-pressed={selected}
         className="tap-target w-full flex items-center gap-3 text-left group cursor-pointer rounded-[10px] focus-visible:outline-2 focus-visible:outline-[var(--jm-gold)]"
       >
@@ -150,8 +154,20 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
         >
           <Icon size={16} strokeWidth={1.75} />
         </span>
+        <ChevronDown
+          aria-hidden="true"
+          size={16}
+          className={`shrink-0 text-[var(--jm-muted)] transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+        />
       </button>
 
+      <div className="flex flex-wrap gap-x-3 gap-y-1 pl-1 font-mono text-[10px] text-[var(--jm-muted)]">
+        <span>{cityCount} {language === 'tj' ? 'шаҳр' : language === 'en' ? 'city' : 'город'}</span>
+        <span>{districtCount} {language === 'tj' ? 'ноҳия' : language === 'en' ? 'district' : 'район'}</span>
+        <span>{militaryCourt ? 1 : 0} {language === 'tj' ? 'ҳарбӣ' : language === 'en' ? 'military' : 'воен.'}</span>
+      </div>
+
+      <div id={`judmap-courts-${cluster.id}`} hidden={!expanded} className="flex flex-col gap-3.5">
       {/* Regional court */}
       {regionalCourt && (
         <CourtList
@@ -191,6 +207,7 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
           onSelect={onSelectCourt}
         />
       )}
+      </div>
     </section>
   );
 };

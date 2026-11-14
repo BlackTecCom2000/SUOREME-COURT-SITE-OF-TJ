@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { CourtNodeData, RegionCluster } from '../../data/sudTjData';
 import { REGIONAL_CLUSTERS } from '../../data/sudTjData';
 import { regionAccent } from './regionAccent';
@@ -42,6 +42,7 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
   onOpenImmersive,
 }) => {
   const [hoveredRegionId, setHoveredRegionId] = useState<string | null>(null);
+  const [expandedRegionId, setExpandedRegionId] = useState<string | null>(null);
 
   // Hydrate static clusters with live CMS courts (fallback to bundled data)
   const hydratedClusters = useMemo(
@@ -53,6 +54,18 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
     [courts]
   );
 
+  useEffect(() => {
+    const query = searchQuery.trim().toLocaleLowerCase();
+    if (!query) return;
+    const match = hydratedClusters.find((cluster) =>
+      cluster.courts.some((court) =>
+        [court.nameRu, court.nameTj, court.nameEn, court.domain]
+          .filter((value): value is string => Boolean(value))
+          .some((value) => value.toLocaleLowerCase().includes(query)),
+      ),
+    );
+    if (match) setExpandedRegionId(match.id);
+  }, [searchQuery, hydratedClusters]);
   // Auto-focus region matching search (visual highlight only)
   const effectiveActiveRegion =
     selectedRegion !== 'all'
@@ -124,6 +137,13 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
               key={cluster.id}
               cluster={cluster}
               index={idx}
+              expanded={expandedRegionId === cluster.id}
+              onToggleExpanded={() => {
+                const willExpand = expandedRegionId !== cluster.id;
+                setExpandedRegionId(willExpand ? cluster.id : null);
+                if (willExpand) onSelectRegion(cluster.id);
+                else if (selectedRegion === cluster.id) onSelectRegion('all');
+              }}
               accent={regionAccent(cluster.id, cluster.colorHex)}
               selected={selectedRegion === cluster.id}
               muted={selectedRegion !== 'all' && selectedRegion !== cluster.id}
@@ -131,7 +151,6 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
               selectedCourtId={selectedCourtId}
               searchQuery={searchQuery}
               typeFilter={activeCourtTypeFilter}
-              onSelectRegion={onSelectRegion}
               onSelectCourt={onSelectCourt}
               onToggleTypeFilter={(t) => onToggleTypeFilter(activeCourtTypeFilter === t ? 'all' : t)}
               onHover={setHoveredRegionId}
