@@ -208,7 +208,7 @@ export const CaseSearchEngine: React.FC<CaseSearchEngineProps> = ({ onSelectCase
         {/* Section Header */}
         <Reveal delay={50}>
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-            <div>
+            <div className="liquid-glass-title-pod px-5 py-5 sm:px-6 sm:py-6 max-w-3xl">
               <div className="flex items-center gap-2 font-mono text-xs text-theme-gold mb-2 uppercase tracking-wider">
                 <Search size={14} />
                 <span>
