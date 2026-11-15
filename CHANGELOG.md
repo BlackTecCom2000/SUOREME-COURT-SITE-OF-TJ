@@ -19,7 +19,10 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 
 
-
+
+
+
+
 ## v2.43.2 - Убрать посторонние файлы из Git
 - Released: 2026-11-15 14:24
 - Previous: v2.43.1
@@ -74,6 +77,14 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.41.5 - Security: account lockout, token revocation, password policy, prod CORS/CSRF
+- Released: 2026-11-15
+- Previous: v2.41.4
+- Task 1: account lockout (5 failures/15min -> 15min lock, timing-safe dummy compare, audit_log 'login_locked').
+- Task 2: token revocation via token_version (JWT claim tv, logout bumps version, cookie cleared with full opts, 204).
+- Task 3: password policy (min 12, != email, not in 20 common), prod-only CORS/CSRF (403 for cookie-authed mutations without Origin/Referer).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.41.4 - Fix hero card opacity flicker on scroll
 - Released: 2026-11-15
 - Previous: v2.41.3
