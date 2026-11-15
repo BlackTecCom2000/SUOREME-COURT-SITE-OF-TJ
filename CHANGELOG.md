@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.44.2 - Footer: compact sizing
+- Released: 2026-11-16
+- Previous: v2.44.1
+- Footer blocks reduced: paddings (p-4->p-3/p-2), gaps, PRESIDENT banner single-line baseline, headings 11px, map well fixed h-138px (was min-150 flex-1), contact rows single-line inline label+value, ticker/bottom-bar tightened. Footer height ~608px -> ~506px at desktop width, zero content/structure changes.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.44.1 - News detail full-width text; admin login matches site glass
 - Released: 2026-11-16
 - Previous: v2.44.0

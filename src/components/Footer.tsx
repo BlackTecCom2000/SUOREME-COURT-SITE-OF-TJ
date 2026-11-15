@@ -64,34 +64,34 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
 
         {/* Glass layer — light continuance, not dark */}
         <div className="relative">
-          <div className="site-container px-4 sm:px-8 md:px-12 pt-4 pb-2">
+          <div className="site-container px-4 sm:px-8 md:px-12 pt-3 pb-2">
             {/* President message — top glass highlight */}
-            <div className="mb-4">
+            <div className="mb-3">
               <a
                 href={PRESIDENT_MESSAGE.url}
                 target="_blank"
                 rel="noreferrer"
-                className="glass glass-card p-3 flex items-start gap-3 group hover:border-theme-gold/40 transition-colors"
+                className="glass glass-card p-2 flex items-start gap-2 group hover:border-theme-gold/40 transition-colors"
               >
-                <ExternalLink size={15} className="text-theme-gold shrink-0 mt-0.5" />
-                <span>
-                  <span className="block text-xs uppercase tracking-widest text-theme-gold mb-1 font-semibold">
+                <ExternalLink size={13} className="text-theme-gold shrink-0 mt-0.5" />
+                <span className="flex flex-wrap items-baseline gap-x-2 leading-snug">
+                  <span className="text-[10px] uppercase tracking-widest text-theme-gold font-semibold whitespace-nowrap">
                     {language === 'en' ? 'President message' : language === 'tj' ? 'Паёми президент' : 'Послание президента'}
                   </span>
-                  <span className="font-sans text-sm text-theme-text group-hover:text-theme-gold leading-snug">{pickLink(PRESIDENT_MESSAGE)}</span>
+                  <span className="font-sans text-[12px] text-theme-text group-hover:text-theme-gold">{pickLink(PRESIDENT_MESSAGE)}</span>
                 </span>
               </a>
             </div>
 
             {/* 4-column premium footer — desktop 4 col, tablet 2 col, mobile stacked */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 mb-3">
               {/* 1 — СУДИ ОЛИИ — GlassNavigationColumn */}
-              <nav aria-label={language === 'en' ? 'Supreme Court' : 'СУДИ ОЛИИ'} className="glass glass-card p-4 flex flex-col">
-                <div className="text-xs uppercase tracking-widest text-theme-gold mb-2 font-mono font-bold">СУДИ ОЛИИ</div>
-                <ul className="flex-1 flex flex-col justify-between gap-1" role="list">
+              <nav aria-label={language === 'en' ? 'Supreme Court' : 'СУДИ ОЛИИ'} className="glass glass-card p-3 flex flex-col">
+                <div className="text-[11px] uppercase tracking-widest text-theme-gold mb-1.5 font-mono font-bold">СУДИ ОЛИИ</div>
+                <ul className="flex-1 flex flex-col justify-between gap-0.5" role="list">
                   {courtNav.map((l) => (
                     <li key={l.to}>
-                      <a href={l.to} onClick={(e) => { e.preventDefault(); navigate(l.to); }} className="tap-target flex items-center justify-between py-1.5 px-2 rounded-lg text-sm text-theme-textSec hover:text-theme-text hover:bg-theme-bg/60 border border-transparent hover:border-theme-border transition-colors">
+                      <a href={l.to} onClick={(e) => { e.preventDefault(); navigate(l.to); }} className="tap-target flex items-center justify-between py-1 px-2 rounded-lg text-[13px] text-theme-textSec hover:text-theme-text hover:bg-theme-bg/60 border border-transparent hover:border-theme-border transition-colors">
                         <span>{l.label}</span>
                         <ChevronRight size={12} className="opacity-40" />
                       </a>
@@ -102,7 +102,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                     { label: language === 'en' ? 'Acts' : language === 'tj' ? 'Санадаҳо' : 'Акты', tab: 'acts' as ModalTab },
                   ].map((l) => (
                     <li key={l.tab}>
-                      <button type="button" onClick={() => onOpenSectionModal?.(l.tab)} className="tap-target w-full flex items-center justify-between py-1.5 px-2 rounded-lg text-sm text-theme-textSec hover:text-theme-gold hover:bg-theme-bg/60 border border-transparent hover:border-theme-border transition-colors text-left">
+                      <button type="button" onClick={() => onOpenSectionModal?.(l.tab)} className="tap-target w-full flex items-center justify-between py-1 px-2 rounded-lg text-[13px] text-theme-textSec hover:text-theme-gold hover:bg-theme-bg/60 border border-transparent hover:border-theme-border transition-colors text-left">
                         <span>{l.label}</span>
                         <ChevronRight size={12} className="opacity-40" />
                       </button>
@@ -112,15 +112,15 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
               </nav>
 
               {/* 2 — СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ — Courts directory GlassList, single source */}
-              <section aria-label="СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ" className="glass glass-card p-4 flex flex-col">
-                <div className="text-xs uppercase tracking-widest text-theme-gold mb-2 font-mono font-bold">СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ</div>
-                <div className="flex-1 max-h-[200px] overflow-y-auto pr-1 space-y-1 custom-scrollbar">
+              <section aria-label="СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ" className="glass glass-card p-3 flex flex-col">
+                <div className="text-[11px] uppercase tracking-widest text-theme-gold mb-1.5 font-mono font-bold">СОМОНАҲОИ СУДҲОИ ҶУМҲУРӢ</div>
+                <div className="flex-1 max-h-[150px] overflow-y-auto pr-1 space-y-0.5 custom-scrollbar">
                   {REGIONAL_CLUSTERS.map((rc) => (
                     <div key={rc.id}>
                       <button
                         type="button"
                         onClick={() => setSelectedRegion(selectedRegion === rc.id ? null : rc.id)}
-                        className={`tap-target w-full text-left px-2 py-1.5 rounded-lg text-xs font-mono flex items-center justify-between border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold/15 border-theme-gold/40 text-theme-text font-semibold' : 'border-transparent text-theme-textSec hover:text-theme-text hover:bg-theme-bg/60 hover:border-theme-border'}`}
+                        className={`tap-target w-full text-left px-2 py-1 rounded-lg text-[11px] font-mono flex items-center justify-between border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold/15 border-theme-gold/40 text-theme-text font-semibold' : 'border-transparent text-theme-textSec hover:text-theme-text hover:bg-theme-bg/60 hover:border-theme-border'}`}
                         aria-expanded={selectedRegion === rc.id}
                       >
                         <span>{rc.nameRu} <span className="opacity-60">({rc.courts.length})</span></span>
@@ -145,13 +145,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
 
               {/* 3 — Interactive Tajikistan map — Liquid Glass map interface.
                   v2.22.0: stronger silhouette + visible markers (was pale). */}
-              <section aria-label="Карта" className="glass glass-card p-4 flex flex-col">
-                <div className="text-xs uppercase tracking-widest text-theme-gold mb-2 font-mono flex items-center gap-2 font-bold">
+              <section aria-label="Карта" className="glass glass-card p-3 flex flex-col">
+                <div className="text-[11px] uppercase tracking-widest text-theme-gold mb-1.5 font-mono flex items-center gap-2 font-bold">
                   <Map size={12} /> {language === 'en' ? 'Judicial Map' : language === 'tj' ? 'Харита' : 'Карта'}
                 </div>
                 {/* v2.25.1: denser map well — was too transparent with a weak frame.
                     Solid glass surface + visible border so the map reads as a card. */}
-                <div className="relative flex-1 min-h-[150px] rounded-[16px] overflow-hidden border-2 border-theme-borderHover bg-theme-surface backdrop-blur-xl shadow-inner flex items-center justify-center p-2">
+                <div className="relative h-[138px] rounded-[14px] overflow-hidden border-2 border-theme-borderHover bg-theme-surface backdrop-blur-xl shadow-inner flex items-center justify-center p-1.5">
                   {/* Real Tajikistan: GADM ADM1 polygons, simplified locally.
                       Dushanbe + RRP are separate shapes selecting one cluster. */}
                   <TajikistanMap
@@ -165,11 +165,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                     <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-theme-gold animate-pulse" /> LIVE</span>
                   </div>
                 </div>
-                <div className="mt-1.5 text-right font-mono text-2xs text-theme-textMuted opacity-70">
+                <div className="mt-1 text-right font-mono text-[10px] text-theme-textMuted opacity-70">
                   {language === 'en' ? 'Boundaries: GADM' : language === 'tj' ? 'Сарҳадҳо: GADM' : 'Границы: GADM'}
                 </div>
                 {/* Accessible alternative list for keyboard/screen reader */}
-                <nav aria-label="Regions" className="mt-3 flex flex-wrap gap-1.5">
+                <nav aria-label="Regions" className="mt-2 flex flex-wrap gap-1.5">
                   {REGIONAL_CLUSTERS.map((rc) => (
                     <button key={`foot-map-${rc.id}`} type="button" onClick={() => setSelectedRegion(rc.id)} className={`tap-target press-tactile px-2.5 py-1 rounded-full text-2xs font-mono border transition-colors ${selectedRegion === rc.id ? 'bg-theme-gold text-black font-semibold border-theme-gold' : 'border-theme-border text-theme-textSec hover:text-theme-text hover:border-theme-gold/40 hover:bg-theme-bg/60'}`}>{rc.shortNameRu}</button>
                   ))}
@@ -177,35 +177,35 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
               </section>
 
               {/* 4 — ТАМОС — GlassContactPanel, real contacts */}
-              <section aria-label="ТАМОС" className="glass glass-card p-4 flex flex-col">
-                <div className="text-xs uppercase tracking-widest text-theme-gold mb-2 font-mono font-bold">ТАМОС</div>
-                <address className="not-italic flex-1 flex flex-col justify-between gap-2 text-sm">
-                  <div className="flex gap-2 p-2 rounded-xl glass-nest border">
-                    <MapPin size={16} className="text-theme-gold shrink-0 mt-0.5" />
-                    <div className="text-theme-textSec leading-snug text-xs">
-                      <span className="block text-2xs uppercase text-theme-textMuted mb-1">{t('contacts.legalAddressLabel')}</span>
+              <section aria-label="ТАМОС" className="glass glass-card p-3 flex flex-col">
+                <div className="text-[11px] uppercase tracking-widest text-theme-gold mb-1.5 font-mono font-bold">ТАМОС</div>
+                <address className="not-italic flex-1 flex flex-col justify-between gap-1 text-[12px]">
+                  <div className="flex gap-2 px-2.5 py-1.5 rounded-xl glass-nest border items-center">
+                    <MapPin size={13} className="text-theme-gold shrink-0" />
+                    <div className="text-theme-textSec leading-snug text-[11px] min-w-0">
+                      <span className="text-[9px] uppercase text-theme-textMuted mr-1.5">{t('contacts.legalAddressLabel')}</span>
                       {t('contacts.legalAddressValue')}
                     </div>
                   </div>
-                  <a href="mailto:info@sud.tj" className="flex gap-2 p-2 rounded-xl glass-nest border hover:border-theme-gold/40 transition-colors group">
-                    <Mail size={16} className="text-emerald-500 shrink-0 mt-0.5" />
-                    <div>
-                      <span className="block text-2xs uppercase text-theme-textMuted">E-mail</span>
-                      <span className="text-theme-text group-hover:text-theme-gold text-xs font-medium">info@sud.tj</span>
+                  <a href="mailto:info@sud.tj" className="flex gap-2 px-2.5 py-1.5 rounded-xl glass-nest border hover:border-theme-gold/40 transition-colors group items-center">
+                    <Mail size={13} className="text-emerald-500 shrink-0" />
+                    <div className="min-w-0">
+                      <span className="text-[9px] uppercase text-theme-textMuted mr-1.5">E-mail</span>
+                      <span className="text-theme-text group-hover:text-theme-gold text-[11px] font-medium">info@sud.tj</span>
                     </div>
                   </a>
-                  <a href="tel:+992372331415" className="flex gap-2 p-2 rounded-xl glass-nest border hover:border-theme-gold/40 transition-colors group">
-                    <Phone size={16} className="text-cyan-500 shrink-0 mt-0.5" />
-                    <div>
-                      <span className="block text-2xs uppercase text-theme-textMuted">{t('contacts.hotlineLabel')}</span>
-                      <span className="text-theme-text group-hover:text-theme-gold text-xs font-medium">+992 (37) 233-14-15</span>
+                  <a href="tel:+992372331415" className="flex gap-2 px-2.5 py-1.5 rounded-xl glass-nest border hover:border-theme-gold/40 transition-colors group items-center">
+                    <Phone size={13} className="text-cyan-500 shrink-0" />
+                    <div className="min-w-0">
+                      <span className="text-[9px] uppercase text-theme-textMuted mr-1.5">{t('contacts.hotlineLabel')}</span>
+                      <span className="text-theme-text group-hover:text-theme-gold text-[11px] font-medium">+992 (37) 233-14-15</span>
                     </div>
                   </a>
-                  <div className="flex gap-2 p-2 rounded-xl glass-nest border">
-                    <FileText size={16} className="text-theme-textMuted shrink-0 mt-0.5" />
-                    <div>
-                      <span className="block text-2xs uppercase text-theme-textMuted">Факс</span>
-                      <span className="text-theme-textSec text-xs">+992 (37) 233-14-15</span>
+                  <div className="flex gap-2 px-2.5 py-1.5 rounded-xl glass-nest border items-center">
+                    <FileText size={13} className="text-theme-textMuted shrink-0" />
+                    <div className="min-w-0">
+                      <span className="text-[9px] uppercase text-theme-textMuted mr-1.5">Факс</span>
+                      <span className="text-theme-textSec text-[11px]">+992 (37) 233-14-15</span>
                     </div>
                   </div>
                 </address>
@@ -213,9 +213,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
             </div>
 
             {/* Useful Links — СОМОНАҲОИ МУФИД — infinite marquee, Liquid Glass, admin configurable */}
-            <section aria-label="СОМОНАҲОИ МУФИД" className="glass glass-card p-3 mb-3 overflow-hidden">
-              <div className="flex items-center justify-between mb-1.5 gap-3">
-                <h2 className="text-xs uppercase tracking-widest text-theme-gold font-mono font-bold">СОМОНАҲОИ МУФИД</h2>
+            <section aria-label="СОМОНАҲОИ МУФИД" className="glass glass-card p-2 mb-2 overflow-hidden">
+              <div className="flex items-center justify-between mb-1 gap-3">
+                <h2 className="text-[11px] uppercase tracking-widest text-theme-gold font-mono font-bold">СОМОНАҲОИ МУФИД</h2>
                 <div className="hidden sm:flex items-center gap-1.5">
                   <button type="button" aria-label="Prev" onClick={() => scrollBy(-1)} className="w-7 h-7 rounded-full glass border border-theme-border hover:border-theme-gold flex items-center justify-center text-theme-textMuted hover:text-theme-text transition-colors">
                     <ChevronLeft size={14} />
@@ -247,10 +247,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                           target="_blank"
                           rel="noreferrer"
                           tabIndex={copy === 1 ? -1 : undefined}
-                          className="ticker-item glass border border-theme-border hover:border-theme-gold rounded-[14px] flex flex-col items-center justify-center gap-1 p-1.5 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-gold group shrink-0"
+                          className="ticker-item glass border border-theme-border hover:border-theme-gold rounded-[14px] flex flex-col items-center justify-center gap-0.5 p-1 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-gold group shrink-0"
                           style={{ width: `${Math.max(140, marquee.logo_size * 2.1)}px`, height: `${Math.max(60, marquee.logo_size - 12)}px` } as React.CSSProperties}
                         >
-                <span className="w-8 h-8 rounded-full glass-nest border flex items-center justify-center text-2xs font-mono text-theme-textSec group-hover:text-theme-gold group-hover:bg-theme-bg transition-colors shrink-0" aria-hidden="true">
+                <span className="w-7 h-7 rounded-full glass-nest border flex items-center justify-center text-2xs font-mono text-theme-textSec group-hover:text-theme-gold group-hover:bg-theme-bg transition-colors shrink-0" aria-hidden="true">
                             {pickLink(l).slice(0, 2).toUpperCase()}
                           </span>
                           <span className="text-[11px] font-medium text-theme-text leading-tight line-clamp-2">{pickLink(l)}</span>
@@ -261,7 +261,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                   ))}
                 </div>
               </div>
-              <div className="flex justify-between items-center mt-1.5 text-2xs font-mono text-theme-textMuted">
+              <div className="flex justify-between items-center mt-1 text-2xs font-mono text-theme-textMuted">
                 <span className="sm:hidden">← swipe / touch →</span>
                 <span className="hidden sm:inline opacity-60">{marquee.autoplay ? (language === 'en' ? 'Auto • hover to pause' : 'Авто • пауза при наведении') : (language === 'en' ? 'Paused' : 'Пауза')}</span>
                 <span className="hidden sm:inline opacity-60">{marquee.speed}s • {marquee.direction}</span>
@@ -271,7 +271,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
             </section>
 
             {/* Bottom bar — GlassBottomBar */}
-            <div className="glass glass-card border border-theme-border px-4 sm:px-5 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[11px] font-mono">
+            <div className="glass glass-card border border-theme-border px-4 sm:px-5 py-2 flex flex-col sm:flex-row items-center justify-between gap-1 text-[10px] font-mono">
               <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
                 <span className="text-theme-text font-bold">SUD.TJ</span>
                 <span className="opacity-60">•</span>
