@@ -167,7 +167,10 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
         <span>{militaryCourt ? 1 : 0} {language === 'tj' ? 'ҳарбӣ' : language === 'en' ? 'military' : 'воен.'}</span>
       </div>
 
-      <div id={`judmap-courts-${cluster.id}`} hidden={!expanded} className="flex flex-col gap-3.5">
+      <div
+        id={`judmap-courts-${cluster.id}`}
+        className={`${expanded ? 'flex' : 'hidden'} flex-col gap-3.5`}
+      >
       {/* Regional court */}
       {regionalCourt && (
         <CourtList

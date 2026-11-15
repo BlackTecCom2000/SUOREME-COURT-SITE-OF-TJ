@@ -18,7 +18,13 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 
 
-
+
+## v2.42.0 - Fix collapsed judiciary panels verified
+- Released: 2026-11-15 09:09
+- Previous: v2.41.0
+- QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
+  `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
+  `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
 ## v2.40.0 - Compact judiciary region panels
 - Released: 2026-11-14 23:54
 - Previous: v2.39.0
