@@ -513,7 +513,7 @@ const toReadableTitle = (text: string): string => {
               {/* Slide Content Layer */}
               <div className="relative z-10 w-full h-full p-6 sm:p-8 flex flex-col justify-end text-left slide-dark-scrim">
                 <div className="flex items-center gap-2 mb-2 font-mono text-2xs sm:text-xs">
-                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold uppercase tracking-wider shadow-sm">
+                  <span className="px-2.5 py-0.5 rounded-full bg-theme-gold/15 text-theme-gold border border-theme-gold/40 font-bold uppercase tracking-wider shadow-sm">
                     {category}
                   </span>
                   <span className="flex items-center gap-1 text-slate-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
@@ -521,7 +521,7 @@ const toReadableTitle = (text: string): string => {
                   </span>
                 </div>
 
-                <h3 className="font-serif font-bold text-base sm:text-xl md:text-2xl text-white group-hover:text-amber-300 transition-colors line-clamp-3 leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] mb-2">
+                <h3 className="font-serif font-bold text-base sm:text-xl md:text-2xl text-white group-hover:text-[var(--gold-300)] transition-colors line-clamp-3 leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] mb-2">
                   {title}
                 </h3>
 

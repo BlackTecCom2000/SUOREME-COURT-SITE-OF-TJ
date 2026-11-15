@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.47.0 - Section 06 (information): day-theme text contrast fix
+- Released: 2026-11-16
+- Previous: v2.46.0
+- Column ribbons (¡¿Õ  –≈ÿ≈Õ»… / œ–≈——-÷≈Õ“–) now render as glass lg-chips with accent-gold text instead of bare gold-on-photo (was ~2.5:1, fails WCAG). In-force chips use a theme-aware emerald pair (emerald-800 on emerald-600/10 light; emerald-400 on tint dark). Press-center body text lifted 11px to 12px. News-slider eyebrow chips and title hover moved off raw amber-300/amber-500 to the site gold. GOLD text on light glass verified at computed values.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.46.0 - Admin typography density: one-step readable, still compact
 - Released: 2026-11-16
 - Previous: v2.45.1

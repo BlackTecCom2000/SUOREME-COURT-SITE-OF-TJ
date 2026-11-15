@@ -79,12 +79,12 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
           {/* Left: Verified Judicial Acts & Plenum Decisions */}
           <div className="lg:col-span-7 flex flex-col justify-between">
             <div className="flex-1 flex flex-col min-h-0">
-              <div className="flex items-center justify-between mb-4 font-mono text-xs text-theme-textSec">
-                <span className="text-[var(--accent-gold-dark)] font-semibold flex items-center gap-2 uppercase tracking-wider">
-                  <FileText size={16} />
+              <div className="flex items-center justify-between gap-2 mb-4 font-mono text-xs text-theme-textSec">
+                <span className="inline-flex items-center gap-2 lg-material lg-chip rounded-lg uppercase tracking-wider px-3 py-1.5 text-xs font-semibold shadow-md" style={{ color: 'var(--accent-gold)' }}>
+                  <FileText size={14} />
                   <span>{t('acts.badge')}</span>
                 </span>
-                <span className="text-theme-textMuted">SUD.TJ // DATABASE</span>
+                <span className="text-xs text-theme-textMuted">SUD.TJ // DATABASE</span>
               </div>
 
               <div className="flex-1 flex flex-col gap-3 mb-6">
@@ -106,7 +106,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
                       </div>
 
                       <div className="flex items-center gap-2 font-mono text-2xs shrink-0">
-                        <span className="inline-flex items-center gap-1 text-emerald-400 bg-emerald-950/30 px-2 py-0.5 rounded border border-emerald-500/20">
+                        <span className="inline-flex items-center gap-1 text-emerald-800 dark:text-emerald-400 bg-emerald-600/10 dark:bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-700/25 dark:border-emerald-400/25 font-medium">
                           <CheckCircle2 size={11} />
                           <span>{t('acts.inForce')}</span>
                         </span>
@@ -141,12 +141,12 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
           {/* Right: Press Center, News & "Мизони Қонун" */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div className="flex-1 flex flex-col min-h-0">
-              <div className="flex items-center justify-between mb-4 font-mono text-xs text-theme-textSec">
-                <span className="text-[var(--accent-gold-dark)] font-semibold flex items-center gap-2 uppercase tracking-wider">
-                  <Newspaper size={16} />
+              <div className="flex items-center justify-between gap-2 mb-4 font-mono text-xs text-theme-textSec">
+                <span className="inline-flex items-center gap-2 lg-material lg-chip rounded-lg uppercase tracking-wider px-3 py-1.5 text-xs font-semibold shadow-md" style={{ color: 'var(--accent-gold)' }}>
+                  <Newspaper size={14} />
                   <span>{t('contacts.pressTitle')}</span>
                 </span>
-                <span className="text-theme-textMuted">«МИЗОНИ ҚОНУН»</span>
+                <span className="text-xs text-theme-textMuted">«МИЗОНИ ҚОНУН»</span>
               </div>
 
               <div className="flex-1 flex flex-col gap-3 mb-6">
@@ -164,7 +164,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
                       <h4 className="text-xs sm:text-sm font-medium text-theme-text group-hover:text-theme-gold transition-colors mb-1 line-clamp-2">
                         {language === 'en' ? (item.title_en || item.title_ru) : language === 'tj' ? (item.title_tj || item.title_ru) : item.title_ru}
                       </h4>
-                      <p className="text-[11px] text-theme-textSec line-clamp-2 leading-relaxed">{stripHtml((language === 'en' ? (item.body_en || item.body_ru) : language === 'tj' ? (item.body_tj || item.body_ru) : item.body_ru) || '')}</p>
+                      <p className="text-xs text-theme-textSec line-clamp-2 leading-relaxed">{stripHtml((language === 'en' ? (item.body_en || item.body_ru) : language === 'tj' ? (item.body_tj || item.body_ru) : item.body_ru) || '')}</p>
                     </div>
                   </Reveal>
                 ))}
