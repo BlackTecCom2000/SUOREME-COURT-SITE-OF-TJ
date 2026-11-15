@@ -48,22 +48,21 @@ export const Reveal: React.FC<RevealProps> = ({
     return (
       <Component
         style={{ animationDelay: `${delay}ms`, opacity: 0 }}
-        className={`reveal animate-fade-in-up ${className}`}
+        className={`reveal animate-blur-out-up ${className}`}
       >
         {children}
       </Component>
     );
   }
 
-  // PERF: animate opacity + transform ONLY (never transition-all: glass props
-  // like backdrop-filter/border/shadow passed via className must not animate).
-  // will-change lives only in the pre-reveal state, never permanently.
+  // PERF: animate opacity + transform + temporary blur ONLY (never
+  // transition-all). The blur is part of the entrance and resolves to 0.
   return (
     <Component
       ref={ref as any}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`reveal transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        isVisible ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-8 scale-[0.985] opacity-0 will-change-transform'
+      className={`reveal transition-[opacity,transform,filter] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        isVisible ? 'translate-y-0 scale-100 opacity-100 blur-0' : 'translate-y-8 scale-[0.985] opacity-0 blur-md will-change-transform'
       } ${className}`}
     >
       {children}

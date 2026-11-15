@@ -2042,37 +2042,9 @@ html[data-a11y="true"] .content-card::before {
    they inherit, so a per-frame variable invalidated every descendant's style
    and turned smooth scrolling into stutter. */
 
-/* A glass surface must be painted at its final position as soon as it enters
-   the viewport. Transform/opacity reveal wrappers around backdrop-filter
-   surfaces can leave the backdrop looking stale until the compositor settles.
-   Keep the reveal animation for regular content; skip it for direct glass
-   surfaces site-wide without changing the glass material itself. */
-@supports selector(.reveal:has(> .glass)) {
-  .reveal:has(> :is(
-    .glass,
-    .lg-material,
-    .lg-card,
-    .lg-panel,
-    .lg-chip,
-    .glass-card,
-    .glass-panel,
-    .glass-chip,
-    .glass-premium,
-    .glass-ultra,
-    .glass-navigation,
-    .glass-large,
-    .glass-admin,
-    .glass-admin-strong,
-    .content-card,
-    .liquid-glass-title-pod
-  )) {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    translate: none !important;
-    scale: none !important;
-    transition: none !important;
-    transition-delay: 0ms !important;
-    will-change: auto !important;
-  }
-}
+/* A glass surface painted at its final position as soon as it enters the
+   viewport beats churn to a stale backdrop. The entrance now animates only
+   opacity/transform/temporary blur on the wrapper, never the glass material
+   itself, so glass cards can participate in the blur-out reveal like every
+   other element. The old override that collapsed all reveal motion to the
+   final state has been removed. */

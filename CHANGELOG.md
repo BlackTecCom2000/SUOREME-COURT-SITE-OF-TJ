@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.43.0 - Blur-out-up reveal for sections/cards on entrance
+- Released: 2026-11-16
+- Previous: v2.42.4
+- Reveal component now animates opacity, translateY, scale and a temporary 10/12px blur on entrance (IntersectionObserver, fires once). Priority reveal uses new blur-out-up keyframe. Glass-card reveal override removed so glass content participates in blur reveal. Reduced-motion respected.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.42.4 - News detail: full site width article, justified text
 - Released: 2026-11-16
 - Previous: v2.42.3
