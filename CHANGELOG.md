@@ -56,6 +56,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.41.3 - Fix regional panel open animation (max-height + measured height)
+- Released: 2026-11-15
+- Previous: v2.41.2
+- The grid-template-rows transition did not animate (Tailwind arbitrary grid-rows classes were not generated). Switched to measured max-height transition (0 -> scrollHeight) with ref, plus staggered jm-fade-up on sub-sections.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.41.2 - Smooth staged open animation for regional court panel
 - Released: 2026-11-15
 - Previous: v2.41.1
