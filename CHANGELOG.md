@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.44.1 - News detail full-width text; admin login matches site glass
+- Released: 2026-11-16
+- Previous: v2.44.0
+- News detail paragraphs and headings fill the full card width (\max-width: none\ on .article-full-width). Admin login now uses the actual national emblem (/emblems/emblem-tj.png) and the site's liquid-glass panel (matches portal aesthetic).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.44.0 - Blur-out-up reveal for sections/cards on entrance
 - Released: 2026-11-16
 - Previous: v2.42.4

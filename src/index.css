@@ -701,6 +701,19 @@ html.is-morphing-theme ::view-transition-new(root) {
     max-width: none;
   }
 
+  /* Article pages (news detail) want text to fill the card edge. */
+  .article-full-width p,
+  .article-full-width li,
+  .article-full-width dd,
+  .article-full-width h1,
+  .article-full-width h2,
+  .article-full-width h3,
+  .article-full-width h4,
+  .article-full-width h5,
+  .article-full-width h6 {
+    max-width: none;
+  }
+
   @media (max-width: 640px) {
     .public-section-title {
       font-size: clamp(2rem, 10vw, 3rem);
@@ -989,10 +1002,12 @@ html.is-morphing-theme ::view-transition-new(root) {
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
     box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
+  /* Style the auth card to the same liquid glass used across the public
+     portal: white-translucent surfaces, gold rim hairline, not the accent. */
   .glass-login-card {
-    background: var(--glass-surface-tint);
-    border-color: var(--glass-border-tint);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28), var(--glass-highlight);
+    background: var(--lg-tint) !important;
+    border-color: var(--lg-rim-top) !important;
+    box-shadow: var(--lg-shadow), var(--glass-highlight) !important;
   }
   .justice-viewport {
     background: var(--glass-surface-scene);

@@ -88,7 +88,7 @@ export const ContentDetailPage: React.FC = () => {
         <div className="content-card text-center py-12 font-mono text-xs text-theme-textSec">Loading...</div>
       ) : (
         <Reveal delay={100}>
-          <article className="content-card relative overflow-hidden w-full">
+          <article className="article-full-width content-card relative overflow-hidden w-full">
             <div data-cinematic-stage="page" className="border-l-2 border-theme-gold pl-4 py-1 mb-5">
               <span className="font-mono text-xs text-theme-gold tracking-widest uppercase flex items-center gap-1.5">
                 <Newspaper size={13} />

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { NationalEmblem } from '../../components/judicial-ecosystem/NationalEmblem';
 import { GlobalBackground } from '../../components/GlobalBackground';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import { AdminInput } from '../components/ui/AdminInput';
@@ -65,8 +64,8 @@ export const AdminLogin: React.FC = () => {
 
         {/* Center Institutional Identity — same system */}
         <div className="relative z-10 my-auto py-8 text-left max-w-lg">
-          <div className="inline-flex p-3 rounded-2xl glass border border-[var(--glass-border)] shadow-[var(--glass-shadow)] mb-6">
-            <NationalEmblem size={64} />
+          <div className="inline-flex p-3 rounded-2xl lg-material glass mx-auto mb-6 shadow-lg shadow-black/30">
+            <img src="/emblems/emblem-tj.png" alt="Эмблема Республики Таджикистан" className="w-16 h-16 sm:w-20 sm:h-20 object-contain select-none" />
           </div>
 
           <h1 className="font-display font-semibold text-3xl sm:text-4xl lg:text-5xl text-theme-text leading-tight">
