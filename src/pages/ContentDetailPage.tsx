@@ -88,7 +88,7 @@ export const ContentDetailPage: React.FC = () => {
         <div className="content-card text-center py-12 font-mono text-xs text-theme-textSec">Loading...</div>
       ) : (
         <Reveal delay={100}>
-          <article className="content-card relative overflow-hidden max-w-4xl mx-auto">
+          <article className="content-card relative overflow-hidden w-full">
             <div data-cinematic-stage="page" className="border-l-2 border-theme-gold pl-4 py-1 mb-5">
               <span className="font-mono text-xs text-theme-gold tracking-widest uppercase flex items-center gap-1.5">
                 <Newspaper size={13} />
@@ -104,7 +104,7 @@ export const ContentDetailPage: React.FC = () => {
               <img src={`/uploads/${item.cover_image}`} alt="" className="w-full max-h-[420px] object-cover rounded-xl border border-theme-border mb-5" loading="eager" />
             )}
             {String(body || '').split(/\n+/).map((p: string, i: number) => (
-              <p key={i} className="text-sm sm:text-base leading-relaxed text-theme-textSec mb-4">{p}</p>
+              <p key={i} className="text-sm sm:text-base leading-relaxed text-theme-textSec mb-4 text-justify">{p}</p>
             ))}
 
             {/* Photo gallery imported from the official source */}
