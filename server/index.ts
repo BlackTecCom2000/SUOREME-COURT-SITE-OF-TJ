@@ -120,7 +120,20 @@ try {
   }
 } catch { /* already migrated */ }
 
-// v2.34.0 — historical personalities ("heroes" archive).
+// SEC: account lockout tracking (task 1)
+db.exec(`CREATE TABLE IF NOT EXISTS login_attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT NOT NULL,
+  ip_address TEXT,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+)`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_login_attempts_email_time ON login_attempts(email, created_at)`);
+
+// SEC: token revocation (task 2) — idempotent
+try {
+  const ucols = db.prepare("PRAGMA table_info(users)").all() as any[];
+  if (!ucols.some((c) => c.name === 'token_version')) db.exec("ALTER TABLE users ADD COLUMN token_version INTEGER NOT NULL DEFAULT 0");
+} catch { /* already migrated */ }
 // One row per person, three languages side by side, plus the provenance
 // fields the archive is required to carry: timeline, sources, confidence
 // and an editorial note for anything that still needs a source check.
@@ -530,7 +543,9 @@ const multerErrors = (err: any, _req: express.Request, res: express.Response, ne
 if (process.env.CMS_SEED_ADMIN_EMAIL && process.env.CMS_SEED_ADMIN_PASSWORD && !db.prepare('SELECT id FROM users WHERE email=?').get(process.env.CMS_SEED_ADMIN_EMAIL)) {
   db.prepare('INSERT INTO users(email,password_hash,name,role) VALUES(?,?,?,?)').run(process.env.CMS_SEED_ADMIN_EMAIL, bcrypt.hashSync(process.env.CMS_SEED_ADMIN_PASSWORD, 12), 'System Administrator', 'super_admin');
 }
-const CMS_ORIGINS = [process.env.CMS_ORIGIN || 'http://127.0.0.1:5173', 'http://localhost:5173', 'http://127.0.0.1:5173'];
+const CMS_ORIGINS = process.env.NODE_ENV === 'production'
+  ? [process.env.CMS_ORIGIN || 'https://sud.tj', 'https://sud.tj', 'https://www.sud.tj'].filter((v, i, a) => a.indexOf(v) === i)
+  : [process.env.CMS_ORIGIN || 'http://127.0.0.1:5173', 'http://localhost:5173', 'http://127.0.0.1:5173'];
 const app = express();
 // M4: opt-in trust proxy. Set TRUST_PROXY when running behind nginx/a load
 // balancer (number of hops e.g. "1", or "loopback"/"uniquelocal"/IP list)
@@ -573,10 +588,17 @@ const csrfCheck = (req: express.Request, res: express.Response, next: express.Ne
   if (h.startsWith('Bearer ')) return next();
   if (!parseCookies(req)['cms_token']) return next();
   const origin = String(req.headers.origin || req.headers.referer || '');
-  if (!origin) return next();
+  if (!origin) {
+    // In production, a cookie-authenticated mutation with no Origin/Referer is
+    // rejected (CSRF protection). In development, allow (curl/scripts).
+    if (process.env.NODE_ENV === 'production') return res.status(403).json({ error: 'Forbidden' });
+    return next();
+  }
   let host = '';
   try { host = new URL(origin).hostname.toLowerCase(); } catch { return res.status(403).json({ error: 'Forbidden' }); }
-  const allowed = new Set<string>(['localhost', '127.0.0.1', 'sud.tj', 'www.sud.tj']);
+  const allowed = new Set<string>(process.env.NODE_ENV === 'production'
+    ? ['sud.tj', 'www.sud.tj']
+    : ['localhost', '127.0.0.1', 'sud.tj', 'www.sud.tj']);
   try { allowed.add(new URL(CMS_ORIGINS[0]).hostname.toLowerCase()); } catch {}
   const reqHost = String(req.headers.host || '').split(':')[0].toLowerCase();
   if (host === reqHost || allowed.has(host)) return next();
@@ -647,7 +669,19 @@ const auth = (req:Auth,res:express.Response,next:express.NextFunction) => {
   const bearer = req.headers.authorization?.replace('Bearer ','');
   const token = bearer || parseCookies(req)['cms_token'] || '';
   (req as any).cookieAuth = !bearer && !!parseCookies(req)['cms_token'];
-  try { req.user = jwt.verify(token || '', secret, { algorithms: ['HS256'] }) as {id:number;role:string}; const row = db.prepare('SELECT id, role, site_id FROM users WHERE id=? AND disabled=0').get((req.user as any).id) as any; if (!row) return res.status(401).json({ error:'Unauthorized' }); (req as any).scoped = { id: row.id, role: row.role, site_id: row.site_id || null }; next(); } catch { res.status(401).json({ error:'Unauthorized' }); } };
+  try {
+    const payload = jwt.verify(token || '', secret, { algorithms: ['HS256'] }) as any;
+    req.user = payload;
+    const row = db.prepare('SELECT id, role, site_id, token_version FROM users WHERE id=? AND disabled=0').get(payload.id) as any;
+    if (!row) return res.status(401).json({ error:'Unauthorized' });
+    // Token revocation: compare tv claim (default 0 for legacy tokens).
+    const tokenTv = typeof payload.tv === 'number' ? payload.tv : 0;
+    const dbTv = typeof row.token_version === 'number' ? row.token_version : 0;
+    if (tokenTv !== dbTv) return res.status(401).json({ error:'Unauthorized' });
+    (req as any).scoped = { id: row.id, role: row.role, site_id: row.site_id || null };
+    next();
+  } catch { res.status(401).json({ error:'Unauthorized' }); }
+};
 // Site scope of the current admin user: null = full access (super_admin or portal-wide),
 // object = restricted to one court site, 'DENIED' = unknown site.
 const scopeOf = (req:Auth): Scope | null | 'DENIED' => {
@@ -674,15 +708,42 @@ app.use('/api/ai/index-knowledge', auth, requirePerm('ai.manage'));
 app.use('/api/ai', aiRouter);
 const audit = (userId:number|undefined, action:string, type:string, id?:number) => db.prepare('INSERT INTO audit_log(user_id,action,object_type,object_id) VALUES(?,?,?,?)').run(userId || null, action, type, id || null);
 // Login brute-force guard (SEC-02): shared sliding-window limiter, 10 req / 15 min / IP.
-app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) { db.prepare("INSERT INTO audit_log(action,object_type,object_title,ip_address) VALUES(?,?,?,?)").run('login_failed','auth',parsed.data.email,req.ip ?? null); return res.status(401).json({error:'Invalid credentials'}); } const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h',algorithm:'HS256'}); audit(user.id,'login','user',user.id); res.cookie('cms_token', token, cookieOpts(req)); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
-app.post('/api/admin/auth/logout', auth, (req:Auth,res) => { audit(req.user!.id,'logout','user',req.user!.id); res.clearCookie('cms_token', { path: '/' }); res.json({ ok: true }); });
+app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; // Timing-safe: dummy compare for nonexistent users
+  const DUMMY_HASH = '$2b$12$WOOe7lsqQ3YbNWbrNyfzru/6BRQXihxwn7ynbLyac1e.K5d6bo4gO';
+  // Account lockout check (task 1)
+  if (user) {
+    const fails = (db.prepare("SELECT count(*) as c FROM login_attempts WHERE email=? AND created_at >= datetime('now', '-15 minutes')").get(parsed.data.email) as any)?.c || 0;
+    if (fails >= 5) {
+      db.prepare("INSERT INTO audit_log(action,object_type,object_title,ip_address) VALUES(?,?,?,?)").run('login_locked','auth',parsed.data.email,req.ip ?? null);
+      return res.status(401).json({error:'Invalid credentials'});
+    }
+  }
+  const hashToCheck = user ? user.password_hash : DUMMY_HASH;
+  const ok = bcrypt.compareSync(parsed.data.password, hashToCheck);
+  if(!user || !ok) {
+    if (user) db.prepare('INSERT INTO login_attempts(email, ip_address) VALUES(?,?)').run(parsed.data.email, req.ip ?? null);
+    db.prepare("INSERT INTO audit_log(action,object_type,object_title,ip_address) VALUES(?,?,?,?)").run('login_failed','auth',parsed.data.email,req.ip ?? null);
+    return res.status(401).json({error:'Invalid credentials'});
+  }
+  // success: reset counter
+  db.prepare('DELETE FROM login_attempts WHERE email=?').run(parsed.data.email);
+  const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null, tv: user.token_version || 0},secret,{expiresIn:'8h',algorithm:'HS256'});
+  audit(user.id,'login','user',user.id);
+  res.cookie('cms_token', token, cookieOpts(req));
+  res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}});
+});
+app.post('/api/admin/auth/logout', auth, (req:Auth,res) => { const uid=(req as any).scoped.id; db.prepare('UPDATE users SET token_version = token_version + 1 WHERE id=?').run(uid); audit(uid,'logout','user',uid); res.clearCookie('cms_token', { path: '/', httpOnly: true, sameSite: 'lax', secure: isHttpsReq(req) }); res.status(204).end(); });
 app.get('/api/admin/auth/me', auth, (req:Auth,res) => { const s=(req as any).scoped; const row=db.prepare('SELECT id,email,name,role,site_id FROM users WHERE id=?').get(s.id) as any; if(!row) return res.status(401).json({error:'Unauthorized'}); res.json({ ...row, permissions: permissionsFor(row.role) }); });
 // User management (super_admin only) — includes per-site access (site_id)
 app.get('/api/admin/users', auth, requirePerm('users.manage'), (_req,res) => res.json(db.prepare('SELECT id,email,name,role,site_id,disabled,created_at FROM users ORDER BY created_at DESC').all()));
 app.post('/api/admin/users', auth, requirePerm('users.manage'), (req:Auth,res) => {
-  const p=z.object({email:z.string().email(),password:z.string().min(8),name:z.string().min(2).max(160),role:z.enum(['super_admin','admin','editor','reviewer']).default('editor'),site_id:z.string().max(64).nullable().optional(),disabled:z.union([z.literal(0),z.literal(1)]).optional()}).safeParse(req.body);
+  const p=z.object({email:z.string().email(),password:z.string().min(12),name:z.string().min(2).max(160),role:z.enum(['super_admin','admin','editor','reviewer']).default('editor'),site_id:z.string().max(64).nullable().optional(),disabled:z.union([z.literal(0),z.literal(1)]).optional()}).safeParse(req.body);
   if(!p.success)return res.status(400).json({error:'Invalid user', details:p.error});
   const x=p.data;
+  // Password policy (task 3)
+  if (x.password.toLowerCase() === x.email.toLowerCase()) return res.status(400).json({error:'Password must not equal email'});
+  const COMMON = ['password','12345678','qwerty123','password123','admin123','letmein','welcome123','123456789','qwerty','abc12345','password1','changeme','iloveyou','monkey123','dragon123','master123','login123','passw0rd','p@ssw0rd','1q2w3e4r'];
+  if (COMMON.includes(x.password.toLowerCase())) return res.status(400).json({error:'Password is too common'});
   try {
     const result=db.prepare('INSERT INTO users(email,password_hash,name,role,site_id,disabled) VALUES(?,?,?,?,?,?)').run(x.email, bcrypt.hashSync(x.password,12), x.name, x.role, x.site_id || null, x.disabled ?? 0);
     audit((req as any).scoped.id,'create','user',Number(result.lastInsertRowid));
@@ -690,16 +751,26 @@ app.post('/api/admin/users', auth, requirePerm('users.manage'), (req:Auth,res) =
   } catch { res.status(409).json({error:'Email already exists'}); }
 });
 app.patch('/api/admin/users/:id', auth, requirePerm('users.manage'), (req:Auth,res) => {
-  const p=z.object({name:z.string().min(2).max(160).optional(),role:z.enum(['super_admin','admin','editor','reviewer']).optional(),site_id:z.string().max(64).nullable().optional(),disabled:z.union([z.literal(0),z.literal(1)]).optional(),password:z.string().min(8).optional()}).safeParse(req.body);
+  const p=z.object({name:z.string().min(2).max(160).optional(),role:z.enum(['super_admin','admin','editor','reviewer']).optional(),site_id:z.string().max(64).nullable().optional(),disabled:z.union([z.literal(0),z.literal(1)]).optional(),password:z.string().min(12).optional()}).safeParse(req.body);
   if(!p.success)return res.status(400).json({error:'Invalid user', details:p.error});
   const x=p.data;
+  // Password policy (task 3): min 12, not equal to email, not common.
+  if (x.password) {
+    const emailRow = db.prepare('SELECT email FROM users WHERE id=?').get(req.params.id) as any;
+    const email = emailRow?.email || '';
+    if (x.password.toLowerCase() === email.toLowerCase()) return res.status(400).json({error:'Password must not equal email'});
+    const COMMON = ['password','12345678','qwerty123','password123','admin123','letmein','welcome123','123456789','qwerty','abc12345','password1','changeme','iloveyou','monkey123','dragon123','master123','login123','passw0rd','p@ssw0rd','1q2w3e4r'];
+    if (COMMON.includes(x.password.toLowerCase())) return res.status(400).json({error:'Password is too common'});
+  }
   const sets:string[]=[]; const vals:any[]=[];
+  let bumpToken = false;
   if(x.name!==undefined){sets.push('name=?');vals.push(x.name);}
-  if(x.role!==undefined){sets.push('role=?');vals.push(x.role);}
+  if(x.role!==undefined){sets.push('role=?');vals.push(x.role); bumpToken=true;}
   if(x.site_id!==undefined){sets.push('site_id=?');vals.push(x.site_id);}
-  if(x.disabled!==undefined){sets.push('disabled=?');vals.push(x.disabled);}
-  if(x.password!==undefined){sets.push('password_hash=?');vals.push(bcrypt.hashSync(x.password,12));}
+  if(x.disabled!==undefined){sets.push('disabled=?');vals.push(x.disabled); if(x.disabled===1) bumpToken=true;}
+  if(x.password!==undefined){sets.push('password_hash=?');vals.push(bcrypt.hashSync(x.password,12)); bumpToken=true;}
   if(sets.length===0)return res.status(400).json({error:'Nothing to update'});
+  if (bumpToken) sets.push('token_version = token_version + 1');
   vals.push(req.params.id);
   db.prepare(`UPDATE users SET ${sets.join(',')} WHERE id=?`).run(...vals);
   audit((req as any).scoped.id,'update','user',Number(req.params.id));
