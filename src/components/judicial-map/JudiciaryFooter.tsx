@@ -31,7 +31,7 @@ export const JudiciaryFooter: React.FC = () => {
           className="w-6 h-6 object-contain opacity-80"
           loading="lazy"
         />
-        <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-[var(--jm-text-2)]">
+        <span className="font-mono text-2xs tracking-[0.14em] uppercase text-[var(--jm-text-2)]">
           {courtName}
         </span>
       </div>

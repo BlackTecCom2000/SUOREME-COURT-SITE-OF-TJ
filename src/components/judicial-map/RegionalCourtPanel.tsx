@@ -135,7 +135,7 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
         aria-controls={`judmap-courts-${cluster.id}`}
         className="tap-target w-full flex items-center gap-3 text-left group cursor-pointer rounded-[10px] focus-visible:outline-2 focus-visible:outline-[var(--jm-gold)]"
       >
-        <span className="font-mono text-[11px] font-bold tracking-widest text-[var(--jm-muted)] group-hover:text-[var(--jm-text)] transition-colors">
+        <span className="font-mono text-2xs font-bold tracking-widest text-[var(--jm-muted)] group-hover:text-[var(--jm-text)] transition-colors">
           {String(index + 1).padStart(2, '0')}
         </span>
         <span aria-hidden="true" className="w-6 h-px shrink-0" style={{ background: accent }} />
@@ -160,7 +160,7 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
         />
       </button>
 
-      <div className="flex flex-wrap gap-x-3 gap-y-1 pl-1 font-mono text-[10px] text-[var(--jm-muted)]">
+      <div className="flex flex-wrap gap-x-3 gap-y-1 pl-1 font-mono text-2xs text-[var(--jm-muted)]">
         <span>{cityCount} {language === 'tj' ? 'шаҳр' : language === 'en' ? 'city' : 'город'}</span>
         <span>{districtCount} {language === 'tj' ? 'ноҳия' : language === 'en' ? 'district' : 'район'}</span>
         <span>{militaryCourt ? 1 : 0} {language === 'tj' ? 'ҳарбӣ' : language === 'en' ? 'military' : 'воен.'}</span>
@@ -170,9 +170,11 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
         id={`judmap-courts-${cluster.id}`}
         style={{
           opacity: expanded ? 1 : 0,
+          filter: expanded ? 'blur(0)' : 'blur(6px)',
+          transform: expanded ? 'translateY(0)' : 'translateY(-6px)',
           display: 'grid',
           gridTemplateRows: expanded ? '1fr' : '0fr',
-          transition: 'grid-template-rows 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease-out',
+          transition: 'grid-template-rows 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease-out, filter 0.45s ease-out, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
         aria-hidden={!expanded}
       >

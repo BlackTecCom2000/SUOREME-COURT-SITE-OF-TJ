@@ -12,6 +12,39 @@ interface FooterProps {
   onOpenSectionModal?: (tab: ModalTab) => void;
 }
 
+/** Favicon for a useful-site link: real site icon via the public favicon
+ *  service, graceful monogram fallback when it fails (offline, CSP, blocked). */
+const UsefulFavicon: React.FC<{ url: string; label: string }> = ({ url, label }) => {
+  const [failed, setFailed] = useState(false);
+  let host = '';
+  try {
+    host = new URL(url).hostname;
+  } catch {
+    host = '';
+  }
+  return (
+    <span
+      className="relative w-9 h-9 shrink-0 rounded-full glass-nest border border-theme-border flex items-center justify-center overflow-hidden"
+      aria-hidden="true"
+    >
+      {failed || !host ? (
+        <span className="text-2xs font-mono font-bold text-theme-gold">{label.slice(0, 2).toUpperCase()}</span>
+      ) : (
+        <img
+          src={`https://www.google.com/s2/favicons?sz=64&domain=${host}`}
+          alt=""
+          width={20}
+          height={20}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          className="w-5 h-5 object-contain"
+          onError={() => setFailed(true)}
+        />
+      )}
+    </span>
+  );
+};
+
 export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
@@ -247,14 +280,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                           target="_blank"
                           rel="noreferrer"
                           tabIndex={copy === 1 ? -1 : undefined}
-                          className="ticker-item glass border border-theme-border hover:border-theme-gold rounded-[14px] flex flex-col items-center justify-center gap-0.5 p-1 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-gold group shrink-0"
-                          style={{ width: `${Math.max(140, marquee.logo_size * 2.1)}px`, height: `${Math.max(60, marquee.logo_size - 12)}px` } as React.CSSProperties}
+                          className="ticker-item glass border border-theme-border hover:border-theme-gold rounded-2xl flex items-center gap-2.5 pl-2 pr-3.5 shrink-0 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-gold group"
+                          style={{ width: `${Math.max(190, Math.round(marquee.logo_size * 2.3))}px`, height: `${Math.max(56, Math.min(64, marquee.logo_size - 20))}px` } as React.CSSProperties}
                         >
-                <span className="w-7 h-7 rounded-full glass-nest border flex items-center justify-center text-2xs font-mono text-theme-textSec group-hover:text-theme-gold group-hover:bg-theme-bg transition-colors shrink-0" aria-hidden="true">
-                            {pickLink(l).slice(0, 2).toUpperCase()}
+                          <UsefulFavicon url={l.url} label={pickLink(l)} />
+                          <span className="flex flex-col justify-center min-w-0">
+                            <span className="text-2xs sm:text-[12px] font-semibold text-theme-text group-hover:text-theme-gold leading-tight truncate max-w-full transition-colors">{pickLink(l)}</span>
+                            <span className="text-2xs font-mono text-theme-textMuted leading-tight truncate max-w-full">{(() => { try { return new URL(l.url).hostname } catch { return l.url } })()}</span>
                           </span>
-                          <span className="text-[11px] font-medium text-theme-text leading-tight line-clamp-2">{pickLink(l)}</span>
-                          <span className="text-2xs font-mono text-theme-textMuted truncate max-w-full px-2">{(() => { try { return new URL(l.url).hostname } catch { return l.url } })()}</span>
                         </a>
                       ))}
                     </div>

@@ -124,9 +124,11 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
 
             {/* CTAs — label states the action, the line beneath states the
                 result and the measurable anchor, so the visitor knows what
-                happens next before clicking rather than after. */}
+                happens next before clicking rather than after.
+                v2.48.0: the block now sits on a glass pod like every other
+                surface on the page. */}
             <Reveal delay={380}>
-              <div className="mt-8 flex flex-col items-start gap-3">
+              <div className="mt-8 glass glass-card rounded-2xl p-4 sm:p-5 flex flex-col items-start gap-3 max-w-full">
                 <div className="flex flex-wrap items-center gap-between-1">
                   <button
                     type="button"
@@ -164,9 +166,9 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
               </div>
             </Reveal>
 
-            {/* Live portal counters (real /api/stats; skeleton until loaded) */}
+            {/* Live portal counters (real /api/stats; skeleton until loaded) — glass pod */}
             <Reveal delay={450}>
-              <div className="mt-8 pt-6 border-t border-theme-border/40 grid grid-cols-3 gap-4 text-left font-mono">
+              <div className="mt-6 glass glass-card rounded-2xl px-5 sm:px-6 py-4 grid grid-cols-3 gap-4 text-left font-mono max-w-full">
                 <div>
                   <span className="text-xs text-theme-textMuted uppercase block">
                     {language === 'tj' ? 'Судҳо' : language === 'en' ? 'Courts' : 'Суды'}
@@ -205,8 +207,8 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
         </div>
       </div>
 
-      {/* Bottom Scroll Down trigger */}
-      <div className="px-5 sm:px-8 md:px-12 max-w-7xl mx-auto w-full mt-4 flex justify-between items-center text-xs font-mono text-theme-textMuted">
+      {/* Bottom Scroll Down trigger — glass pill */}
+      <div className="px-5 sm:px-8 md:px-12 max-w-7xl mx-auto w-full mt-4 flex justify-between items-center text-xs font-mono text-theme-textMuted glass glass-card rounded-full px-5 sm:px-6 py-2.5">
         <span>SUD.TJ // DIGITAL JUSTICE 2026</span>
         <button
           type="button"

@@ -1895,20 +1895,15 @@ html[data-a11y="true"] .content-card::before {
     align-items: center;
     flex-shrink: 0;
   }
+  /* Layout lives on Tailwind utilities in Footer.tsx (row with favicon). */
   .ticker-item {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 10px 4px 10px 22px;
-    white-space: nowrap;
-    font-family: ui-monospace, monospace;
-    font-size: 12px;
-    color: var(--text-secondary);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
   }
   .ticker-item:hover {
-    color: var(--accent-gold);
+    border-color: var(--accent-gold);
   }
   .ticker-dot {
     margin-left: 22px;
