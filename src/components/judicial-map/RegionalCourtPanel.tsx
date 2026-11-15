@@ -168,47 +168,62 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
 
       <div
         id={`judmap-courts-${cluster.id}`}
-        className={`${expanded ? 'flex' : 'hidden'} flex-col gap-3.5`}
+        className={`grid transition-all duration-500 ease-out overflow-hidden ${
+          expanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+        }`}
+        aria-hidden={!expanded}
       >
-      {/* Regional court */}
-      {regionalCourt && (
-        <CourtList
-          courts={[regionalCourt]}
-          accent={accent}
-          selectedCourtId={selectedCourtId}
-          dimmedIds={dimmedIds}
-          onSelect={onSelectCourt}
-        />
-      )}
+        <div className="min-h-0">
+          <div className="flex flex-col gap-3.5 pt-1">
+            {/* Regional court */}
+            {regionalCourt && (
+              <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out both' : 'none', animationDelay: '0ms' }}>
+                <CourtList
+                  courts={[regionalCourt]}
+                  accent={accent}
+                  selectedCourtId={selectedCourtId}
+                  dimmedIds={dimmedIds}
+                  onSelect={onSelectCourt}
+                />
+              </div>
+            )}
 
-      {/* Statistics */}
-      <RegionalStats
-        accent={accent}
-        cities={cityCount}
-        districts={districtCount}
-        activeFilter={typeFilter}
-        onToggleFilter={onToggleTypeFilter}
-      />
+            {/* Statistics */}
+            <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out both' : 'none', animationDelay: '80ms' }}>
+              <RegionalStats
+                accent={accent}
+                cities={cityCount}
+                districts={districtCount}
+                activeFilter={typeFilter}
+                onToggleFilter={onToggleTypeFilter}
+              />
+            </div>
 
-      {/* Ordinary courts */}
-      <CourtList
-        courts={ordinaryCourts}
-        accent={accent}
-        selectedCourtId={selectedCourtId}
-        dimmedIds={dimmedIds}
-        onSelect={onSelectCourt}
-      />
+            {/* Ordinary courts */}
+            <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out both' : 'none', animationDelay: '160ms' }}>
+              <CourtList
+                courts={ordinaryCourts}
+                accent={accent}
+                selectedCourtId={selectedCourtId}
+                dimmedIds={dimmedIds}
+                onSelect={onSelectCourt}
+              />
+            </div>
 
-      {/* Military court */}
-      {militaryCourt && (
-        <MilitaryCourtButton
-          court={militaryCourt}
-          accent={accent}
-          selected={selectedCourtId === militaryCourt.id}
-          dimmed={isDimmed(militaryCourt)}
-          onSelect={onSelectCourt}
-        />
-      )}
+            {/* Military court */}
+            {militaryCourt && (
+              <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out both' : 'none', animationDelay: '240ms' }}>
+                <MilitaryCourtButton
+                  court={militaryCourt}
+                  accent={accent}
+                  selected={selectedCourtId === militaryCourt.id}
+                  dimmed={isDimmed(militaryCourt)}
+                  onSelect={onSelectCourt}
+                />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

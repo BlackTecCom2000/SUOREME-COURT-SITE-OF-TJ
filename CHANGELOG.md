@@ -56,6 +56,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.41.2 - Smooth staged open animation for regional court panel
+- Released: 2026-11-15
+- Previous: v2.41.1
+- RegionalCourtPanel now opens with grid-template-rows transition (0fr->1fr) plus staggered jm-fade-up on each sub-section (regional court, stats, ordinary courts, military court) instead of instant flex/hidden toggle.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.41.1 - Fix JudicialSystemDashboard & RegionalCourtPanel bugs
 - Released: 2026-11-15
 - Previous: v2.41.0
