@@ -18,7 +18,8 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 
 
-
+
+
 ## v2.42.0 - Fix collapsed judiciary panels verified
 - Released: 2026-11-15 09:09
 - Previous: v2.41.0
@@ -55,6 +56,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.41.1 - Fix JudicialSystemDashboard & RegionalCourtPanel bugs
+- Released: 2026-11-15
+- Previous: v2.41.0
+- Fixes: reset filters now collapses expanded card; English search highlights region on scheme; empty search collapses previous region; no duplicate regional court in list; removed aria-pressed from disclosure button; per-cluster CMS fallback so partial court lists don't empty a region.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.41.0 - Batch 1: search page, archive route, contact, privacy, accessibility
 - Released: 2026-11-15
 - Previous: v2.40.0

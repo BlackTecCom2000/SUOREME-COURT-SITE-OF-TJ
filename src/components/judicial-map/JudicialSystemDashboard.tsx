@@ -44,13 +44,19 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
   const [hoveredRegionId, setHoveredRegionId] = useState<string | null>(null);
   const [expandedRegionId, setExpandedRegionId] = useState<string | null>(null);
 
-  // Hydrate static clusters with live CMS courts (fallback to bundled data)
+  const handleResetFilters = () => {
+    setExpandedRegionId(null);
+    setHoveredRegionId(null);
+    onResetFilters();
+  };
+
+  // Hydrate static clusters with live CMS courts (fallback to bundled data per cluster)
   const hydratedClusters = useMemo(
     () =>
-      REGIONAL_CLUSTERS.map((cluster) => ({
-        ...cluster,
-        courts: courts.length > 0 ? courts.filter((c) => c.regionId === cluster.id) : cluster.courts,
-      })),
+      REGIONAL_CLUSTERS.map((cluster) => {
+        const live = courts.filter((c) => c.regionId === cluster.id);
+        return { ...cluster, courts: live.length > 0 ? live : cluster.courts };
+      }),
     [courts]
   );
 
@@ -65,6 +71,7 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
       ),
     );
     if (match) setExpandedRegionId(match.id);
+    else setExpandedRegionId(null);
   }, [searchQuery, hydratedClusters]);
   // Auto-focus region matching search (visual highlight only)
   const effectiveActiveRegion =
@@ -79,7 +86,8 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
                 (c) =>
                   c.nameRu.toLowerCase().includes(q) ||
                   c.nameTj.toLowerCase().includes(q) ||
-                  (c.domain || '').toLowerCase().includes(q)
+                  (c.nameEn || '').toLowerCase().includes(q) ||
+                   (c.domain || '').toLowerCase().includes(q)
               )
           );
           return match ? match.id : hoveredRegionId;
@@ -117,7 +125,7 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
           <JudiciaryHeader
             searchQuery={searchQuery}
             onSearchChange={onSearchChange}
-            onResetFilters={onResetFilters}
+            onResetFilters={handleResetFilters}
             onOpenImmersive={onOpenImmersive}
           />
         </Reveal>

@@ -83,9 +83,9 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
   const ordinaryCourts = useMemo(
     () =>
       cluster.courts.filter(
-        (c) => c.type !== 'regional' && c.type !== 'military' && c.type !== 'supreme'
+        (c) => c.id !== regionalCourt?.id && c.type !== 'regional' && c.type !== 'military' && c.type !== 'supreme'
       ),
-    [cluster]
+    [cluster, regionalCourt]
   );
   const cityCount = useMemo(
     () => cluster.courts.filter((c) => c.type === 'city').length,
@@ -133,7 +133,6 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
         onClick={onToggleExpanded}
         aria-expanded={expanded}
         aria-controls={`judmap-courts-${cluster.id}`}
-        aria-pressed={selected}
         className="tap-target w-full flex items-center gap-3 text-left group cursor-pointer rounded-[10px] focus-visible:outline-2 focus-visible:outline-[var(--jm-gold)]"
       >
         <span className="font-mono text-[11px] font-bold tracking-widest text-[var(--jm-muted)] group-hover:text-[var(--jm-text)] transition-colors">
