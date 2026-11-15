@@ -83,7 +83,7 @@ export const AdminNotificationMenu: React.FC = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 rounded-2xl glass border border-theme-gold/30 shadow-[0_20px_60px_rgba(0,0,0,0.45)] p-3 z-50 animate-fadeIn text-left">
+        <div className="absolute right-0 mt-2 w-80 rounded-2xl glass-menu border border-theme-gold/30 p-3 z-50 animate-fadeIn text-left">
           <div className="flex items-center justify-between pb-2 mb-2 border-b border-theme-border px-1">
             <span className="font-mono text-xs font-bold text-theme-textSec uppercase tracking-wider">
               Системные события

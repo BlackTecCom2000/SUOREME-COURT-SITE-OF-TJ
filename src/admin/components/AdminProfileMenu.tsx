@@ -55,7 +55,7 @@ export const AdminProfileMenu: React.FC = () => {
         </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 rounded-2xl glass border border-theme-gold/30 shadow-[0_20px_60px_rgba(0,0,0,0.45)] p-3 z-50 animate-fadeIn text-left">
+        <div className="absolute right-0 mt-2 w-64 rounded-2xl glass-menu border border-theme-gold/30 p-3 z-50 animate-fadeIn text-left">
           {/* User Info Header */}
           <div className="p-2 pb-3 border-b border-theme-border">
             <div className="flex items-center gap-2 mb-1">

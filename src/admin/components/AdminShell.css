@@ -89,6 +89,24 @@
   color-scheme: dark;
 }
 
+/* Floating menus/dropdowns (profile, notifications): the .glass card material
+   is tuned for content surfaces sitting on the sky — over dense data it reads
+   as too see-through. A menu is an overlay: it must occlude what is behind it,
+   so it gets a near-solid theme veil with the same blur/rim family. Both
+   schemes included via the shared tokens. AGENTS.md: no opaque full-screen
+   layers — this is only the small floating surface. */
+.glass-menu {
+  background: color-mix(in srgb, var(--bg-primary) 84%, transparent);
+  backdrop-filter: blur(22px) saturate(1.1);
+  -webkit-backdrop-filter: blur(22px) saturate(1.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), var(--lg-highlight, none);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-menu {
+    background: var(--bg-primary);
+  }
+}
+
 /* 1. Desktop sidebar slot: hidden on mobile, flex column from md (768px) up */
 .admin-sidebar-slot {
   display: none;

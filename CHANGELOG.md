@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.45.1 - Admin overlays: denser glass for floating surfaces
+- Released: 2026-11-16
+- Previous: v2.45.0
+- New .glass-menu material (admin-scoped, AdminShell.css): 84% solid theme veil + 22px blur + deep shadow, with a no-backdrop-filter fallback. Applied to profile/notifications dropdowns, CommandPalette, AdminModal and AdminDrawer (they were too transparent over dense data).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.45.0 - Admin panel: unified with portal design system
 - Released: 2026-11-16
 - Previous: v2.44.2

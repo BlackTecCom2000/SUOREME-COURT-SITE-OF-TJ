@@ -37,7 +37,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({
       <div
         className={`
           relative w-full ${maxWidth} my-auto flex flex-col max-h-[90vh] max-h-[90dvh] overflow-hidden text-left min-w-0 rounded-2xl
-          bg-theme-surface border border-theme-border text-theme-text shadow-2xl backdrop-blur-xl
+          glass-menu border border-theme-border text-theme-text
         `}
       >
         {/* Header */}

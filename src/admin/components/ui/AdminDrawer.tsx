@@ -35,7 +35,7 @@ export const AdminDrawer: React.FC<AdminDrawerProps> = ({
       <div
         className={`
           relative w-full ${width} h-full flex flex-col overflow-hidden text-left border-l
-          bg-theme-surface text-theme-text border-theme-border shadow-2xl backdrop-blur-xl
+          glass-menu text-theme-text border-theme-border
         `}
       >
         {/* Header */}
