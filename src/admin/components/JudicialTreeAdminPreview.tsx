@@ -16,7 +16,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
   return (
     <div className="w-full rounded-xl border border-slate-800 bg-[#040813] p-4 text-left shadow-inner">
       <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-800">
-        <div className="flex items-center gap-2 text-amber-400">
+        <div className="flex items-center gap-2 text-theme-gold">
           <Sparkles size={14} />
           <span className="font-mono text-[11px] font-bold uppercase tracking-wider">
             Интерактивное превью в судебном дереве
@@ -29,7 +29,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
 
       {/* Supreme Court Top Axis */}
       <div className="w-full flex justify-center mb-3">
-        <div className="px-3 py-1 rounded-lg border border-amber-400/40 bg-amber-500/10 text-amber-300 font-serif text-2xs font-bold flex items-center gap-1.5 shadow-sm">
+        <div className="px-3 py-1 rounded-lg border border-theme-gold/40 bg-theme-gold/10 text-theme-gold font-serif text-2xs font-bold flex items-center gap-1.5 shadow-sm">
           <Landmark size={12} />
           СУДИ ОЛИИ ҶТ
         </div>
@@ -46,7 +46,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
                 rounded-lg p-2 flex flex-col items-center text-center transition-all duration-200 border
                 ${
                   isSelectedRegion
-                    ? 'border-amber-400 bg-[#091124] shadow-md shadow-amber-500/10'
+                    ? 'border-theme-gold bg-[#091124] shadow-md shadow-theme-gold/10'
                     : 'border-slate-800/80 bg-slate-900/40 opacity-50'
                 }
               `}
@@ -65,7 +65,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
                   w-full mt-1.5 py-1 px-1 rounded text-2xs font-medium truncate border
                   ${
                     isSelectedRegion && courtType === 'regional'
-                      ? 'border-white bg-amber-400 text-slate-950 font-bold animate-pulse'
+                      ? 'border-white bg-theme-gold text-slate-950 font-bold animate-pulse'
                       : 'border-slate-750 bg-slate-800/80 text-slate-300'
                   }
                 `}
@@ -79,7 +79,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
                   w-full mt-1 py-1 px-1 rounded text-2xs truncate border
                   ${
                     isSelectedRegion && courtType !== 'regional' && courtType !== 'military'
-                      ? 'border-white bg-amber-400 text-slate-950 font-bold animate-pulse'
+                      ? 'border-white bg-theme-gold text-slate-950 font-bold animate-pulse'
                       : 'border-slate-800 bg-slate-900/60 text-slate-400'
                   }
                 `}
@@ -95,7 +95,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
                   w-full mt-1 py-0.5 px-1 rounded text-[7px] flex items-center justify-center gap-1 border
                   ${
                     isSelectedRegion && courtType === 'military'
-                      ? 'border-white bg-amber-400 text-slate-950 font-bold animate-pulse'
+                      ? 'border-white bg-theme-gold text-slate-950 font-bold animate-pulse'
                       : 'border-slate-800 bg-slate-900/30 text-slate-500'
                   }
                 `}

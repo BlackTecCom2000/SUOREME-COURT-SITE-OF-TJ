@@ -20,7 +20,7 @@ import {
   PanelsTopLeft,
   Sparkles,
 } from 'lucide-react';
-import { NationalEmblem } from '../../components/judicial-ecosystem/NationalEmblem';
+import { APP_VERSION_LABEL } from '../../version';
 import { useAdminAuth } from '../context/AdminAuthContext';
 
 interface AdminSidebarProps {
@@ -191,8 +191,14 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       {/* Header — same GlassNavigation as public site */}
       <div className="p-4 border-b border-[var(--glass-border)] flex items-center justify-between">
         <div className="flex items-center gap-3 overflow-hidden">
-          <div className="shrink-0 drop-shadow-[0_0_8px_rgba(223,190,126,0.3)]">
-            <NationalEmblem size={isCollapsed ? 32 : 36} />
+          <div className="shrink-0 drop-shadow-[0_0_10px_rgba(223,190,126,0.35)]">
+            <img
+              src="/emblems/emblem-tj.png"
+              alt="Эмблема Республики Таджикистан"
+              className="object-contain select-none"
+              style={{ width: isCollapsed ? 32 : 36, height: isCollapsed ? 32 : 36 }}
+              draggable={false}
+            />
           </div>
           {!isCollapsed && (
             <div className="flex flex-col text-left overflow-hidden">
@@ -264,7 +270,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-theme-text uppercase font-bold">SECURE NODE</span>
             </div>
-            <span>v2.6.4</span>
+            <span className="text-theme-textMuted">{APP_VERSION_LABEL}</span>
           </div>
         ) : (
           <div className="flex justify-center">

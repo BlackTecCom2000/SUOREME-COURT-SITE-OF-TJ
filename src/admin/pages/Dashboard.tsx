@@ -16,6 +16,7 @@ import { AdminButton } from '../components/ui/AdminButton';
 import { AdminBadge } from '../components/ui/AdminBadge';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import { apiFetch } from '../context/adminHttp';
+import { Reveal } from '../../components/Reveal';
 
 export const Dashboard: React.FC = () => {
   const { user } = useAdminAuth();
@@ -83,8 +84,9 @@ export const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-8 animate-fadeIn text-left">
+    <div className="space-y-8 text-left">
       {/* 1. TOP WELCOME BANNER — same glass as public site */}
+      <Reveal priority>
       <div className="relative glass glass-premium rounded-3xl p-6 sm:p-8 overflow-hidden">
         <div
           className="absolute -right-10 -bottom-10 w-80 h-80 rounded-full opacity-10 pointer-events-none"
@@ -116,8 +118,10 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      </Reveal>
 
       {/* 2. STATS KPI GRID */}
+      <Reveal delay={120}>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {statCards.map((stat, idx) => (
           <AdminCard
@@ -142,7 +146,7 @@ export const Dashboard: React.FC = () => {
                   {stat.badge}
                 </span>
               ) : (
-                <ArrowUpRight size={16} className="text-theme-textMuted group-hover:text-amber-400 transition-colors" />
+                <ArrowUpRight size={16} className="text-theme-textMuted group-hover:text-theme-gold transition-colors" />
               )}
             </div>
 
@@ -160,8 +164,10 @@ export const Dashboard: React.FC = () => {
           </AdminCard>
         ))}
       </div>
+      </Reveal>
 
       {/* 3. QUICK ACTIONS & RECENT ACTIVITY DUAL COLUMN */}
+      <Reveal delay={220}>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 Cols: Quick Action Modules & Pending Tasks */}
         <div className="lg:col-span-2 space-y-6">
@@ -173,7 +179,7 @@ export const Dashboard: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <button
                 onClick={() => navigate('/admin/news/new')}
-                className="p-4 rounded-xl border border-theme-border hover:border-amber-400/40 hover:bg-theme-bg/60 transition-all text-left group"
+                className="p-4 rounded-xl border border-theme-border hover:border-theme-gold/40 hover:bg-theme-bg/60 transition-all text-left group"
               >
                 <Newspaper size={20} className="text-theme-gold mb-2 group-hover:scale-110 transition-transform" />
                 <span className="font-serif font-semibold text-xs text-theme-text block">Новость</span>
@@ -327,6 +333,7 @@ export const Dashboard: React.FC = () => {
           </AdminCard>
         </div>
       </div>
+      </Reveal>
     </div>
   );
 };

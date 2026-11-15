@@ -147,6 +147,9 @@ export default {
       animation: {
         'fade-in-up': 'fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'blur-out-up': 'blur-out-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both',
+        // Legacy class still used across the admin (and a few public hubs):
+        // map it onto the site's entrance motion instead of leaving it dead.
+        'fadeIn': 'blur-out-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both',
         'rise-in': 'rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both',
       },
     },

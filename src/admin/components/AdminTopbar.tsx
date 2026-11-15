@@ -59,7 +59,7 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
         {/* Command Palette Trigger */}
         <button
           onClick={onOpenCommandPalette}
-          className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-xl border border-theme-border bg-theme-surface text-theme-text hover:border-amber-500 transition-all text-xs font-mono shadow-sm"
+          className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-xl border border-theme-border bg-theme-surface text-theme-text hover:border-theme-gold transition-all text-xs font-mono shadow-sm"
         >
           <Search size={14} className="text-theme-gold" />
           <span>Быстрый поиск / команды</span>

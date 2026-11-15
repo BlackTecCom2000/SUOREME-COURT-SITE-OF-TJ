@@ -372,7 +372,7 @@ export const NewsEditor: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/admin/news')}
-            className="p-2 rounded-xl border border-theme-border bg-theme-bg text-theme-textMuted hover:text-theme-text hover:border-amber-400/40 transition-colors"
+            className="p-2 rounded-xl border border-theme-border bg-theme-bg text-theme-textMuted hover:text-theme-text hover:border-theme-gold/40 transition-colors"
           >
             <ArrowLeft size={18} />
           </button>
@@ -419,7 +419,7 @@ export const NewsEditor: React.FC = () => {
                     onChange={(e) => setMagicTopic(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') runMagic(false); }}
                     placeholder="Волшебство: тема («празднование дня независимости…») — или пусто, чтобы обработать текущий текст"
-                    className="w-full h-10 pl-9 pr-3 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-xs focus:outline-none focus:border-amber-400"
+                    className="w-full h-10 pl-9 pr-3 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-xs focus:outline-none focus:border-theme-gold"
                   />
                 </div>
                 <div className="flex gap-2">
@@ -461,13 +461,13 @@ export const NewsEditor: React.FC = () => {
                       value={pubContext}
                       onChange={(e) => setPubContext(e.target.value)}
                       placeholder="Даты, имена, цифры — попадут как есть"
-                      className="w-full h-11 px-4 rounded-xl font-sans text-sm bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border focus:outline-none focus:border-amber-400"
+                      className="w-full h-11 px-4 rounded-xl font-sans text-sm bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border focus:outline-none focus:border-theme-gold"
                     />
                   </div>
                 </div>
               )}
               {magicResult && (
-                <div className="rounded-xl border border-amber-400/40 bg-theme-bg p-3.5 space-y-2">
+                <div className="rounded-xl border border-theme-gold/40 bg-theme-bg p-3.5 space-y-2">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="font-mono text-[11px] uppercase tracking-widest text-theme-gold">
                       Черновик ({magicResult.lang.toUpperCase()}) — проверьте
@@ -518,7 +518,7 @@ export const NewsEditor: React.FC = () => {
                   const aiN = ['title', 'excerpt', 'body'].filter((f) => (aiMeta[f + '_' + l]?.s === 'ai')).length;
                   const dirtyN = ['title', 'excerpt', 'body'].filter((f) => fieldStatus(f, l)?.dirty).length;
                   const revN = ['title', 'excerpt', 'body'].filter((f) => (aiMeta[f + '_' + l]?.s === 'reviewed')).length;
-                  const dot = dirtyN > 0 ? 'bg-red-400' : aiN > 0 ? 'bg-amber-400' : revN > 0 ? 'bg-emerald-400' : filled > 0 ? 'bg-theme-textMuted' : 'bg-transparent border border-theme-border';
+                  const dot = dirtyN > 0 ? 'bg-red-400' : aiN > 0 ? 'bg-theme-gold' : revN > 0 ? 'bg-emerald-400' : filled > 0 ? 'bg-theme-textMuted' : 'bg-transparent border border-theme-border';
                   return (
                     <span key={l} className="inline-flex items-center gap-1.5" title={dirtyN > 0 ? 'Изменено после AI' : aiN > 0 ? 'AI-версия' : revN > 0 ? 'Проверено' : filled > 0 ? 'Заполнено' : 'Пусто'}>
                       <span className={'w-2 h-2 rounded-full ' + dot} />
@@ -558,7 +558,7 @@ export const NewsEditor: React.FC = () => {
                       value={formData.excerpt_ru}
                       onChange={(e) => setFormData({ ...formData, excerpt_ru: e.target.value })}
                       placeholder="Краткая суть публикации для новостной ленты и поисковиков..."
-                      className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
+                      className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-theme-gold focus:ring-1 focus:ring-theme-gold/50"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5 text-left">
@@ -570,7 +570,7 @@ export const NewsEditor: React.FC = () => {
                       value={formData.body_ru}
                       onChange={(e) => setFormData({ ...formData, body_ru: e.target.value })}
                       placeholder="Введите официальный текст публикации..."
-                      className="w-full p-4 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm leading-relaxed focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
+                      className="w-full p-4 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm leading-relaxed focus:outline-none focus:border-theme-gold focus:ring-1 focus:ring-theme-gold/50"
                     />
                   </div>
                 </>
@@ -593,7 +593,7 @@ export const NewsEditor: React.FC = () => {
                       value={formData.excerpt_tj}
                       onChange={(e) => setFormData({ ...formData, excerpt_tj: e.target.value })}
                       placeholder="Матни мухтасари хабар..."
-                      className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-amber-400"
+                      className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-theme-gold"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5 text-left">
@@ -605,7 +605,7 @@ export const NewsEditor: React.FC = () => {
                       value={formData.body_tj}
                       onChange={(e) => setFormData({ ...formData, body_tj: e.target.value })}
                       placeholder="Матни расмии хабар бо забони тоҷикӣ..."
-                      className="w-full p-4 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm leading-relaxed focus:outline-none focus:border-amber-400"
+                      className="w-full p-4 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm leading-relaxed focus:outline-none focus:border-theme-gold"
                     />
                   </div>
                 </>
@@ -628,7 +628,7 @@ export const NewsEditor: React.FC = () => {
                       value={formData.excerpt_en}
                       onChange={(e) => setFormData({ ...formData, excerpt_en: e.target.value })}
                       placeholder="Summary in English..."
-                      className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-amber-400"
+                      className="w-full p-3.5 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm focus:outline-none focus:border-theme-gold"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5 text-left">
@@ -640,7 +640,7 @@ export const NewsEditor: React.FC = () => {
                       value={formData.body_en}
                       onChange={(e) => setFormData({ ...formData, body_en: e.target.value })}
                       placeholder="Full press release in English..."
-                      className="w-full p-4 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm leading-relaxed focus:outline-none focus:border-amber-400"
+                      className="w-full p-4 rounded-xl bg-theme-bg text-theme-text placeholder-theme-textMuted border border-theme-border font-sans text-sm leading-relaxed focus:outline-none focus:border-theme-gold"
                     />
                   </div>
                 </>
@@ -677,7 +677,7 @@ export const NewsEditor: React.FC = () => {
                       rows={3}
                       disabled={!canReview}
                       placeholder="Обязательно при отклонении: что исправить…"
-                      className="w-full rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-400 p-3 leading-relaxed disabled:opacity-50"
+                      className="w-full rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold p-3 leading-relaxed disabled:opacity-50"
                     />
                   </div>
                 )}
@@ -730,7 +730,7 @@ export const NewsEditor: React.FC = () => {
                       type="checkbox"
                       checked={formData.featured}
                       onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                      className="rounded border-theme-border bg-theme-bg text-amber-500 w-4 h-4 cursor-pointer"
+                      className="rounded border-theme-border bg-theme-bg text-theme-gold w-4 h-4 cursor-pointer"
                     />
                     <span>Закрепить на главной (Главная новость)</span>
                   </label>

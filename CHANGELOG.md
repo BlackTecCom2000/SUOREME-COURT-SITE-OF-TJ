@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.45.0 - Admin panel: unified with portal design system
+- Released: 2026-11-16
+- Previous: v2.44.2
+- Admin now reads the same liquid-glass tokens as the public portal. Opaque 88% --surface-card panels replaced with the translucent veil (admin-scoped override in AdminShell.css). Raw amber-* accents swapped to theme-gold. Dead animate-fadeIn (used in 30 places) mapped to the site's blur-out-up entrance. Sidebar uses the real national emblem PNG (was custom SVG) and shows the live APP_VERSION (was hardcoded v2.6.4). Floating dropdowns (profile/notifications) now use the glass material instead of opaque black cards. Dashboard sections animate with the shared Reveal component (priority + 120ms/220ms stagger). Removed unused AdminEmptyState component.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.44.2 - Footer: compact sizing
 - Released: 2026-11-16
 - Previous: v2.44.1

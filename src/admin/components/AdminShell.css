@@ -20,12 +20,19 @@
    per preset — so the admin follows the Theme Configuration instead of
    carrying its own light/dark hex values (see AGENTS.md: one background, one
    glass system, one theme). */
-:root .admin-shell {
+:root .admin-shell,
+:root .admin-portal-modal {
   color: var(--text-primary);
   --glass-surface: var(--glass-surface-strong);
   --glass-surface-hover: var(--glass-surface-strong);
   --glass-surface-active: var(--glass-surface-strong);
   --glass-shadow: var(--theme-shadow-lg);
+  /* Kill the 88%-opaque card: every `bg-theme-surface` inside the admin reads
+     this, so the whole panel body, form wells and previews drop onto the same
+     translucent veil the public portal runs on. Dropdowns/menus override with
+     the glass material directly. */
+  --surface-card: var(--glass-surface);
+  --surface-card-hover: var(--glass-surface-hover);
 }
 
 /* ==========================================================================

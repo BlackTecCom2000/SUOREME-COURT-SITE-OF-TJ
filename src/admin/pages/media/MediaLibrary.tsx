@@ -86,7 +86,7 @@ export const MediaLibrary: React.FC = () => {
             className="hidden"
             accept="image/*,application/pdf"
           />
-          <span className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-gradient-to-r from-theme-gold to-theme-gold/80 text-theme-bg font-semibold text-sm hover:brightness-110 active:scale-[0.98] shadow-md shadow-amber-500/20">
+          <span className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-gradient-to-r from-theme-gold to-theme-gold/80 text-theme-bg font-semibold text-sm hover:brightness-110 active:scale-[0.98] shadow-md shadow-theme-gold/20">
             <Upload size={16} />
             {isUploading ? 'Загрузка...' : 'Загрузить файл'}
           </span>
@@ -103,7 +103,7 @@ export const MediaLibrary: React.FC = () => {
             <div
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className="group relative rounded-xl border border-theme-border bg-theme-surface overflow-hidden cursor-pointer hover:border-amber-400/50 hover:shadow-lg transition-all"
+              className="group relative rounded-xl border border-theme-border bg-theme-surface overflow-hidden cursor-pointer hover:border-theme-gold/50 hover:shadow-lg transition-all"
             >
               <div className="aspect-square w-full bg-theme-bg flex items-center justify-center overflow-hidden">
                 {isImage ? (
@@ -187,7 +187,7 @@ export const MediaLibrary: React.FC = () => {
                 <input
                   readOnly
                   value={selectedItem.url || `/uploads/${selectedItem.filename}`}
-                  className="w-full h-10 px-3 rounded-lg bg-theme-bg border border-theme-border font-mono text-xs text-amber-300"
+                  className="w-full h-10 px-3 rounded-lg bg-theme-bg border border-theme-border font-mono text-xs text-theme-gold"
                 />
                 <AdminButton
                   variant="primary"

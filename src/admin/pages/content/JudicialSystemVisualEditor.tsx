@@ -278,7 +278,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                 value={searchFilter}
                 onChange={(e) => setSearchFilter(e.target.value)}
                 placeholder="Фильтр элементов..."
-                className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-400"
+                className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold"
               />
             </div>
 
@@ -292,7 +292,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                     onClick={() => setSelectedId(item.id)}
                     className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-2 group ${
                       isSelected
-                        ? 'border-amber-400 bg-amber-400/15 text-theme-text shadow-md'
+                        ? 'border-theme-gold bg-theme-gold/15 text-theme-text shadow-md'
                         : 'border-theme-border/80 bg-theme-bg/60 text-theme-textSec hover:border-theme-textMuted hover:bg-theme-bg'
                     }`}
                   >
@@ -388,7 +388,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   const key = activeLang === 'tj' ? 'titleTj' : activeLang === 'en' ? 'titleEn' : 'titleRu';
                   updateField(key, e.target.value);
                 }}
-                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-sm text-theme-text focus:outline-none focus:border-amber-400 font-serif font-bold"
+                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-sm text-theme-text focus:outline-none focus:border-theme-gold font-serif font-bold"
               />
             </div>
 
@@ -404,7 +404,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   const key = activeLang === 'tj' ? 'subtitleTj' : activeLang === 'en' ? 'subtitleEn' : 'subtitleRu';
                   updateField(key, e.target.value);
                 }}
-                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-amber-400 font-mono"
+                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-theme-gold font-mono"
               />
             </div>
 
@@ -427,7 +427,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   updateField(key, e.target.value);
                 }}
                 placeholder="ФИО руководителя..."
-                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-amber-400 font-medium"
+                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-theme-gold font-medium"
               />
             </div>
 
@@ -443,7 +443,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   const key = activeLang === 'tj' ? 'descTj' : activeLang === 'en' ? 'descEn' : 'descRu';
                   updateField(key, e.target.value);
                 }}
-                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-amber-400 leading-relaxed resize-none"
+                className="w-full px-3.5 py-2 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-theme-gold leading-relaxed resize-none"
               />
             </div>
 
@@ -454,7 +454,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                 <select
                   value={activeEntity.category}
                   onChange={(e) => updateField('category', e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-amber-400 font-mono"
+                  className="w-full px-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-theme-gold font-mono"
                 >
                   <option value="leadership">Роҳбарият (Leadership)</option>
                   <option value="central_organs">Мақомоти марказӣ (Central Organs)</option>
@@ -470,7 +470,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                   type="text"
                   value={activeEntity.code}
                   onChange={(e) => updateField('code', e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-gold font-mono font-bold focus:outline-none focus:border-amber-400"
+                  className="w-full px-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border text-xs text-theme-gold font-mono font-bold focus:outline-none focus:border-theme-gold"
                 />
               </div>
             </div>
@@ -491,7 +491,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPreviewDevice('desktop')}
-                className={`p-1.5 rounded-lg ${previewDevice === 'desktop' ? 'bg-amber-400 text-black' : 'text-theme-textMuted hover:text-theme-text'}`}
+                className={`p-1.5 rounded-lg ${previewDevice === 'desktop' ? 'bg-theme-gold text-black' : 'text-theme-textMuted hover:text-theme-text'}`}
                 title="Desktop"
               >
                 <Monitor size={14} />
@@ -499,7 +499,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPreviewDevice('tablet')}
-                className={`p-1.5 rounded-lg ${previewDevice === 'tablet' ? 'bg-amber-400 text-black' : 'text-theme-textMuted hover:text-theme-text'}`}
+                className={`p-1.5 rounded-lg ${previewDevice === 'tablet' ? 'bg-theme-gold text-black' : 'text-theme-textMuted hover:text-theme-text'}`}
                 title="Tablet"
               >
                 <Tablet size={14} />
@@ -507,7 +507,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPreviewDevice('mobile')}
-                className={`p-1.5 rounded-lg ${previewDevice === 'mobile' ? 'bg-amber-400 text-black' : 'text-theme-textMuted hover:text-theme-text'}`}
+                className={`p-1.5 rounded-lg ${previewDevice === 'mobile' ? 'bg-theme-gold text-black' : 'text-theme-textMuted hover:text-theme-text'}`}
                 title="Mobile"
               >
                 <Smartphone size={14} />
@@ -528,7 +528,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
           <div
             className={`p-5 rounded-3xl border transition-all ${
               previewTheme === 'dark'
-                ? 'bg-[#05080f] border-amber-400/30 text-white shadow-2xl'
+                ? 'bg-[#05080f] border-theme-gold/30 text-white shadow-2xl'
                 : 'bg-[#f5f7fb] border-slate-300 text-slate-950 shadow-lg'
             } ${previewDevice === 'mobile' ? 'max-w-[320px] mx-auto' : previewDevice === 'tablet' ? 'max-w-[420px] mx-auto' : 'w-full'}`}
           >
@@ -538,7 +538,7 @@ export const JudicialSystemVisualEditor: React.FC = () => {
                 <span className="font-mono text-2xs text-theme-gold font-bold uppercase tracking-wider">
                   {activeEntity.code} // {activeEntity.category.toUpperCase()}
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-2xs font-mono text-theme-gold">
+                <span className="px-2 py-0.5 rounded-full bg-theme-gold/20 text-2xs font-mono text-theme-gold">
                   {activeLang.toUpperCase()} PREVIEW
                 </span>
               </div>

@@ -585,7 +585,7 @@ export const Slider3DManager: React.FC = () => {
 
                       <div className="min-w-0 text-left">
                         <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <span className="px-2 py-0.5 rounded text-2xs font-mono font-bold uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-theme-gold/30">
+                          <span className="px-2 py-0.5 rounded text-2xs font-mono font-bold uppercase bg-theme-gold/10 text-theme-gold dark:text-theme-gold border border-theme-gold/30">
                             {slide.categoryTj || slide.categoryRu}
                           </span>
                           <span className="text-[11px] font-mono text-theme-text">
@@ -694,7 +694,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.autoplay}
                   onChange={(e) => setConfig({ ...config, autoplay: e.target.checked })}
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
 
@@ -712,7 +712,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.pauseOnHover}
                   onChange={(e) => setConfig({ ...config, pauseOnHover: e.target.checked })}
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
 
@@ -730,7 +730,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.tiltEnabled}
                   onChange={(e) => setConfig({ ...config, tiltEnabled: e.target.checked })}
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
 
@@ -748,7 +748,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.dragEnabled}
                   onChange={(e) => setConfig({ ...config, dragEnabled: e.target.checked })}
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
             </div>
@@ -770,7 +770,7 @@ export const Slider3DManager: React.FC = () => {
                 step="1"
                 value={config.interval || 6}
                 onChange={(e) => setConfig({ ...config, interval: Number(e.target.value) })}
-                className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
+                className="w-full accent-theme-gold dark:accent-theme-gold bg-theme-border rounded-lg cursor-pointer h-2"
               />
               <div className="flex justify-between text-2xs font-mono text-theme-text">
                 <span>Быстро (2 сек)</span>
@@ -817,7 +817,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.showBadge}
                   onChange={(e) => setConfig({ ...config, showBadge: e.target.checked })}
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-5 h-5 cursor-pointer shrink-0"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-5 h-5 cursor-pointer shrink-0"
                 />
               </label>
 
@@ -852,7 +852,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.showCounter}
                   onChange={(e) => setConfig({ ...config, showCounter: e.target.checked })}
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-4 h-4 cursor-pointer"
                 />
               </label>
 
@@ -862,7 +862,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.showPlayPause}
                   onChange={(e) => setConfig({ ...config, showPlayPause: e.target.checked })}
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-4 h-4 cursor-pointer"
                 />
               </label>
 
@@ -872,7 +872,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.showArrows}
                   onChange={(e) => setConfig({ ...config, showArrows: e.target.checked })}
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-4 h-4 cursor-pointer"
                 />
               </label>
 
@@ -882,7 +882,7 @@ export const Slider3DManager: React.FC = () => {
                   type="checkbox"
                   checked={config.showDots}
                   onChange={(e) => setConfig({ ...config, showDots: e.target.checked })}
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-4 h-4 cursor-pointer"
                 />
               </label>
             </div>
@@ -902,7 +902,7 @@ export const Slider3DManager: React.FC = () => {
                     type="checkbox"
                     checked={config.showReadMore}
                     onChange={(e) => setConfig({ ...config, showReadMore: e.target.checked })}
-                    className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                    className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-4 h-4 cursor-pointer"
                   />
                 </label>
                 {config.showReadMore && (
@@ -935,7 +935,7 @@ export const Slider3DManager: React.FC = () => {
                     type="checkbox"
                     checked={config.showAllNews}
                     onChange={(e) => setConfig({ ...config, showAllNews: e.target.checked })}
-                    className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                    className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-4 h-4 cursor-pointer"
                   />
                 </label>
                 {config.showAllNews && (
@@ -973,7 +973,7 @@ export const Slider3DManager: React.FC = () => {
                 <div
                   key={preset.id}
                   onClick={() => handleApplyPreset(preset)}
-                  className="p-4 rounded-xl border border-theme-border bg-theme-surface hover:bg-theme-bg/60 hover:border-amber-400/80 dark:border-theme-border dark:bg-theme-surface dark:hover:bg-theme-surface dark:hover:border-theme-border cursor-pointer transition-all duration-200 group flex items-start gap-3 shadow-sm dark:shadow-none"
+                  className="p-4 rounded-xl border border-theme-border bg-theme-surface hover:bg-theme-bg/60 hover:border-theme-gold/80 dark:border-theme-border dark:bg-theme-surface dark:hover:bg-theme-surface dark:hover:border-theme-border cursor-pointer transition-all duration-200 group flex items-start gap-3 shadow-sm dark:shadow-none"
                 >
                   <div
                     className="w-9 h-9 rounded-lg shrink-0 flex items-center justify-center border border-white/40 shadow-md group-hover:scale-105 transition-transform"
@@ -1012,7 +1012,7 @@ export const Slider3DManager: React.FC = () => {
                   step="50"
                   value={config.perspective || 1200}
                   onChange={(e) => setConfig({ ...config, perspective: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
+                  className="w-full accent-theme-gold dark:accent-theme-gold bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
@@ -1031,7 +1031,7 @@ export const Slider3DManager: React.FC = () => {
                   step="10"
                   value={config.stageHeight || 400}
                   onChange={(e) => setConfig({ ...config, stageHeight: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
+                  className="w-full accent-theme-gold dark:accent-theme-gold bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
@@ -1050,7 +1050,7 @@ export const Slider3DManager: React.FC = () => {
                   step="10"
                   value={config.cardWidth || 660}
                   onChange={(e) => setConfig({ ...config, cardWidth: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
+                  className="w-full accent-theme-gold dark:accent-theme-gold bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
@@ -1069,7 +1069,7 @@ export const Slider3DManager: React.FC = () => {
                   step="10"
                   value={config.cardHeight || 370}
                   onChange={(e) => setConfig({ ...config, cardHeight: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
+                  className="w-full accent-theme-gold dark:accent-theme-gold bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
 
@@ -1183,7 +1183,7 @@ export const Slider3DManager: React.FC = () => {
                   step="2"
                   value={config.cardRadius || 24}
                   onChange={(e) => setConfig({ ...config, cardRadius: Number(e.target.value) })}
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
+                  className="w-full accent-theme-gold dark:accent-theme-gold bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
             </div>
@@ -1235,7 +1235,7 @@ export const Slider3DManager: React.FC = () => {
                     type="text"
                     value={config.activeBorderColor || '#dfbe7e'}
                     onChange={(e) => setConfig({ ...config, activeBorderColor: e.target.value })}
-                    className="w-full bg-theme-bg border border-theme-border rounded-lg px-3 py-2 text-xs font-mono text-theme-text focus:outline-none focus:border-amber-500 shadow-sm dark:shadow-none"
+                    className="w-full bg-theme-bg border border-theme-border rounded-lg px-3 py-2 text-xs font-mono text-theme-text focus:outline-none focus:border-theme-gold shadow-sm dark:shadow-none"
                   />
                 </div>
               </div>
@@ -1257,7 +1257,7 @@ export const Slider3DManager: React.FC = () => {
                   onChange={(e) =>
                     setConfig({ ...config, imageOverlayOpacity: Number(e.target.value) })
                   }
-                  className="w-full accent-amber-500 dark:accent-amber-400 bg-theme-border rounded-lg cursor-pointer h-2"
+                  className="w-full accent-theme-gold dark:accent-theme-gold bg-theme-border rounded-lg cursor-pointer h-2"
                 />
               </div>
             </div>
@@ -1407,7 +1407,7 @@ export const Slider3DManager: React.FC = () => {
                     placeholder="Матни мухтасари хабар барои намоиш дар слайд..."
                     value={editingSlide.summaryTj || ''}
                     onChange={(e) => setEditingSlide({ ...editingSlide, summaryTj: e.target.value })}
-                    className="w-full rounded-xl bg-theme-bg border border-theme-border px-3.5 py-2.5 text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 transition-colors shadow-sm dark:shadow-none"
+                    className="w-full rounded-xl bg-theme-bg border border-theme-border px-3.5 py-2.5 text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold dark:focus:border-theme-gold transition-colors shadow-sm dark:shadow-none"
                   />
                 </div>
                 <AdminInput
@@ -1436,7 +1436,7 @@ export const Slider3DManager: React.FC = () => {
                     placeholder="Краткое содержание новости для отображения на слайде..."
                     value={editingSlide.summaryRu || ''}
                     onChange={(e) => setEditingSlide({ ...editingSlide, summaryRu: e.target.value })}
-                    className="w-full rounded-xl bg-theme-bg border border-theme-border px-3.5 py-2.5 text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 transition-colors shadow-sm dark:shadow-none"
+                    className="w-full rounded-xl bg-theme-bg border border-theme-border px-3.5 py-2.5 text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold dark:focus:border-theme-gold transition-colors shadow-sm dark:shadow-none"
                   />
                 </div>
                 <AdminInput
@@ -1465,7 +1465,7 @@ export const Slider3DManager: React.FC = () => {
                     placeholder="Short summary for the slide display..."
                     value={editingSlide.summaryEn || ''}
                     onChange={(e) => setEditingSlide({ ...editingSlide, summaryEn: e.target.value })}
-                    className="w-full rounded-xl bg-theme-bg border border-theme-border px-3.5 py-2.5 text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-amber-500 dark:focus:border-amber-400 transition-colors shadow-sm dark:shadow-none"
+                    className="w-full rounded-xl bg-theme-bg border border-theme-border px-3.5 py-2.5 text-xs text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold dark:focus:border-theme-gold transition-colors shadow-sm dark:shadow-none"
                   />
                 </div>
                 <AdminInput
@@ -1550,7 +1550,7 @@ export const Slider3DManager: React.FC = () => {
                       onClick={() => setEditingSlide({ ...editingSlide, imageUrl: img.path })}
                       className={`px-2.5 py-1 rounded-lg border text-xs font-mono transition-colors ${
                         editingSlide.imageUrl === img.path
-                          ? 'border-amber-500 bg-amber-500/10 text-theme-gold font-bold'
+                          ? 'border-theme-gold bg-theme-gold/10 text-theme-gold font-bold'
                           : 'border-theme-border text-theme-text hover:text-theme-gold hover:bg-theme-bg dark:hover:bg-theme-surface'
                       }`}
                     >
@@ -1570,7 +1570,7 @@ export const Slider3DManager: React.FC = () => {
                   onChange={(e) =>
                     setEditingSlide({ ...editingSlide, isActive: e.target.checked ? 1 : 0 })
                   }
-                  className="rounded border-theme-border bg-theme-bg text-amber-500 accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded border-theme-border bg-theme-bg text-theme-gold accent-theme-gold w-4 h-4 cursor-pointer"
                 />
                 <span className="text-xs text-theme-text font-medium">
                   Отображать этот слайд в карусели на сайте
