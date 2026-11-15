@@ -19,7 +19,13 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 
 
-
+
+## v2.43.2 - Убрать посторонние файлы из Git
+- Released: 2026-11-15 14:24
+- Previous: v2.43.1
+- QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
+  `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
+  `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
 ## v2.43.1 - Защитить JWT-секрет
 - Released: 2026-11-15 14:22
 - Previous: v2.43.0

@@ -39,6 +39,16 @@ Thumbs.db
 # Temp / scratch
 tmp/
 temp/
+
+# Non-project research artifacts kept locally but excluded from Git
+/agent/
+/out.html
+/test.html
+/fetch-test.js
+/fetch-test2.js
+/audit-lcp.js
+/audit-mobile.js
+/test-results/
 # Dependencies
 node_modules/
 .pnpm-store/
