@@ -157,7 +157,7 @@ export const Dashboard: React.FC = () => {
               <div className="font-serif font-bold text-sm text-theme-text mt-1">
                 {stat.title}
               </div>
-              <div className="font-mono text-[11px] text-theme-text mt-1 truncate">
+              <div className="font-mono text-2xs text-theme-text mt-1 truncate">
                 {stat.subtitle}
               </div>
             </div>
@@ -246,7 +246,7 @@ export const Dashboard: React.FC = () => {
                         {app.subject || 'Электронное обращение без темы'}
                       </p>
                     </div>
-                    <span className="font-mono text-[11px] text-theme-text whitespace-nowrap">
+                    <span className="font-mono text-2xs text-theme-text whitespace-nowrap">
                       {new Date(app.created_at).toLocaleDateString()}
                     </span>
                   </div>

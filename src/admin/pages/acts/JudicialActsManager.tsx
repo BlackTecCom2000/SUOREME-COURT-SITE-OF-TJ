@@ -126,7 +126,7 @@ export const JudicialActsManager: React.FC = () => {
           <span className="font-mono font-bold text-xs text-theme-gold">
             {row.doc_number || `№ ${row.id}`}
           </span>
-          <span className="font-sans text-[11px] text-theme-textMuted mt-0.5">
+          <span className="font-sans text-2xs text-theme-textMuted mt-0.5">
             {row.doc_type}
           </span>
         </div>
@@ -137,7 +137,7 @@ export const JudicialActsManager: React.FC = () => {
       accessor: (row) => (
         <div className="flex flex-col text-left">
           <span className="font-serif font-bold text-sm text-theme-text">{row.title_ru}</span>
-          <span className="font-mono text-[11px] text-theme-textMuted mt-0.5">
+          <span className="font-mono text-2xs text-theme-textMuted mt-0.5">
             {row.collegium} {row.case_number ? `• Дело ${row.case_number}` : ''}
           </span>
         </div>

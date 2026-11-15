@@ -177,7 +177,7 @@ export const CourtsManager: React.FC = () => {
                 {cluster?.shortNameRu || row.regionId}
               </span>
               <span className="text-theme-textMuted">•</span>
-              <span className="font-mono text-[11px] text-theme-textMuted">
+              <span className="font-mono text-2xs text-theme-textMuted">
                 {row.website || `${row.id}.sud.tj`}
               </span>
             </div>

@@ -469,7 +469,7 @@ export const NewsEditor: React.FC = () => {
               {magicResult && (
                 <div className="rounded-xl border border-theme-gold/40 bg-theme-bg p-3.5 space-y-2">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="font-mono text-[11px] uppercase tracking-widest text-theme-gold">
+                    <span className="font-mono text-2xs uppercase tracking-widest text-theme-gold">
                       Черновик ({magicResult.lang.toUpperCase()}) — проверьте
                     </span>
                     <div className="flex gap-2">
@@ -492,7 +492,7 @@ export const NewsEditor: React.FC = () => {
                 </div>
               )}
               <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-[11px] text-theme-textMuted uppercase tracking-wider">
+                <span className="font-mono text-2xs text-theme-textMuted uppercase tracking-wider">
                   Перевести {activeLang.toUpperCase()} →
                 </span>
                 <AdminButton size="sm" variant="outline" leftIcon={<Languages size={13} />} onClick={translateToOthers} isLoading={transBusy}>
@@ -507,7 +507,7 @@ export const NewsEditor: React.FC = () => {
                   Проверено ✓
                 </AdminButton>
                 {toolMsg && (
-                  <span className={'font-mono text-[11px] ' + (toolMsg.type === 'success' ? 'text-emerald-400' : 'text-red-400')}>
+                  <span className={'font-mono text-2xs ' + (toolMsg.type === 'success' ? 'text-emerald-400' : 'text-red-400')}>
                     {toolMsg.text}
                   </span>
                 )}
@@ -668,7 +668,7 @@ export const NewsEditor: React.FC = () => {
                 />
                 {(formData.status === 'rejected' || (canReview && isEditing)) && (
                   <div className="flex flex-col gap-1.5">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">
+                    <span className="text-2xs font-mono uppercase tracking-wider text-theme-textMuted">
                       Причина возврата / review notes
                     </span>
                     <textarea
@@ -833,7 +833,7 @@ export const NewsEditor: React.FC = () => {
               Опубликовать сейчас
             </AdminButton>
           ) : (
-            <span className="font-mono text-[11px] text-theme-textMuted" title="Нужна привилегия content.publish">
+            <span className="font-mono text-2xs text-theme-textMuted" title="Нужна привилегия content.publish">
               Нет права публикации
             </span>
           )}

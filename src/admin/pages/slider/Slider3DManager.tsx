@@ -514,7 +514,7 @@ export const Slider3DManager: React.FC = () => {
                       </div>
                       <p className="font-sans text-xs text-theme-text leading-relaxed">{mode.desc}</p>
                     </div>
-                    <div className="mt-3 pt-2 border-t border-theme-border/60 flex items-center justify-between text-[11px] font-mono">
+                    <div className="mt-3 pt-2 border-t border-theme-border/60 flex items-center justify-between text-2xs font-mono">
                       <span className={config.sourceMode === mode.id ? 'text-theme-gold font-bold' : 'text-theme-text font-medium'}>
                         {config.sourceMode === mode.id ? '✓ Активен' : 'Выбрать'}
                       </span>
@@ -588,11 +588,11 @@ export const Slider3DManager: React.FC = () => {
                           <span className="px-2 py-0.5 rounded text-2xs font-mono font-bold uppercase bg-theme-gold/10 text-theme-gold dark:text-theme-gold border border-theme-gold/30">
                             {slide.categoryTj || slide.categoryRu}
                           </span>
-                          <span className="text-[11px] font-mono text-theme-text">
+                          <span className="text-2xs font-mono text-theme-text">
                             {slide.dateText}
                           </span>
                           {slide.linkUrl && (
-                            <span className="text-[11px] font-mono text-sky-600 dark:text-cyan-400/80 truncate max-w-[150px]">
+                            <span className="text-2xs font-mono text-sky-600 dark:text-cyan-400/80 truncate max-w-[150px]">
                               → {slide.linkUrl}
                             </span>
                           )}
@@ -1539,7 +1539,7 @@ export const Slider3DManager: React.FC = () => {
 
               {/* Quick Preset Images */}
               <div className="space-y-1 pt-1">
-                <span className="text-[11px] font-mono font-bold text-theme-text">
+                <span className="text-2xs font-mono font-bold text-theme-text">
                   Быстрый выбор из системных изображений:
                 </span>
                 <div className="flex flex-wrap gap-2">

@@ -509,7 +509,7 @@ export const ShelfBooksManager: React.FC = () => {
             className="inline-block w-8 h-11 rounded-[3px] border border-theme-gold/40 shrink-0"
             style={{ background: BOOK_THEMES[(row.cover_theme ?? 0) % BOOK_THEMES.length] }}
           />
-          <span className="font-mono text-[11px] text-theme-textMuted">#{row.sort_order}</span>
+          <span className="font-mono text-2xs text-theme-textMuted">#{row.sort_order}</span>
         </div>
       ),
     },
@@ -519,7 +519,7 @@ export const ShelfBooksManager: React.FC = () => {
         <div className="flex flex-col text-left">
           <span className="font-serif font-bold text-sm text-theme-text">{row.title_ru}</span>
           {row.title_tj && (
-            <span className="font-sans text-[11px] text-theme-textMuted mt-0.5">{row.title_tj}</span>
+            <span className="font-sans text-2xs text-theme-textMuted mt-0.5">{row.title_tj}</span>
           )}
         </div>
       ),
@@ -542,7 +542,7 @@ export const ShelfBooksManager: React.FC = () => {
       header: 'Категория',
       width: '130px',
       accessor: (row) => (
-        <span className="font-mono text-[11px] text-theme-gold/90 uppercase">
+        <span className="font-mono text-2xs text-theme-gold/90 uppercase">
           {kindLabel(row.kind || detectKind(row.title_ru || ''))}
         </span>
       ),
@@ -551,7 +551,7 @@ export const ShelfBooksManager: React.FC = () => {
       header: 'Язык',
       width: '90px',
       accessor: (row) => (
-        <span className="font-mono text-[11px] text-theme-gold border border-theme-gold/30 bg-theme-gold/10 rounded px-1.5 py-0.5 uppercase">
+        <span className="font-mono text-2xs text-theme-gold border border-theme-gold/30 bg-theme-gold/10 rounded px-1.5 py-0.5 uppercase">
           {(row.doc_lang || 'auto').toUpperCase()}
         </span>
       ),
@@ -625,7 +625,7 @@ export const ShelfBooksManager: React.FC = () => {
             Электронная библиотека суда: категории, порядок, обложки, видимость.
           </p>
           {!canEdit && (
-            <p className="font-mono text-[11px] text-theme-gold/90 mt-2 inline-flex items-center gap-1.5">
+            <p className="font-mono text-2xs text-theme-gold/90 mt-2 inline-flex items-center gap-1.5">
               <Lock size={12} /> Режим чтения — ваша роль ({user?.role}): изменение библиотеки недоступно
             </p>
           )}
@@ -719,7 +719,7 @@ export const ShelfBooksManager: React.FC = () => {
               placeholder="Civil Code of RT, Part 1"
             />
             <div className="space-y-3">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textSec">Файлы документа — раздельно по языкам</span>
+              <span className="text-2xs font-mono uppercase tracking-wider text-theme-textSec">Файлы документа — раздельно по языкам</span>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {(['ru','tj','en'] as const).map(lang => {
                   const urlVal = (formData as any)[`url_${lang}`] as string | undefined;
@@ -727,7 +727,7 @@ export const ShelfBooksManager: React.FC = () => {
                   const color = lang==='ru' ? 'border-theme-gold/30 text-theme-gold bg-theme-gold/10' : lang==='tj' ? 'border-emerald-400/30 text-emerald-300 bg-emerald-400/10' : 'border-sky-400/30 text-sky-300 bg-sky-400/10';
                   return (
                     <div key={lang} className="p-3 rounded-xl bg-theme-bg border border-theme-border flex flex-col gap-2.5">
-                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-bold border w-fit ${color}`}>{lang.toUpperCase()} · {label}</span>
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-2xs font-mono font-bold border w-fit ${color}`}>{lang.toUpperCase()} · {label}</span>
                       {urlVal ? (
                         <>
                           <a href={urlVal} target="_blank" rel="noreferrer" className="text-xs font-mono text-theme-textSec truncate hover:text-theme-gold" title={urlVal}>{urlVal.split('/').pop()}</a>
@@ -744,8 +744,8 @@ export const ShelfBooksManager: React.FC = () => {
                 })}
               </div>
               <input ref={libFileRef} type="file" accept=".pdf,.doc,.docx,.txt,.md,.png,.jpg,.jpeg,.webp,.gif" className="hidden" aria-hidden="true" tabIndex={-1} onChange={handleLibFile} />
-              {uploadStatus && <span className="font-mono text-[11px] text-theme-gold/90">{uploadStatus}</span>}
-              <span className="text-[11px] text-theme-textMuted">Каждый язык — отдельный файл. В библиотеке показывается только файл текущего языка.</span>
+              {uploadStatus && <span className="font-mono text-2xs text-theme-gold/90">{uploadStatus}</span>}
+              <span className="text-2xs text-theme-textMuted">Каждый язык — отдельный файл. В библиотеке показывается только файл текущего языка.</span>
             </div>
             <AdminSelect
               label="Язык документа (важно для смены языка в читалке)"
@@ -755,7 +755,7 @@ export const ShelfBooksManager: React.FC = () => {
             />
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">
+                <span className="text-2xs font-mono uppercase tracking-wider text-theme-textMuted">
                   Полный текст книги — язык: {contentTab.toUpperCase()} {(() => { const cur = contentTab==='tj'? formData.content_tj : contentTab==='en'? formData.content_en : formData.content_ru; return cur ? `(${String(cur).length} символов)` : '(пусто)'; })()}
                 </span>
                 <span className="text-2xs font-mono text-theme-textMuted">При смене языка в библиотеке читалка покажет текст для этого языка (fallback → RU → legacy)</span>
@@ -767,7 +767,7 @@ export const ShelfBooksManager: React.FC = () => {
                     {l.toUpperCase()} {(() => { const v = l==='tj'? formData.content_tj : l==='en'? formData.content_en : formData.content_ru; return v ? `· ${String(v).length}` : ''; })()}
                   </button>
                 ))}
-                <span className="text-[11px] text-theme-textMuted ml-2">Выбранный язык заполняется, остальные — опционально (многоязычный документ)</span>
+                <span className="text-2xs text-theme-textMuted ml-2">Выбранный язык заполняется, остальные — опционально (многоязычный документ)</span>
               </div>
               <textarea
                 value={contentTab==='tj' ? formData.content_tj : contentTab==='en' ? formData.content_en : formData.content_ru}
@@ -789,7 +789,7 @@ export const ShelfBooksManager: React.FC = () => {
                 placeholder={contentTab==='tj' ? 'Матни китоб ба тоҷикӣ (HTML дастгирӣ мешавад: <a>, <table> ...)' : contentTab==='en' ? 'Book text in English (HTML supported: <a>, <table> ...)' : 'Вставьте текст кодекса/закона на русском или HTML ( <a>, <b>, <ul>, <table> — покажется как есть)'}
                 className="w-full rounded-xl bg-theme-bg border border-theme-border text-xs font-sans text-theme-text placeholder-theme-textMuted focus:outline-none focus:border-theme-gold p-3 leading-relaxed"
               />
-              <span className="text-[11px] text-theme-textMuted">HTML «как есть» — ссылки/таблицы кликабельны. Текст текущего языка сохраняется отдельно; при смене языка в читалке автоматически подставится нужный.</span>
+              <span className="text-2xs text-theme-textMuted">HTML «как есть» — ссылки/таблицы кликабельны. Текст текущего языка сохраняется отдельно; при смене языка в читалке автоматически подставится нужный.</span>
               <div className="flex items-center gap-2">
                 <input
                   value={formData.importUrl}
@@ -802,11 +802,11 @@ export const ShelfBooksManager: React.FC = () => {
                   Импорт текста
                 </AdminButton>
                 {formData.importStatus && (
-                  <span className="font-mono text-[11px] text-theme-gold/90">{formData.importStatus}</span>
+                  <span className="font-mono text-2xs text-theme-gold/90">{formData.importStatus}</span>
                 )}
               </div>
               {!editing && (
-                <span className="text-[11px] text-theme-textMuted">Импорт по URL доступен после создания книги.</span>
+                <span className="text-2xs text-theme-textMuted">Импорт по URL доступен после создания книги.</span>
               )}
               {editing && (
                 <div className="flex items-center gap-2 flex-wrap pt-1">
@@ -814,7 +814,7 @@ export const ShelfBooksManager: React.FC = () => {
                     Синхронизировать с источником
                   </AdminButton>
                   {syncStatus && (
-                    <span className="font-mono text-[11px] text-theme-gold/90">{syncStatus}</span>
+                    <span className="font-mono text-2xs text-theme-gold/90">{syncStatus}</span>
                   )}
                   <AdminButton variant="outline" size="sm" onClick={() => loadVersions(editing.id)}>
                     История версий ({versions.length})
@@ -824,7 +824,7 @@ export const ShelfBooksManager: React.FC = () => {
               {editing && versions.length > 0 && (
                 <div className="flex flex-col gap-1 p-2 rounded-xl bg-theme-bg/60 border border-theme-border max-h-32 overflow-y-auto">
                   {versions.map((v: any) => (
-                    <div key={v.version_number} className="flex items-center justify-between gap-2 font-mono text-[11px] text-theme-textMuted">
+                    <div key={v.version_number} className="flex items-center justify-between gap-2 font-mono text-2xs text-theme-textMuted">
                       <span>v{v.version_number} · {String(v.created_at || '').slice(0, 19).replace('T', ' ')} · {v.commit_message || ''}</span>
                       <button type="button" onClick={() => handleRollback(v.version_number)} className="px-2 py-0.5 rounded-lg border border-theme-border text-theme-gold hover:border-theme-gold">
                         Откатить
@@ -875,7 +875,7 @@ export const ShelfBooksManager: React.FC = () => {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Видимость</span>
+              <span className="text-2xs font-mono uppercase tracking-wider text-theme-textMuted">Видимость</span>
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, is_visible: formData.is_visible ? 0 : 1 })}
@@ -889,7 +889,7 @@ export const ShelfBooksManager: React.FC = () => {
                 </button>
               </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Цвет обложки</span>
+              <span className="text-2xs font-mono uppercase tracking-wider text-theme-textMuted">Цвет обложки</span>
               <div className="flex items-center gap-2">
                 {BOOK_THEMES.map((g, i) => (
                   <button
@@ -906,7 +906,7 @@ export const ShelfBooksManager: React.FC = () => {
               </div>
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Дизайн обложки</span>
+              <span className="text-2xs font-mono uppercase tracking-wider text-theme-textMuted">Дизайн обложки</span>
               <AdminInput
                 label="Текст на обложке (пусто — название книги)"
                 value={formData.cover_text}
@@ -921,7 +921,7 @@ export const ShelfBooksManager: React.FC = () => {
                   options={COVER_EMBLEM_OPTIONS}
                 />
                 <div className="flex flex-col gap-1.5">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Свой фон (цвет)</span>
+                  <span className="text-2xs font-mono uppercase tracking-wider text-theme-textMuted">Свой фон (цвет)</span>
                   <div className="flex items-center gap-2">
                     <input
                       type="color"
@@ -950,7 +950,7 @@ export const ShelfBooksManager: React.FC = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-1.5">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-theme-textMuted">Своя картинка обложки</span>
+                <span className="text-2xs font-mono uppercase tracking-wider text-theme-textMuted">Своя картинка обложки</span>
                 <div className="flex items-center gap-2 flex-wrap">
                   <input
                     ref={coverFileRef}
@@ -978,7 +978,7 @@ export const ShelfBooksManager: React.FC = () => {
                     </>
                   )}
                   {coverUploadStatus && (
-                    <span className="font-mono text-[11px] text-theme-gold/90">{coverUploadStatus}</span>
+                    <span className="font-mono text-2xs text-theme-gold/90">{coverUploadStatus}</span>
                   )}
                 </div>
               </div>

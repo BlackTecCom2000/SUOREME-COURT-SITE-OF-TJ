@@ -97,7 +97,7 @@ export const UsersManager: React.FC = () => {
           </div>
           <div className="flex flex-col text-left">
             <span className="font-serif font-bold text-sm text-theme-text">{row.name}</span>
-            <span className="font-mono text-[11px] text-theme-textMuted">{row.email}</span>
+            <span className="font-mono text-2xs text-theme-textMuted">{row.email}</span>
           </div>
         </div>
       ),
@@ -127,7 +127,7 @@ export const UsersManager: React.FC = () => {
       header: 'Сайт',
       width: '200px',
       accessor: (row) => (
-        <span className="font-mono text-[11px] text-theme-gold/90">{siteLabel(row.site_id)}</span>
+        <span className="font-mono text-2xs text-theme-gold/90">{siteLabel(row.site_id)}</span>
       ),
     },
     {

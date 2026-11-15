@@ -74,7 +74,7 @@ export const UsefulSitesManager: React.FC = () => {
           </label>
           <div className="flex items-end"><AdminButton onClick={saveMarquee} leftIcon={<Save size={14}/>}>Сохранить (Draft→Version)</AdminButton></div>
         </div>
-        <p className="font-mono text-[11px] text-theme-textMuted mt-3">Бесшовный loop: дублированный трек, без скачка, скорость/direction из админки, пауза при наведении/focus, touch/swipe на mobile, Liquid Glass сохранен.</p>
+        <p className="font-mono text-2xs text-theme-textMuted mt-3">Бесшовный loop: дублированный трек, без скачка, скорость/direction из админки, пауза при наведении/focus, touch/swipe на mobile, Liquid Glass сохранен.</p>
       </AdminCard>
 
       <AdminCard title="Добавить полезный сайт" subtitle="title, subtitle, description, image, icon, link, category, language, status, sortOrder, publishedAt — TJ/RU/EN">

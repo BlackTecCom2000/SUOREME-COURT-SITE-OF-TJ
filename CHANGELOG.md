@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.46.0 - Admin typography density: one-step readable, still compact
+- Released: 2026-11-16
+- Previous: v2.45.1
+- All token-driven admin font sizes lift one step via admin-scoped --type-body-scale: 1.13 (11 to 12.4px, 12 to 13.6px, 13 to 14.7px, 15 to 16.9px); headings unchanged. Live portal previews reset to the production scale (data-preview-scope). Arbitrary text-[10px]/[11px] classes mapped to the scaled text-2xs token.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.45.1 - Admin overlays: denser glass for floating surfaces
 - Released: 2026-11-16
 - Previous: v2.45.0

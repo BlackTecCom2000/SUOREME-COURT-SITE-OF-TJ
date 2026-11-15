@@ -80,7 +80,7 @@ export const NewsList: React.FC = () => {
           <span className="font-serif font-bold text-sm text-theme-text group-hover:text-theme-gold transition-colors">
             {row.title_ru}
           </span>
-          <span className="font-mono text-[11px] text-theme-text mt-0.5">
+          <span className="font-mono text-2xs text-theme-text mt-0.5">
             /{row.slug} {row.category ? `• ${row.category}` : ''}
           </span>
         </div>

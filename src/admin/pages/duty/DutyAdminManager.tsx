@@ -54,7 +54,7 @@ export const DutyAdminManager: React.FC = () => {
       accessor: (row) => (
         <div className="flex flex-col text-left">
           <span className="font-serif font-bold text-sm text-theme-text">{row.name_ru}</span>
-          <span className="font-sans text-[11px] text-theme-textMuted mt-0.5">{row.name_tj || ''}</span>
+          <span className="font-sans text-2xs text-theme-textMuted mt-0.5">{row.name_tj || ''}</span>
         </div>
       ),
     },
@@ -74,7 +74,7 @@ export const DutyAdminManager: React.FC = () => {
       accessor: (row) => {
         const rule = config.rules.find((r) => r.category_id === row.id);
         return (
-          <span className="font-mono text-[11px] text-theme-textMuted truncate max-w-xs block">
+          <span className="font-mono text-2xs text-theme-textMuted truncate max-w-xs block">
             {rule?.legal_basis || 'Закон РТ "О государственной пошлине"'}
           </span>
         );
@@ -121,7 +121,7 @@ export const DutyAdminManager: React.FC = () => {
                 <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-serif font-bold text-xs text-theme-text">{ex.title_ru}</h4>
-                  <p className="font-mono text-[11px] text-theme-textMuted mt-0.5">
+                  <p className="font-mono text-2xs text-theme-textMuted mt-0.5">
                     {ex.legal_basis} • {ex.description}
                   </p>
                 </div>

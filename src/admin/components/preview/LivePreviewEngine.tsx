@@ -66,7 +66,7 @@ const { revealToggle } = useThemeReveal();
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/70" />
         </span>
       )}
-      <span className="flex-1 flex items-center justify-center gap-1.5 min-w-0 rounded-lg bg-theme-bg/70 border border-theme-border/40 px-3 py-1 font-mono text-2xs sm:text-[11px] text-theme-textSec truncate">
+      <span className="flex-1 flex items-center justify-center gap-1.5 min-w-0 rounded-lg bg-theme-bg/70 border border-theme-border/40 px-3 py-1 font-mono text-2xs sm:text-2xs text-theme-textSec truncate">
         <Lock size={10} className="text-emerald-400 shrink-0" />
         <span className="truncate">{previewUrl}</span>
       </span>
@@ -194,7 +194,7 @@ const { revealToggle } = useThemeReveal();
   );
 
   const previewContent = (
-    <div className={`flex flex-col bg-theme-bg overflow-hidden transition-all duration-300 ${isFullscreen ? 'fixed inset-0 z-[9999]' : 'h-full rounded-2xl border border-theme-border'}`}>
+    <div className={`flex flex-col bg-theme-bg overflow-hidden transition-all duration-300 ${isFullscreen ? 'fixed inset-0 z-[9999]' : 'h-full rounded-2xl border border-theme-border'}`} data-preview-scope>
       {renderToolbar()}
       
       <div className="flex-1 overflow-y-auto overflow-x-hidden bg-theme-bg/30 relative p-4">

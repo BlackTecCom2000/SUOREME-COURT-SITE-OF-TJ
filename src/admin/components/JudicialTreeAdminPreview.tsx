@@ -18,7 +18,7 @@ export const JudicialTreeAdminPreview: React.FC<JudicialTreeAdminPreviewProps> =
       <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-800">
         <div className="flex items-center gap-2 text-theme-gold">
           <Sparkles size={14} />
-          <span className="font-mono text-[11px] font-bold uppercase tracking-wider">
+          <span className="font-mono text-2xs font-bold uppercase tracking-wider">
             Интерактивное превью в судебном дереве
           </span>
         </div>

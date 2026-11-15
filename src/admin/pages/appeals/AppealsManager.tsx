@@ -106,7 +106,7 @@ export const AppealsManager: React.FC = () => {
           <span className="font-serif font-bold text-sm text-theme-text group-hover:text-theme-gold transition-colors">
             {row.full_name}
           </span>
-          <span className="font-mono text-[11px] text-theme-textMuted mt-0.5">
+          <span className="font-mono text-2xs text-theme-textMuted mt-0.5">
             {row.ref_number || `№ ОБ-${row.id}`} • {row.phone}
           </span>
         </div>
@@ -119,7 +119,7 @@ export const AppealsManager: React.FC = () => {
           <span className="font-sans text-xs font-semibold text-theme-textSec">
             {row.subject || 'Электронное обращение гражданина'}
           </span>
-          <p className="font-sans text-[11px] text-theme-textMuted truncate mt-0.5">
+          <p className="font-sans text-2xs text-theme-textMuted truncate mt-0.5">
             {row.message}
           </p>
         </div>
@@ -268,7 +268,7 @@ export const AppealsManager: React.FC = () => {
                   Служебные заметки канцелярии (Конфиденциально)
                 </span>
               </div>
-              <p className="text-[11px] font-sans text-theme-textMuted">
+              <p className="text-2xs font-sans text-theme-textMuted">
                 Данные заметки видны только судьям и администраторам аппарата Верховного суда.
               </p>
               <textarea

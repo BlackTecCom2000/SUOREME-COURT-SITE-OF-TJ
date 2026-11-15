@@ -65,15 +65,15 @@ export const AdminProfileMenu: React.FC = () => {
               </span>
             </div>
             <p className="font-serif font-bold text-sm text-theme-text truncate">{user?.name}</p>
-            <p className="font-mono text-[11px] text-theme-textMuted truncate">{user?.email}</p>
+            <p className="font-mono text-2xs text-theme-textMuted truncate">{user?.email}</p>
           </div>
 
           {/* Quick Settings Switchers */}
           <div className="py-2.5 border-b border-theme-border space-y-2">
             {/* Language Switcher */}
             <div className="flex items-center justify-between px-2 text-xs text-theme-textSec">
-              <span className="font-mono text-[11px] text-theme-textMuted">Язык</span>
-              <div className="relative flex items-center gap-1 font-mono text-[11px] bg-theme-bg/60 p-0.5 rounded-lg border border-theme-border">
+              <span className="font-mono text-2xs text-theme-textMuted">Язык</span>
+              <div className="relative flex items-center gap-1 font-mono text-2xs bg-theme-bg/60 p-0.5 rounded-lg border border-theme-border">
                 {(['ru', 'tj', 'en'] as const).map((lang) => (
                   <button
                     key={lang}
@@ -97,7 +97,7 @@ export const AdminProfileMenu: React.FC = () => {
 
             {/* Theme Switcher */}
             <div className="flex items-center justify-between px-2 text-xs text-theme-textSec">
-              <span className="font-mono text-[11px] text-theme-textMuted">Тема</span>
+              <span className="font-mono text-2xs text-theme-textMuted">Тема</span>
               <button
                 onClick={() => revealToggle()}
                 className="px-2 py-0.5 rounded bg-theme-bg border border-theme-border text-theme-textSec font-mono text-2xs hover:bg-theme-bg/60"

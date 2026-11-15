@@ -235,7 +235,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
         </div>
 
         {/* Footer shortcuts */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-t border-theme-border bg-theme-bg/60 text-[11px] font-mono text-theme-textMuted">
+        <div className="flex items-center justify-between px-4 py-2.5 border-t border-theme-border bg-theme-bg/60 text-2xs font-mono text-theme-textMuted">
           <div className="flex items-center gap-2">
             <Sparkles size={12} className="text-theme-gold" />
             <span>COMMAND CONTROL</span>

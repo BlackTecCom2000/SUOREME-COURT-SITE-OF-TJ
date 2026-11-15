@@ -278,17 +278,17 @@ export const HeroesManager: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <span className="font-serif text-base text-theme-text truncate">{h.name_ru}</span>
                   {h.is_official_hero ? (
-                    <span className="px-2 h-5 inline-flex items-center rounded-full bg-theme-gold/90 text-theme-bg text-[10px] font-bold">
+                    <span className="px-2 h-5 inline-flex items-center rounded-full bg-theme-gold/90 text-theme-bg text-2xs font-bold">
                       Қаҳрамони Тоҷикистон
                     </span>
                   ) : null}
                   {h.confidence && h.confidence !== 'verified' && (
-                    <span className="px-2 h-5 inline-flex items-center rounded-full border border-theme-gold/40 text-theme-gold text-[10px]">
+                    <span className="px-2 h-5 inline-flex items-center rounded-full border border-theme-gold/40 text-theme-gold text-2xs">
                       {h.confidence}
                     </span>
                   )}
                 </div>
-                <div className="font-mono text-[11px] text-theme-textMuted truncate">
+                <div className="font-mono text-2xs text-theme-textMuted truncate">
                   /heroes/{h.slug} · {h.category} · {h.status} · #{h.sort_order}
                 </div>
               </div>

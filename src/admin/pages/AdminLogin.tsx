@@ -81,7 +81,7 @@ export const AdminLogin: React.FC = () => {
         </div>
 
         {/* Bottom Security Telemetry Status */}
-        <div className="relative z-10 flex items-center justify-between text-[11px] font-mono text-theme-textMuted border-t border-[var(--glass-border)] pt-4">
+        <div className="relative z-10 flex items-center justify-between text-2xs font-mono text-theme-textMuted border-t border-[var(--glass-border)] pt-4">
           <div className="flex items-center gap-2 text-emerald-400">
             <ShieldCheck size={14} />
             <span className="uppercase tracking-wider">SECURE CONNECTION ENFORCED</span>

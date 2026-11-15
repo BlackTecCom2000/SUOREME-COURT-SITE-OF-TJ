@@ -482,7 +482,7 @@ export const SiteBuilder: React.FC = () => {
               {palette.map(p=> (
                 <button key={p.key} onClick={()=> add(p.key)} className="p-3 rounded-xl glass border border-theme-border hover:border-theme-gold flex flex-col items-center gap-1 text-xs text-theme-textSec hover:text-theme-text transition-colors">
                   <span className="w-6 h-6 rounded-full border border-theme-border flex items-center justify-center font-mono text-2xs text-theme-textMuted">{p.icon}</span>
-                  <span className="text-[11px] leading-tight text-center">{p.label}</span>
+                  <span className="text-2xs leading-tight text-center">{p.label}</span>
                 </button>
               ))}
             </div>
@@ -500,7 +500,7 @@ export const SiteBuilder: React.FC = () => {
             <div className="space-y-4">
               {/* Background */}
               <div>
-                <div className="font-mono text-[11px] uppercase tracking-wider text-theme-gold mb-2">Background</div>
+                <div className="font-mono text-2xs uppercase tracking-wider text-theme-gold mb-2">Background</div>
                 <div className="space-y-2">
                   {[
                     {k:'background_image_day', label:'День (/supreme-court-day.jpg)'},
@@ -509,7 +509,7 @@ export const SiteBuilder: React.FC = () => {
                     {k:'background_size', label:'Size (cover/contain)'},
                   ].map(f=> (
                     <div key={f.k} className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] items-center gap-2">
-                      <span className="min-w-0 truncate font-mono text-[11px] text-theme-textSec">{f.label}</span>
+                      <span className="min-w-0 truncate font-mono text-2xs text-theme-textSec">{f.label}</span>
                       <AdminInput value={design[f.k]||''} onChange={e=> setDesign({ [f.k]: e.target.value })} className="flex-1" placeholder={f.k.includes('image')?'/supreme-court-day.jpg':'center'} />
                     </div>
                   ))}
@@ -517,7 +517,7 @@ export const SiteBuilder: React.FC = () => {
               </div>
               {/* Atmosphere */}
               <div>
-                <div className="font-mono text-[11px] uppercase tracking-wider text-theme-gold mb-2">Atmosphere — слабый оверлей, здание всегда видно</div>
+                <div className="font-mono text-2xs uppercase tracking-wider text-theme-gold mb-2">Atmosphere — слабый оверлей, здание всегда видно</div>
                 <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
                   <RangeRow label="White Overlay (cap 0.10)" value={design.bg_overlay_opacity || '0.12'} min={0} max={0.1} step={0.01} onChange={v=> setDesign({ bg_overlay_opacity: v })} onReset={()=> setDesign({ bg_overlay_opacity: '0.12' })} />
                   <RangeRow label="Background Blur" value={design.bg_blur || '0'} min={0} max={20} step={1} suffix="px" onChange={v=> setDesign({ bg_blur: v })} onReset={()=> setDesign({ bg_blur: '0' })} />
@@ -528,7 +528,7 @@ export const SiteBuilder: React.FC = () => {
               </div>
               {/* Theme transition (Skiper 26 reveal) */}
               <div>
-                <div className="font-mono text-[11px] uppercase tracking-wider text-theme-gold mb-2">
+                <div className="font-mono text-2xs uppercase tracking-wider text-theme-gold mb-2">
                   Переход темы — Skiper 26
                 </div>
                 <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">

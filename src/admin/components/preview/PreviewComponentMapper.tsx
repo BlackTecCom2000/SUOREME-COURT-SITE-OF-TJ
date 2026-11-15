@@ -75,7 +75,7 @@ export const PreviewComponentMapper: React.FC<PreviewComponentMapperProps> = ({ 
     : (language === 'en' ? 'dated ' : language === 'tj' ? 'санаи ' : 'дата ') + dateLabel;
 
   const contextBar = (
-    <div className="max-w-3xl mx-auto px-4 pt-6 pb-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] text-theme-textMuted">
+    <div className="max-w-3xl mx-auto px-4 pt-6 pb-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-2xs text-theme-textMuted">
       <span className="text-theme-gold uppercase tracking-widest">
         {language === 'en' ? 'Shows at' : language === 'tj' ? 'Ҷойи намоиш' : 'Место показа'}: {whereLabel}
       </span>
@@ -143,7 +143,7 @@ export const PreviewComponentMapper: React.FC<PreviewComponentMapperProps> = ({ 
             <h4 className="text-[13px] font-sans font-semibold uppercase leading-snug text-theme-text">
               {title}
             </h4>
-            <span className="font-mono text-[11px] text-theme-textMuted">{dateLabel}</span>
+            <span className="font-mono text-2xs text-theme-textMuted">{dateLabel}</span>
           </div>
         </div>
       );
@@ -186,7 +186,7 @@ export const PreviewComponentMapper: React.FC<PreviewComponentMapperProps> = ({ 
               <span>{badgeLabel}</span>
             </span>
             <h1 className="text-2xl sm:text-4xl font-medium tracking-tight mt-2 leading-tight">{title}</h1>
-            <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-theme-textMuted mt-3">
+            <span className="inline-flex items-center gap-1.5 font-mono text-2xs text-theme-textMuted mt-3">
               <span>{dateLabel}</span>
             </span>
           </div>
