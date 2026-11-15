@@ -65,7 +65,7 @@ export const ContentDetailPage: React.FC = () => {
   usePageMeta(title || 'SUD.TJ', excerpt || undefined);
 
   return (
-    <div className="site-container px-4 sm:px-8 md:px-12 py-10 lg:py-16 text-theme-text">
+    <div className="site-container px-4 sm:px-8 md:px-12 pt-24 sm:pt-28 lg:pt-24 pb-10 lg:pb-16 text-theme-text">
       <Breadcrumbs
         items={[
           {
@@ -88,7 +88,7 @@ export const ContentDetailPage: React.FC = () => {
         <div className="content-card text-center py-12 font-mono text-xs text-theme-textSec">Loading...</div>
       ) : (
         <Reveal delay={100}>
-          <article className="content-card relative overflow-hidden">
+          <article className="content-card relative overflow-hidden max-w-4xl mx-auto">
             <div data-cinematic-stage="page" className="border-l-2 border-theme-gold pl-4 py-1 mb-5">
               <span className="font-mono text-xs text-theme-gold tracking-widest uppercase flex items-center gap-1.5">
                 <Newspaper size={13} />
@@ -133,7 +133,7 @@ export const ContentDetailPage: React.FC = () => {
                           src={src}
                           alt=""
                           loading="lazy"
-                          className="w-full h-28 sm:h-32 object-cover"
+                          className="w-full h-auto object-contain"
                           onError={(e) => {
                             (e.currentTarget as HTMLImageElement).style.display = 'none';
                           }}
