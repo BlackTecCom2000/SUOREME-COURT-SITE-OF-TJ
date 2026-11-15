@@ -19,10 +19,12 @@ import { systemRouter } from './routes/system';
 import { heroesRouter } from './routes/heroes';
 import { cache } from './utils/cache';
 import { sanitizeRich, sanitizeRichOrNull } from './utils/sanitizeHtml';
+import { getJwtSecret } from './config/secret';
 
 // M2: columns holding rich HTML rendered via dangerouslySetInnerHTML.
 const RICH_CONTENT_COLS = new Set(['content', 'content_ru', 'content_tj', 'content_en']);
 
+const secret = getJwtSecret();
 const root = process.cwd(); const dataDir = path.join(root, 'data'); fs.mkdirSync(dataDir, { recursive: true });
 // Strip imported legislation HTML down to readable plain text for the e-library.
 function cleanImportedText(html: string): string {
@@ -525,7 +527,6 @@ const multerErrors = (err: any, _req: express.Request, res: express.Response, ne
   next(err);
 };
 
-const secret = process.env.CMS_JWT_SECRET || 'development-only-change-me';
 if (process.env.CMS_SEED_ADMIN_EMAIL && process.env.CMS_SEED_ADMIN_PASSWORD && !db.prepare('SELECT id FROM users WHERE email=?').get(process.env.CMS_SEED_ADMIN_EMAIL)) {
   db.prepare('INSERT INTO users(email,password_hash,name,role) VALUES(?,?,?,?)').run(process.env.CMS_SEED_ADMIN_EMAIL, bcrypt.hashSync(process.env.CMS_SEED_ADMIN_PASSWORD, 12), 'System Administrator', 'super_admin');
 }
@@ -646,7 +647,7 @@ const auth = (req:Auth,res:express.Response,next:express.NextFunction) => {
   const bearer = req.headers.authorization?.replace('Bearer ','');
   const token = bearer || parseCookies(req)['cms_token'] || '';
   (req as any).cookieAuth = !bearer && !!parseCookies(req)['cms_token'];
-  try { req.user = jwt.verify(token || '', secret) as {id:number;role:string}; const row = db.prepare('SELECT id, role, site_id FROM users WHERE id=? AND disabled=0').get((req.user as any).id) as any; if (!row) return res.status(401).json({ error:'Unauthorized' }); (req as any).scoped = { id: row.id, role: row.role, site_id: row.site_id || null }; next(); } catch { res.status(401).json({ error:'Unauthorized' }); } };
+  try { req.user = jwt.verify(token || '', secret, { algorithms: ['HS256'] }) as {id:number;role:string}; const row = db.prepare('SELECT id, role, site_id FROM users WHERE id=? AND disabled=0').get((req.user as any).id) as any; if (!row) return res.status(401).json({ error:'Unauthorized' }); (req as any).scoped = { id: row.id, role: row.role, site_id: row.site_id || null }; next(); } catch { res.status(401).json({ error:'Unauthorized' }); } };
 // Site scope of the current admin user: null = full access (super_admin or portal-wide),
 // object = restricted to one court site, 'DENIED' = unknown site.
 const scopeOf = (req:Auth): Scope | null | 'DENIED' => {
@@ -673,7 +674,7 @@ app.use('/api/ai/index-knowledge', auth, requirePerm('ai.manage'));
 app.use('/api/ai', aiRouter);
 const audit = (userId:number|undefined, action:string, type:string, id?:number) => db.prepare('INSERT INTO audit_log(user_id,action,object_type,object_id) VALUES(?,?,?,?)').run(userId || null, action, type, id || null);
 // Login brute-force guard (SEC-02): shared sliding-window limiter, 10 req / 15 min / IP.
-app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) { db.prepare("INSERT INTO audit_log(action,object_type,object_title,ip_address) VALUES(?,?,?,?)").run('login_failed','auth',parsed.data.email,req.ip ?? null); return res.status(401).json({error:'Invalid credentials'}); } const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h'}); audit(user.id,'login','user',user.id); res.cookie('cms_token', token, cookieOpts(req)); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
+app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; if(!user || !bcrypt.compareSync(parsed.data.password,user.password_hash)) { db.prepare("INSERT INTO audit_log(action,object_type,object_title,ip_address) VALUES(?,?,?,?)").run('login_failed','auth',parsed.data.email,req.ip ?? null); return res.status(401).json({error:'Invalid credentials'}); } const token=jwt.sign({id:user.id,role:user.role,site_id:user.site_id || null},secret,{expiresIn:'8h',algorithm:'HS256'}); audit(user.id,'login','user',user.id); res.cookie('cms_token', token, cookieOpts(req)); res.json({token,user:{id:user.id,name:user.name,role:user.role,site_id:user.site_id || null}}); });
 app.post('/api/admin/auth/logout', auth, (req:Auth,res) => { audit(req.user!.id,'logout','user',req.user!.id); res.clearCookie('cms_token', { path: '/' }); res.json({ ok: true }); });
 app.get('/api/admin/auth/me', auth, (req:Auth,res) => { const s=(req as any).scoped; const row=db.prepare('SELECT id,email,name,role,site_id FROM users WHERE id=?').get(s.id) as any; if(!row) return res.status(401).json({error:'Unauthorized'}); res.json({ ...row, permissions: permissionsFor(row.role) }); });
 // User management (super_admin only) — includes per-site access (site_id)
