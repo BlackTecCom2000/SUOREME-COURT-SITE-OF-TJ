@@ -193,9 +193,9 @@ export const JudicialActsManager: React.FC = () => {
       {/* Top Action Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif font-bold text-2xl text-theme-text">База судебных актов</h2>
+          <h2 className="font-serif font-bold text-2xl text-theme-text">Судебные акты и процессуальные документы</h2>
           <p className="font-sans text-xs text-theme-textMuted mt-1">
-            Постановления пленума, определения судебных коллегий и официальные судебные прецеденты
+            Судебные акты, определения коллегий и образцы процессуальных документов (заявлений)
           </p>
         </div>
         <AdminButton
@@ -251,14 +251,14 @@ export const JudicialActsManager: React.FC = () => {
         data={filteredActs}
         keyExtractor={(item) => item.id}
         isLoading={isLoading}
-        emptyMessage="Судебных актов не найдено"
+        emptyMessage="Записи не найдены"
       />
 
       {/* Add / Edit Act Modal */}
       <AdminModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingAct ? 'Редактирование судебного акта' : 'Регистрация судебного акта'}
+        title={editingAct ? 'Редактирование записи' : 'Новая запись'}
         subtitle="Официальная публикация в открытом банке решений"
         maxWidth="max-w-[95vw]"
         footer={

@@ -109,7 +109,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       items: [
         {
           icon: Gavel,
-          label: 'Судебные акты',
+          label: 'Судебные акты и процессуальные документы',
           path: '/admin/acts',
           anyOf: ['acts.manage'],
         },

@@ -19,7 +19,7 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
     if (path === '/admin') return 'Обзор системы';
     if (path.startsWith('/admin/news/new')) return 'Новая публикация';
     if (path.startsWith('/admin/news')) return 'Публикации и пресс-релизы';
-    if (path.startsWith('/admin/acts')) return 'База судебных актов';
+    if (path.startsWith('/admin/acts')) return 'Судебные акты и процессуальные документы';
     if (path.startsWith('/admin/courts')) return 'Судебная сеть Таджикистана';
     if (path.startsWith('/admin/duty')) return 'Калькулятор госпошлины';
     if (path.startsWith('/admin/appeals')) return 'Обращения граждан';

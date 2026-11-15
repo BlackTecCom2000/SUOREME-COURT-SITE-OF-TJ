@@ -44,7 +44,8 @@ type Profile = {
 
 const PROFILES: Record<string, Profile> = {
   // The home hero is a full-bleed stage: a strong move reads as depth.
-  hero: { shift: 58, shrink: 0.042, fade: 0.55, travel: 0.85, byHeight: true },
+  // Keep the hero glass surfaces at full opacity while scrolling.
+  hero: { shift: 58, shrink: 0.042, fade: 0, travel: 0.85, byHeight: true },
   // Inner page headers are small and carry the page title. They recede, but
   // the title has to stay readable, so the move is much gentler and it plays
   // out over roughly one header height of scrolling — the header is still on
@@ -147,7 +148,8 @@ export const useCinematicScroll = (routeKey = '') => {
         const dy = m.progress * shift;
         const scale = 1 - m.progress * shrink;
         m.stage.el.style.transform = `translate3d(0, ${dy.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`;
-        m.stage.el.style.opacity = (1 - m.progress * fade).toFixed(3);
+        if (fade > 0) m.stage.el.style.opacity = (1 - m.progress * fade).toFixed(3);
+        else m.stage.el.style.removeProperty('opacity');
         m.stage.el.style.willChange = 'transform, opacity';
         m.stage.active = true;
         moving = true;
