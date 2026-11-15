@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.42.2 - Fix news cover image lazy-load in transformed containers
+- Released: 2026-11-15
+- Previous: v2.42.1
+- ContentDetailPage: cover image loading lazy -> eager (transformed ancestors prevent intersection from firing; same fix as heroes portraits).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.42.1 - Hero blur-in entrance animation (motion enhancement)
 - Released: 2026-11-15
 - Previous: v2.42.0

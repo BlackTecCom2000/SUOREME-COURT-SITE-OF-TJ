@@ -101,7 +101,7 @@ export const ContentDetailPage: React.FC = () => {
               </span>
             </div>
             {item.cover_image && (
-              <img src={`/uploads/${item.cover_image}`} alt="" className="w-full max-h-[420px] object-cover rounded-xl border border-theme-border mb-5" loading="lazy" />
+              <img src={`/uploads/${item.cover_image}`} alt="" className="w-full max-h-[420px] object-cover rounded-xl border border-theme-border mb-5" loading="eager" />
             )}
             {String(body || '').split(/\n+/).map((p: string, i: number) => (
               <p key={i} className="text-sm sm:text-base leading-relaxed text-theme-textSec mb-4">{p}</p>
