@@ -56,6 +56,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.41.4 - Fix hero card opacity flicker on scroll
+- Released: 2026-11-15
+- Previous: v2.41.3
+- useCinematicScroll: hero profile fade 0.55 -> 0; opacity is now removed (not animated) for hero stages, so glass cards keep full opacity while scrolling. Shift (58px) and scale (4.2%) preserved for depth. Inner page (page) profile unchanged (fade 0.45).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.41.3 - Fix regional panel open animation (max-height + measured height)
 - Released: 2026-11-15
 - Previous: v2.41.2
