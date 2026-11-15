@@ -22,7 +22,7 @@ export const CaseDashboard: React.FC<CaseDashboardProps> = ({ onSelectCase, onNe
   const myActiveCases = MOCK_CASES.slice(0, 2);
 
   return (
-    <section id="my-cases" className="relative py-12 sm:py-16 px-4 sm:px-8 md:px-12 site-container select-none">
+    <section id="my-cases" className="relative py-12 sm:py-16 px-4 sm:px-8 md:px-12 site-container select-none overflow-x-clip">
       <Reveal delay={50}>
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div>

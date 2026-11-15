@@ -114,13 +114,6 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
   const subtitle =
     language === 'tj' ? 'Суди вилоятӣ' : language === 'en' ? 'Regional court' : 'Областной суд';
 
-  const innerRef = React.useRef<HTMLDivElement>(null);
-  const [maxH, setMaxH] = React.useState(0);
-
-  React.useEffect(() => {
-    if (innerRef.current) setMaxH(innerRef.current.scrollHeight);
-  }, [expanded, cluster]);
-
   return (
     <section
       aria-label={title}
@@ -131,8 +124,8 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
         borderColor: selected ? accent : undefined,
         opacity: muted ? 0.45 : 1,
         boxShadow: focused || selected ? `0 0 25px ${accent}1f` : undefined,
-        animationDelay: `${Math.min(index, 5) * 90}ms`,
-      }}
+        '--jm-enter-delay': `${Math.min(index, 5) * 90}ms`,
+      } as React.CSSProperties}
     >
       {/* Header */}
       <button
@@ -176,31 +169,31 @@ export const RegionalCourtPanel: React.FC<RegionalCourtPanelProps> = ({
       <div
         id={`judmap-courts-${cluster.id}`}
         style={{
-          maxHeight: expanded ? (maxH || 2000) : 0,
           opacity: expanded ? 1 : 0,
-          overflow: 'hidden',
-          transition: 'max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease-out',
+          display: 'grid',
+          gridTemplateRows: expanded ? '1fr' : '0fr',
+          transition: 'grid-template-rows 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease-out',
         }}
         aria-hidden={!expanded}
       >
-        <div ref={innerRef} className="flex flex-col gap-3.5 pt-1">
+        <div className="min-h-0 overflow-hidden flex flex-col gap-3.5 pt-1">
           {/* Regional court */}
           {regionalCourt && (
-            <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out both' : 'none', animationDelay: '0ms' }}>
+            <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out 0ms both' : 'none' }}>
               <CourtList courts={[regionalCourt]} accent={accent} selectedCourtId={selectedCourtId} dimmedIds={dimmedIds} onSelect={onSelectCourt} />
             </div>
           )}
           {/* Statistics */}
-          <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out both' : 'none', animationDelay: '80ms' }}>
+          <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out 80ms both' : 'none' }}>
             <RegionalStats accent={accent} cities={cityCount} districts={districtCount} activeFilter={typeFilter} onToggleFilter={onToggleTypeFilter} />
           </div>
           {/* Ordinary courts */}
-          <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out both' : 'none', animationDelay: '160ms' }}>
+          <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out 160ms both' : 'none' }}>
             <CourtList courts={ordinaryCourts} accent={accent} selectedCourtId={selectedCourtId} dimmedIds={dimmedIds} onSelect={onSelectCourt} />
           </div>
           {/* Military court */}
           {militaryCourt && (
-            <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out both' : 'none', animationDelay: '240ms' }}>
+            <div style={{ animation: expanded ? 'jm-fade-up 0.4s ease-out 240ms both' : 'none' }}>
               <MilitaryCourtButton court={militaryCourt} accent={accent} selected={selectedCourtId === militaryCourt.id} dimmed={isDimmed(militaryCourt)} onSelect={onSelectCourt} />
             </div>
           )}

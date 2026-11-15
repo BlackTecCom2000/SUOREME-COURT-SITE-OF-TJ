@@ -19,7 +19,13 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 
 
 
-
+
+## v2.43.0 - stabilize glass scrolling and footer interactions
+- Released: 2026-11-15 13:09
+- Previous: v2.42.0
+- QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
+  `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
+  `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
 ## v2.42.0 - Fix collapsed judiciary panels verified
 - Released: 2026-11-15 09:09
 - Previous: v2.41.0

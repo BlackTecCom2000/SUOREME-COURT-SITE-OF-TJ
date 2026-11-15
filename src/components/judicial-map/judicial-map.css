@@ -57,6 +57,7 @@
 }
 .jm-enter {
   animation: jm-fade-up 0.55s ease-out both;
+  animation-delay: var(--jm-enter-delay, 0ms);
 }
 @media (prefers-reduced-motion: reduce) {
   .judmap .jm-flow, .judmap .jm-pulse-node, .judmap .jm-enter {

@@ -45,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
 
   return (
     <>
-      <footer className="relative z-20 mt-auto overflow-hidden select-none bg-transparent border-t border-theme-border">
+      <footer className="relative z-20 mt-auto overflow-hidden select-none bg-transparent">
         {/* Background — no white overlay, natural building shows through.
             v2.22.0: local veil so the facade never competes with card text —
             transparent at top (architecture stays crisp), settling into a
@@ -271,7 +271,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
             </section>
 
             {/* Bottom bar — GlassBottomBar */}
-            <div className="glass border-t border-theme-border !rounded-none -mx-4 sm:-mx-8 md:-mx-12 px-4 sm:px-8 md:px-12 py-1.5 flex flex-col sm:flex-row items-center justify-between gap-1.5 text-xs font-mono">
+            <div className="glass glass-card border border-theme-border px-4 sm:px-5 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[11px] font-mono">
               <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
                 <span className="text-theme-text font-bold">SUD.TJ</span>
                 <span className="opacity-60">•</span>

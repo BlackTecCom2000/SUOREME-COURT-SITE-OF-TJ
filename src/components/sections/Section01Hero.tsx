@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowDown, ArrowUpRight, ShieldCheck, Sparkles, FileText } from 'lucide-react';
 import { Reveal } from '../Reveal';
 import { useLanguage } from '../../context/LanguageContext';
@@ -16,10 +16,8 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
   onScrollNext,
 }) => {
   const { language, t } = useLanguage();
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const stageRef = useRef<HTMLDivElement | null>(null);
-  // The cinematic camera is driven site-wide by useCinematicScroll (mounted in
-  // Layout); the hero simply declares itself as the full-bleed stage.
+  // Glass surfaces stay in normal document flow so their backdrop remains
+  // stable while the page scrolls.
   // Live portal counters — real /api/stats only, never hardcoded.
   const [liveStats, setLiveStats] = useState<{ courts?: number; acts?: number; hearings?: number } | null>(null);
   useEffect(() => {
@@ -42,14 +40,11 @@ export const Section01Hero: React.FC<Section01HeroProps> = ({
 
   return (
     <section
-      ref={sectionRef}
       id="hero"
       aria-label={t('nav.home')}
       className="relative min-h-[85vh] lg:min-h-[92vh] flex flex-col justify-between pt-20 lg:pt-28 pb-10 lg:pb-16 text-theme-text overflow-hidden select-none"
     >
       <div
-        ref={stageRef}
-        data-cinematic-stage="hero"
         className="relative flex flex-1 flex-col justify-between"
         style={{ transformOrigin: '50% 0%' }}
       >

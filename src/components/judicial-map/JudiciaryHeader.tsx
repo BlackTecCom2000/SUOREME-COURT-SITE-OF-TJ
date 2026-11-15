@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { LayoutGrid, Maximize2, RotateCcw, ArrowUp } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { SearchControl } from './SearchControl';
@@ -19,6 +20,8 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
 }) => {
   const { language } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuPanelRef = useRef<HTMLDivElement>(null);
 
   const title =
     language === 'tj' ? 'ҲОКИМИЯТИ СУДӢ' : language === 'en' ? 'JUDICIAL POWER' : 'СУДЕБНАЯ ВЛАСТЬ';
@@ -44,6 +47,55 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
     setMenuOpen(false);
     fn();
   };
+
+  useLayoutEffect(() => {
+    if (!menuOpen) return;
+
+    const updatePosition = () => {
+      const button = menuButtonRef.current;
+      const panel = menuPanelRef.current;
+      if (!button || !panel) return;
+      const rect = button.getBoundingClientRect();
+      if (rect.bottom <= 0 || rect.top >= window.innerHeight) {
+        setMenuOpen(false);
+        return;
+      }
+      const width = panel.offsetWidth;
+      const height = panel.offsetHeight;
+      const left = Math.max(8, Math.min(rect.right - width, window.innerWidth - width - 8));
+      const top = rect.bottom + height + 8 <= window.innerHeight
+        ? rect.bottom + 8
+        : Math.max(8, rect.top - height - 8);
+      panel.style.top = `${top}px`;
+      panel.style.left = `${left}px`;
+    };
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [menuOpen]);
+
+  React.useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (menuButtonRef.current?.contains(target) || menuPanelRef.current?.contains(target)) return;
+      setMenuOpen(false);
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    document.addEventListener('pointerdown', closeOnOutsidePointer);
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape);
+      document.removeEventListener('pointerdown', closeOnOutsidePointer);
+    };
+  }, [menuOpen]);
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
@@ -78,18 +130,23 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
           </div>
           <div className="relative shrink-0">
             <button
+              ref={menuButtonRef}
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
+              aria-controls="judmap-menu-popover"
               aria-label={menuLabel}
               className="tap-target press-tactile h-11 w-11 rounded-[10px] border border-[var(--jm-border)] bg-[var(--jm-surface)] text-[var(--jm-text-2)] hover:text-[var(--jm-gold)] hover:border-[var(--jm-gold)] transition-colors flex items-center justify-center"
             >
               <LayoutGrid size={16} />
             </button>
-            {menuOpen && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} aria-hidden="true" />
-                <div className="absolute right-0 mt-2 w-52 rounded-xl border border-[var(--jm-border)] bg-[var(--jm-surface)] shadow-[0_10px_40px_rgba(0,0,0,0.20)] overflow-hidden z-50">
+            {menuOpen && typeof document !== 'undefined' && createPortal(
+              <div
+                ref={menuPanelRef}
+                id="judmap-menu-popover"
+                style={{ position: 'fixed', top: 0, left: 0, zIndex: 1001 }}
+                className="w-52 max-w-[calc(100vw-16px)] rounded-xl border border-[var(--jm-border)] bg-[var(--jm-surface)] shadow-[0_10px_40px_rgba(0,0,0,0.20)] overflow-hidden"
+              >
                   <button
                     type="button"
                     onClick={menuAction(onResetFilters)}
@@ -114,8 +171,8 @@ export const JudiciaryHeader: React.FC<JudiciaryHeaderProps> = ({
                     <ArrowUp size={13} />
                     <span>{topLabel}</span>
                   </button>
-                </div>
-              </>
+              </div>,
+              document.body,
             )}
           </div>
         </div>
