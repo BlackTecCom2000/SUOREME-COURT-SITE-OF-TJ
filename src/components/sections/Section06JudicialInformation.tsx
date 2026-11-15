@@ -54,7 +54,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
               </span>
             </div>
 
-            <h2 className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 drop-shadow-sm text-theme-text">
+            <h2 className="public-section-title text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 drop-shadow-sm text-theme-text hero-blur-in" style={{ animationDelay: '0.15s' }}>
               {t('acts.title1')}{' '}
               <span className="italic font-light text-theme-gold">
                 {t('acts.title1Italic')}
@@ -62,7 +62,7 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
               {t('acts.title2')}
             </h2>
 
-            <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-3xl">
+            <p className="text-sm sm:text-base leading-relaxed text-theme-textSec font-normal max-w-3xl hero-blur-in" style={{ animationDelay: '0.3s' }}>
               {t('acts.description')}
             </p>
           </div>

@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.42.1 - Hero blur-in entrance animation (motion enhancement)
+- Released: 2026-11-15
+- Previous: v2.42.0
+- Added .hero-blur-in keyframe (opacity + translateY + short blur, 0.9s) applied to home hero titles (Section06, Section01Hero) and About page header. Respects prefers-reduced-motion. No redesign; glass/colors/typography/3D untouched. Scroll-reveal (Reveal), hover, smooth scroll, pulse indicators already in place.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.41.5 - Security: account lockout, token revocation, password policy, prod CORS/CSRF
 - Released: 2026-11-15
 - Previous: v2.41.4

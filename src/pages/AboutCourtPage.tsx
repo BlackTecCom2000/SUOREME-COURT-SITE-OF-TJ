@@ -20,7 +20,7 @@ export const AboutCourtPage: React.FC = () => {
               {language === 'en' ? 'About' : language === 'tj' ? 'Маълумот' : 'О суде'}
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-serif text-theme-text font-medium tracking-tight">
+          <h1 className="text-4xl sm:text-5xl font-serif text-theme-text font-medium tracking-tight hero-blur-in" style={{ animationDelay: '0.15s' }}>
             {language === 'en' ? 'Constitutional Status & History' : language === 'tj' ? 'Мақоми конститутсионӣ ва таърих' : 'Конституционный статус и история'}
           </h1>
         </header>

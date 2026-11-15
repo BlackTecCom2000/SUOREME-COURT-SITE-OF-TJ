@@ -1280,6 +1280,18 @@ html[data-a11y="true"] .content-card::before {
   }
 }
 
+/* Hero blur-in entrance: opacity + transform + short blur, one-shot. */
+@keyframes hero-blur-in {
+  0% { opacity: 0; transform: translateY(18px); filter: blur(8px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+.hero-blur-in {
+  animation: hero-blur-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-blur-in { animation: none !important; filter: none !important; opacity: 1 !important; transform: none !important; }
+}
+
 /* Custom subtle scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
