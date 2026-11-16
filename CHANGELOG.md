@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.49.1 - Boot guard + branded loader (fixes the stuck loading screen)
+- Released: 2026-11-16
+- Previous: v2.49.0
+- A tab that kept the previous shell (Service Worker cache across a deploy) asked for a chunk that no longer existed: the dynamic import rejected and React stayed on the loading placeholder forever. BootErrorBoundary now catches chunk-load failures, unregisters the stale worker, clears the sudtj-* caches and reloads once (guarded per session); offline it shows a calm retry screen instead of reloading into nothing. The Suspense placeholder is now the portal material (glass card, gold spinner, "Загрузка портала") instead of a bare gray screen with a blue spinner. Service worker namespace bumped to sudtj-v3 so the stale asset cache is dropped on activate.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.49.0 - Intro splash: local court clip plays once per tab session
 - Released: 2026-11-16
 - Previous: v2.48.1

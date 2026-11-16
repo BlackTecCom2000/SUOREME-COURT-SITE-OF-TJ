@@ -19,7 +19,10 @@
  *   - everything else    never cached, always live
  */
 
-const VERSION = 'sudtj-v2';
+/* v3: the intro clip (mp4) joins the cache-first assets, and the namespace
+   bump drops the v2 cache — a tab that kept an old shell could otherwise ask
+   for a chunk that no longer exists and hang on the loading placeholder. */
+const VERSION = 'sudtj-v3';
 const SHELL = `${VERSION}-shell`;
 const ASSETS = `${VERSION}-assets`;
 const DATA = `${VERSION}-data`;
