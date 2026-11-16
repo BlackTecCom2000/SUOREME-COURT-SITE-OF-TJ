@@ -618,7 +618,7 @@ const CSP_POLICY =
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
   // sud.tj serves the photographs of the official publications that were
   // imported into the news section; the gallery links point at that origin.
-  "img-src 'self' data: blob: https://images.unsplash.com https://www.google.com https://t3.gstatic.com https://gstatic.com https://sud.tj; " +
+  "img-src 'self' data: blob: https://images.unsplash.com https://www.google.com https://*.gstatic.com https://sud.tj; " +
   "font-src 'self' https://fonts.gstatic.com data:; " +
   "connect-src 'self' ws: wss:; " +
   "media-src 'self' blob: data: https://sud.tj; " +

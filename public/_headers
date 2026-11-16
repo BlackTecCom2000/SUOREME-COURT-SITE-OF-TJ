@@ -1,0 +1,7 @@
+# Cloudflare Pages static headers.
+#
+# The intro clip is immutable content with a version in its name, so it can be
+# cached for a year: a new clip means a new file name.
+/video/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *

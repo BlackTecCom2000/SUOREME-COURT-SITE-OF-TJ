@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.50.0 - Intro as a window on the site, replayed on every page load
+- Released: 2026-11-16
+- Previous: v2.49.3
+- The intro is now a glass dialog ON TOP of the rendered portal (site visible behind, dimmed), not a black full-screen takeover: after the clip ends the visitor is straight on the site - no reload, no scroll jump. Plays on every full page load (refresh included) and never replays on in-app navigation. Poster frame (golden emblem) shows instantly while the clip buffers. Asset renamed with a version (sud-intro-250) so it can be cached immutably; _headers sets a one-year immutable cache for /video/*. CSP img-src now allows the whole gstatic range (the favicon service redirects to t0/t1/t2).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200; verified in Chrome - window over the site, refresh replays it, SPA navigation does not, skip/Escape close it, end/error/timeout close it.
+
 ## v2.49.3 - Server-rendered loader now uses the portal material
 - Released: 2026-11-16
 - Previous: v2.49.2
