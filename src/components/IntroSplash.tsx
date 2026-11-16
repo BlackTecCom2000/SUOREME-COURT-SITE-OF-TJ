@@ -69,6 +69,20 @@ export const IntroSplash: React.FC = () => {
       return;
     }
 
+    // Data saver / very slow link: the clip is 8.6 MB. Showing the portal
+    // immediately is worth more than the intro on such a connection.
+    const connection = (navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string };
+    }).connection;
+    if (connection?.saveData || connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g') {
+      try {
+        window.sessionStorage.setItem(STORAGE_KEY, '1');
+      } catch {
+        /* ignore */
+      }
+      return;
+    }
+
     try {
       window.sessionStorage.setItem(STORAGE_KEY, '1');
     } catch {
