@@ -461,7 +461,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
             {/* Custom Tooltip (hover + keyboard focus) */}
             <div className="absolute top-full right-0 mt-2 pointer-events-none opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 z-50">
-              <div className="bg-gray-900 border border-gray-700 text-white text-2xs font-mono py-1 px-2 rounded-lg shadow-lg whitespace-nowrap">
+              <div className="glass glass-card border border-theme-border text-theme-text text-2xs font-mono py-1 px-2.5 rounded-lg shadow-lg whitespace-nowrap">
                 {language === 'tj' ? 'Панели идоракунӣ' : language === 'en' ? 'Admin Panel' : 'Админ-панель'}
               </div>
             </div>

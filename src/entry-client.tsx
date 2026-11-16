@@ -21,6 +21,7 @@ import '@fontsource/cormorant-garamond/600-italic.css';
 import './styles/tokens.css';
 import './index.css';
 import { BootErrorBoundary } from './components/BootErrorBoundary';
+import { BootFallback } from './components/BootFallback';
 
 const App = React.lazy(() => import('./App.tsx'));
 const AdminApp = React.lazy(() => import('./AdminApp.tsx'));
@@ -32,21 +33,8 @@ const rootEl = document.getElementById('root')!;
 /* Loading placeholder — the portal's own material, not a bare gray screen.
    It is what a visitor sees for the few hundred milliseconds while the app
    chunk boots, and (before the boot guard existed) what they were stuck on
-   when a stale shell failed to load. */
-const BootFallback: React.FC = () => (
-  <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-theme-bg text-theme-text select-none">
-    <div className="glass glass-card rounded-3xl px-8 py-6 flex flex-col items-center gap-3">
-      <span
-        className="w-9 h-9 rounded-full border-2 border-theme-gold/25 border-t-theme-gold animate-spin"
-        aria-hidden="true"
-      />
-      <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-theme-textSec">
-        Загрузка портала
-      </span>
-    </div>
-    <span className="sr-only">Загрузка портала…</span>
-  </div>
-);
+   when a stale shell failed to load. Shared with the server entry so the
+   first paint and the client fallback are identical. */
 
 /* Lives INSIDE the Suspense boundary, so its effect only runs once the lazy
    App has mounted — which is exactly the commit that finishes hydration.

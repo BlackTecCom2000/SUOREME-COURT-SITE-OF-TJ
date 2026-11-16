@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { DeviceCapabilityProvider } from './context/DeviceCapabilityContext';
 import { ThemeProvider } from './theme';
+import { BootFallback } from './components/BootFallback';
 import App from './App';
 import AdminApp from './AdminApp';
 
@@ -21,7 +22,7 @@ export function render(url: string) {
     <React.StrictMode>
       <ThemeProvider>
         <StaticRouter location={url}>
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-900"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div></div>}>
+          <Suspense fallback={<BootFallback />}>
             <DeviceCapabilityProvider>
               {isAdminRoute ? <AdminApp /> : <App />}
             </DeviceCapabilityProvider>

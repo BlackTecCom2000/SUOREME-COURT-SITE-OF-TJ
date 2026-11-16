@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.49.3 - Server-rendered loader now uses the portal material
+- Released: 2026-11-16
+- Previous: v2.49.2
+- The gray full-screen placeholder with a blue spinner was rendered by the SERVER entry (first paint, before any JS ran) - that is the screen a visitor saw while the app chunk loaded. Both entries now share one BootFallback: glass card, gold spinner, "Загрузка портала". The navbar admin tooltip moved off the raw dark-gray card onto the same glass material.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.49.2 - Intro splash: skip on data saver / very slow connections
 - Released: 2026-11-16
 - Previous: v2.49.1
