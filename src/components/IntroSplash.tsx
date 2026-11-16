@@ -26,8 +26,11 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
  *    aspect ratio instead of stretching it.
  */
 
-const VIDEO_SOURCES = [{ src: '/video/sud-intro-250.mp4', type: 'video/mp4' }];
-const POSTER_SRC = '/video/sud-intro-250-poster.jpg';
+const VIDEO_SOURCES = [
+  { src: '/video/sud-intro-251.webm', type: 'video/webm' },
+  { src: '/video/sud-intro-251.mp4', type: 'video/mp4' },
+];
+const POSTER_SRC = '/video/sud-intro-251-poster.jpg';
 /** The clip is ~13s; give it slack for slow connections, then bail out. */
 const HARD_TIMEOUT_MS = 22000;
 /** Duration of the closing transition that reveals the site again. */

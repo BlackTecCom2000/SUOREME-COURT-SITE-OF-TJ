@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.50.1 - Intro clip compressed (8.6 MB -> ~1-2 MB, WebM + MP4)
+- Released: 2026-11-16
+- Previous: v2.50.0
+- The intro clip is re-encoded to 720p with ffmpeg: a VP9/WebM source (browsers pick it automatically) plus a faststart H.264 MP4 fallback, both under a new versioned name so the immutable cache stays coherent. Same picture, a fraction of the weight: the intro starts downloading in parallel with the page and the poster frame covers the first moments.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.50.0 - Intro as a window on the site, replayed on every page load
 - Released: 2026-11-16
 - Previous: v2.49.3
