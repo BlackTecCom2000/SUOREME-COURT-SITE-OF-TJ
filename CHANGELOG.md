@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.49.0 - Intro splash: local court clip plays once per tab session
+- Released: 2026-11-16
+- Previous: v2.48.1
+- The 12.9s / 1920x1080 clip (sud-intro.mp4) is now a local static asset (public/video) played once over the portal on the first tab session, with no third-party calls. Muted autoplay, inline playback, object-contain letterboxing (never stretched), Skip button (118x44) + Escape, fade-out on ended / media error / 22s timeout, sessionStorage guard so route changes and reloads never replay it, prefers-reduced-motion skips it entirely (video is not even downloaded), admin routes never show it. The service worker now cache-firsts the clip so a second tab plays it from Cache Storage.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200; scenarios verified in Chrome (first open, ended, skip, error, repeat route, reduced motion, mobile 390x844).
+
 ## v2.48.1 - Quick actions + case search headings get glass pods
 - Released: 2026-11-16
 - Previous: v2.48.0

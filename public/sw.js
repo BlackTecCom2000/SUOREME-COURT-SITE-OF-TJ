@@ -51,7 +51,11 @@ self.addEventListener('activate', (event) => {
 
 const isAsset = (url) =>
   url.pathname.startsWith('/assets/') ||
-  /\.(png|jpe?g|webp|avif|svg|ico|woff2?|glb|gltf|bin)$/i.test(url.pathname);
+  /\.(png|jpe?g|webp|avif|svg|ico|woff2?|glb|gltf|bin)$/i.test(url.pathname) ||
+  // The intro clip is immutable content and 8.6 MB: cache it so a second tab
+  // in the same browser plays it from Cache Storage instead of re-downloading.
+  // Rename the file if the clip itself is replaced.
+  /\.(mp4|webm|m4v)$/i.test(url.pathname);
 
 /**
  * Only these API reads are safe to reuse from Cache Storage.

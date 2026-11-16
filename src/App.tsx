@@ -5,6 +5,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { A11yProvider } from './context/A11yContext';
 import { Layout } from './components/Layout';
+import { IntroSplash } from './components/IntroSplash';
 import { HomePage } from './pages/HomePage';
 import { AboutCourtPage } from './pages/AboutCourtPage';
 import { LeadershipPage } from './pages/LeadershipPage';
@@ -27,6 +28,8 @@ export const App: React.FC = () => {
     <ThemeProvider>
       <LanguageProvider>
         <A11yProvider>
+        {/* Intro splash: one short local clip per tab session, over the page. */}
+        <IntroSplash />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
