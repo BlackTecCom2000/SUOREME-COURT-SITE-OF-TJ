@@ -50,6 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
   const navigate = useNavigate();
   const pickLink = (l: { labelRu: string; labelTj: string; labelEn: string }) => language === 'en' ? l.labelEn : language === 'tj' ? l.labelTj : l.labelRu;
   const tickerRef = useRef<HTMLDivElement>(null);
+  const tickerStageRef = useRef<HTMLDivElement>(null);
   const [showTop, setShowTop] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [marquee, setMarquee] = useState({ speed: 36, direction: 'left' as 'left'|'right', autoplay: true, pause_on_hover: true, pause_on_focus: true, logo_size: 84, gap: 12 });
@@ -63,6 +64,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
   useEffect(() => {
     fetch('/api/useful-sites').then(r=> r.ok? r.json(): USEFUL_LINKS).then((d:any)=> { if(Array.isArray(d) && d.length) setUsefulSites(d.map((x:any)=> ({url:x.url, labelRu:x.label_ru||x.labelRu, labelTj:x.label_tj||x.labelTj, labelEn:x.label_en||x.labelEn}))); }).catch(()=>{});
     fetch('/api/marquee-config').then(r=> r.ok? r.json(): null).then((c:any)=> { if(c) setMarquee({speed:c.speed||36, direction:c.direction||'left', autoplay:!!c.autoplay, pause_on_hover:!!c.pause_on_hover, pause_on_focus:!!c.pause_on_focus, logo_size:c.logo_size||84, gap:c.gap||12}); }).catch(()=>{});
+  }, []);
+
+  /* The ticker is the only always-on CSS animation in the footer. Pause it
+     while the footer is offscreen: the compositor has nothing to redraw for a
+     strip nobody can see. The class wins over the hover inline play-state. */
+  useEffect(() => {
+    const stage = tickerStageRef.current;
+    if (!stage || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => stage.classList.toggle('ticker-paused', !entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(stage);
+    return () => observer.disconnect();
   }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -259,6 +274,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSectionModal }) => {
                 </div>
               </div>
               <div
+                ref={tickerStageRef}
                 className="ticker rounded-[14px] border border-theme-border overflow-hidden"
                 role="marquee"
                 aria-label={language === 'en' ? 'Useful links marquee' : 'Бегущая лента полезных сайтов'}

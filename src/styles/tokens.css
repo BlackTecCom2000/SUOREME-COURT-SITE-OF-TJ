@@ -283,6 +283,12 @@
      rather than a stroke.
      ═══════════════════════════════════════════════════════════════════ */
   --lg-blur: 24px;
+  /* GPU budget tiers (v2.51.0): the same material, different backdrop work.
+     Large surfaces keep the full 24px refraction; small controls and nested
+     wells read identically with a much cheaper sample radius. */
+  --lg-blur-surface: var(--lg-blur);
+  --lg-blur-control: 10px;
+  --lg-blur-nest: 0px;
   --lg-saturate: 180%;
   --lg-brightness: 108%;
 

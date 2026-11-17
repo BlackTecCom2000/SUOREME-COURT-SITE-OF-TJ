@@ -103,21 +103,27 @@ export const GlobalBackground: React.FC = () => {
 
   return (
     <div aria-hidden="true" className="fixed inset-0 z-0 bg-[var(--bg-primary)] pointer-events-none select-none overflow-hidden">
-      {/* 0 — live sky + interactive clouds (WebGL), under the photograph */}
-      <CloudSky
-        className="absolute inset-0 w-full h-full"
-        background={isDark ? '#050d1f' : '#2f6fb5'}
-        baseColor={isDark ? '#16233d' : '#b9d6f0'}
-        accentColor={isDark ? '#93a7c8' : '#ffffff'}
-        density={62}
-        speed={34}
-        size={140}
-        clouds={{ softness: 170, shadow: isDark ? 45 : 78, cirrus: 60 }}
-        sun={{ x: 82, y: 94, glow: isDark ? 'rgba(150, 172, 212, 0.30)' : 'rgba(255, 246, 224, 0.95)' }}
-        interactive={false}
-        resolutionScale={0.5}
-        opacity={isDark ? 0.95 : 1}
-      />
+      {/* 0 — live sky + interactive clouds (WebGL), under the photograph.
+          LIGHT MODE ONLY: in dark mode the night photograph is fully opaque and
+          sits above this layer, so these pixels are never visible. Rendering a
+          second WebGL loop behind them cost a full extra 60fps draw every
+          frame. The masked cloud layer 1b below is the visible one at night. */}
+      {!isDark && (
+        <CloudSky
+          className="absolute inset-0 w-full h-full"
+          background="#2f6fb5"
+          baseColor="#b9d6f0"
+          accentColor="#ffffff"
+          density={62}
+          speed={34}
+          size={140}
+          clouds={{ softness: 170, shadow: 78, cirrus: 60 }}
+          sun={{ x: 82, y: 94, glow: 'rgba(255, 246, 224, 0.95)' }}
+          interactive={false}
+          resolutionScale={0.5}
+          opacity={1}
+        />
+      )}
 
       <div
         ref={parallaxRef}

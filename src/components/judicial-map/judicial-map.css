@@ -48,6 +48,12 @@
   animation: jm-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: var(--jm-enter-delay, 0ms);
 }
+/* v2.51.0: JudicialSystemDashboard sets data-paused when the map is offscreen. */
+.judmap[data-paused] .jm-flow,
+.judmap[data-paused] .jm-pulse-node,
+.judmap[data-paused] .jm-enter {
+  animation-play-state: paused;
+}
 @media (prefers-reduced-motion: reduce) {
   .judmap .jm-flow, .judmap .jm-pulse-node, .judmap .jm-enter {
     animation: none !important;

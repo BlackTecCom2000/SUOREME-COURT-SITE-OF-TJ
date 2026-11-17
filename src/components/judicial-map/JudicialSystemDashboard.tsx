@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { CourtNodeData, RegionCluster } from '../../data/sudTjData';
 import { REGIONAL_CLUSTERS } from '../../data/sudTjData';
 import { regionAccent } from './regionAccent';
@@ -43,6 +43,21 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
 }) => {
   const [hoveredRegionId, setHoveredRegionId] = useState<string | null>(null);
   const [expandedRegionId, setExpandedRegionId] = useState<string | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  /* The connector dashes and node pulses animate forever. Pause them while
+     the whole map is outside the viewport — no visual change when it is in
+     view (which is the only time anyone can see them). */
+  useEffect(() => {
+    const root = mapRef.current;
+    if (!root || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) root.removeAttribute('data-paused'); else root.setAttribute('data-paused', ''); },
+      { threshold: 0 }
+    );
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, []);
 
   const handleResetFilters = () => {
     setExpandedRegionId(null);
@@ -97,7 +112,7 @@ export const JudicialSystemDashboard: React.FC<JudicialSystemDashboardProps> = (
 
 
   return (
-    <div className="judmap relative w-full overflow-hidden rounded-[18px] border border-[var(--glass-border)]">
+    <div ref={mapRef} className="judmap relative w-full overflow-hidden rounded-[18px] border border-[var(--glass-border)]">
       {/* Background: base + soft radial glow + faint grid */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ backgroundColor: 'transparent' }} />
       <div

@@ -231,6 +231,15 @@
     }
   }
 
+  /* v2.51.0: when the tab is hidden, pause every decorative animation on the
+     compositor too. entry-client.tsx toggles the attribute on visibilitychange.
+     Zero effect while the tab is visible: no design or interaction change. */
+  html[data-tab-hidden] *,
+  html[data-tab-hidden] *::before,
+  html[data-tab-hidden] *::after {
+    animation-play-state: paused !important;
+  }
+
   body {
     font-family: var(--font-sans);
     /* 17px, not 15px. The web-typography diagnostic puts 16px at the floor and
@@ -786,8 +795,8 @@ html.is-morphing-theme ::view-transition-new(root) {
   .glass-admin-strong {
     background: var(--lg-tint);
     border: 0;
-    backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
-    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    backdrop-filter: blur(var(--lg-blur-surface)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    -webkit-backdrop-filter: blur(var(--lg-blur-surface)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
     box-shadow: var(--lg-shadow), var(--lg-highlight);
     position: relative;
     isolation: isolate;
@@ -883,12 +892,29 @@ html.is-morphing-theme ::view-transition-new(root) {
     isolation: isolate;
     background: var(--lg-tint);
     border: 0;
-    backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
-    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    backdrop-filter: blur(var(--lg-blur-surface)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    -webkit-backdrop-filter: blur(var(--lg-blur-surface)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
     box-shadow: var(--lg-shadow), var(--lg-highlight);
     transition:
       background-color var(--lg-dur-hover) var(--lg-ease-out),
       box-shadow var(--lg-dur-hover) var(--lg-ease-out);
+  }
+
+  /* Small controls and chips: same tint, rim, shadow and hierarchy — just a
+     cheaper backdrop sample. Over a photo the difference between 24px and
+     10px is imperceptible at chip size, but it is paid for every frame. */
+  .glass.glass-chip,
+  .glass.glass-input,
+  .glass.glass-control,
+  .lg-material.lg-chip,
+  .lg-material.lg-button,
+  .btn-primary,
+  .btn-gold,
+  .btn-secondary,
+  .btn-outline,
+  .btn-ghost {
+    backdrop-filter: blur(var(--lg-blur-control)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
+    -webkit-backdrop-filter: blur(var(--lg-blur-control)) saturate(var(--lg-saturate)) brightness(var(--lg-brightness));
   }
   /* Specular rim: bright where light catches the bevel, dark where the
      surface turns away, and tracking the pointer on top of that. */
@@ -1071,9 +1097,19 @@ html.is-morphing-theme ::view-transition-new(root) {
   .glass-nest {
     background: var(--glass-surface-subtle);
     border: 1px solid var(--glass-border-subtle);
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow: var(--glass-highlight);
+  }
+  /* Nesting inside an already-blurred card: a second sample of the same
+     backdrop is invisible but still costs a full backdrop pass per frame.
+     Tint, border and highlight stay, so the well keeps its depth. */
+  .glass.glass-nest,
+  .lg-material.glass-nest,
+  .glass-card .glass-nest,
+  .content-card .glass-nest {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   @supports not (backdrop-filter: blur(1px)) {
     .glass-nest {
@@ -1889,6 +1925,11 @@ html[data-a11y="true"] .content-card::before {
   }
   .ticker:hover .ticker-track {
     animation-play-state: paused;
+  }
+  /* v2.51.0: Footer.tsx adds this class when the marquee is outside the
+     viewport. !important so it wins over the hover/focus inline play-state. */
+  .ticker-paused .ticker-track {
+    animation-play-state: paused !important;
   }
   .ticker-run {
     display: flex;

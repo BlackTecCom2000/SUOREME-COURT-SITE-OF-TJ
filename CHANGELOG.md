@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.51.0 - GPU/animation Phase 1: graded glass, one CloudSky loop, animation lifecycle
+- Released: 2026-11-17
+- Previous: v2.50.1
+- Liquid Glass: added --lg-blur-surface/--lg-blur-control tokens; chips/buttons/inputs use a 10px backdrop sample instead of 24px; nested .glass-nest surfaces no longer re-blur the same backdrop (tint, rim and depth unchanged). CloudSky: the lower WebGL layer is not rendered in dark mode because the opaque night photograph fully covers it - exactly one WebGL canvas and one rAF loop in each theme. Animation lifecycle: all CSS animations pause on visibilitychange (one data attribute, no visual change while visible), the footer ticker and judicial-map pulses pause via IntersectionObserver when offscreen.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200; full backup 2.51.0 created and verified on C: and H: before any code change.
+
 ## v2.50.1 - Intro clip compressed (8.6 MB -> ~1-2 MB, WebM + MP4)
 - Released: 2026-11-16
 - Previous: v2.50.0

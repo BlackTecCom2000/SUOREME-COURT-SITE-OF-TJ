@@ -93,6 +93,19 @@ if (rootEl.firstElementChild !== null) {
   createRoot(rootEl).render(app);
 }
 
+/* Hidden-tab animation brake. Browsers throttle rAF in background tabs, but
+   CSS animations on the compositor can keep running. One attribute toggle on
+   visibilitychange pauses every decorative animation; nothing changes while
+   the tab is visible, so there is no visual or behavioural regression. */
+if (typeof document !== 'undefined') {
+  const syncTabVisibility = () => {
+    if (document.hidden) document.documentElement.setAttribute('data-tab-hidden', '');
+    else document.documentElement.removeAttribute('data-tab-hidden');
+  };
+  syncTabVisibility();
+  document.addEventListener('visibilitychange', syncTabVisibility);
+}
+
 /* Offline + repeat-visit caching. Registered after hydration so it never
    competes with the first paint, and skipped in dev where hashed assets and
    HMR make a cache actively harmful. */
