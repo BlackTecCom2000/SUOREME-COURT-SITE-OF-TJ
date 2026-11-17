@@ -77,6 +77,11 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.51.1 - Phase 1 optimization report
+- Released: 2026-11-17
+- Previous: v2.51.0
+- Added PHASE_1_OPTIMIZATION_REPORT.md with before/after GPU metrics, backup path (2.51.0), test matrix and remaining issues.
+
 ## v2.51.0 - GPU/animation Phase 1: graded glass, one CloudSky loop, animation lifecycle
 - Released: 2026-11-17
 - Previous: v2.50.1
