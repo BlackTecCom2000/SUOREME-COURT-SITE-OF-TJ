@@ -178,7 +178,8 @@
   }
 
     html {
-    scroll-behavior: smooth;
+    /* Native, immediate scrolling: no spring/jelly easing on wheel or anchors. */
+    scroll-behavior: auto;
   }
 
   /* Capability Tier Fallbacks */

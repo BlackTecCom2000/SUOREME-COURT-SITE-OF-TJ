@@ -77,6 +77,11 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.53.2 - Remove jelly/inertial scrolling only
+- Released: 2026-11-19
+- Previous: v2.53.1
+- Disabled the spring-damped inertial wheel handler (useSmoothScroll call in Layout.tsx) and changed global scroll-behavior from smooth to auto. Scrolling is now native and immediate. All other animations and the entire glass visual design remain unchanged.
+
 ## v2.53.1 - A04 on Cloudflare Pages: static first-paint intro shell
 - Released: 2026-11-19
 - Previous: v2.53.0
