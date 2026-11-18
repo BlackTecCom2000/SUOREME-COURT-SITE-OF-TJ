@@ -9,6 +9,15 @@
          hydration. Same URL = one request, no duplicate. The media query keeps
          the 116 KB off the wire for visitors who skip the intro by preference. -->
     <link rel="preload" as="image" href="/video/sud-intro-251-poster.jpg" fetchpriority="high" media="(prefers-reduced-motion: no-preference)" />
+    <!-- A04: with JavaScript disabled the server-rendered intro window would
+         stay on screen forever and its Skip button would do nothing. Hide it
+         without JS; no second poster, no effect when scripts run. -->
+    <noscript><style>[data-intro-splash]{display:none!important}</style></noscript>
+    <!-- A04/R05: reduced-motion visitors used to see no intro at all. The
+         server-rendered dialog must therefore be hidden from the first paint,
+         before the client effect can close it. This also avoids fetching the
+         poster for a splash those visitors never wanted. -->
+    <style>@media (prefers-reduced-motion: reduce){[data-intro-splash]{display:none!important}}</style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Верховный суд Республики Таджикистан — Судебная власть</title>
     <meta name="description" content="Официальный портал Верховного суда Республики Таджикистан. Осуществление судебной власти, защита прав и свобод человека, электронное правосудие." />

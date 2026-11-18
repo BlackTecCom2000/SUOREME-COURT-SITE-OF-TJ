@@ -3,13 +3,19 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 /**
  * Intro splash — a short local clip shown in a window ON TOP of the portal.
  *
+ * A04 (v2.53.0): the dialog AND its <video poster> are part of the server-
+ * rendered HTML, so the poster is the LCP element from the very first paint
+ * instead of appearing ~1.3s later after React hydration. SSR and the client's
+ * first render produce byte-identical markup; the node is never replaced.
+ * Every client-only decision (reduced motion, Save-Data, 2g, autoplay policy)
+ * happens in effects, after hydration, and only then is the video activated.
+ *
  * The portal is fully rendered underneath: the intro is a glass dialog over the
  * live page, not a black full-screen takeover, and once it closes the visitor
  * is straight on the site (no reload, no scroll jump).
  *
  * Rules implemented here:
- *  - The video is a local static asset (public/video/sud-intro.mp4). Nothing
- *    is fetched from a third party.
+ *  - The video is a local static asset. Nothing is fetched from a third party.
  *  - It plays on every full page load (a refresh included) and exactly once
  *    per load: route changes inside the portal do not replay it, because the
  *    component lives above the router.
@@ -17,11 +23,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
  *    visitor can never be trapped behind it.
  *  - A "Skip" button is a real <button> (keyboard reachable); Escape also
  *    skips.
- *  - prefers-reduced-motion: the intro is skipped entirely (and shown with no
- *    transitions if the setting changes mid-flight).
- *  - Autoplay is muted (the source carries an AAC track) and inline, so the
- *    clip never plays sound unexpectedly and never goes fullscreen on phones.
- *  - Data saver / 2g connections skip it: the portal is worth more there.
+ *  - prefers-reduced-motion: the intro is skipped entirely (CSS hides the
+ *    server-rendered dialog before any JS runs; the effect closes it without
+ *    activating the video).
+ *  - Autoplay is muted and inline, so the clip never plays sound unexpectedly
+ *    and never goes fullscreen on phones.
+ *  - Data saver / 2g connections skip it: no video request at all.
  *  - The clip keeps its own proportions: object-contain letterboxes it on any
  *    aspect ratio instead of stretching it.
  */
@@ -39,49 +46,82 @@ const CLOSE_MS = 320;
 /* One intro per page load, even if React mounts the component twice. */
 let introStarted = false;
 
-type Phase = 'hidden' | 'opening' | 'playing' | 'closing';
+type Phase = 'opening' | 'playing' | 'closing' | 'hidden';
 
 export const IntroSplash: React.FC = () => {
-  const [phase, setPhase] = useState<Phase>('hidden');
+  /* Deterministic on the server AND on the client's first render. Client-only
+     gates must never influence this value during render. */
+  const [phase, setPhase] = useState<Phase>('opening');
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<number | null>(null);
+  const activatedRef = useRef(false);
 
   const close = useCallback(() => {
     setPhase((current) => (current === 'closing' || current === 'hidden' ? current : 'closing'));
   }, []);
 
-  // 1. Decide once, on the client, whether the intro should run at all.
+  /* Client-only activation. The <video> node already exists from SSR; we only
+     attach the sources and start playback. No DOM replacement, no poster
+     re-fetch (the preload link and this poster use the same URL). */
+  const activate = useCallback(() => {
+    if (activatedRef.current) return;
+    activatedRef.current = true;
+    const video = videoRef.current;
+    if (!video) return;
+
+    for (const source of VIDEO_SOURCES) {
+      const element = document.createElement('source');
+      element.src = source.src;
+      element.type = source.type;
+      video.appendChild(element);
+    }
+    video.preload = 'auto';
+    video.load();
+
+    const attempt = video.play();
+    if (attempt && typeof attempt.catch === 'function') {
+      attempt.catch((err: unknown) => {
+        // A rejected play() is only fatal when playback really cannot
+        // happen: AbortError means the call was interrupted (a pause, a seek,
+        // a reload) and the clip is still fine, so the dialog must stay.
+        const name = (err as { name?: string })?.name;
+        if (name === 'AbortError') return;
+        if (video.error) close(); // the source failed to load
+        else if (name === 'NotAllowedError') close(); // autoplay refused
+      });
+    }
+  }, [close]);
+
+  // 1. Client gates + activation — effects run only after hydration.
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (introStarted) return;
-
-    // The Control Center is a separate application: no court intro there.
-    if (window.location.pathname.startsWith('/admin')) return;
-
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (reducedMotion.matches) return;
-
-    // Data saver / very slow link: the clip is heavy. Showing the portal
-    // immediately is worth more than the intro on such a connection.
-    const connection = (navigator as Navigator & {
-      connection?: { saveData?: boolean; effectiveType?: string };
-    }).connection;
-    if (connection?.saveData || connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g') return;
-
-    introStarted = true;
-    setPhase('opening');
-
-    // If the visitor turns reduced-motion on while the intro is up, drop it.
     const onMotionChange = (event: MediaQueryListEvent) => {
       if (event.matches) close();
     };
     reducedMotion.addEventListener('change', onMotionChange);
-    return () => reducedMotion.removeEventListener('change', onMotionChange);
-  }, [close]);
 
-  // 2. While the intro is up: lock the page scroll, arm the timeout, and
-  //    make sure playback actually starts (autoplay may still be refused).
+    if (!introStarted) {
+      const isAdmin = window.location.pathname.startsWith('/admin');
+      const connection = (navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }).connection;
+      const slow = !!connection?.saveData || connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g';
+
+      if (isAdmin || reducedMotion.matches || slow) {
+        close(); // no video request at all
+      } else {
+        introStarted = true;
+        setPhase('playing'); // same visual state: no DOM/class change
+        activate();
+      }
+    }
+
+    return () => reducedMotion.removeEventListener('change', onMotionChange);
+  }, [close, activate]);
+
+  // 2. While the intro is up: lock the page scroll, arm the timeout and add
+  //    keyboard support. Starts after hydration together with activation.
   useEffect(() => {
     if (phase === 'hidden' || phase === 'closing') return;
 
@@ -89,22 +129,6 @@ export const IntroSplash: React.FC = () => {
     document.body.style.overflow = 'hidden';
 
     timerRef.current = window.setTimeout(close, HARD_TIMEOUT_MS);
-
-    const video = videoRef.current;
-    if (video) {
-      const attempt = video.play();
-      if (attempt && typeof attempt.catch === 'function') {
-        attempt.catch((err: unknown) => {
-          // A rejected play() is only fatal when playback really cannot
-          // happen: AbortError means the call was interrupted (a pause, a seek,
-          // a reload) and the clip is still fine, so the dialog must stay.
-          const name = (err as { name?: string })?.name;
-          if (name === 'AbortError') return;
-          if (video.error) close(); // the source failed to load
-          else if (name === 'NotAllowedError') close(); // autoplay refused
-        });
-      }
-    }
 
     dialogRef.current?.focus();
 
@@ -156,33 +180,29 @@ export const IntroSplash: React.FC = () => {
         }`}
         style={{ background: 'rgba(6, 12, 22, 0.92)' }}
       >
-        {/* 16:9 stage — the clip's own ratio, never stretched */}
+        {/* 16:9 stage — the clip's own ratio, never stretched. The poster is
+            present in SSR HTML; sources are attached by activate() only. */}
         <div className="relative w-full aspect-video bg-black">
           <video
             ref={videoRef}
             className="h-full w-full object-contain"
             poster={POSTER_SRC}
-            autoPlay
             muted
             playsInline
-            preload="auto"
+            preload="none"
             disablePictureInPicture
             controlsList="nodownload noplaybackrate"
             onEnded={close}
             onError={close}
             onCanPlay={(event) => {
-              // Some browsers defer autoplay until the data is ready; nudge it.
+              // Some browsers defer playback until data is ready; nudge it.
               const el = event.currentTarget;
               if (el.paused && !el.ended) {
                 const attempt = el.play();
                 if (attempt && typeof attempt.catch === 'function') attempt.catch(() => undefined);
               }
             }}
-          >
-            {VIDEO_SOURCES.map((source) => (
-              <source key={source.src} src={source.src} type={source.type} />
-            ))}
-          </video>
+          />
         </div>
 
         {/* Footer strip: identity + skip */}

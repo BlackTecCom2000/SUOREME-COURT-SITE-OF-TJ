@@ -77,6 +77,11 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.53.0 - A04 Variant B: intro poster rendered in SSR HTML
+- Released: 2026-11-19
+- Previous: v2.52.0
+- IntroSplash now renders a deterministic dialog with <video poster preload="none"> on the server and on the client first render; the same DOM node is hydrated, then sources are attached and playback starts in an effect. Client-only gates (reduced motion, Save-Data/2g, admin route) moved into effects. index.html adds a noscript fallback and a reduced-motion CSS guard. LCP mobile cold 1438ms -> 362ms (median of 5), CLS 0.00, zero hydration errors, one poster request, no production deploy (approval required).
+
 ## v2.52.0 - A-03: intro poster discovered at HTML parse time
 - Released: 2026-11-18
 - Previous: v2.51.1
