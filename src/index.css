@@ -1429,6 +1429,20 @@ html[data-a11y="true"] .content-card::before {
 
 /* ─── Global Button Utilities ─────────────────────────────────── */
 @layer components {
+  /* News/Center modal (v2.53.3): the panel keeps the Liquid Glass rim,
+     highlight and shadow, but uses the theme's opaque surface token as its
+     base so its own content is never dimmed by the backdrop layer. Cards get
+     a lighter, distinct surface for hierarchy in both themes. */
+  .judicial-modal {
+    background: color-mix(in srgb, var(--bg-primary) 92%, transparent) !important;
+  }
+  .judicial-modal .glass-nest {
+    background: color-mix(in srgb, var(--bg-secondary) 88%, transparent) !important;
+    border-color: var(--glass-border) !important;
+  }
+  .judicial-modal .glass-nest:hover {
+    border-color: var(--glass-border-hover) !important;
+  }
   /* One button base for the whole platform: 16px label, 44px touch target,
      a focus ring that keeps its offset on any surface, and a real disabled
      state. Variants below only change colour and elevation. */

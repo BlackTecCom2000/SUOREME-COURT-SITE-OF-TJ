@@ -283,15 +283,19 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-10 backdrop-blur-md bg-black/70 transition-opacity duration-300 pointer-events-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-10 transition-opacity duration-300 pointer-events-auto"
       onClick={onClose}
     >
+      {/* The backdrop is a separate layer: it darkens only the site behind the
+          dialog. The panel below keeps its Liquid Glass rim/shadow but no longer
+          samples the dark overlay through its own translucent background. */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-md" aria-hidden="true" />
       <div
-        className="relative w-full max-w-5xl max-h-[92vh] flex flex-col glass glass-premium overflow-hidden text-theme-text"
+        className="judicial-modal relative z-10 w-full max-w-5xl max-h-[92vh] flex flex-col glass glass-premium overflow-hidden text-theme-text"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-theme-border bg-theme-surface">
+        <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-theme-border bg-theme-surface">
           <div className="flex items-center gap-3">
             <div className="w-2.5 h-2.5 rounded-full bg-theme-gold" />
             <div>
@@ -321,7 +325,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
         </div>
 
         {/* Horizontal Navigation Tab Bar */}
-        <div className="flex items-center gap-1 sm:gap-1.5 px-6 py-2 border-b border-theme-border/60 overflow-x-auto text-xs font-mono scrollbar-none">
+        <div className="shrink-0 flex items-center gap-1 sm:gap-1.5 px-6 py-2.5 border-b border-theme-border/60 overflow-x-auto text-xs font-mono scrollbar-none">
           {[
             { id: 'about', labelRu: 'О суде', labelTj: 'Маълумот', labelEn: 'About Court' },
             { id: 'leadership', labelRu: 'Руководство', labelTj: 'Роҳбарият', labelEn: 'Leadership' },
@@ -1860,7 +1864,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
         </div>
 
         {/* Footer info strip */}
-        <div className="px-6 py-3 border-t border-theme-border bg-theme-surface flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-theme-textMuted gap-2">
+        <div className="px-6 py-3 border-t border-theme-border bg-[var(--bg-primary)] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-theme-textSec gap-2">
           <span>{t('contacts.copyright')} • SUD.TJ</span>
           <span>© {new Date().getFullYear()}</span>
         </div>

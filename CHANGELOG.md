@@ -77,6 +77,11 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.53.3 - News center modal: separate backdrop, readable panel and cards
+- Released: 2026-11-19
+- Previous: v2.53.2
+- Moved the dark backdrop into its own layer so it darkens only the site, gave the modal panel an opaque theme-based base while keeping its Liquid Glass rim/shadow, raised card contrast in both themes, fixed the compressed tab bar and made the footer opaque. Responsive checks 1920x1080..390x844 passed. Report: NEWS_CENTER_UI_FIX_REPORT.md. Not deployed (per task).
+
 ## v2.53.2 - Remove jelly/inertial scrolling only
 - Released: 2026-11-19
 - Previous: v2.53.1
