@@ -77,6 +77,11 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.52.0 - A-03: intro poster discovered at HTML parse time
+- Released: 2026-11-18
+- Previous: v2.51.1
+- One preload link in index.html for the exact intro poster URL (/video/sud-intro-251-poster.jpg), fetchpriority=high, media=prefers-reduced-motion:no-preference. The poster request now starts at 29-62ms instead of 1373ms with High priority and exactly one request; same image, same intro, no visual changes. Report: PHASE_A03_LCP_OPTIMIZATION_REPORT.md. Not deployed to production (explicit approval required).
+
 ## v2.51.1 - Phase 1 optimization report
 - Released: 2026-11-17
 - Previous: v2.51.0

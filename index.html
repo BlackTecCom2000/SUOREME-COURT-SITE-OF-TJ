@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- A-03: the intro poster is the page's LCP element. IntroSplash.tsx attaches
+         this exact URL as <video poster>, so preloading it here makes the browser
+         discover and download it while parsing the HTML instead of after React
+         hydration. Same URL = one request, no duplicate. The media query keeps
+         the 116 KB off the wire for visitors who skip the intro by preference. -->
+    <link rel="preload" as="image" href="/video/sud-intro-251-poster.jpg" fetchpriority="high" media="(prefers-reduced-motion: no-preference)" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Верховный суд Республики Таджикистан — Судебная власть</title>
     <meta name="description" content="Официальный портал Верховного суда Республики Таджикистан. Осуществление судебной власти, защита прав и свобод человека, электронное правосудие." />
