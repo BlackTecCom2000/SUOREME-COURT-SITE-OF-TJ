@@ -77,6 +77,11 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.53.1 - A04 on Cloudflare Pages: static first-paint intro shell
+- Released: 2026-11-19
+- Previous: v2.53.0
+- Cloudflare Pages serves the static index.html (no SSR), so the A04 SSR dialog never reached visitors. Added an identical static intro shell in index.html that paints the poster on the first frame on both hosts; IntroSplash removes it in a layout effect before React paint. A :has() rule hides the static copy when the Express SSR tree already contains the dialog. Verify: one poster request, no hydration errors, LCP 259ms on the static path.
+
 ## v2.53.0 - A04 Variant B: intro poster rendered in SSR HTML
 - Released: 2026-11-19
 - Previous: v2.52.0

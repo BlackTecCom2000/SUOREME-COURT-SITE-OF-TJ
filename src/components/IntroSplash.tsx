@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 /**
  * Intro splash — a short local clip shown in a window ON TOP of the portal.
@@ -92,6 +92,15 @@ export const IntroSplash: React.FC = () => {
       });
     }
   }, [close]);
+
+  /* Static-first-paint handoff: on static hosting (Cloudflare Pages) the
+     identical dialog lives in index.html so the poster paints immediately.
+     Remove it in the layout phase, before React's first paint — the visitor
+     sees one continuous dialog, never two. On Express SSR it is already
+     hidden by the :has() rule in index.html. */
+  useLayoutEffect(() => {
+    document.getElementById('intro-static')?.remove();
+  }, []);
 
   // 1. Client gates + activation — effects run only after hydration.
   useEffect(() => {

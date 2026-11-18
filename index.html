@@ -17,7 +17,7 @@
          server-rendered dialog must therefore be hidden from the first paint,
          before the client effect can close it. This also avoids fetching the
          poster for a splash those visitors never wanted. -->
-    <style>@media (prefers-reduced-motion: reduce){[data-intro-splash]{display:none!important}}</style>
+    <style>@media (prefers-reduced-motion: reduce){[data-intro-splash]{display:none!important}}#root:has([data-intro-splash])~#intro-static{display:none!important}</style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Верховный суд Республики Таджикистан — Судебная власть</title>
     <meta name="description" content="Официальный портал Верховного суда Республики Таджикистан. Осуществление судебной власти, защита прав и свобод человека, электронное правосудие." />
@@ -37,6 +37,28 @@
   </head>
   <body>
     <div id="root"><!--ssr-outlet--></div>
+    <!-- Static first-paint copy of the intro. Cloudflare Pages serves this
+         file as-is (no SSR), so without this the poster would only appear after
+         the React chunk loads. Identical pixels; IntroSplash removes this node
+         in a layout effect before React's first paint. The :has() rule above
+         hides it when the Express SSR tree already contains the dialog. -->
+    <div id="intro-static" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6" style="background:rgba(3,7,15,.55);backdrop-filter:blur(3px)">
+      <div role="dialog" aria-label="Вступительная заставка Верховного суда" data-intro-splash="playing" class="relative w-full max-w-4xl overflow-hidden rounded-3xl border border-theme-gold/30 shadow-[0_30px_90px_rgba(0,0,0,0.55)]" style="background:rgba(6,12,22,.92)">
+        <div class="relative w-full aspect-video bg-black">
+          <video class="h-full w-full object-contain" poster="/video/sud-intro-251-poster.jpg" muted playsinline preload="none"></video>
+        </div>
+        <div class="flex items-center justify-between gap-4 px-4 sm:px-5 py-3 border-t border-theme-gold/20">
+          <div class="flex items-center gap-3 min-w-0">
+            <img src="/emblems/emblem-tj.png" alt="" class="w-7 h-7 object-contain shrink-0" />
+            <div class="min-w-0">
+              <div class="font-mono text-[10px] uppercase tracking-[0.22em] text-theme-gold leading-tight">Суди Олии Ҷумҳурии Тоҷикистон</div>
+              <div class="font-sans text-[11px] text-theme-textSec leading-tight truncate">Единая цифровая среда судебной власти</div>
+            </div>
+          </div>
+          <span class="shrink-0 min-h-[44px] px-4 inline-flex items-center rounded-full border border-theme-border bg-theme-surface/70 text-theme-text font-mono text-[11px] uppercase tracking-[0.18em]">Пропустить</span>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/entry-client.tsx"></script>
   </body>
 </html>
