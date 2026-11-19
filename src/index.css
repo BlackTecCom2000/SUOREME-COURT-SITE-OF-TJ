@@ -178,8 +178,9 @@
   }
 
     html {
-    /* Native, immediate scrolling: no spring/jelly easing on wheel or anchors. */
-    scroll-behavior: auto;
+    /* Native browser smooth scrolling — no JS wheel interception, no jelly. */
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
   }
 
   /* Capability Tier Fallbacks */
