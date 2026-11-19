@@ -77,6 +77,11 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.54.0 - Magic Mouse style smooth wheel scrolling
+- Released: 2026-11-20
+- Previous: v2.53.3
+- Re-enabled the inertial wheel handler with a short critically damped response (60-90ms instead of 100-160ms) for a crisp Magic Mouse-like glide without the rubbery jelly lag. Native touch momentum, reduced motion, a11y mode and low-end tier stay untouched. No global scroll-behavior change.
+
 ## v2.53.3 - News center modal: separate backdrop, readable panel and cards
 - Released: 2026-11-19
 - Previous: v2.53.2

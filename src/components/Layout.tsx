@@ -10,12 +10,15 @@ const NewFilingModal = React.lazy(() => import('./digital-court/NewFilingModal')
 const GlobalSearchModal = React.lazy(() => import('./GlobalSearchModal').then(m => ({ default: m.GlobalSearchModal })));
 import { CourtNodeData } from '../data/sudTjData';
 import { GlobalBackground } from './GlobalBackground';
+import { useSmoothScroll } from '../hooks/useSmoothScroll';
 import { useCinematicScroll } from '../hooks/useCinematicScroll';
 
 export const Layout: React.FC = () => {
   const location = useLocation();
-  // Native scrolling: the spring/inertial "jelly" wheel handler is disabled.
-  // The cinematic camera and every other animation stay untouched.
+  // Smooth wheel scrolling with a short, crisp response — Magic Mouse feel.
+  // Touch devices keep native momentum; reduced motion / a11y / low-end tier
+  // are skipped inside the hook. The cinematic camera stays untouched.
+  useSmoothScroll();
   useCinematicScroll(location.pathname);
   const navigate = useNavigate();
   // Court sub-sites (/courts/:courtId) and the standalone e-library (/library)

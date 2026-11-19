@@ -26,8 +26,11 @@ import { useEffect } from 'react';
  *   frame and turn the glide into a laggy rubber band.
  */
 
-const MIN_SMOOTH_TIME = 0.1;
-const MAX_SMOOTH_TIME = 0.16;
+/* Magic Mouse feel: a short, critically damped glide on wheel input. The old
+   100–160 ms response time read as rubbery "jelly"; 60–90 ms is close to the
+   native momentum of a precision mouse — smooth, but immediate. */
+const MIN_SMOOTH_TIME = 0.06;
+const MAX_SMOOTH_TIME = 0.09;
 const SETTLE = 0.4;
 const SETTLE_VELOCITY = 2;
 const LINE_HEIGHT = 16;
