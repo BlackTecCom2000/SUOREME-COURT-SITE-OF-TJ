@@ -77,6 +77,11 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.54.1 - Native CSS smooth scroll, no JS inertia
+- Released: 2026-11-20
+- Previous: v2.54.0
+- Removed the JS wheel interception entirely (no jelly, no extra rAF loop) and enabled standard html scroll-behavior: smooth with scroll-padding-top for the fixed navbar. Smoothness now comes from the browser itself; reduced-motion keeps scroll-behavior: auto.
+
 ## v2.54.0 - Magic Mouse style smooth wheel scrolling
 - Released: 2026-11-20
 - Previous: v2.53.3
