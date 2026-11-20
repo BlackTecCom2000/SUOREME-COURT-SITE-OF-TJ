@@ -4,6 +4,7 @@ import { JUDICIAL_ACTS } from '../../data/sudTjData';
 import { FileText, ArrowUpRight, CheckCircle2, Newspaper, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { JudicialNewsHub } from '../news/JudicialNewsHub';
+import { useGlobalSync } from '../../hooks/useGlobalSync';
 
 interface Section06JudicialInformationProps {
   onOpenActs: () => void;
@@ -27,12 +28,14 @@ export const Section06JudicialInformation: React.FC<Section06JudicialInformation
   const { language, t } = useLanguage();
   const [news, setNews] = useState<any[]>([]);
 
-  useEffect(() => {
+  const refetchNews06 = () => {
     fetch('/api/news')
       .then(res => res.ok ? res.json() : [])
       .then(data => setNews(Array.isArray(data) ? data : []))
       .catch(() => setNews([]));
-  }, []);
+  };
+  useEffect(() => { refetchNews06(); }, []);
+  useGlobalSync(refetchNews06, 5000);
 
   return (
     <section

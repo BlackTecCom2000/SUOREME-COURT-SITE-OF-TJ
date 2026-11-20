@@ -77,6 +77,17 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.64.0 - Global sync manager + sync listeners on all key public components
+- Released: 2026-11-21
+- Previous: v2.63.0
+- Added src/hooks/useGlobalSync.tsx: global sync manager polling /api/sync every 5s, dispatches "sud:sync" event, registers refetch callbacks.
+- App: startGlobalSync() on mount.
+- Added useGlobalSync to Footer (useful-sites, marquee), Section04JudicialSystem (courts), Section06JudicialInformation (news), Section10SupremeCourt (news). Each refetches when "sud:sync" fires or on mount.
+- LawBookshelf already had useSiteSync (via shelf-books) - LibraryPage covered.
+- HomePage + LeadershipPage keep their useSiteSync (polls every 5s).
+- Result: all public pages showing admin-managed data (courts, news, useful sites, marquee, shelf books, leadership) refetch automatically when admin publishes.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.63.0 - Full admin-public sync via /api/sync polling
 - Released: 2026-11-21
 - Previous: v2.62.0

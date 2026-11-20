@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Reveal } from '../Reveal';
 import { MapPin, Phone, Mail, ArrowUpRight, BookOpen } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useGlobalSync } from '../../hooks/useGlobalSync';
 
 interface Section10SupremeCourtProps {
   onOpenNews: () => void;
@@ -25,7 +26,7 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const refetchNews10 = () => {
     fetch('/api/news')
       .then(res => res.json())
       .then(data => {
@@ -36,7 +37,9 @@ export const Section10SupremeCourt: React.FC<Section10SupremeCourtProps> = ({
         console.error('Failed to load news', err);
         setLoading(false);
       });
-  }, []);
+  };
+  useEffect(() => { refetchNews10(); }, []);
+  useGlobalSync(refetchNews10, 5000);
 
   return (
     <section

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useGlobalSync } from '../../hooks/useGlobalSync';
 import {
   REGIONAL_CLUSTERS,
   SUPREME_COURT_NODE,
@@ -28,44 +29,40 @@ export const Section04JudicialSystem: React.FC<Section04JudicialSystemProps> = (
   const [courtsData, setCourtsData] = useState<CourtNodeData[]>([]);
 
   // 1. Fetch CMS Court Data
-  useEffect(() => {
+  const refetchCourts = async () => {
     let isMounted = true;
-    const fetchCourts = async () => {
-      try {
-        const response = await fetch('/api/courts');
-        if (response.ok) {
-          const data = await response.json();
-          if (isMounted && Array.isArray(data) && data.length > 0) {
-            const mappedCourts = data.map((c: any) => ({
-              id: c.id.toString(),
-              nameRu: c.name_ru || '',
-              nameTj: c.name_tj || c.name_ru || '',
-              nameEn: c.name_en || '',
-              shortNameRu: c.short_name_ru,
-              shortNameTj: c.short_name_tj,
-              shortNameEn: c.short_name_en,
-              regionId: c.region,
-              type: c.type,
-              domain: c.website || '',
-              url: c.website ? `https://${c.website}` : '#',
-              addressRu: c.address || '',
-              addressTj: c.address || '',
-              phone: c.phone || '',
-              email: c.email || '',
-              status: (c.status || 'online') as CourtNodeData['status'],
-            }));
-            setCourtsData(mappedCourts);
-          }
+    try {
+      const response = await fetch('/api/courts');
+      if (response.ok) {
+        const data = await response.json();
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          const mappedCourts = data.map((c: any) => ({
+            id: c.id.toString(),
+            nameRu: c.name_ru || '',
+            nameTj: c.name_tj || c.name_ru || '',
+            nameEn: c.name_en || '',
+            shortNameRu: c.short_name_ru,
+            shortNameTj: c.short_name_tj,
+            shortNameEn: c.short_name_en,
+            regionId: c.region,
+            type: c.type,
+            domain: c.website || '',
+            url: c.website ? `https://${c.website}` : '#',
+            addressRu: c.address || '',
+            addressTj: c.address || '',
+            phone: c.phone || '',
+            email: c.email || '',
+            status: (c.status || 'online') as CourtNodeData['status'],
+          }));
+          setCourtsData(mappedCourts);
         }
-      } catch {
-        // use local
       }
-    };
-    fetchCourts();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+    } catch {
+      // use local
+    }
+  };
+  useEffect(() => { refetchCourts(); }, []);
+  useGlobalSync(refetchCourts, 5000);
 
   // 2. All Courts dataset (CMS or fallback local)
   const allCourtsList = useMemo(() => {

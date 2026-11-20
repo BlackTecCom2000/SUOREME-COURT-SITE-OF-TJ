@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
-import React from 'react';
+import React, { useEffect } from 'react';
+import { startGlobalSync } from './hooks/useGlobalSync';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -24,6 +25,7 @@ import { HeroProfilePage } from './pages/HeroProfilePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App: React.FC = () => {
+  useEffect(() => { startGlobalSync(); }, []);
   return (
     <ThemeProvider>
       <LanguageProvider>
