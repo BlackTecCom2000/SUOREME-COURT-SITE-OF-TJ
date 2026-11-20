@@ -450,7 +450,7 @@ export const SiteBuilder: React.FC = () => {
 
       <div className="grid grid-cols-12 items-start gap-4">
         {/* Left — Components + Theme */}
-        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-4">
+        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-7">
           <AdminCard title="Пресеты темы" subtitle="Пресеты темы">
             <div className="grid grid-cols-2 gap-2">
               {THEME_PRESETS.map(p => (
@@ -497,7 +497,7 @@ export const SiteBuilder: React.FC = () => {
           />
 
 {/* Center — Live Preview */}
-        <div className="col-span-12 min-w-0 lg:col-span-4">
+        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-5">
           <AdminCard className="" title={`Live Preview — ${previewMode} ${previewMode==='desktop'?'1920':previewMode==='tablet'?'1024':'390'}`} subtitle="Изменение текста/цвета/размера/порядка/видимости сразу отображается">
             <div
               className="flex justify-center p-2 rounded-xl overflow-auto" style={{ background: 'color-mix(in srgb, var(--bg-secondary) 65%, transparent)' }}
@@ -544,11 +544,7 @@ export const SiteBuilder: React.FC = () => {
               )}
             </div>
           </AdminCard>
-        </div>
-
-        {/* Right — Properties */}
-        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-4">
-          <AdminCard title="Фон и атмосфера" subtitle="Фотографии здания и управляемая атмосфера — Public + Admin + Login + Footer">
+<AdminCard title="Фон и атмосфера" subtitle="Фотографии здания и управляемая атмосфера — Public + Admin + Login + Footer">
             <div className="space-y-4">
               {/* Background */}
               <div>
@@ -772,8 +768,7 @@ export const SiteBuilder: React.FC = () => {
               {versions.length===0 && <div className="py-4 text-center font-mono text-xs text-theme-textMuted">Нет версий.</div>}
             </div>
           </AdminCard>
-        </div>
-      </div>
+        </div></div>
     </div>
   );
 };
