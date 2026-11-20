@@ -450,7 +450,7 @@ export const SiteBuilder: React.FC = () => {
 
       <div className="grid grid-cols-12 items-start gap-4">
         {/* Left — Components + Theme */}
-        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-5">
+        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-4">
           <AdminCard title="Пресеты темы" subtitle="Пресеты темы">
             <div className="grid grid-cols-2 gap-2">
               {THEME_PRESETS.map(p => (
@@ -496,6 +496,58 @@ export const SiteBuilder: React.FC = () => {
             presetId={presetId}
           />
 
+{/* Center — Live Preview */}
+        <div className="col-span-12 min-w-0 lg:col-span-4">
+          <AdminCard className="" title={`Live Preview — ${previewMode} ${previewMode==='desktop'?'1920':previewMode==='tablet'?'1024':'390'}`} subtitle="Изменение текста/цвета/размера/порядка/видимости сразу отображается">
+            <div
+              className="flex justify-center p-2 rounded-xl overflow-auto" style={{ background: 'color-mix(in srgb, var(--bg-secondary) 65%, transparent)' }}
+            >
+              <div style={{ width: widthMap[previewMode], maxWidth:'100%', transform: previewMode==='mobile'?'scale(1)':'none', transition:'width 0.3s' }} className="space-y-1.5">
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={({active, over})=>{ if(active.id!==over?.id){ const oi=sections.findIndex(s=>s.id===active.id); const ni=sections.findIndex(s=>s.id===over?.id); reorder(oi, ni); }}}>
+                  <SortableContext items={sections.map(s=>s.id)} strategy={verticalListSortingStrategy}>
+                    {sections.map(s=> (
+                      <SortableItem key={s.id} id={s.id}>
+                        <div onClick={()=> setSelected(s.id)} className={`p-1.5 rounded-lg glass border flex items-center justify-between gap-1.5 cursor-pointer ${selected===s.id?'border-theme-gold':'border-theme-border hover:border-theme-borderHover'} ${s.visible? 'opacity-100':'opacity-40'}`}>
+                          <div className="flex items-center gap-2">
+                            <GripVertical size={10} className="text-theme-textMuted cursor-grab" />
+                            <span className="font-mono text-2xs text-theme-text">{s.key}</span>
+                            <span className="text-2xs text-theme-textSec truncate max-w-[90px]">{s.title_ru||'—'}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <button onClick={(e)=>{e.stopPropagation(); upd(s.id, {visible: !s.visible})}} className="p-0.5 rounded border border-theme-border text-theme-textMuted hover:text-theme-text">{s.visible?<Eye size={12}/>:<EyeOff size={12}/>}</button>
+                            <button onClick={(e)=>{e.stopPropagation(); dup(s.id)}} className="p-0.5 rounded border border-theme-border text-theme-textMuted hover:text-theme-text"><Copy size={12}/></button>
+                            <button
+                              onClick={(e)=>{e.stopPropagation(); del(s.id)}}
+                              className="p-0.5 rounded border"
+                              style={{ borderColor: 'color-mix(in srgb, var(--theme-danger) 35%, transparent)', color: 'var(--theme-danger)' }}
+                            ><Trash2 size={12}/></button>
+                          </div>
+                        </div>
+                      </SortableItem>
+                    ))}
+                  </SortableContext>
+                </DndContext>
+                {sections.length===0 && <div className="py-4 text-center font-mono text-xs text-theme-textMuted">Нет секций — добавьте из Components слева.</div>}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-3">
+              <AdminInput placeholder="Комментарий к версии" value={message} onChange={e=> setMessage(e.target.value)} className="flex-1" />
+              <AdminButton onClick={saveDraft} leftIcon={<Save size={14}/>}>Сохранить черновик</AdminButton>
+              <AdminButton variant="primary" onClick={publish} leftIcon={<Rocket size={14}/>}>Опубликовать</AdminButton>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 mt-2">
+              <AdminButton size="sm" variant="ghost" onClick={discardChanges}>Отменить несохранённое</AdminButton>
+              {dirty && (
+                <span className="font-mono text-2xs text-theme-textMuted">
+                  есть несохранённые изменения темы — нажмите «Сохранить черновик»
+                </span>
+              )}
+            </div>
+          </AdminCard>
+        </div>
+
+        {/* Right — Properties */}
+        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-4">
           <AdminCard title="Фон и атмосфера" subtitle="Фотографии здания и управляемая атмосфера — Public + Admin + Login + Footer">
             <div className="space-y-4">
               {/* Background */}
@@ -691,58 +743,7 @@ export const SiteBuilder: React.FC = () => {
           </AdminCard>
         </div>
 
-        {/* Center — Live Preview */}
-        <div className="col-span-12 min-w-0 lg:col-span-4">
-          <AdminCard className="" title={`Live Preview — ${previewMode} ${previewMode==='desktop'?'1920':previewMode==='tablet'?'1024':'390'}`} subtitle="Изменение текста/цвета/размера/порядка/видимости сразу отображается">
-            <div
-              className="flex justify-center p-2 rounded-xl overflow-auto" style={{ background: 'color-mix(in srgb, var(--bg-secondary) 65%, transparent)' }}
-            >
-              <div style={{ width: widthMap[previewMode], maxWidth:'100%', transform: previewMode==='mobile'?'scale(1)':'none', transition:'width 0.3s' }} className="space-y-1.5">
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={({active, over})=>{ if(active.id!==over?.id){ const oi=sections.findIndex(s=>s.id===active.id); const ni=sections.findIndex(s=>s.id===over?.id); reorder(oi, ni); }}}>
-                  <SortableContext items={sections.map(s=>s.id)} strategy={verticalListSortingStrategy}>
-                    {sections.map(s=> (
-                      <SortableItem key={s.id} id={s.id}>
-                        <div onClick={()=> setSelected(s.id)} className={`p-1.5 rounded-lg glass border flex items-center justify-between gap-1.5 cursor-pointer ${selected===s.id?'border-theme-gold':'border-theme-border hover:border-theme-borderHover'} ${s.visible? 'opacity-100':'opacity-40'}`}>
-                          <div className="flex items-center gap-2">
-                            <GripVertical size={10} className="text-theme-textMuted cursor-grab" />
-                            <span className="font-mono text-2xs text-theme-text">{s.key}</span>
-                            <span className="text-2xs text-theme-textSec truncate max-w-[90px]">{s.title_ru||'—'}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <button onClick={(e)=>{e.stopPropagation(); upd(s.id, {visible: !s.visible})}} className="p-0.5 rounded border border-theme-border text-theme-textMuted hover:text-theme-text">{s.visible?<Eye size={12}/>:<EyeOff size={12}/>}</button>
-                            <button onClick={(e)=>{e.stopPropagation(); dup(s.id)}} className="p-0.5 rounded border border-theme-border text-theme-textMuted hover:text-theme-text"><Copy size={12}/></button>
-                            <button
-                              onClick={(e)=>{e.stopPropagation(); del(s.id)}}
-                              className="p-0.5 rounded border"
-                              style={{ borderColor: 'color-mix(in srgb, var(--theme-danger) 35%, transparent)', color: 'var(--theme-danger)' }}
-                            ><Trash2 size={12}/></button>
-                          </div>
-                        </div>
-                      </SortableItem>
-                    ))}
-                  </SortableContext>
-                </DndContext>
-                {sections.length===0 && <div className="py-4 text-center font-mono text-xs text-theme-textMuted">Нет секций — добавьте из Components слева.</div>}
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2 mt-3">
-              <AdminInput placeholder="Комментарий к версии" value={message} onChange={e=> setMessage(e.target.value)} className="flex-1" />
-              <AdminButton onClick={saveDraft} leftIcon={<Save size={14}/>}>Сохранить черновик</AdminButton>
-              <AdminButton variant="primary" onClick={publish} leftIcon={<Rocket size={14}/>}>Опубликовать</AdminButton>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 mt-2">
-              <AdminButton size="sm" variant="ghost" onClick={discardChanges}>Отменить несохранённое</AdminButton>
-              {dirty && (
-                <span className="font-mono text-2xs text-theme-textMuted">
-                  есть несохранённые изменения темы — нажмите «Сохранить черновик»
-                </span>
-              )}
-            </div>
-          </AdminCard>
-        </div>
-
-        {/* Right — Properties */}
-        <div className="col-span-12 min-w-0 space-y-3 lg:col-span-3">
+        
           <AdminCard title="Свойства секции" subtitle="content, layout, visibility, spacing, typography, background, glass, animation, links, responsive">
             {!sel ? <div className="py-8 text-center font-mono text-xs text-theme-textMuted">Выберите секцию в центре.</div> : (
               <div className="space-y-3">

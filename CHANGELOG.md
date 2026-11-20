@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.61.0 - Redistribute Site Builder cards across 3 equal columns
+- Released: 2026-11-20
+- Previous: v2.60.0
+- Site Builder cards redistributed: left column (4 cols) now has Presets, Components, Liquid Glass. Center (4 cols) has Live Preview. Right column (4 cols) has Background & Atmosphere, Typography, Colors, Effects, Properties, Version History. All three columns are equal width (4-4-4).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.60.0 - Site Builder wider left column, shorter Live Preview
 - Released: 2026-11-20
 - Previous: v2.59.0
