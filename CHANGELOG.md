@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.59.0 - Site Builder fill empty space with flex layout
+- Released: 2026-11-20
+- Previous: v2.58.0
+- Site Builder 3-column grid changed from items-start to items-stretch. Center column (Live Preview) now uses flex-col with flex-1 card and flex-1 section list, eliminating empty space below the compact section list. Section list container grows to fill available card height.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.58.0 - Compact site builder section list
 - Released: 2026-11-20
 - Previous: v2.57.0

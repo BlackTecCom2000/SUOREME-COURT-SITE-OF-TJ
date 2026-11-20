@@ -448,7 +448,7 @@ export const SiteBuilder: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-12 items-start gap-4">
+      <div className="grid grid-cols-12 items-stretch gap-4">
         {/* Left — Components + Theme */}
         <div className="col-span-12 min-w-0 space-y-3 lg:col-span-4">
           <AdminCard title="Пресеты темы" subtitle="Пресеты темы">
@@ -692,10 +692,10 @@ export const SiteBuilder: React.FC = () => {
         </div>
 
         {/* Center — Live Preview */}
-        <div className="col-span-12 min-w-0 lg:col-span-5">
-          <AdminCard title={`Live Preview — ${previewMode} ${previewMode==='desktop'?'1920':previewMode==='tablet'?'1024':'390'}`} subtitle="Изменение текста/цвета/размера/порядка/видимости сразу отображается">
+        <div className="col-span-12 min-w-0 lg:col-span-5 flex flex-col">
+          <AdminCard className="flex-1 flex flex-col" title={`Live Preview — ${previewMode} ${previewMode==='desktop'?'1920':previewMode==='tablet'?'1024':'390'}`} subtitle="Изменение текста/цвета/размера/порядка/видимости сразу отображается">
             <div
-              className="flex justify-center p-2 rounded-xl overflow-auto" style={{ background: 'color-mix(in srgb, var(--bg-secondary) 65%, transparent)', maxHeight: "400px" }}
+              className="flex justify-center p-2 rounded-xl overflow-auto flex-1" style={{ background: 'color-mix(in srgb, var(--bg-secondary) 65%, transparent)' }}
             >
               <div style={{ width: widthMap[previewMode], maxWidth:'100%', transform: previewMode==='mobile'?'scale(1)':'none', transition:'width 0.3s' }} className="space-y-1.5">
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={({active, over})=>{ if(active.id!==over?.id){ const oi=sections.findIndex(s=>s.id===active.id); const ni=sections.findIndex(s=>s.id===over?.id); reorder(oi, ni); }}}>
