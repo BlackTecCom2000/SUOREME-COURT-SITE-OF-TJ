@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 /**
  * Intro splash — a short local clip shown in a window ON TOP of the portal.
@@ -49,6 +50,7 @@ let introStarted = false;
 type Phase = 'opening' | 'playing' | 'closing' | 'hidden';
 
 export const IntroSplash: React.FC = () => {
+  const location = useLocation();
   /* Deterministic on the server AND on the client's first render. Client-only
      gates must never influence this value during render. */
   const [phase, setPhase] = useState<Phase>('opening');
@@ -111,13 +113,16 @@ export const IntroSplash: React.FC = () => {
     reducedMotion.addEventListener('change', onMotionChange);
 
     if (!introStarted) {
+      // The intro belongs to the home page only. SPA route changes never
+      // remount this component, and other routes must never start the video.
+      const isHome = window.location.pathname === '/' || window.location.pathname === '';
       const isAdmin = window.location.pathname.startsWith('/admin');
       const connection = (navigator as Navigator & {
         connection?: { saveData?: boolean; effectiveType?: string };
       }).connection;
       const slow = !!connection?.saveData || connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g';
 
-      if (isAdmin || reducedMotion.matches || slow) {
+      if (!isHome || isAdmin || reducedMotion.matches || slow) {
         close(); // no video request at all
       } else {
         introStarted = true;
@@ -128,6 +133,11 @@ export const IntroSplash: React.FC = () => {
 
     return () => reducedMotion.removeEventListener('change', onMotionChange);
   }, [close, activate]);
+
+  // 1b. Leaving home while the clip is running: stop it, never replay it.
+  useEffect(() => {
+    if (location.pathname !== '/' && location.pathname !== '') close();
+  }, [location.pathname, close]);
 
   // 2. While the intro is up: lock the page scroll, arm the timeout and add
   //    keyboard support. Starts after hydration together with activation.
