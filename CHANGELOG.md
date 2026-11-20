@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.58.0 - Compact site builder section list
+- Released: 2026-11-20
+- Previous: v2.57.0
+- Site Builder section list made compact: reduced row padding (p-3 to p-1.5), smaller fonts (text-xs to text-2xs), tighter gaps (space-y-3 to space-y-1.5), smaller icons (12 to 10px), compact action buttons (p-1 to p-0.5), scrollable container with max-height 400px. 14 sections no longer overflow the viewport.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.57.0 - Homepage consumes published site sections (order + visibility)
 - Released: 2026-11-20
 - Previous: v2.56.0

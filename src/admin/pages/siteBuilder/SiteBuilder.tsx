@@ -695,26 +695,25 @@ export const SiteBuilder: React.FC = () => {
         <div className="col-span-12 min-w-0 lg:col-span-5">
           <AdminCard title={`Live Preview — ${previewMode} ${previewMode==='desktop'?'1920':previewMode==='tablet'?'1024':'390'}`} subtitle="Изменение текста/цвета/размера/порядка/видимости сразу отображается">
             <div
-              className="flex justify-center p-3 rounded-xl overflow-auto"
-              style={{ background: 'color-mix(in srgb, var(--bg-secondary) 65%, transparent)' }}
+              className="flex justify-center p-2 rounded-xl overflow-auto" style={{ background: 'color-mix(in srgb, var(--bg-secondary) 65%, transparent)', maxHeight: "400px" }}
             >
-              <div style={{ width: widthMap[previewMode], maxWidth:'100%', transform: previewMode==='mobile'?'scale(1)':'none', transition:'width 0.3s' }} className="space-y-3">
+              <div style={{ width: widthMap[previewMode], maxWidth:'100%', transform: previewMode==='mobile'?'scale(1)':'none', transition:'width 0.3s' }} className="space-y-1.5">
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={({active, over})=>{ if(active.id!==over?.id){ const oi=sections.findIndex(s=>s.id===active.id); const ni=sections.findIndex(s=>s.id===over?.id); reorder(oi, ni); }}}>
                   <SortableContext items={sections.map(s=>s.id)} strategy={verticalListSortingStrategy}>
                     {sections.map(s=> (
                       <SortableItem key={s.id} id={s.id}>
-                        <div onClick={()=> setSelected(s.id)} className={`p-3 rounded-xl glass border flex items-center justify-between gap-2 cursor-pointer ${selected===s.id?'border-theme-gold':'border-theme-border hover:border-theme-borderHover'} ${s.visible? 'opacity-100':'opacity-40'}`}>
+                        <div onClick={()=> setSelected(s.id)} className={`p-1.5 rounded-lg glass border flex items-center justify-between gap-1.5 cursor-pointer ${selected===s.id?'border-theme-gold':'border-theme-border hover:border-theme-borderHover'} ${s.visible? 'opacity-100':'opacity-40'}`}>
                           <div className="flex items-center gap-2">
-                            <GripVertical size={12} className="text-theme-textMuted cursor-grab" />
-                            <span className="font-mono text-xs text-theme-text">{s.key}</span>
-                            <span className="text-xs text-theme-textSec truncate max-w-[140px]">{s.title_ru||'—'}</span>
+                            <GripVertical size={10} className="text-theme-textMuted cursor-grab" />
+                            <span className="font-mono text-2xs text-theme-text">{s.key}</span>
+                            <span className="text-2xs text-theme-textSec truncate max-w-[90px]">{s.title_ru||'—'}</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <button onClick={(e)=>{e.stopPropagation(); upd(s.id, {visible: !s.visible})}} className="p-1 rounded border border-theme-border text-theme-textMuted hover:text-theme-text">{s.visible?<Eye size={12}/>:<EyeOff size={12}/>}</button>
-                            <button onClick={(e)=>{e.stopPropagation(); dup(s.id)}} className="p-1 rounded border border-theme-border text-theme-textMuted hover:text-theme-text"><Copy size={12}/></button>
+                            <button onClick={(e)=>{e.stopPropagation(); upd(s.id, {visible: !s.visible})}} className="p-0.5 rounded border border-theme-border text-theme-textMuted hover:text-theme-text">{s.visible?<Eye size={12}/>:<EyeOff size={12}/>}</button>
+                            <button onClick={(e)=>{e.stopPropagation(); dup(s.id)}} className="p-0.5 rounded border border-theme-border text-theme-textMuted hover:text-theme-text"><Copy size={12}/></button>
                             <button
                               onClick={(e)=>{e.stopPropagation(); del(s.id)}}
-                              className="p-1 rounded border"
+                              className="p-0.5 rounded border"
                               style={{ borderColor: 'color-mix(in srgb, var(--theme-danger) 35%, transparent)', color: 'var(--theme-danger)' }}
                             ><Trash2 size={12}/></button>
                           </div>
@@ -723,7 +722,7 @@ export const SiteBuilder: React.FC = () => {
                     ))}
                   </SortableContext>
                 </DndContext>
-                {sections.length===0 && <div className="py-12 text-center font-mono text-xs text-theme-textMuted">Нет секций — добавьте из Components слева.</div>}
+                {sections.length===0 && <div className="py-4 text-center font-mono text-xs text-theme-textMuted">Нет секций — добавьте из Components слева.</div>}
               </div>
             </div>
             <div className="flex flex-wrap gap-2 mt-3">
