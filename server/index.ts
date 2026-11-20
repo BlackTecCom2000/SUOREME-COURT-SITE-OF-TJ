@@ -267,21 +267,27 @@ try {
     db.exec(`CREATE TABLE IF NOT EXISTS site_design_settings(key TEXT PRIMARY KEY, draft_value TEXT, published_value TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)`);
     db.exec(`CREATE TABLE IF NOT EXISTS site_versions(id INTEGER PRIMARY KEY, snapshot_data TEXT NOT NULL, author_id INTEGER, author_name TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP, commit_message TEXT, type TEXT DEFAULT 'site_builder')`);
     // Seed homepage sections (hero, news, courts etc.) if empty
-    const sc = db.prepare('SELECT count(*) as c FROM site_sections').get() as any;
-    if (sc.c === 0) {
-      const ins2 = db.prepare(`INSERT INTO site_sections(id, key, title_ru, title_tj, title_en, category, sort_order, visible, status, settings) VALUES(?,?,?,?,?,?,?,?,?,?)`);
+    const ins2 = db.prepare(`INSERT OR IGNORE INTO site_sections(id, key, title_ru, title_tj, title_en, category, sort_order, visible, status, settings) VALUES(?,?,?,?,?,?,?,?,?,?)`);
       const defaults: any[] = [
-        ['hero','hero','Главный баннер','Баннери асосӣ','Hero banner','Главная страница',0,1,'published','{}'],
-        ['news','news','Новости','Хабарҳо','News','Главная страница',1,1,'published','{}'],
-        ['courts','courts','Судебная сеть','Шабакаи судӣ','Court network','Главная страница',2,1,'published','{}'],
-        ['legislation','legislation','Законодательство','Қонунгузорӣ','Legislation','Главная страница',3,1,'published','{}'],
-        ['services','services','Услуги','Хизматрасониҳо','Services','Главная страница',4,1,'published','{}'],
-        ['contacts','contacts','Контакты','Тамос','Contacts','Главная страница',5,1,'published','{}'],
-        ['footer','footer','Подвал','Поёни сомона','Footer','Главная страница',6,1,'published','{}'],
-        ['useful','useful','Полезные сайты','Сомонаҳои муфид','Useful sites','Главная страница',7,1,'published','{}'],
+        ['judicial_info','judicial_info','�������� ����������','��������� ���?','Judicial information','������� ��������',0,1,'published','{}'],
+        ['quick_actions','quick_actions','������� ��������','����?�� ����?','Quick actions','������� ��������',1,1,'published','{}'],
+        ['case_search','case_search','����� ����','?����??� ��������','Case search','������� ��������',2,1,'published','{}'],
+        ['my_cases','my_cases','��� ����','��������?�� ���','My cases','������� ��������',3,1,'published','{}'],
+        ['mission','mission','������ ����','��?���� ���','Mission','������� ��������',4,1,'published','{}'],
+        ['digital_justice','digital_justice','�������� ����������','������� ��?��?','Digital justice','������� ��������',5,1,'published','{}'],
+        ['courts','courts','�������� ����','������� ���?','Court network','������� ��������',6,1,'published','{}'],
+        ['court_services','court_services','�������� ������','������������?�� ���?','Court services','������� ��������',7,1,'published','{}'],
+        ['library','library','����������� ����������','���������� ��������?','E-Library','������� ��������',8,1,'published','{}'],
+        ['hero','hero','������� ������','������� ����?','Hero banner','������� ��������',9,1,'published','{}'],
+        ['contacts','contacts','��������','�����','Contacts','������� ��������',10,1,'published','{}'],
+        ['heroes','heroes','����� ������������','?�?�������� ��?�������','Heroes','������� ��������',11,1,'published','{}'],
+        ['useful','useful','�������� �����','������?�� �����','Useful sites','������� ��������',12,1,'published','{}'],
+        ['footer','footer','������','���� ������','Footer','������� ��������',13,1,'published','{}'],
       ];
-      defaults.forEach((d) => ins2.run(...d));
-    }
+      defaults.forEach((d) => ins2.run(...d));
+    const ins3 = db.prepare(`INSERT OR IGNORE INTO site_sections(id, key, title_ru, title_tj, title_en, category, sort_order, visible, status, settings) VALUES(?,?,?,?,?,?,?,?,?,?)`);
+     const extraDefaults: any[] = [];
+
     // Seed design settings (glass intensity etc.)
     const ds = db.prepare('SELECT count(*) as c FROM site_design_settings').get() as any;
     if (ds.c === 0) {
@@ -294,8 +300,7 @@ try {
       ins3.run('gold_accent','#d4a42d','#d4a42d');
       ins3.run('preset','premium','premium');
       ins3.run('background_image_day','/supreme-court-day.jpg','/supreme-court-day.jpg');
-      ins3.run('background_image_night','/supreme-court-night.jpg','/supreme-court-night.jpg');
-    }
+      ins3.run('background_image_night','/supreme-court-night.jpg','/supreme-court-night.jpg');}
     // Ensure background images exist even if design_settings already seeded (v2.9.2 → v2.9.3 upgrade)
     try {
       db.prepare(`INSERT OR IGNORE INTO site_design_settings(key, draft_value, published_value) VALUES(?,?,?)`).run('background_image_day','/supreme-court-day.jpg','/supreme-court-day.jpg');
@@ -1850,6 +1855,7 @@ app.post('/api/admin/site/publish', auth, requirePerm('content.publish'), (req:A
   // has no draft (possible for rows seeded by older versions) instead of
   // nulling it out on publish.
   db.prepare("UPDATE site_design_settings SET published_value=COALESCE(draft_value, published_value), updated_at=datetime('now')").run();
+  db.prepare("UPDATE site_sections SET status='published', published_at=COALESCE(published_at, datetime('now')), updated_at=datetime('now')").run();
   db.prepare('INSERT INTO site_versions(snapshot_data, author_id, author_name, commit_message, type) VALUES(?,?,?,?,?)').run(payload, req.user!.id, req.user!.name||req.user!.email, req.body.message||'Publish site', 'publish');
   audit(req.user!.id,'publish','site_builder',0); res.json({ok:true});
 });

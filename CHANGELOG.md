@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.57.0 - Homepage consumes published site sections (order + visibility)
+- Released: 2026-11-20
+- Previous: v2.56.0
+- HomePage now fetches /api/site-sections and renders sections in published sort_order, respecting visible flag. Design settings polling reduced from 30s to 10s. Server seeds all homepage section keys (hero, judicial_info, quick_actions, case_search, my_cases, mission, digital_justice, courts, court_services, library, contacts, heroes, useful, footer) with INSERT OR IGNORE so Site Builder order/visibility changes reach the public site after publish.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.56.0 - Unslop: admin Site Builder - uppercase labels, icons, blob removed
 - Released: 2026-11-20
 - Previous: v2.55.0

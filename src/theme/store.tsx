@@ -218,7 +218,7 @@ export const ThemeProvider: React.FC<ProviderProps> = ({ children, mode }) => {
     if (editor) return;
     const id = window.setInterval(() => {
       void load(false);
-    }, 30000);
+    }, 10000);
     return () => window.clearInterval(id);
   }, [editor, load]);
 
