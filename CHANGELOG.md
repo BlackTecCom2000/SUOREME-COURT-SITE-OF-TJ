@@ -77,6 +77,12 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.60.0 - Site Builder wider left column, shorter Live Preview
+- Released: 2026-11-20
+- Previous: v2.59.0
+- Site Builder layout: left column widened from 4 to 5 columns (Components, Liquid Glass, Background & Atmosphere, Typography, Colors, Effects now span wider), center Live Preview narrowed from 5 to 4 columns and no longer stretched (natural height, shorter). Grid changed back to items-start. Left cards now use full available width.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.59.0 - Site Builder fill empty space with flex layout
 - Released: 2026-11-20
 - Previous: v2.58.0
