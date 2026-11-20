@@ -77,6 +77,14 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.63.0 - Full admin-public sync via /api/sync polling
+- Released: 2026-11-21
+- Previous: v2.62.0
+- Added /api/sync endpoint (returns sync_epoch). Every admin POST/PUT/DELETE/PATCH increments the epoch via audit(). HomePage and LeadershipPage now use useSiteSync() to poll /api/sync every 5s and refetch admin-managed data (site-sections, leadership) when the epoch changes.
+- Server: reduced all admin-managed public endpoint caches: Courts 3600s->60s, Leadership 3600s->60s, Region_clusters 3600s->60s, Sample_docs 3600s->60s, Duty_config 3600s->60s, Judicial_acts 300s->60s, Shelf_books 300s->60s, Hearings 300s->60s, Content 120s->60s, Journal 300s->60s. Site-sections, Useful-sites, Marquee-config changed to no-store (like design-settings).
+- SW: added networkFirstApi() and NETWORK_FIRST_API list. Service worker now uses network-first for site-sections, marquee-config, useful-sites, news, announcements, vacancies, court-structure (always live, no stale-while-revalidate).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.62.0 - Site Builder 2-column layout, no empty space
 - Released: 2026-11-20
 - Previous: v2.61.0

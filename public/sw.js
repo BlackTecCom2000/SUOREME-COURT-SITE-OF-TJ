@@ -80,6 +80,19 @@ const PUBLIC_API = [
 
 const isPublicApi = (url) => PUBLIC_API.includes(url.pathname);
 
+/** Admin-managed public data: always network-first so changes published by
+    the admin appear immediately. These endpoints are no-store on the server. */
+const NETWORK_FIRST_API = [
+  '/api/site-sections',
+  '/api/marquee-config',
+  '/api/useful-sites',
+  '/api/news',
+  '/api/announcements',
+  '/api/vacancies',
+  '/api/court-structure',
+];
+const isNetworkFirstApi = (url) => NETWORK_FIRST_API.includes(url.pathname);
+
 /** The published Theme Configuration: always live when the network is up,
  *  cached only as an offline fallback. Stale-while-revalidate here would let
  *  an open tab keep rendering the previous theme after a Publish. */
@@ -135,6 +148,23 @@ async function staleWhileRevalidate(request) {
   return hit || (await network) || new Response('[]', { status: 504 });
 }
 
+/** Network-first API read: always try the network, fall back to Cache
+    Storage offline. Used for admin-managed data that must reflect changes
+    the moment they are published. */
+async function networkFirstApi(request) {
+  const cache = await caches.open(DATA);
+  try {
+    const response = await fetch(request);
+    if (response && response.ok) cache.put(request, response.clone()).catch(() => undefined);
+    return response;
+  } catch {
+    return (
+      (await cache.match(request)) ||
+      new Response('[]', { status: 504, headers: { 'Content-Type': 'application/json' } })
+    );
+  }
+}
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
@@ -162,6 +192,9 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname === '/api/design-settings') {
     event.respondWith(networkFirstTheme(request));
     return;
+  }
+  if (isNetworkFirstApi(url)) {
+    event.respondWith(networkFirstApi(request));
   }
   if (isPublicApi(url)) {
     event.respondWith(staleWhileRevalidate(request));

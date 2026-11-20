@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useSiteSync } from '../hooks/useSiteSync';
 import { useLanguage } from '../context/LanguageContext';
 import { motion } from 'motion/react';
 import { usePageMeta } from '../hooks/usePageMeta';
@@ -69,7 +70,7 @@ export const LeadershipPage: React.FC = () => {
   usePageMeta(language === 'en' ? 'Court Leadership' : language === 'tj' ? 'Роҳбарияти суд' : 'Руководство суда');
   const [leaders, setLeaders] = React.useState<any[]>(DEFAULT_LEADERS);
 
-  React.useEffect(() => {
+  const refetchLeaders = useCallback(() => {
     fetch('/api/leadership')
       .then(res => res.json())
       .then(data => {
@@ -81,6 +82,11 @@ export const LeadershipPage: React.FC = () => {
         setLeaders(DEFAULT_LEADERS);
       });
   }, []);
+  useSiteSync(refetchLeaders, 5000);
+
+  useEffect(() => {
+    refetchLeaders();
+  }, []);;
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-6 sm:px-12 lg:px-24 bg-theme-bg text-theme-text overflow-hidden relative">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { Section01Hero } from '../components/sections/Section01Hero';
 import { QuickActionsGrid } from '../components/digital-court/QuickActionsGrid';
@@ -21,6 +21,7 @@ const NewFilingModal = React.lazy(() => import('../components/digital-court/NewF
 import { ModalTab } from '../components/JudicialModal';
 import { CourtNodeData } from '../data/sudTjData';
 import { usePageMeta } from '../hooks/usePageMeta';
+import { useSiteSync } from '../hooks/useSiteSync';
 import { useLanguage } from '../context/LanguageContext';
 
 interface SiteSection {
@@ -65,7 +66,7 @@ export const HomePage: React.FC = () => {
 
   const [siteSections, setSiteSections] = useState<SiteSection[]>([]);
 
-  useEffect(() => {
+  const refetchSections = useCallback(() => {
     fetch('/api/site-sections')
       .then(r => r.ok ? r.json() : [])
       .then((data: SiteSection[]) => {
@@ -74,6 +75,11 @@ export const HomePage: React.FC = () => {
         }
       })
       .catch(() => {});
+  }, []);
+  useSiteSync(refetchSections, 5000);
+
+  useEffect(() => {
+    refetchSections();
   }, []);
 
   const handleScrollToSection = (sectionId: string) => {

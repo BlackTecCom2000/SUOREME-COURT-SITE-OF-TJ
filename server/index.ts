@@ -264,7 +264,8 @@ try {
       seed.forEach((s, i) => ins.run(s[0], s[1], s[2], s[3], 'published', i));
     }
     db.exec(`CREATE TABLE IF NOT EXISTS site_sections(id TEXT PRIMARY KEY, key TEXT NOT NULL, title_tj TEXT, title_ru TEXT, title_en TEXT, subtitle_tj TEXT, subtitle_ru TEXT, subtitle_en TEXT, description_tj TEXT, description_ru TEXT, description_en TEXT, image TEXT, icon TEXT, link TEXT, category TEXT, language TEXT DEFAULT 'ru', status TEXT DEFAULT 'published' CHECK(status IN ('draft','published','archived')), sort_order INTEGER DEFAULT 0, visible INTEGER DEFAULT 1, settings TEXT, published_at TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)`);
-    db.exec(`CREATE TABLE IF NOT EXISTS site_design_settings(key TEXT PRIMARY KEY, draft_value TEXT, published_value TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)`);
+    db.exec("CREATE TABLE IF NOT EXISTS meta(key TEXT PRIMARY KEY, value TEXT)");
+  db.exec(`CREATE TABLE IF NOT EXISTS site_design_settings(key TEXT PRIMARY KEY, draft_value TEXT, published_value TEXT, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)`);
     db.exec(`CREATE TABLE IF NOT EXISTS site_versions(id INTEGER PRIMARY KEY, snapshot_data TEXT NOT NULL, author_id INTEGER, author_name TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP, commit_message TEXT, type TEXT DEFAULT 'site_builder')`);
     // Seed homepage sections (hero, news, courts etc.) if empty
     const ins2 = db.prepare(`INSERT OR IGNORE INTO site_sections(id, key, title_ru, title_tj, title_en, category, sort_order, visible, status, settings) VALUES(?,?,?,?,?,?,?,?,?,?)`);
@@ -284,7 +285,8 @@ try {
         ['useful','useful','�������� �����','������?�� �����','Useful sites','������� ��������',12,1,'published','{}'],
         ['footer','footer','������','���� ������','Footer','������� ��������',13,1,'published','{}'],
       ];
-      defaults.forEach((d) => ins2.run(...d));
+      defaults.forEach((d) => ins2.run(...d));
+
     const ins3 = db.prepare(`INSERT OR IGNORE INTO site_sections(id, key, title_ru, title_tj, title_en, category, sort_order, visible, status, settings) VALUES(?,?,?,?,?,?,?,?,?,?)`);
      const extraDefaults: any[] = [];
 
@@ -562,6 +564,15 @@ if (trustProxyCfg && !/^(0|false|off|no)$/i.test(trustProxyCfg)) {
   app.set('trust proxy', /^\d+$/.test(trustProxyCfg) ? Number(trustProxyCfg) : trustProxyCfg);
 }
 app.use(cors({ origin: CMS_ORIGINS, credentials: true })); app.use(express.json({ limit: '8mb' }));
+// Sync epoch: incremented on every admin write. Public pages poll /api/sync
+// to detect changes and refetch admin-managed data.
+const incSyncEpoch = () => {
+  try {
+    const row = db.prepare("SELECT value FROM meta WHERE key='sync_epoch'").get() as any;
+    const current = row ? Number(row.value) : 0;
+    db.prepare("INSERT OR REPLACE INTO meta(key, value) VALUES('sync_epoch', ?)").run(String(current + 1));
+  } catch {}
+};
 // SEC-05: cookie transport helpers (no extra deps).
 const parseCookies = (req: express.Request): Record<string, string> => {
   const out: Record<string, string> = {};
@@ -711,7 +722,7 @@ const requireSuper = (req:Auth,res:express.Response,next:express.NextFunction) =
 // a session and ai.manage (super_admin/admin). /api/ai/chat stays public (rate-limited).
 app.use('/api/ai/index-knowledge', auth, requirePerm('ai.manage'));
 app.use('/api/ai', aiRouter);
-const audit = (userId:number|undefined, action:string, type:string, id?:number) => db.prepare('INSERT INTO audit_log(user_id,action,object_type,object_id) VALUES(?,?,?,?)').run(userId || null, action, type, id || null);
+const audit = (userId:number|undefined, action:string, type:string, id?:number) => { incSyncEpoch(); return db.prepare('INSERT INTO audit_log(user_id,action,object_type,object_id) VALUES(?,?,?,?)').run(userId || null, action, type, id || null) };;
 // Login brute-force guard (SEC-02): shared sliding-window limiter, 10 req / 15 min / IP.
 app.post('/api/admin/auth/login', loginLimiter(), (req,res) => { const parsed=z.object({email:z.string().email(),password:z.string().min(8)}).safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid credentials'}); const user=db.prepare('SELECT * FROM users WHERE email=? AND disabled=0').get(parsed.data.email) as any; // Timing-safe: dummy compare for nonexistent users
   const DUMMY_HASH = '$2b$12$WOOe7lsqQ3YbNWbrNyfzru/6BRQXihxwn7ynbLyac1e.K5d6bo4gO';
@@ -840,8 +851,8 @@ app.get('/api/announcements', cache(60), (req,res) => {
   return res.json(db.prepare(`SELECT ${CONTENT_PUBLIC_COLUMNS}, c.expires_at FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type='announcement' AND c.status='published' AND c.deleted_at IS NULL AND c.region=? ORDER BY c.published_at DESC`).all(region));
 });
 app.get('/api/vacancies', cache(60), (_req,res) => res.json(contentList('vacancy')));
-app.get('/api/journal', cache(300), (_req,res) => res.json(contentList('journal')));
-app.get('/api/content/:type/:slug', cache(120), (req,res) => {
+app.get('/api/journal', cache(60), (_req,res) => res.json(contentList('journal')));
+app.get('/api/content/:type/:slug', cache(60), (req,res) => {
   const allowed = ['news','announcement','vacancy','journal','page','act'];
   if (!allowed.includes(req.params.type)) return res.status(404).json({ error:'Not found' });
   const row = db.prepare(`SELECT ${CONTENT_PUBLIC_COLUMNS} FROM content c LEFT JOIN media m ON c.cover_image_id = m.id WHERE c.type=? AND c.slug=? AND c.status='published' AND c.deleted_at IS NULL`).get(req.params.type, req.params.slug);
@@ -850,7 +861,7 @@ app.get('/api/content/:type/:slug', cache(120), (req,res) => {
 });
 // Related items for a publication: same category/region first, then the most
 // recent ones of the same type.
-app.get('/api/content/:type/:slug/related', cache(120), (req,res) => {
+app.get('/api/content/:type/:slug/related', cache(60), (req,res) => {
   const allowed = ['news','announcement','vacancy','journal'];
   if (!allowed.includes(req.params.type)) return res.status(404).json({ error:'Not found' });
   const row = db.prepare('SELECT id,region FROM content WHERE type=? AND slug=? AND status=\'published\' AND deleted_at IS NULL').get(req.params.type, req.params.slug) as any;
@@ -1036,7 +1047,7 @@ app.patch('/api/admin/content/:id', auth, (req:Auth,res) => { const sc = scopeOf
   audit(req.user!.id,'update','content',Number(req.params.id)); res.sendStatus(204); });
 
 // Courts
-app.get('/api/courts', cache(3600), (_req, res) => res.json(db.prepare('SELECT * FROM courts WHERE active=1').all()));
+app.get('/api/courts', cache(60), (_req, res) => res.json(db.prepare('SELECT * FROM courts WHERE active=1').all()));
 const courtBody = z.object({nameRu:z.string().min(2),nameTj:z.string().optional(),nameEn:z.string().optional(),region:z.string(),type:z.string(),address:z.string().optional(),phone:z.string().optional(),website:z.string().optional(),lat:z.number().optional(),lng:z.number().optional()});
 // The table has address_ru/tj/en (no `address` column) — the pre-fix INSERT
 // threw a prepare error on every create, and `website` from the form was
@@ -1066,7 +1077,7 @@ app.delete('/api/admin/courts/:id', auth, requirePerm('courts.manage'), (req:Aut
 
 // Judicial Acts
 // v2.3.0: filters q (title/number/case), category, doc_type, from/to (act_date ISO).
-app.get('/api/judicial_acts', cache(300), (req, res) => {
+app.get('/api/judicial_acts', cache(60), (req, res) => {
   const q = String(req.query.q || '').trim().slice(0, 120);
   const category = String(req.query.category || '');
   const docType = String(req.query.doc_type || '');
@@ -1134,7 +1145,7 @@ app.delete('/api/admin/judicial-acts/:id', auth, requirePerm('acts.manage'), (re
 // Library writes require library.manage (SEC-01); viewers/court managers read.
 const SHELF_PUBLIC_COLS = 'id,title_ru,title_tj,title_en,url,url_ru,url_tj,url_en,badge,kind,cover_theme,cover_text,cover_emblem,cover_bg,cover_image,sort_order,is_visible,source_url,doc_lang,doc_number,act_date,published_at,external_id,synced_at,sync_status,updated_at';
 // v2.3.0: list filters q (titles + doc_number), kind, doc_lang.
-app.get('/api/shelf-books', cache(300), (req, res) => {
+app.get('/api/shelf-books', cache(60), (req, res) => {
   const q = String(req.query.q || '').trim().slice(0, 120);
   const kind = String(req.query.kind || '');
   const docLang = String(req.query.doc_lang || '');
@@ -1157,7 +1168,7 @@ app.get('/api/shelf-books', cache(300), (req, res) => {
     db.prepare(`SELECT ${SHELF_PUBLIC_COLS} FROM shelf_books WHERE ${where.join(' AND ')} ORDER BY sort_order, id LIMIT 200`).all(...vals)
   );
 });
-app.get('/api/shelf-books/:id', cache(300), (req, res) => {
+app.get('/api/shelf-books/:id', cache(60), (req, res) => {
   const row = db.prepare('SELECT * FROM shelf_books WHERE id=? AND is_visible=1').get(req.params.id) as any;
   if (!row) return res.status(404).json({ error: 'Not found' });
   // Related documents: same kind, visible, excluding self.
@@ -1531,7 +1542,7 @@ app.post('/api/admin/restore', auth, requirePerm('users.manage'), (req: Auth, re
 });
 
 // Leadership
-app.get('/api/leadership', cache(3600), (req, res) => {
+app.get('/api/leadership', cache(60), (req, res) => {
   const court = String(req.query.court || 'all');
   if (court === 'all') return res.json(db.prepare("SELECT * FROM leadership WHERE status='active' ORDER BY sort_order ASC").all());
   return res.json(db.prepare("SELECT * FROM leadership WHERE status='active' AND court_id=? ORDER BY sort_order ASC").all(court));
@@ -1572,10 +1583,10 @@ app.post('/api/admin/hearings', auth, requirePerm('hearings.manage'), (req:Auth,
 app.delete('/api/admin/hearings/:id', auth, requirePerm('hearings.manage'), (req:Auth, res) => { const sc = scopeOf(req); if(sc === 'DENIED')return res.status(403).json({error:'Forbidden'}); if(sc){ const row = db.prepare('SELECT court_ru FROM hearings WHERE id=?').get(req.params.id) as any; if(!row || row.court_ru !== sc.courtName)return res.status(403).json({error:'Forbidden'}); } db.prepare('DELETE FROM hearings WHERE id=?').run(req.params.id); audit(req.user!.id, 'delete', 'hearing', Number(req.params.id)); res.sendStatus(204); });
 
 // Region Clusters & Courts Topology
-app.get('/api/region_clusters', cache(3600), (_req, res) => res.json(db.prepare('SELECT * FROM region_clusters').all()));
+app.get('/api/region_clusters', cache(60), (_req, res) => res.json(db.prepare('SELECT * FROM region_clusters').all()));
 
 // Hearings
-app.get('/api/hearings', cache(300), (req, res) => {
+app.get('/api/hearings', cache(60), (req, res) => {
   const court = String(req.query.court || 'all');
   if (court === 'all') return res.json(db.prepare('SELECT * FROM hearings ORDER BY hearing_date DESC LIMIT 50').all());
   const like = '%' + court + '%';
@@ -1583,7 +1594,7 @@ app.get('/api/hearings', cache(300), (req, res) => {
 });
 
 // Sample Docs
-app.get('/api/sample_docs', cache(3600), (_req, res) => res.json(db.prepare('SELECT * FROM sample_docs').all()));
+app.get('/api/sample_docs', cache(60), (_req, res) => res.json(db.prepare('SELECT * FROM sample_docs').all()));
 
 // Versioning and Rollback (Admin)
 app.get('/api/admin/content/:id/versions', auth, (req:Auth, res) => {
@@ -1686,7 +1697,7 @@ app.post('/api/admin/content/:id/rollback', auth, (req:Auth, res) => {
 });
 
 // State Duty Endpoints
-app.get('/api/duty/config', cache(3600), (_req, res) => {
+app.get('/api/duty/config', cache(60), (_req, res) => {
   const categories = db.prepare('SELECT * FROM duty_categories').all();
   const rules = db.prepare('SELECT * FROM duty_rules').all();
   const exemptions = db.prepare('SELECT * FROM duty_exemptions WHERE active=1').all();
@@ -1701,16 +1712,25 @@ app.post('/api/duty/history', dutyLimiter(), (req, res) => {
 
 // ── SITE_CMS_AND_LIVE_VISUAL_EDITOR ────────────────────────────────────
 // Public: useful sites (published only) + marquee + site sections + design
-app.get('/api/useful-sites', cache(60), (_req, res) => {
+app.get('/api/useful-sites', (_req, res) => { res.set('Cache-Control', 'no-store');
   res.json(db.prepare("SELECT * FROM useful_sites WHERE status='published' ORDER BY sort_order, id").all());
 });
-app.get('/api/marquee-config', cache(60), (_req, res) => {
+app.get('/api/marquee-config', (_req, res) => { res.set('Cache-Control', 'no-store');
   const cfg = db.prepare('SELECT * FROM site_marquee_config WHERE id=1').get() as any;
   res.json(cfg || { speed:36, direction:'left', autoplay:1, pause_on_hover:1, pause_on_focus:1, logo_size:84, gap:12 });
 });
-app.get('/api/site-sections', cache(60), (_req, res) => {
+app.get('/api/site-sections', (_req, res) => {
+  res.set('Cache-Control', 'no-store');
   res.json(db.prepare(`SELECT * FROM site_sections WHERE status='published' AND visible=1 ORDER BY sort_order, id`).all());
 });
+app.get('/api/sync', (_req: Request, res: Response) => {
+  // Sync epoch: increments on any admin write (POST/PUT/DELETE/PATCH) across
+  // all admin panels. Public pages poll this to detect changes and refetch
+  // admin-managed data (news, courts, leadership, etc.).
+  const row = db.prepare("SELECT value FROM meta WHERE key='sync_epoch'").get() as any;
+  res.json({ epoch: row ? Number(row.value) : 0 });
+});
+
 app.get('/api/design-settings', (_req, res) => {
   // no-store on purpose: this payload IS the published Theme Configuration.
   // A cached copy here means "Save + Publish + reload" shows the previous
