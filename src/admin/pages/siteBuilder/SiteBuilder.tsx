@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, Trash2, Copy, Eye, EyeOff, Save, Rocket, RotateCcw, Monitor, Tablet, Smartphone } from 'lucide-react';
+import { GripVertical, Trash2, Copy, Eye, EyeOff, Save, Rocket, RotateCcw, Monitor, Tablet, Smartphone, Home, Newspaper, Square, Landmark, Map, Link2, BarChart3, Settings, FileText, Mail, PanelBottom, Plus } from 'lucide-react';
 import { AdminCard } from '../../components/ui/AdminCard';
 import { AdminButton } from '../../components/ui/AdminButton';
 import { AdminInput } from '../../components/ui/AdminInput';
@@ -42,18 +42,18 @@ const isOff = (value: string | undefined, fallback: boolean) => {
 type Section = { id:string; key:string; title_ru?:string; title_tj?:string; title_en?:string; subtitle_ru?:string; subtitle_tj?:string; subtitle_en?:string; description_ru?:string; description_tj?:string; description_en?:string; image?:string; icon?:string; link?:string; category?:string; language?:string; visible:number; sort_order:number; status:string; settings?:string };
 
 const palette = [
-  { key:'hero', label:'Hero', icon:'H' },
-  { key:'news', label:'News', icon:'N' },
-  { key:'card', label:'Card', icon:'C' },
-  { key:'court_directory', label:'Court Directory', icon:'D' },
-  { key:'map', label:'Map', icon:'M' },
-  { key:'useful', label:'Useful Sites', icon:'U' },
-  { key:'statistics', label:'Statistics', icon:'S' },
-  { key:'services', label:'Services', icon:'Sv' },
-  { key:'documents', label:'Documents', icon:'Dc' },
-  { key:'contacts', label:'Contacts', icon:'Ct' },
-  { key:'footer', label:'Footer', icon:'F' },
-  { key:'custom', label:'Custom Section', icon:'+' },
+  { key:'hero', label:'Hero', icon: Home },
+  { key:'news', label:'News', icon: Newspaper },
+  { key:'card', label:'Card', icon: Square },
+  { key:'court_directory', label:'Court Directory', icon: Landmark },
+  { key:'map', label:'Map', icon: Map },
+  { key:'useful', label:'Useful Sites', icon: Link2 },
+  { key:'statistics', label:'Statistics', icon: BarChart3 },
+  { key:'services', label:'Services', icon: Settings },
+  { key:'documents', label:'Documents', icon: FileText },
+  { key:'contacts', label:'Contacts', icon: Mail },
+  { key:'footer', label:'Footer', icon: PanelBottom },
+  { key:'custom', label:'Custom Section', icon: Plus },
 ];
 
 /** Named gradients for the ambient field. Every value is authored here and
@@ -125,7 +125,7 @@ const RangeRow: React.FC<{
   return (
     <div className="flex min-w-0 flex-col gap-1">
       <div className="flex items-center justify-between gap-2">
-        <span className="min-w-0 truncate font-mono text-2xs uppercase tracking-wider text-theme-textMuted">
+        <span className="min-w-0 truncate font-mono text-2xs tracking-wide text-theme-textMuted">
           {label}
         </span>
         <span className="shrink-0 font-mono text-2xs text-theme-text">
@@ -421,7 +421,7 @@ export const SiteBuilder: React.FC = () => {
     <div className="space-y-4 animate-fadeIn">
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-2xs uppercase tracking-widest text-theme-textMuted">
+          <span className="font-mono text-2xs tracking-wide text-theme-textMuted">
             Тема
           </span>
           <span className="rounded-full border border-theme-border bg-theme-surface px-2 py-0.5 font-mono text-2xs text-theme-text">
@@ -451,7 +451,7 @@ export const SiteBuilder: React.FC = () => {
       <div className="grid grid-cols-12 items-start gap-4">
         {/* Left — Components + Theme */}
         <div className="col-span-12 min-w-0 space-y-3 lg:col-span-4">
-          <AdminCard title="Пресеты темы" subtitle="Пять семейств Glassmorphism — полная конфигурация, применяется атомарно">
+          <AdminCard title="Пресеты темы" subtitle="Пресеты темы">
             <div className="grid grid-cols-2 gap-2">
               {THEME_PRESETS.map(p => (
                 <button
@@ -481,7 +481,7 @@ export const SiteBuilder: React.FC = () => {
             <div className="grid grid-cols-3 gap-2">
               {palette.map(p=> (
                 <button key={p.key} onClick={()=> add(p.key)} className="p-3 rounded-xl glass border border-theme-border hover:border-theme-gold flex flex-col items-center gap-1 text-xs text-theme-textSec hover:text-theme-text transition-colors">
-                  <span className="w-6 h-6 rounded-full border border-theme-border flex items-center justify-center font-mono text-2xs text-theme-textMuted">{p.icon}</span>
+                  <span className="w-6 h-6 rounded-full border border-theme-border flex items-center justify-center text-theme-textMuted"><p.icon size={13} strokeWidth={1.5} /></span>
                   <span className="text-2xs leading-tight text-center">{p.label}</span>
                 </button>
               ))}
@@ -500,7 +500,7 @@ export const SiteBuilder: React.FC = () => {
             <div className="space-y-4">
               {/* Background */}
               <div>
-                <div className="font-mono text-2xs uppercase tracking-wider text-theme-gold mb-2">Background</div>
+                <div className="font-mono text-2xs tracking-wide text-theme-gold mb-2">Background</div>
                 <div className="space-y-2">
                   {[
                     {k:'background_image_day', label:'День (/supreme-court-day.jpg)'},
@@ -517,7 +517,7 @@ export const SiteBuilder: React.FC = () => {
               </div>
               {/* Atmosphere */}
               <div>
-                <div className="font-mono text-2xs uppercase tracking-wider text-theme-gold mb-2">Atmosphere — слабый оверлей, здание всегда видно</div>
+                <div className="font-mono text-2xs tracking-wide text-theme-gold mb-2">Atmosphere — слабый оверлей, здание всегда видно</div>
                 <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
                   <RangeRow label="White Overlay (cap 0.10)" value={design.bg_overlay_opacity || '0.12'} min={0} max={0.1} step={0.01} onChange={v=> setDesign({ bg_overlay_opacity: v })} onReset={()=> setDesign({ bg_overlay_opacity: '0.12' })} />
                   <RangeRow label="Background Blur" value={design.bg_blur || '0'} min={0} max={20} step={1} suffix="px" onChange={v=> setDesign({ bg_blur: v })} onReset={()=> setDesign({ bg_blur: '0' })} />
@@ -526,10 +526,10 @@ export const SiteBuilder: React.FC = () => {
                   <RangeRow label="Contrast" value={design.bg_contrast || '100'} min={80} max={120} step={1} suffix="%" onChange={v=> setDesign({ bg_contrast: v })} onReset={()=> setDesign({ bg_contrast: '100' })} />
                 </div>
               </div>
-              {/* Theme transition (Skiper 26 reveal) */}
+              {/* Theme transition */}
               <div>
-                <div className="font-mono text-2xs uppercase tracking-wider text-theme-gold mb-2">
-                  Переход темы — Skiper 26
+                <div className="font-mono text-2xs tracking-wide text-theme-gold mb-2">
+                  Переход темы
                 </div>
                 <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
                   <div className="flex min-w-0 flex-col gap-1">
@@ -646,7 +646,7 @@ export const SiteBuilder: React.FC = () => {
                 { k:'text_color', label:'Основной текст' },
               ].map(f => (
                 <div key={f.k} className="grid min-w-0 grid-cols-[minmax(0,1fr)_2.75rem_minmax(0,1fr)] items-center gap-2">
-                  <span className="min-w-0 truncate font-mono text-2xs uppercase tracking-wider text-theme-textMuted">{f.label}</span>
+                  <span className="min-w-0 truncate font-mono text-2xs tracking-wide text-theme-textMuted">{f.label}</span>
                   <input
                     aria-label={f.label}
                     type="color"

@@ -54,7 +54,7 @@ export const AdminCard: React.FC<AdminCardProps> = ({
               title
             )}
             {subtitle && (
-              <p className="font-mono text-xs text-theme-textSec mt-0.5 uppercase tracking-wider">{subtitle}</p>
+              <p className="font-mono text-xs text-theme-textSec mt-0.5 tracking-wide">{subtitle}</p>
             )}
           </div>
           {headerAction && <div className="shrink-0">{headerAction}</div>}

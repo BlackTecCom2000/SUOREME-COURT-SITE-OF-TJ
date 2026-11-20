@@ -77,6 +77,18 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.56.0 - Unslop: admin Site Builder - uppercase labels, icons, blob removed
+- Released: 2026-11-20
+- Previous: v2.55.0
+- Admin Site Builder unslopped: uppercase tracked labels converted to sentence case, single-letter component icons replaced with real lucide icons, decorative blur-3xl blob removed, hype subtitles renamed (Skipper 26 to Theme transition, PЯТЬ СЕМЕЙСТВ GLASSMORPHISM to Пресеты темы), AdminCard subtitle no longer forces uppercase, hover:-translate-y-0.5 replaced with transition-colors. LiquidGlassKit preview card labels renamed to meaningful Russian labels (Surface 01 to Основная, Highlight to Блик, Pro plan to Акцент).
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
+## v2.55.0 - Unslop: admin Site Builder cleanup
+- Released: 2026-11-20
+- Previous: v2.54.2
+- Admin Site Builder unslopped: uppercase tracked labels (SURFACE, BLUR, etc.) converted to sentence case, single-letter component icons replaced with real lucide icons, decorative blur-3xl blob removed, hype subtitles (SKIPER 26, PЯТЬ СЕМЕЙСТВ GLASSMORPHISM) renamed, AdminCard subtitle no longer forces uppercase, hover:-translate-y-0.5 replaced with transition-colors. LiquidGlassKit preview card labels renamed to meaningful Russian labels.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.54.2 - Intro splash only on home page load
 - Released: 2026-11-20
 - Previous: v2.54.1

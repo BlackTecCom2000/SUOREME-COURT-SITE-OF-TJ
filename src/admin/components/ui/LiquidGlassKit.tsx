@@ -97,14 +97,11 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({
           className="relative overflow-hidden rounded-[var(--glass-radius-card)] border border-theme-border p-4 sm:p-5"
           style={{ background: 'color-mix(in srgb, var(--bg-secondary) 45%, transparent)' }}
         >
-          <div
-            className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full blur-3xl"
-            style={{ background: 'color-mix(in srgb, var(--accent-gold) 22%, transparent)' }}
-          />
+
           <div className="relative flex items-center justify-between gap-3 border-b border-theme-border pb-3">
             <div>
               <div className="font-serif text-base font-bold text-theme-text">Liquid Glass Foundations</div>
-              <div className="mt-1 font-mono text-2xs uppercase tracking-widest text-theme-textMuted">Global component preview</div>
+              <div className="mt-1 font-mono text-2xs tracking-wide text-theme-textMuted">Global component preview</div>
             </div>
             <div className="flex items-center gap-2">
               <span className="hidden rounded-full border border-theme-border px-2 py-1 font-mono text-2xs text-theme-textMuted sm:inline">{enabled ? 'Enabled' : 'Disabled'}</span>
@@ -124,7 +121,7 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({
           </div>
 
           <div className={`relative mt-4 grid gap-3 transition-opacity sm:grid-cols-2 ${enabled ? 'opacity-100' : 'opacity-45'}`}>
-            <button type="button" className="glass glass-card lg-material lg-card flex min-h-16 items-center justify-between gap-3 p-4 text-left text-theme-text transition-transform hover:-translate-y-0.5">
+            <button type="button" className="glass glass-card lg-material lg-card flex min-h-16 items-center justify-between gap-3 p-4 text-left text-theme-text transition-colors">
               <span><Sparkles size={16} className="mb-1 text-theme-gold" /><span className="block text-sm font-semibold">Start project</span></span>
               <span
                 className="grid h-9 w-9 place-items-center rounded-full"
@@ -153,7 +150,7 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({
           </div>
 
           <div className="relative mt-4 grid grid-cols-3 gap-2">
-            {[['info', 'Surface 01'], ['gold', 'Highlight'], ['accent', 'Pro plan']].map(([tone, label]) => {
+            {[['info', 'Основная'], ['gold', 'Блик'], ['accent', 'Акцент']].map(([tone, label]) => {
               const toneColor = tone === 'info' ? 'var(--theme-info)' : tone === 'gold' ? 'var(--accent-gold)' : 'var(--theme-accent-secondary)';
               return (
                 <div key={label} className="glass glass-card lg-material lg-card min-h-20 p-3" style={{ borderColor: `color-mix(in srgb, ${toneColor} 35%, transparent)` }}>
@@ -178,7 +175,7 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({
 
         <div className="grid gap-2 sm:grid-cols-3">
           {Object.entries(weightPresets).map(([name, values]) => (
-            <button type="button" key={name} onClick={() => setPreset(values)} className="glass glass-card lg-material lg-card min-h-11 px-3 text-left text-xs font-semibold text-theme-text transition-transform hover:-translate-y-0.5">
+            <button type="button" key={name} onClick={() => setPreset(values)} className="glass glass-card lg-material lg-card min-h-11 px-3 text-left text-xs font-semibold text-theme-text transition-colors">
               {name}<span className="mt-1 block text-2xs font-normal text-theme-textMuted">Вес материала</span>
             </button>
           ))}
@@ -189,7 +186,7 @@ export const LiquidGlassKit: React.FC<LiquidGlassKitProps> = ({
             const value = read(setting);
             return (
               <div key={setting.key} className="min-w-0">
-                <div className="mb-1 flex items-center justify-between gap-2 font-mono text-2xs uppercase tracking-wider text-theme-textMuted">
+                <div className="mb-1 flex items-center justify-between gap-2 font-mono text-2xs tracking-wide text-theme-textMuted">
                   <span>{setting.label}</span><span className="text-theme-text">{value}{setting.suffix || ''}</span>
                 </div>
                 <div className="grid grid-cols-[minmax(0,1fr)_4.5rem_auto_auto] items-center gap-2">
