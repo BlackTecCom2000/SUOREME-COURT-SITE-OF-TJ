@@ -77,6 +77,14 @@ GitHub's 100 MB push limit. The scripts now read UTF-8 explicitly.
 - QA: `tsc 0`, `build:client`, smoke 200 on `/` `/admin` `/api/health`
   `/api/design-settings` `/api/news` `/api/search` `/api/site-sections`
   `/api/marquee-config` `/api/useful-sites` `/sitemap.xml` `/robots.txt`.
+## v2.65.0 - Hero text fix, AI typing animation, modal tabs no scroll
+- Released: 2026-11-21
+- Previous: v2.64.0
+- Hero: updated title/description/badge across all 3 languages (tj/ru/en) to better reflect the Supreme Court of Tajikistan and the judicial system. Changed from generic "Justice serves the Law" to "Supreme Court of the Republic of Tajikistan".
+- AI Assistant: added smooth typing animation (typing-fade-in CSS) for assistant messages, text appears gradually and smoothly.
+- JudicialModal: removed horizontal scroll from main tab bar (changed overflow-x-auto to flex-wrap), tabs now wrap to multiple lines.
+- QA: tsc --noEmit 0 errors, build:client success, smoke 200.
+
 ## v2.64.0 - Global sync manager + sync listeners on all key public components
 - Released: 2026-11-21
 - Previous: v2.63.0

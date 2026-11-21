@@ -27,10 +27,10 @@ export const en = {
 
   // Section 01: Hero
   hero: {
-    badge: 'OFFICIAL PORTAL OF THE JUDICIAL SYSTEM',
-    line1: 'Justice',
-    line1Italic: 'serves',
-    line2: 'the Law',
+    badge: 'OFFICIAL PORTAL OF THE JUDICIAL SYSTEM OF TAJIKISTAN',
+    line1: 'Supreme Court',
+    line1Italic: 'of the Republic',
+    line2: 'of Tajikistan',
     description:
       'The Supreme Court of the Republic of Tajikistan is the highest judicial authority for civil, criminal, administrative, and military proceedings.',
     ctaESud: 'Electronic Court',

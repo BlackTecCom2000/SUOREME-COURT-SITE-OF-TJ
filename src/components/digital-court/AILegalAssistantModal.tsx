@@ -269,7 +269,7 @@ export const AILegalAssistantModal: React.FC<AILegalAssistantModalProps> = ({
                     : 'bg-theme-surface border border-theme-border text-theme-text shadow-sm'
                 } ${m.isGenerating ? 'border-theme-gold' : ''}`}
               >
-                <div className="whitespace-pre-wrap select-text" style={{ userSelect: 'text' } as any}>{m.text}</div>
+                <div className="whitespace-pre-wrap select-text aichat-typing-text" style={{ userSelect: 'text' } as any}>{m.text}</div>
 
                 {m.citations && m.citations.length > 0 && (
                   <div className="mt-3 pt-2 border-t border-theme-border/40 font-mono text-2xs text-theme-textMuted">

@@ -248,3 +248,41 @@
     transition: none;
   }
 }
+
+
+/* Smooth typing animation for AI responses */
+@keyframes typing-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typing-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.aichat-typing-text {
+  animation: typing-fade-in 0.3s ease-out;
+  display: inline;
+}
+
+.aichat-typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent-gold);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: typing-cursor-blink 0.8s step-end infinite;
+}
+
+/* Smooth message appearance */
+.aichat-message-enter {
+  animation: typing-fade-in 0.4s ease-out;
+}

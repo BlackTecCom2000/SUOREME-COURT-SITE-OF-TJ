@@ -325,7 +325,7 @@ export const JudicialModal: React.FC<JudicialModalProps> = ({
         </div>
 
         {/* Horizontal Navigation Tab Bar */}
-        <div className="shrink-0 flex items-center gap-1 sm:gap-1.5 px-6 py-2.5 border-b border-theme-border/60 overflow-x-auto text-xs font-mono scrollbar-none">
+        <div className="shrink-0 flex flex-wrap items-center gap-1 sm:gap-1.5 px-6 py-2.5 border-b border-theme-border/60 text-xs font-mono">
           {[
             { id: 'about', labelRu: 'О суде', labelTj: 'Маълумот', labelEn: 'About Court' },
             { id: 'leadership', labelRu: 'Руководство', labelTj: 'Роҳбарият', labelEn: 'Leadership' },
